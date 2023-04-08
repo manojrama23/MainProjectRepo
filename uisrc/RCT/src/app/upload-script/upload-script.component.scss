@@ -1,0 +1,95 @@
+.form-control#filePost{
+    border:none;
+}.errorIcon{
+    background: url("../../assets/images/smart-sprite.png") -71px -61px;
+    cursor:pointer;
+    margin-bottom: -10px;
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+}
+.displayNone{
+    display: none !important
+}
+.UploadformBtn{
+    color: #fff !important;text-shadow: none !important;font-size: 12px !important;background: #5161AC !important;width: 100px;height: 26px !important;text-transform: uppercase;border-radius: 4px;margin-left: 10px;/* margin-top: 5px ; */border:none;font-weight:bold;text-align: center;cursor: pointer;padding: 5px;
+}
+.buttonDisabledCreate{
+    
+    cursor:not-allowed !important;
+    color: #E4E9EA !important;
+    background: #CBCFD0 !important;
+    opacity: 1;
+}
+.buttonDisabledCreate:hover{
+    
+    cursor:not-allowed !important;
+    color:  #E4E9EA !important;
+    background: #CBCFD0 !important;
+    opacity: 1;}
+tr:hover td .scriptLink {
+    color: #5161AC; 
+    text-decoration: underline;
+    cursor: pointer;
+}
+/* 
+.radio-inline{position: relative;padding-left: 20px;margin-bottom: 0;font-weight: 400;vertical-align: middle;cursor: pointer;float: left;width: 13%;}
+.radio-inline input[type=radio]{position: absolute;margin-left: -20px;margin-top: 2px;} */
+
+#migTypeFormWrapper {
+    border: 1px solid #D6DADC;
+    background-color: #fff;
+    padding: 5px 20px 5px 20px;
+    border-radius: 3px;
+    margin-bottom: 20px;
+    position: relative;
+}
+.remarksTextArea {
+    height: 40px;
+}
+
+.migrationBlock{
+    border: 1px solid #cccccc;
+      height: 30px;    
+      background-color: #fff;
+      padding-top: 5px;
+      padding-right: 20px;
+      padding-bottom: 20px;
+      padding-left: 20px;
+      margin-bottom: 10px;
+  }
+  .dateRangeAlign{
+    float: left;
+    display: inline-block;
+    margin-right: 5px;}
+  
+  .radio-inline{position: relative;margin-bottom: 0;font-weight: 400;vertical-align: middle;cursor: pointer;float: left;    margin-right: 15px;margin-left: 30px;}
+  .radio-inline input[type=radio]{position: absolute;margin-left: -20px;margin-top: 2px;}
+  .dispHeader{display: flex;justify-content: center;color: #5161AC;margin-top: 10px;}
+
+  .infoIcon
+  {
+    margin-left: 232px;
+    margin-top: -22px;
+  }
+
+  .maxHeight{
+      max-height: 176px !important;
+      overflow: auto;
+      margin-bottom: 0px !important;
+    }
+
+  .popupKey{
+    margin: 3px 15px 3px 0 !important;
+  }
+
+  .popupValue{
+    margin: 3px 0px 3px 0 !important;
+  }
+  .iconsWrapper1 {
+      margin-top: 7px;
+  }
+
+  .downloadGenScripts {
+    background-position-y: -245px;
+  }

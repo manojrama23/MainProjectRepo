@@ -1,0 +1,1722 @@
+2019-10-14 17:55:20 - Starting RctUserManagementApplication on linux with PID 12533 (/home/user/Swetha/trunk/Installer/SMARTConfig/target/classes started by user in /home/user/Swetha/trunk/Installer/SMARTConfig)
+2019-10-14 17:55:20 - No active profile set, falling back to default profiles: default
+2019-10-14 17:55:21 - Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@4824e2bf: startup date [Mon Oct 14 17:55:21 IST 2019]; root of context hierarchy
+2019-10-14 17:55:23 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2019-10-14 17:55:23 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2019-10-14 17:55:23 - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$f746c947] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-10-14 17:55:24 - Tomcat initialized with port(s): 8020 (https)
+2019-10-14 17:55:24 - Initializing ProtocolHandler ["https-jsse-nio-8020"]
+2019-10-14 17:55:24 - Starting service [Tomcat]
+2019-10-14 17:55:24 - Starting Servlet Engine: Apache Tomcat/8.5.34
+2019-10-14 17:55:25 - The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [/usr/java/packages/lib/amd64:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib]
+2019-10-14 17:55:25 - At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2019-10-14 17:55:25 - Initializing Spring embedded WebApplicationContext
+2019-10-14 17:55:25 - Root WebApplicationContext: initialization completed in 4117 ms
+2019-10-14 17:55:25 - Cluster created with settings {hosts=[localhost:27017], mode=MULTIPLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms', maxWaitQueueSize=500}
+2019-10-14 17:55:25 - Adding discovered server localhost:27017 to client view of cluster
+2019-10-14 17:55:26 - Opened connection [connectionId{localValue:1, serverValue:18}] to localhost:27017
+2019-10-14 17:55:26 - Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, version=ServerVersion{versionList=[4, 0, 6]}, minWireVersion=0, maxWireVersion=7, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=3465920}
+2019-10-14 17:55:26 - Discovered cluster type of STANDALONE
+2019-10-14 17:55:36 - Mapping filter: 'characterEncodingFilter' to: [/*]
+2019-10-14 17:55:36 - Mapping filter: 'webMvcMetricsFilter' to: [/*]
+2019-10-14 17:55:36 - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2019-10-14 17:55:36 - Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2019-10-14 17:55:36 - Mapping filter: 'requestContextFilter' to: [/*]
+2019-10-14 17:55:36 - Mapping filter: 'httpTraceFilter' to: [/*]
+2019-10-14 17:55:36 - Servlet dispatcherServlet mapped to [/]
+2019-10-14 17:55:36 - SpringBootJPAHikariCP - Starting...
+2019-10-14 17:55:36 - SpringBootJPAHikariCP - Start completed.
+2019-10-14 17:55:36 - Building JPA container EntityManagerFactory for persistence unit 'default'
+2019-10-14 17:55:36 - HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2019-10-14 17:55:37 - HHH000412: Hibernate Core {5.2.17.Final}
+2019-10-14 17:55:37 - HHH000206: hibernate.properties not found
+2019-10-14 17:55:37 - HCANN000001: Hibernate Commons Annotations {5.0.1.Final}
+2019-10-14 17:55:37 - HHH000400: Using dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+2019-10-14 17:55:39 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2019-10-14 17:55:40 - Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2019-10-14 17:55:40 - Looking for @ControllerAdvice: org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@4824e2bf: startup date [Mon Oct 14 17:55:21 IST 2019]; root of context hierarchy
+2019-10-14 17:55:40 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2019-10-14 17:55:40 - Mapped "{[/getAuditFilter],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.AuditTrailController.getAuditFilters(org.json.simple.JSONObject)
+2019-10-14 17:55:40 - Mapped "{[/getAuditTrail],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.AuditTrailController.getAuditTrail(org.json.simple.JSONObject)
+2019-10-14 17:55:40 - Mapped "{[/getCIReport],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.CIReportController.getCIReport(org.json.simple.JSONObject)
+2019-10-14 17:55:40 - Mapped "{[/getMapEnodeBDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.EnodeBViewMapController.getMapEnodeBDetails(org.json.simple.JSONObject)
+2019-10-14 17:55:40 - Mapped "{[/dashBoardDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.EnodeBViewMapController.dashBoardDetails(org.json.simple.JSONObject)
+2019-10-14 17:55:40 - Mapped "{[/getCpuUsage],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.EnodeBViewMapController.getCpuUsage(org.json.simple.JSONObject)
+2019-10-14 17:55:40 - Mapped "{[/getMapDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.EnodeBViewMapController.getMapDetails(org.json.simple.JSONObject)
+2019-10-14 17:55:40 - Mapped "{[/getCustomerList],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.GeneralConfigController.getCustomerList(org.json.simple.JSONObject)
+2019-10-14 17:55:40 - Mapped "{[/getConfigDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.GeneralConfigController.getConfigDetails(org.json.simple.JSONObject)
+2019-10-14 17:55:40 - Mapped "{[/saveConfigDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.GeneralConfigController.saveConfigDetails(java.lang.String)
+2019-10-14 17:55:41 - Mapped "{[/saveNetworkType],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.GeneralConfigController.addNetworkType(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/getNetworkTypeDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.GeneralConfigController.getNetworkTypeDetails(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/deleteNetworkType],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.GeneralConfigController.deleteNetwokTypeDetials(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/getProgramList],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.GeneralConfigController.getProgramList(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/addCustomer],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.GeneralConfigController.addCustomer(org.springframework.web.multipart.MultipartFile,java.lang.String,java.lang.String,java.lang.String)
+2019-10-14 17:55:41 - Mapped "{[/updateCustomerIcon],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.GeneralConfigController.updateCustomerIcon(org.springframework.web.multipart.MultipartFile,java.lang.String,java.lang.String,java.lang.String,java.lang.String)
+2019-10-14 17:55:41 - Mapped "{[/saveCustomer],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.GeneralConfigController.saveCustomer(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/deleteCustomer],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.GeneralConfigController.deleteCustomer(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/deleteCustomerDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.GeneralConfigController.deleteCustomerDetails(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/programTemplateUpdate],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.GeneralConfigController.programTemplateUpdate(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/saveNeVersion],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.GeneralConfigController.saveNeVersion(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/getNeVersionDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.GeneralConfigController.getNeVersionDetails(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/deleteNeVersionDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.GeneralConfigController.deleteNeVersionDetails(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/updateSchedulingTemplate],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.GeneralConfigController.updateSchedulingTemplate(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/saveNetworkConfigDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.NetworkConfigController.saveNetworkConfigDetails(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/getNetworkConfigDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.NetworkConfigController.getNetworkConfigDetails(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/deleteNetworkConfigDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.NetworkConfigController.deleteNetworkConfigDetails(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/importNetworkConfigDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.NetworkConfigController.importNetworkConfigDetails(org.springframework.web.multipart.MultipartFile,java.lang.String,java.lang.String)
+2019-10-14 17:55:41 - Mapped "{[/deleteNetworkConfigServerDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.NetworkConfigController.deleteNetworkConfigServerDetails(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/exportNetworkConfigDetails],methods=[POST]}" onto public void com.smart.rct.common.controller.NetworkConfigController.exportNetworkConfigDetails(org.json.simple.JSONObject,javax.servlet.http.HttpServletResponse) throws java.io.IOException
+2019-10-14 17:55:41 - Mapped "{[/downloadFile],methods=[POST]}" onto public void com.smart.rct.common.controller.NetworkConfigController.downloadFile(org.json.simple.JSONObject,javax.servlet.http.HttpServletResponse) throws java.io.IOException
+2019-10-14 17:55:41 - Mapped "{[/isZipAvilableForNwConfig],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.NetworkConfigController.isZipAvilableForNwConfig(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/downloadNwConfigZip],methods=[POST]}" onto public void com.smart.rct.common.controller.NetworkConfigController.downloadNwConfigZip(org.json.simple.JSONObject,javax.servlet.http.HttpServletResponse) throws java.io.IOException
+2019-10-14 17:55:41 - Mapped "{[/deleteCmdRuleBuilder],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.CmdRuleBuilderController.deleteCmdRuleBuilder(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/getCmdRuleBuilder],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.CmdRuleBuilderController.getCmdRuleBuilder(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/updateCmdRuleBuilder],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.CmdRuleBuilderController.updateCmdRuleBuilder(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/createCmdRuleBuilder],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.CmdRuleBuilderController.createCmdRuleBuilder(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/createFileRuleBuilder],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.FileRuleBuilderController.createFileRuleBuilder(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/getFileRuleBuilder],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.FileRuleBuilderController.getFileRuleBuilder(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/updateFileRuleBuilder],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.FileRuleBuilderController.updateFileRuleBuilder(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/deleteFileRuleBuilder],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.FileRuleBuilderController.deleteFileRuleBuilder(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/loadrunTest],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.RunTestController.loadrunTest(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/loadUsecase],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.RunTestController.loadUsecase(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/runTest],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.RunTestController.runTest(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/generateScript],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.RunTestController.generateScript(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/runTestRanAtp],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.RunTestController.runTestRanAtp(org.springframework.web.multipart.MultipartFile,java.lang.String)
+2019-10-14 17:55:41 - Mapped "{[/deleteRunTestData],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.RunTestController.deleteRunTest(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/ruleResult],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.RunTestController.runTestViewResult(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/scriptResult],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.RunTestController.scriptResult(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/reRunTest],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.RunTestController.reRunTest(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/getRunningLogs],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.RunTestController.getRunningLogs(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/getConnectionLog],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.RunTestController.getConnectionLog(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/downloadScripts],methods=[POST]}" onto public void com.smart.rct.migration.controller.RunTestController.downloadScripts(org.json.simple.JSONObject,javax.servlet.http.HttpServletResponse) throws java.io.IOException
+2019-10-14 17:55:41 - Mapped "{[/downloadLogs],methods=[POST]}" onto public void com.smart.rct.migration.controller.RunTestController.downloadLogFile(org.json.simple.JSONObject,javax.servlet.http.HttpServletResponse) throws java.io.IOException
+2019-10-14 17:55:41 - Mapped "{[/downloadHtml],methods=[POST]}" onto public void com.smart.rct.migration.controller.RunTestController.downloadHtmlFile(org.json.simple.JSONObject,javax.servlet.http.HttpServletResponse) throws java.io.IOException
+2019-10-14 17:55:41 - Mapped "{[/checkConnection],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.RunTestController.checkConnection(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/fetchBandName],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.RunTestController.getBandName(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/deleteShellCmdRuleBuilder],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.ShellCmdRuleBuilderController.deleteCmdRuleBuilder(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/updateShellCmdRuleBuilder],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.ShellCmdRuleBuilderController.updateCmdRuleBuilder(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/createShellCmdRuleBuilder],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.ShellCmdRuleBuilderController.createShellCmdRuleBuilder(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/getShellCmdRuleBuilder],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.ShellCmdRuleBuilderController.getShellCmdRuleBuilder(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/saveUploadScript],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.UploadFileController.saveUploadScript(org.springframework.web.multipart.MultipartFile,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)
+2019-10-14 17:55:41 - Mapped "{[/getUploadScript],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.UploadFileController.getUploadScript(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/updateUploadScript],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.UploadFileController.updateUploadScript(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/saveViewScript],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.UploadFileController.saveViewScript(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/viewScript],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.UploadFileController.viewScript(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/deleteUploadScript],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.UploadFileController.deleteUploadData(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/searchUploadScript],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.UploadFileController.searchUploadScript(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/updateUseCaseBuilder],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.UseCaseBuilderController.updateUseCaseBuilder(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/createUseCaseBuilder],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.UseCaseBuilderController.createUseCaseBuilder(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/loadUseCaseBuilder],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.UseCaseBuilderController.loadUseCaseBuilder(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/deleteUseCaseBuilder],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.UseCaseBuilderController.deleteUseCaseBuilder(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/viewUseCaseScript],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.UseCaseBuilderController.viewUseCaseScript(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/saveUseCaseViewScript],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.UseCaseBuilderController.saveUseCaseViewScript(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/createXmlFileRule],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.XmlRuleBuilderController.createXmlFileRule(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/loadXmlFileRule],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.XmlRuleBuilderController.loadXmlFileRule(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/updateXmlFileRule],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.XmlRuleBuilderController.updateXmlFileRule(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/deleteXmlFileRule],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.XmlRuleBuilderController.deleteXmlFileRule(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/saveEodReportsDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.postmigration.controller.EodReportsController.saveEodReportsDetails(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/deleteEodReportsDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.postmigration.controller.EodReportsController.deleteEodReportsDetails(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/getEodReportsDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.postmigration.controller.EodReportsController.getEodReportsDetails(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/exportEodReportsDetails],methods=[POST]}" onto public void com.smart.rct.postmigration.controller.EodReportsController.exportEodReportsDetails(org.json.simple.JSONObject,javax.servlet.http.HttpServletResponse) throws java.io.IOException
+2019-10-14 17:55:41 - Mapped "{[/saveOverallReportsDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.postmigration.controller.OverallReportsController.saveOverallReportsDetails(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/deleteOverallReportsDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.postmigration.controller.OverallReportsController.deleteOverallReportsDetails(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/getOverallReportsDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.postmigration.controller.OverallReportsController.getOverallReportsDetails(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/exportOverallDetails],methods=[POST]}" onto public void com.smart.rct.postmigration.controller.OverallReportsController.exportOverallDetails(org.json.simple.JSONObject,javax.servlet.http.HttpServletResponse) throws java.io.IOException
+2019-10-14 17:55:41 - Mapped "{[/importOverallDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.postmigration.controller.OverallReportsController.importOverallDetails(org.springframework.web.multipart.MultipartFile,java.lang.String,java.lang.String,java.lang.Integer)
+2019-10-14 17:55:41 - Mapped "{[/saveSchedulingDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.postmigration.controller.SchedulingSRController.saveSchedulingDetails(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/deleteSchedulingDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.postmigration.controller.SchedulingSRController.deleteSchedulingDetails(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/getSchedulingDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.postmigration.controller.SchedulingSRController.getSchedulingDetails(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/exportSchedulingDetails],methods=[POST]}" onto public void com.smart.rct.postmigration.controller.SchedulingSRController.exportSchedulingDetails(org.json.simple.JSONObject,javax.servlet.http.HttpServletResponse) throws java.io.IOException
+2019-10-14 17:55:41 - Mapped "{[/importSchedulingDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.postmigration.controller.SchedulingSRController.importSchedulingDetails(org.springframework.web.multipart.MultipartFile,java.lang.String,java.lang.String,java.lang.Integer)
+2019-10-14 17:55:41 - Mapped "{[/getCustomerIdList],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.postmigration.controller.SchedulingSRController.getCustomerIdList(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/updateSiteDataDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.postmigration.controller.SiteDataController.updateSiteDataDetails(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/deleteSiteDataDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.postmigration.controller.SiteDataController.deleteSiteDataDetails(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/sendMailWithAttachment],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.postmigration.controller.SiteDataController.sendMailWithAttachment(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/getSiteDataDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.postmigration.controller.SiteDataController.getSiteDataDetails(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/packEnbData],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.postmigration.controller.SiteDataController.packEnbData(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/getCheckListBasedScriptExecutionDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.CheckListScriptController.getCheckListBasedScriptExecutionDetails(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/saveCheckListBasedScriptExecutionDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.CheckListScriptController.saveCheckListBasedScriptExecutionDetails(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/getNeGrowDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.EnbPreGrowController.getNeGrowDetails(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/deleteGeneratedFileDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.GenerateCsvController.deleteGeneratedFileDetails(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/updateGeneratedFileDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.GenerateCsvController.updateGeneratedFileDetails(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/csvFileGeneration],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.GenerateCsvController.csvFileGeneration(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/getCsvAuditDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.GenerateCsvController.getCsvAuditDetails(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/transferCiqAuditFile],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.GenerateCsvController.transferCiqAuditFile(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/ciqFileValidation],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.GenerateCsvController.ciqFileValidation(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/transferCsvFileAndGrow],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.GenerateCsvController.transferCsvFileAndGrow(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/getGenFileSearchDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.GenerateCsvController.getGenFileSearchDetails(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/generateCiqBasedFiles],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.GenerateCsvController.generateCiqBasedFiles(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/generateCiqNeBasedFiles],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.GenerateCsvController.generateCiqNeBasedFiles(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/generateFile],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.GenerateCsvController.generateFile(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/getNeMappingDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.NeMappingController.getNeMappingDetails(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/saveNeMappingDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.NeMappingController.saveNeMappingDetails(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/getCiqList],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.getCiqList(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/getCheckListAllSheetNames],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.getCheckListAllSheetNames(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/insertChecklistDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.insertChecklistDetails(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/updateCheckListFileDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.updateCheckListFileDetails(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/getEnbDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.getEnbDetails(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/uploadCiq],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.uploadCIQFile(org.springframework.web.multipart.MultipartFile,java.util.List<org.springframework.web.multipart.MultipartFile>,org.springframework.web.multipart.MultipartFile,java.lang.String)
+2019-10-14 17:55:41 - Mapped "{[/retriveCiqDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.retriveCiqDetails(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/fetchPreMigrationFiles],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.fetchPreMigrationFiles(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/getCiqAuditDetailsList],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.getCiqAuditDetailsList(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/updateCiqAuditDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.updateCiqAuditDetails(java.util.List<org.springframework.web.multipart.MultipartFile>,org.springframework.web.multipart.MultipartFile,java.lang.String)
+2019-10-14 17:55:41 - Mapped "{[/deleteCiq],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.deleteCiq(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/updateCiqFileDetaiils],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.updateCiqFileDetaiils(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/createCiqFileDetaiils],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.createCiqFileDetaiils(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/deleteCiqRowDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.deleteCiqRowDetails(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/getEnbInfo],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.getEnbInfo(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/getEnbTableInfo],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.getEnbTableInfo(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/getEnbDetailsFilename],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.getEnbDetailsFilename(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/updateCiqFileDetaiilsEnbs],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.updateCiqFileDetaiilsEnbs(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/getCiqSheetName],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.getCiqSheeTname(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/getCiqSheetDisply],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.getCiqSheetDisply(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/getCheckListData],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.getCheckList(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/getChecklistSheetDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.getCheckListSheetNames(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/getDeatilsByChecklist],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.getDeatilsByChecklist(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/getAllDetailsByChecklist],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.getAllDetailsByChecklist(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/saveCheckListFileDetaiils],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.saveCheckListFileDetaiils(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/deleteChecklistRowDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.deleteCheckListRowDetails(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/validationCiqDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.validationCiqDetails(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/validationEnbDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.validationEnbDetails(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/scheduling],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.scheduling.controller.SchedulingController.addSchedulingDetails(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/loginAction],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.usermanagement.controller.LoginActionController.loginAction(org.json.simple.JSONObject,javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpSession)
+2019-10-14 17:55:41 - Mapped "{[/logoutAction],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.usermanagement.controller.LoginActionController.logoutAction(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/forgotPassword],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.usermanagement.controller.LoginActionController.forgotPassword(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/changePassword],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.usermanagement.controller.LoginActionController.changePassword(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/createUser],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.usermanagement.controller.UserDetailsController.createUser(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/updateUser],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.usermanagement.controller.UserDetailsController.updateUser(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/userList],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.usermanagement.controller.UserDetailsController.userList(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/deleteUser],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.usermanagement.controller.UserDetailsController.deleteUser(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/getRoleList],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.usermanagement.controller.UserRoleController.getRoleList(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/createRole],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.usermanagement.controller.UserRoleController.createRole(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/updateRole],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.usermanagement.controller.UserRoleController.updateRole(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/deleteRole],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.usermanagement.controller.UserRoleController.deleteRole(org.json.simple.JSONObject)
+2019-10-14 17:55:41 - Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2019-10-14 17:55:41 - Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2019-10-14 17:55:41 - /home/user/Swetha/trunk/Installer/SMARTConfig
+2019-10-14 17:55:41 - Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2019-10-14 17:55:41 - Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2019-10-14 17:55:41 - Mapped URL path [/customer/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2019-10-14 17:55:41 - Adding welcome page: class path resource [static/index.html]
+2019-10-14 17:55:42 - LiveReload server is running on port 35729
+2019-10-14 17:55:42 - Exposing 2 endpoint(s) beneath base path '/actuator'
+2019-10-14 17:55:42 - Mapped "{[/actuator/health],methods=[GET],produces=[application/vnd.spring-boot.actuator.v2+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.web.servlet.AbstractWebMvcEndpointHandlerMapping$OperationHandler.handle(javax.servlet.http.HttpServletRequest,java.util.Map<java.lang.String, java.lang.String>)
+2019-10-14 17:55:42 - Mapped "{[/actuator/info],methods=[GET],produces=[application/vnd.spring-boot.actuator.v2+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.web.servlet.AbstractWebMvcEndpointHandlerMapping$OperationHandler.handle(javax.servlet.http.HttpServletRequest,java.util.Map<java.lang.String, java.lang.String>)
+2019-10-14 17:55:42 - Mapped "{[/actuator],methods=[GET],produces=[application/vnd.spring-boot.actuator.v2+json || application/json]}" onto protected java.util.Map<java.lang.String, java.util.Map<java.lang.String, org.springframework.boot.actuate.endpoint.web.Link>> org.springframework.boot.actuate.endpoint.web.servlet.WebMvcEndpointHandlerMapping.links(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2019-10-14 17:55:42 - Registering beans for JMX exposure on startup
+2019-10-14 17:55:42 - Bean with name 'dataSource' has been autodetected for JMX exposure
+2019-10-14 17:55:42 - Located MBean 'dataSource': registering with JMX server as MBean [com.zaxxer.hikari:name=dataSource,type=HikariDataSource]
+2019-10-14 17:55:42 - ..................ApplicationListener Initialization of Fault codes Started ............
+2019-10-14 17:55:42 - ..................ApplicationListener Initialization of RCT properties Started ............
+2019-10-14 17:55:42 - ..................ApplicationListener Initialization of Fault codes End............
+2019-10-14 17:55:42 - Starting ProtocolHandler ["https-jsse-nio-8020"]
+2019-10-14 17:55:42 - Using a shared selector for servlet write/read
+2019-10-14 17:55:42 - Tomcat started on port(s): 8020 (https) with context path ''
+2019-10-14 17:55:42 - Started RctUserManagementApplication in 22.254 seconds (JVM running for 26.103)
+2019-10-14 17:55:47 - Initializing Spring FrameworkServlet 'dispatcherServlet'
+2019-10-14 17:55:47 - FrameworkServlet 'dispatcherServlet': initialization started
+2019-10-14 17:55:47 - FrameworkServlet 'dispatcherServlet': initialization completed in 19 ms
+2019-10-14 17:55:48 - pre Handle Interceptor.
+2019-10-14 17:55:48 - post Handle Interceptor.
+2019-10-14 17:55:48 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 17:55:48 - afterCompletion Interceptor.
+2019-10-14 17:55:48 - pre Handle Interceptor.
+2019-10-14 17:55:48 - post Handle Interceptor.
+2019-10-14 17:55:48 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 17:55:48 - afterCompletion Interceptor.
+2019-10-14 17:55:49 - pre Handle Interceptor.
+2019-10-14 17:55:49 - pre Handle Interceptor.
+2019-10-14 17:55:49 - pre Handle Interceptor.
+2019-10-14 17:55:49 - pre Handle Interceptor.
+2019-10-14 17:55:49 - pre Handle Interceptor.
+2019-10-14 17:55:49 - post Handle Interceptor.
+2019-10-14 17:55:49 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 17:55:49 - afterCompletion Interceptor.
+2019-10-14 17:55:49 - post Handle Interceptor.
+2019-10-14 17:55:49 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 17:55:49 - afterCompletion Interceptor.
+2019-10-14 17:55:49 - post Handle Interceptor.
+2019-10-14 17:55:49 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 17:55:49 - afterCompletion Interceptor.
+2019-10-14 17:55:49 - post Handle Interceptor.
+2019-10-14 17:55:49 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 17:55:49 - afterCompletion Interceptor.
+2019-10-14 17:55:49 - post Handle Interceptor.
+2019-10-14 17:55:49 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 17:55:49 - afterCompletion Interceptor.
+2019-10-14 17:55:50 - pre Handle Interceptor.
+2019-10-14 17:55:50 - pre Handle Interceptor.
+2019-10-14 17:55:50 - post Handle Interceptor.
+2019-10-14 17:55:50 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 17:55:50 - afterCompletion Interceptor.
+2019-10-14 17:55:50 - post Handle Interceptor.
+2019-10-14 17:55:50 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 17:55:50 - afterCompletion Interceptor.
+2019-10-14 17:55:50 - pre Handle Interceptor.
+2019-10-14 17:55:50 - pre Handle Interceptor.
+2019-10-14 17:55:50 - post Handle Interceptor.
+2019-10-14 17:55:50 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 17:55:50 - afterCompletion Interceptor.
+2019-10-14 17:55:50 - post Handle Interceptor.
+2019-10-14 17:55:50 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 17:55:50 - afterCompletion Interceptor.
+2019-10-14 17:55:56 - pre Handle Interceptor.
+2019-10-14 17:55:56 - UserActionRepositoryImpl.getUserDetails() userName: superadmin
+2019-10-14 17:55:56 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 17:55:56 - HHH000397: Using ASTQueryTranslatorFactory
+2019-10-14 17:55:57 - UserActionRepositoryImpl.getRoleById() roleId: 2
+2019-10-14 17:55:57 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 17:55:57 - CustomerRepositoryImpl.getCustomerDetailsList() criteria: CriteriaImpl(com.smart.rct.common.entity.CustomerDetailsEntity:this[Subcriteria(customerEntity:customerEntity)][(status=Active and customerEntity.status=Active)])
+2019-10-14 17:55:57 - post Handle Interceptor.
+2019-10-14 17:55:57 - Session Metrics {
+    405846 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    15819948 nanoseconds spent preparing 13 JDBC statements;
+    38822818 nanoseconds spent executing 12 JDBC statements;
+    61665196 nanoseconds spent executing 1 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    100315877 nanoseconds spent executing 5 flushes (flushing a total of 23 entities and 8 collections);
+    91525 nanoseconds spent executing 4 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 17:55:57 - afterCompletion Interceptor.
+2019-10-14 17:55:57 - pre Handle Interceptor.
+2019-10-14 17:55:57 - pre Handle Interceptor.
+2019-10-14 17:55:57 - post Handle Interceptor.
+2019-10-14 17:55:57 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 17:55:57 - afterCompletion Interceptor.
+2019-10-14 17:55:57 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 17:55:57 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 17:55:57 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 17:55:57 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 17:55:57 - post Handle Interceptor.
+2019-10-14 17:55:57 - Session Metrics {
+    35900 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    734909 nanoseconds spent preparing 7 JDBC statements;
+    27347776 nanoseconds spent executing 7 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    63772873 nanoseconds spent executing 5 flushes (flushing a total of 5588 entities and 4 collections);
+    1243117 nanoseconds spent executing 5 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 17:55:57 - afterCompletion Interceptor.
+2019-10-14 17:55:58 - pre Handle Interceptor.
+2019-10-14 17:55:58 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 17:55:58 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 17:55:59 - post Handle Interceptor.
+2019-10-14 17:55:59 - Session Metrics {
+    177119 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    360908 nanoseconds spent preparing 7 JDBC statements;
+    26232672 nanoseconds spent executing 7 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    1286650 nanoseconds spent executing 2 flushes (flushing a total of 14 entities and 6 collections);
+    28615 nanoseconds spent executing 4 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 17:55:59 - afterCompletion Interceptor.
+2019-10-14 17:56:00 - pre Handle Interceptor.
+2019-10-14 17:56:00 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 17:56:00 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 17:56:00 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 17:56:00 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 17:56:00 - post Handle Interceptor.
+2019-10-14 17:56:00 - Session Metrics {
+    6640235 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    772010 nanoseconds spent preparing 7 JDBC statements;
+    21934349 nanoseconds spent executing 7 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    30156329 nanoseconds spent executing 5 flushes (flushing a total of 5588 entities and 4 collections);
+    35849 nanoseconds spent executing 5 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 17:56:00 - afterCompletion Interceptor.
+2019-10-14 17:56:02 - pre Handle Interceptor.
+2019-10-14 17:56:02 - pre Handle Interceptor.
+2019-10-14 17:56:02 - post Handle Interceptor.
+2019-10-14 17:56:02 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 17:56:02 - afterCompletion Interceptor.
+2019-10-14 17:56:02 - post Handle Interceptor.
+2019-10-14 17:56:02 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 17:56:02 - afterCompletion Interceptor.
+2019-10-14 17:56:03 - pre Handle Interceptor.
+2019-10-14 17:56:03 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 17:56:03 - SchedulingRepositoryImpl.getNeDetailsForMap() verizonCriteria: CriteriaImpl(com.smart.rct.postmigration.entity.SchedulingVerizonEntity:this[][(compDate>=Mon Oct 07 00:00:00 IST 2019 and compDate<=Mon Oct 14 23:59:59 IST 2019)])
+2019-10-14 17:56:03 - SchedulingRepositoryImpl.getNeDetailsForMap() neVerizonList size: 28
+2019-10-14 17:56:03 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 17:56:03 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 17:56:03 - SchedulingRepositoryImpl.getNeDetailsForMap() sprintCriteria: CriteriaImpl(com.smart.rct.postmigration.entity.SchedulingSprintEntity:this[][(compDate>=Mon Oct 07 00:00:00 IST 2019 and compDate<=Mon Oct 14 23:59:59 IST 2019)])
+2019-10-14 17:56:03 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 17:56:03 - SchedulingRepositoryImpl.getNeDetailsForMap() neList size: 28
+2019-10-14 17:56:16 - Opened connection [connectionId{localValue:2, serverValue:19}] to localhost:27017
+2019-10-14 17:58:08 - UserDetailsServiceImpl.getMapDetails() markers found with all info: 0
+2019-10-14 17:58:08 - post Handle Interceptor.
+2019-10-14 17:58:08 - Session Metrics {
+    207286 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    621309 nanoseconds spent preparing 8 JDBC statements;
+    7066680 nanoseconds spent executing 8 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    1074006 nanoseconds spent executing 2 flushes (flushing a total of 48 entities and 6 collections);
+    752117 nanoseconds spent executing 5 partial-flushes (flushing a total of 102 entities and 102 collections)
+}
+2019-10-14 17:58:08 - afterCompletion Interceptor.
+2019-10-14 17:58:14 - pre Handle Interceptor.
+2019-10-14 17:58:14 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 17:58:14 - SchedulingRepositoryImpl.getNeDetailsForMap() verizonCriteria: CriteriaImpl(com.smart.rct.postmigration.entity.SchedulingVerizonEntity:this[][(compDate>=Mon Oct 07 00:00:00 IST 2019 and compDate<=Mon Oct 14 23:59:59 IST 2019)])
+2019-10-14 17:58:14 - SchedulingRepositoryImpl.getNeDetailsForMap() neVerizonList size: 3
+2019-10-14 17:58:14 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 17:58:14 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 17:58:14 - SchedulingRepositoryImpl.getNeDetailsForMap() sprintCriteria: CriteriaImpl(com.smart.rct.postmigration.entity.SchedulingSprintEntity:this[][(compDate>=Mon Oct 07 00:00:00 IST 2019 and compDate<=Mon Oct 14 23:59:59 IST 2019)])
+2019-10-14 17:58:14 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 17:58:14 - SchedulingRepositoryImpl.getNeDetailsForMap() neList size: 3
+2019-10-14 17:58:15 - UserDetailsServiceImpl.getMapDetails() markers found with all info: 0
+2019-10-14 17:58:15 - post Handle Interceptor.
+2019-10-14 17:58:15 - Session Metrics {
+    416511 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    836399 nanoseconds spent preparing 8 JDBC statements;
+    8295617 nanoseconds spent executing 8 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    1787601 nanoseconds spent executing 2 flushes (flushing a total of 48 entities and 6 collections);
+    887594 nanoseconds spent executing 5 partial-flushes (flushing a total of 102 entities and 102 collections)
+}
+2019-10-14 17:58:15 - afterCompletion Interceptor.
+2019-10-14 17:58:24 - pre Handle Interceptor.
+2019-10-14 17:58:24 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 17:58:24 - SchedulingRepositoryImpl.getNeDetailsForMap() verizonCriteria: CriteriaImpl(com.smart.rct.postmigration.entity.SchedulingVerizonEntity:this[][(compDate>=Mon Oct 07 00:00:00 IST 2019 and compDate<=Mon Oct 14 23:59:59 IST 2019)])
+2019-10-14 17:58:24 - SchedulingRepositoryImpl.getNeDetailsForMap() neVerizonList size: 3
+2019-10-14 17:58:24 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 17:58:24 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 17:58:24 - SchedulingRepositoryImpl.getNeDetailsForMap() sprintCriteria: CriteriaImpl(com.smart.rct.postmigration.entity.SchedulingSprintEntity:this[][(compDate>=Mon Oct 07 00:00:00 IST 2019 and compDate<=Mon Oct 14 23:59:59 IST 2019)])
+2019-10-14 17:58:24 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 17:58:24 - SchedulingRepositoryImpl.getNeDetailsForMap() neList size: 3
+2019-10-14 17:58:25 - UserDetailsServiceImpl.getMapDetails() markers found with all info: 0
+2019-10-14 17:58:25 - post Handle Interceptor.
+2019-10-14 17:58:25 - Session Metrics {
+    339433 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    866009 nanoseconds spent preparing 8 JDBC statements;
+    13334879 nanoseconds spent executing 8 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    1118652 nanoseconds spent executing 2 flushes (flushing a total of 48 entities and 6 collections);
+    756580 nanoseconds spent executing 5 partial-flushes (flushing a total of 102 entities and 102 collections)
+}
+2019-10-14 17:58:25 - afterCompletion Interceptor.
+2019-10-14 17:58:36 - pre Handle Interceptor.
+2019-10-14 17:58:36 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 17:58:36 - SchedulingRepositoryImpl.getNeDetailsForMap() verizonCriteria: CriteriaImpl(com.smart.rct.postmigration.entity.SchedulingVerizonEntity:this[][(compDate>=Mon Oct 07 00:00:00 IST 2019 and compDate<=Mon Oct 14 23:59:59 IST 2019)])
+2019-10-14 17:58:36 - SchedulingRepositoryImpl.getNeDetailsForMap() neVerizonList size: 3
+2019-10-14 17:58:36 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 17:58:36 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 17:58:36 - SchedulingRepositoryImpl.getNeDetailsForMap() sprintCriteria: CriteriaImpl(com.smart.rct.postmigration.entity.SchedulingSprintEntity:this[][(compDate>=Mon Oct 07 00:00:00 IST 2019 and compDate<=Mon Oct 14 23:59:59 IST 2019)])
+2019-10-14 17:58:36 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 17:58:36 - SchedulingRepositoryImpl.getNeDetailsForMap() neList size: 3
+2019-10-14 18:00:02 - UserDetailsServiceImpl.getMapDetails() markers found with all info: 0
+2019-10-14 18:00:02 - post Handle Interceptor.
+2019-10-14 18:00:02 - Session Metrics {
+    5033697 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    1820728 nanoseconds spent preparing 8 JDBC statements;
+    14267944 nanoseconds spent executing 8 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    1512692 nanoseconds spent executing 2 flushes (flushing a total of 48 entities and 6 collections);
+    1165845 nanoseconds spent executing 5 partial-flushes (flushing a total of 102 entities and 102 collections)
+}
+2019-10-14 18:00:02 - afterCompletion Interceptor.
+2019-10-14 18:00:20 - pre Handle Interceptor.
+2019-10-14 18:00:25 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:00:25 - SchedulingRepositoryImpl.getNeDetailsForMap() verizonCriteria: CriteriaImpl(com.smart.rct.postmigration.entity.SchedulingVerizonEntity:this[][(compDate>=Mon Oct 07 00:00:00 IST 2019 and compDate<=Mon Oct 14 23:59:59 IST 2019)])
+2019-10-14 18:00:25 - SchedulingRepositoryImpl.getNeDetailsForMap() neVerizonList size: 1
+2019-10-14 18:00:25 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:00:25 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:00:25 - SchedulingRepositoryImpl.getNeDetailsForMap() sprintCriteria: CriteriaImpl(com.smart.rct.postmigration.entity.SchedulingSprintEntity:this[][(compDate>=Mon Oct 07 00:00:00 IST 2019 and compDate<=Mon Oct 14 23:59:59 IST 2019)])
+2019-10-14 18:00:25 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:00:25 - SchedulingRepositoryImpl.getNeDetailsForMap() neList size: 1
+2019-10-14 18:00:52 - UserDetailsServiceImpl.getMapDetails() markers found with all info: 0
+2019-10-14 18:00:52 - post Handle Interceptor.
+2019-10-14 18:00:52 - Session Metrics {
+    412894 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    295751 nanoseconds spent preparing 8 JDBC statements;
+    7096251 nanoseconds spent executing 8 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    1062277 nanoseconds spent executing 2 flushes (flushing a total of 28 entities and 6 collections);
+    548658 nanoseconds spent executing 5 partial-flushes (flushing a total of 42 entities and 42 collections)
+}
+2019-10-14 18:00:52 - afterCompletion Interceptor.
+2019-10-14 18:01:08 - pre Handle Interceptor.
+2019-10-14 18:01:11 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:01:11 - SchedulingRepositoryImpl.getNeDetailsForMap() verizonCriteria: CriteriaImpl(com.smart.rct.postmigration.entity.SchedulingVerizonEntity:this[][(compDate>=Mon Oct 07 00:00:00 IST 2019 and compDate<=Mon Oct 14 23:59:59 IST 2019)])
+2019-10-14 18:01:11 - SchedulingRepositoryImpl.getNeDetailsForMap() neVerizonList size: 1
+2019-10-14 18:01:11 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:01:11 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:01:11 - SchedulingRepositoryImpl.getNeDetailsForMap() sprintCriteria: CriteriaImpl(com.smart.rct.postmigration.entity.SchedulingSprintEntity:this[][(compDate>=Mon Oct 07 00:00:00 IST 2019 and compDate<=Mon Oct 14 23:59:59 IST 2019)])
+2019-10-14 18:01:11 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:01:11 - SchedulingRepositoryImpl.getNeDetailsForMap() neList size: 1
+2019-10-14 18:05:34 - UserDetailsServiceImpl.getMapDetails() markers found with all info: 0
+2019-10-14 18:05:34 - post Handle Interceptor.
+2019-10-14 18:05:34 - Session Metrics {
+    9435366 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    361651 nanoseconds spent preparing 8 JDBC statements;
+    10960613 nanoseconds spent executing 8 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    1593798 nanoseconds spent executing 2 flushes (flushing a total of 28 entities and 6 collections);
+    724300 nanoseconds spent executing 5 partial-flushes (flushing a total of 42 entities and 42 collections)
+}
+2019-10-14 18:05:34 - afterCompletion Interceptor.
+2019-10-14 18:05:46 - pre Handle Interceptor.
+2019-10-14 18:05:46 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:05:46 - CustomerRepositoryImpl.getCustomerDetailsList() criteria: CriteriaImpl(com.smart.rct.common.entity.CustomerDetailsEntity:this[Subcriteria(customerEntity:customerEntity)][(status=Active and customerEntity.status=Active)])
+2019-10-14 18:05:46 - post Handle Interceptor.
+2019-10-14 18:05:46 - Session Metrics {
+    236703 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    47733 nanoseconds spent preparing 1 JDBC statements;
+    545843423 nanoseconds spent executing 1 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    629708 nanoseconds spent executing 1 flushes (flushing a total of 8 entities and 2 collections);
+    7319 nanoseconds spent executing 1 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 18:05:46 - afterCompletion Interceptor.
+2019-10-14 18:05:46 - pre Handle Interceptor.
+2019-10-14 18:05:46 - pre Handle Interceptor.
+2019-10-14 18:05:46 - pre Handle Interceptor.
+2019-10-14 18:05:46 - pre Handle Interceptor.
+2019-10-14 18:05:46 - pre Handle Interceptor.
+2019-10-14 18:05:46 - pre Handle Interceptor.
+2019-10-14 18:05:47 - post Handle Interceptor.
+2019-10-14 18:05:47 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 18:05:47 - afterCompletion Interceptor.
+2019-10-14 18:05:47 - SpringBootJPAHikariCP - Failed to validate connection org.mariadb.jdbc.MariaDbConnection@7b534507 (Connection.setNetworkTimeout cannot be called on a closed connection)
+2019-10-14 18:05:47 - SpringBootJPAHikariCP - Failed to validate connection org.mariadb.jdbc.MariaDbConnection@4d5b68be (Connection.setNetworkTimeout cannot be called on a closed connection)
+2019-10-14 18:05:47 - SpringBootJPAHikariCP - Failed to validate connection org.mariadb.jdbc.MariaDbConnection@174244f1 (Connection.setNetworkTimeout cannot be called on a closed connection)
+2019-10-14 18:05:47 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:05:47 - CustomerRepositoryImpl.getCustomerDetailsList() criteria: CriteriaImpl(com.smart.rct.common.entity.CustomerDetailsEntity:this[Subcriteria(customerEntity:customerEntity)][(status=Active and customerEntity.status=Active)])
+2019-10-14 18:05:47 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:05:47 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:05:47 - post Handle Interceptor.
+2019-10-14 18:05:47 - Session Metrics {
+    244053955 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    182070 nanoseconds spent preparing 1 JDBC statements;
+    60626592 nanoseconds spent executing 1 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    576184 nanoseconds spent executing 1 flushes (flushing a total of 8 entities and 2 collections);
+    13431 nanoseconds spent executing 1 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 18:05:47 - afterCompletion Interceptor.
+2019-10-14 18:05:47 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:05:47 - RunTestRepositoryImpl.getRunTestDetails() criteria: CriteriaImpl(com.smart.rct.migration.entity.RunTestEntity:this[][(creationDate>=Mon Oct 07 00:00:00 IST 2019 and creationDate<=Mon Oct 14 23:59:59 IST 2019 and migrationType=postmigration and migrationSubType=RANATP and customerDetailsEntity.id=27)])
+2019-10-14 18:05:47 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:05:47 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:05:47 - RunTestRepositoryImpl.getRunTestDetails() totCount: 0, paginationNumber: 0
+2019-10-14 18:05:47 - post Handle Interceptor.
+2019-10-14 18:05:47 - Session Metrics {
+    273406 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    1162008 nanoseconds spent preparing 18 JDBC statements;
+    196232156 nanoseconds spent executing 18 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    2688699 nanoseconds spent executing 3 flushes (flushing a total of 34 entities and 21 collections);
+    43551852 nanoseconds spent executing 8 partial-flushes (flushing a total of 39 entities and 39 collections)
+}
+2019-10-14 18:05:47 - afterCompletion Interceptor.
+2019-10-14 18:05:47 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:05:47 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:05:47 - RunTestRepositoryImpl.getRunTestDetails() criteria: CriteriaImpl(com.smart.rct.migration.entity.RunTestEntity:this[][(creationDate>=Mon Oct 07 00:00:00 IST 2019 and creationDate<=Mon Oct 14 23:59:59 IST 2019 and migrationType=migration and migrationSubType=precheck and customerDetailsEntity.id=27)])
+2019-10-14 18:05:47 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:05:47 - RunTestRepositoryImpl.getRunTestDetails() totCount: 0, paginationNumber: 0
+2019-10-14 18:05:47 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:05:47 - RunTestRepositoryImpl.getRunTestDetails() criteria: CriteriaImpl(com.smart.rct.migration.entity.RunTestEntity:this[][(creationDate>=Mon Oct 07 00:00:00 IST 2019 and creationDate<=Mon Oct 14 23:59:59 IST 2019 and migrationType=migration and migrationSubType=precheck and customerDetailsEntity.id=27)])
+2019-10-14 18:05:47 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:05:47 - RunTestRepositoryImpl.getRunTestDetails() criteria: CriteriaImpl(com.smart.rct.migration.entity.RunTestEntity:this[][(creationDate>=Mon Oct 07 00:00:00 IST 2019 and creationDate<=Mon Oct 14 23:59:59 IST 2019 and migrationType=postmigration and migrationSubType=RANATP and customerDetailsEntity.id=27)])
+2019-10-14 18:05:47 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:05:47 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:05:47 - RunTestRepositoryImpl.getRunTestDetails() totCount: 0, paginationNumber: 0
+2019-10-14 18:05:47 - RunTestRepositoryImpl.getRunTestDetails() totCount: 0, paginationNumber: 0
+2019-10-14 18:05:47 - post Handle Interceptor.
+2019-10-14 18:05:47 - Session Metrics {
+    35489 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    1274279 nanoseconds spent preparing 20 JDBC statements;
+    225641415 nanoseconds spent executing 20 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    2743868 nanoseconds spent executing 3 flushes (flushing a total of 34 entities and 21 collections);
+    45157495 nanoseconds spent executing 10 partial-flushes (flushing a total of 61 entities and 61 collections)
+}
+2019-10-14 18:05:47 - afterCompletion Interceptor.
+2019-10-14 18:05:47 - post Handle Interceptor.
+2019-10-14 18:05:47 - Session Metrics {
+    251965804 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    977228 nanoseconds spent preparing 18 JDBC statements;
+    157173673 nanoseconds spent executing 18 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    1335006 nanoseconds spent executing 3 flushes (flushing a total of 34 entities and 21 collections);
+    2026804 nanoseconds spent executing 8 partial-flushes (flushing a total of 39 entities and 39 collections)
+}
+2019-10-14 18:05:47 - afterCompletion Interceptor.
+2019-10-14 18:05:47 - post Handle Interceptor.
+2019-10-14 18:05:47 - Session Metrics {
+    252117354 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    12444942 nanoseconds spent preparing 20 JDBC statements;
+    100804975 nanoseconds spent executing 20 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    1711283 nanoseconds spent executing 3 flushes (flushing a total of 34 entities and 21 collections);
+    3745860 nanoseconds spent executing 10 partial-flushes (flushing a total of 61 entities and 61 collections)
+}
+2019-10-14 18:05:47 - afterCompletion Interceptor.
+2019-10-14 18:05:55 - pre Handle Interceptor.
+2019-10-14 18:05:55 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:05:55 - CustomerRepositoryImpl.getCustomerDetailsList() criteria: CriteriaImpl(com.smart.rct.common.entity.CustomerDetailsEntity:this[Subcriteria(customerEntity:customerEntity)][(status=Active and customerEntity.status=Active)])
+2019-10-14 18:05:55 - post Handle Interceptor.
+2019-10-14 18:05:55 - Session Metrics {
+    298366 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    100371 nanoseconds spent preparing 1 JDBC statements;
+    1895186 nanoseconds spent executing 1 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    2388764 nanoseconds spent executing 1 flushes (flushing a total of 8 entities and 2 collections);
+    12816 nanoseconds spent executing 1 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 18:05:55 - afterCompletion Interceptor.
+2019-10-14 18:05:55 - pre Handle Interceptor.
+2019-10-14 18:05:55 - pre Handle Interceptor.
+2019-10-14 18:05:55 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:05:55 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:05:55 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:05:55 - RunTestRepositoryImpl.getRunTestDetails() criteria: CriteriaImpl(com.smart.rct.migration.entity.RunTestEntity:this[][(creationDate>=Mon Oct 07 00:00:00 IST 2019 and creationDate<=Mon Oct 14 23:59:59 IST 2019 and migrationType=migration and migrationSubType=precheck and customerDetailsEntity.id=27)])
+2019-10-14 18:05:55 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:05:55 - RunTestRepositoryImpl.getRunTestDetails() totCount: 0, paginationNumber: 0
+2019-10-14 18:05:55 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:05:55 - RunTestRepositoryImpl.getRunTestDetails() criteria: CriteriaImpl(com.smart.rct.migration.entity.RunTestEntity:this[][(creationDate>=Mon Oct 07 00:00:00 IST 2019 and creationDate<=Mon Oct 14 23:59:59 IST 2019 and migrationType=migration and migrationSubType=precheck and customerDetailsEntity.id=27)])
+2019-10-14 18:05:55 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:05:55 - post Handle Interceptor.
+2019-10-14 18:05:55 - Session Metrics {
+    30125 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    830213 nanoseconds spent preparing 20 JDBC statements;
+    8626203 nanoseconds spent executing 20 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    973652 nanoseconds spent executing 3 flushes (flushing a total of 34 entities and 21 collections);
+    21905651 nanoseconds spent executing 10 partial-flushes (flushing a total of 61 entities and 61 collections)
+}
+2019-10-14 18:05:55 - RunTestRepositoryImpl.getRunTestDetails() totCount: 0, paginationNumber: 0
+2019-10-14 18:05:55 - afterCompletion Interceptor.
+2019-10-14 18:05:55 - post Handle Interceptor.
+2019-10-14 18:05:55 - Session Metrics {
+    119766 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    11428894 nanoseconds spent preparing 20 JDBC statements;
+    16539670 nanoseconds spent executing 20 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    3342023 nanoseconds spent executing 3 flushes (flushing a total of 34 entities and 21 collections);
+    1927533 nanoseconds spent executing 10 partial-flushes (flushing a total of 61 entities and 61 collections)
+}
+2019-10-14 18:05:55 - afterCompletion Interceptor.
+2019-10-14 18:05:57 - pre Handle Interceptor.
+2019-10-14 18:05:57 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:05:57 - CustomerRepositoryImpl.getCustomerDetailsList() criteria: CriteriaImpl(com.smart.rct.common.entity.CustomerDetailsEntity:this[Subcriteria(customerEntity:customerEntity)][(status=Active and customerEntity.status=Active)])
+2019-10-14 18:05:57 - pre Handle Interceptor.
+2019-10-14 18:05:57 - post Handle Interceptor.
+2019-10-14 18:05:57 - Session Metrics {
+    312966 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    146386 nanoseconds spent preparing 1 JDBC statements;
+    1722794 nanoseconds spent executing 1 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    416334 nanoseconds spent executing 1 flushes (flushing a total of 8 entities and 2 collections);
+    13997 nanoseconds spent executing 1 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 18:05:57 - afterCompletion Interceptor.
+2019-10-14 18:05:57 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:05:57 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:05:57 - RunTestRepositoryImpl.getRunTestDetails() criteria: CriteriaImpl(com.smart.rct.migration.entity.RunTestEntity:this[][(creationDate>=Mon Oct 07 00:00:00 IST 2019 and creationDate<=Mon Oct 14 23:59:59 IST 2019 and migrationType=migration and migrationSubType=precheck and customerDetailsEntity.id=30)])
+2019-10-14 18:05:57 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:05:57 - RunTestRepositoryImpl.getRunTestDetails() totCount: 1, paginationNumber: 1
+2019-10-14 18:05:57 - post Handle Interceptor.
+2019-10-14 18:05:57 - Session Metrics {
+    266095 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    7426362 nanoseconds spent preparing 251 JDBC statements;
+    207721092 nanoseconds spent executing 251 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    4200494 nanoseconds spent executing 4 flushes (flushing a total of 548 entities and 413 collections);
+    46954521 nanoseconds spent executing 29 partial-flushes (flushing a total of 4050 entities and 4050 collections)
+}
+2019-10-14 18:05:57 - afterCompletion Interceptor.
+2019-10-14 18:06:00 - pre Handle Interceptor.
+2019-10-14 18:06:00 - post Handle Interceptor.
+2019-10-14 18:06:00 - Session Metrics {
+    792379 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 18:06:00 - afterCompletion Interceptor.
+2019-10-14 18:06:01 - pre Handle Interceptor.
+2019-10-14 18:06:01 - post Handle Interceptor.
+2019-10-14 18:06:01 - Session Metrics {
+    5985493 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 18:06:01 - afterCompletion Interceptor.
+2019-10-14 18:06:17 - pre Handle Interceptor.
+2019-10-14 18:06:24 - post Handle Interceptor.
+2019-10-14 18:06:24 - Session Metrics {
+    181797 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 18:06:24 - afterCompletion Interceptor.
+2019-10-14 18:06:27 - pre Handle Interceptor.
+2019-10-14 18:06:27 - pre Handle Interceptor.
+2019-10-14 18:06:27 - post Handle Interceptor.
+2019-10-14 18:06:27 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 18:06:27 - afterCompletion Interceptor.
+2019-10-14 18:06:27 - post Handle Interceptor.
+2019-10-14 18:06:27 - Session Metrics {
+    1867497 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    2317183 nanoseconds spent preparing 122 JDBC statements;
+    27010201 nanoseconds spent executing 122 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    1795887 nanoseconds spent executing 19 flushes (flushing a total of 279 entities and 171 collections);
+    813998 nanoseconds spent executing 2 partial-flushes (flushing a total of 153 entities and 153 collections)
+}
+2019-10-14 18:06:27 - afterCompletion Interceptor.
+2019-10-14 18:06:29 - pre Handle Interceptor.
+2019-10-14 18:06:29 - post Handle Interceptor.
+2019-10-14 18:06:29 - Session Metrics {
+    171546 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 18:06:29 - afterCompletion Interceptor.
+2019-10-14 18:06:30 - pre Handle Interceptor.
+2019-10-14 18:06:30 - post Handle Interceptor.
+2019-10-14 18:06:30 - Session Metrics {
+    205610 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 18:06:30 - afterCompletion Interceptor.
+2019-10-14 18:06:42 - pre Handle Interceptor.
+2019-10-14 18:06:42 - post Handle Interceptor.
+2019-10-14 18:06:42 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 18:06:42 - afterCompletion Interceptor.
+2019-10-14 18:06:49 - pre Handle Interceptor.
+2019-10-14 18:06:55 - post Handle Interceptor.
+2019-10-14 18:06:55 - Session Metrics {
+    253747 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 18:06:55 - afterCompletion Interceptor.
+2019-10-14 18:08:44 - pre Handle Interceptor.
+2019-10-14 18:08:44 - post Handle Interceptor.
+2019-10-14 18:08:44 - pre Handle Interceptor.
+2019-10-14 18:08:44 - Session Metrics {
+    694023 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 18:08:44 - afterCompletion Interceptor.
+2019-10-14 18:08:44 - post Handle Interceptor.
+2019-10-14 18:08:44 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 18:08:44 - afterCompletion Interceptor.
+2019-10-14 18:08:45 - pre Handle Interceptor.
+2019-10-14 18:08:45 - post Handle Interceptor.
+2019-10-14 18:08:45 - Session Metrics {
+    352440 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 18:08:45 - afterCompletion Interceptor.
+2019-10-14 18:08:53 - pre Handle Interceptor.
+2019-10-14 18:08:59 - post Handle Interceptor.
+2019-10-14 18:08:59 - Session Metrics {
+    160644 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 18:08:59 - afterCompletion Interceptor.
+2019-10-14 18:09:33 - pre Handle Interceptor.
+2019-10-14 18:09:33 - post Handle Interceptor.
+2019-10-14 18:09:33 - Session Metrics {
+    275342 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 18:09:33 - afterCompletion Interceptor.
+2019-10-14 18:09:34 - pre Handle Interceptor.
+2019-10-14 18:09:34 - post Handle Interceptor.
+2019-10-14 18:09:34 - Session Metrics {
+    337381 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 18:09:34 - afterCompletion Interceptor.
+2019-10-14 18:09:45 - pre Handle Interceptor.
+2019-10-14 18:09:51 - post Handle Interceptor.
+2019-10-14 18:09:51 - Session Metrics {
+    252893 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 18:09:51 - afterCompletion Interceptor.
+2019-10-14 18:12:46 - pre Handle Interceptor.
+2019-10-14 18:12:46 - pre Handle Interceptor.
+2019-10-14 18:12:46 - post Handle Interceptor.
+2019-10-14 18:12:46 - Session Metrics {
+    347140 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 18:12:46 - afterCompletion Interceptor.
+2019-10-14 18:12:46 - post Handle Interceptor.
+2019-10-14 18:12:46 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 18:12:46 - afterCompletion Interceptor.
+2019-10-14 18:12:47 - pre Handle Interceptor.
+2019-10-14 18:12:47 - post Handle Interceptor.
+2019-10-14 18:12:47 - Session Metrics {
+    371763 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 18:12:47 - afterCompletion Interceptor.
+2019-10-14 18:14:19 - pre Handle Interceptor.
+2019-10-14 18:21:11 - pre Handle Interceptor.
+2019-10-14 18:21:11 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:21:11 - CustomerRepositoryImpl.getCustomerDetailsList() criteria: CriteriaImpl(com.smart.rct.common.entity.CustomerDetailsEntity:this[Subcriteria(customerEntity:customerEntity)][(status=Active and customerEntity.status=Active)])
+2019-10-14 18:21:12 - pre Handle Interceptor.
+2019-10-14 18:21:12 - pre Handle Interceptor.
+2019-10-14 18:21:12 - SpringBootJPAHikariCP - Failed to validate connection org.mariadb.jdbc.MariaDbConnection@2820ccd2 (Connection.setNetworkTimeout cannot be called on a closed connection)
+2019-10-14 18:21:12 - pre Handle Interceptor.
+2019-10-14 18:21:12 - SpringBootJPAHikariCP - Failed to validate connection org.mariadb.jdbc.MariaDbConnection@6724b0ce (Connection.setNetworkTimeout cannot be called on a closed connection)
+2019-10-14 18:21:12 - post Handle Interceptor.
+2019-10-14 18:21:12 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 18:21:12 - afterCompletion Interceptor.
+2019-10-14 18:21:12 - SpringBootJPAHikariCP - Failed to validate connection org.mariadb.jdbc.MariaDbConnection@4564f6a2 (Connection.setNetworkTimeout cannot be called on a closed connection)
+2019-10-14 18:21:12 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:21:12 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:21:12 - post Handle Interceptor.
+2019-10-14 18:21:12 - Session Metrics {
+    445486 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    94658 nanoseconds spent preparing 1 JDBC statements;
+    1443777022 nanoseconds spent executing 1 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    304699 nanoseconds spent executing 1 flushes (flushing a total of 8 entities and 2 collections);
+    13047 nanoseconds spent executing 1 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 18:21:12 - afterCompletion Interceptor.
+2019-10-14 18:21:12 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:21:12 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:21:13 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:21:13 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:21:13 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:21:13 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:21:13 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:21:13 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:21:13 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:21:13 - post Handle Interceptor.
+2019-10-14 18:21:13 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:21:13 - Session Metrics {
+    145798061 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    488306 nanoseconds spent preparing 16 JDBC statements;
+    294440168 nanoseconds spent executing 16 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    2692658 nanoseconds spent executing 5 flushes (flushing a total of 44 entities and 7 collections);
+    25658016 nanoseconds spent executing 9 partial-flushes (flushing a total of 48 entities and 48 collections)
+}
+2019-10-14 18:21:13 - afterCompletion Interceptor.
+2019-10-14 18:21:13 - post Handle Interceptor.
+2019-10-14 18:21:13 - Session Metrics {
+    963473 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    495908 nanoseconds spent preparing 16 JDBC statements;
+    295818261 nanoseconds spent executing 16 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    778357 nanoseconds spent executing 5 flushes (flushing a total of 44 entities and 7 collections);
+    26417717 nanoseconds spent executing 9 partial-flushes (flushing a total of 48 entities and 48 collections)
+}
+2019-10-14 18:21:13 - afterCompletion Interceptor.
+2019-10-14 18:21:13 - pre Handle Interceptor.
+2019-10-14 18:21:13 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:21:13 - CustomerRepositoryImpl.getCustomerDetailsList() criteria: CriteriaImpl(com.smart.rct.common.entity.CustomerDetailsEntity:this[Subcriteria(customerEntity:customerEntity)][(status=Active and customerEntity.status=Active)])
+2019-10-14 18:21:13 - post Handle Interceptor.
+2019-10-14 18:21:13 - Session Metrics {
+    311308 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    54974 nanoseconds spent preparing 1 JDBC statements;
+    1554498 nanoseconds spent executing 1 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    301863 nanoseconds spent executing 1 flushes (flushing a total of 8 entities and 2 collections);
+    12831 nanoseconds spent executing 1 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 18:21:13 - afterCompletion Interceptor.
+2019-10-14 18:21:13 - pre Handle Interceptor.
+2019-10-14 18:21:13 - pre Handle Interceptor.
+2019-10-14 18:21:13 - CustomerRepositoryImpl.getProgramGenerateFileDetails() called.. programId: 30
+2019-10-14 18:21:13 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:21:13 - pre Handle Interceptor.
+2019-10-14 18:21:13 - CustomerRepositoryImpl.getProgramGenerateFileDetails() called.. programId: 30
+2019-10-14 18:21:13 - pre Handle Interceptor.
+2019-10-14 18:21:13 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:21:13 - post Handle Interceptor.
+2019-10-14 18:21:13 - Session Metrics {
+    71466 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    104581 nanoseconds spent preparing 2 JDBC statements;
+    2478471 nanoseconds spent executing 2 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    234864 nanoseconds spent executing 1 flushes (flushing a total of 6 entities and 1 collections);
+    12129 nanoseconds spent executing 1 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 18:21:13 - afterCompletion Interceptor.
+2019-10-14 18:21:13 - post Handle Interceptor.
+2019-10-14 18:21:13 - Session Metrics {
+    1016207 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    192454 nanoseconds spent preparing 2 JDBC statements;
+    1057953 nanoseconds spent executing 2 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    157453 nanoseconds spent executing 1 flushes (flushing a total of 6 entities and 1 collections);
+    9432 nanoseconds spent executing 1 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 18:21:13 - afterCompletion Interceptor.
+2019-10-14 18:21:13 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:21:13 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:21:13 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:21:13 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:21:13 - post Handle Interceptor.
+2019-10-14 18:21:13 - Session Metrics {
+    63409 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    215666 nanoseconds spent preparing 7 JDBC statements;
+    5265884 nanoseconds spent executing 7 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    284030 nanoseconds spent executing 2 flushes (flushing a total of 14 entities and 2 collections);
+    296313 nanoseconds spent executing 4 partial-flushes (flushing a total of 14 entities and 14 collections)
+}
+2019-10-14 18:21:13 - afterCompletion Interceptor.
+2019-10-14 18:21:13 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:21:13 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:21:13 - post Handle Interceptor.
+2019-10-14 18:21:13 - Session Metrics {
+    66850 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    207646 nanoseconds spent preparing 7 JDBC statements;
+    21326722 nanoseconds spent executing 7 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    262417 nanoseconds spent executing 2 flushes (flushing a total of 14 entities and 2 collections);
+    249392 nanoseconds spent executing 4 partial-flushes (flushing a total of 14 entities and 14 collections)
+}
+2019-10-14 18:21:13 - afterCompletion Interceptor.
+2019-10-14 18:21:13 - pre Handle Interceptor.
+2019-10-14 18:21:13 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:21:13 - CustomerRepositoryImpl.getCustomerDetailsList() criteria: CriteriaImpl(com.smart.rct.common.entity.CustomerDetailsEntity:this[Subcriteria(customerEntity:customerEntity)][(status=Active and customerEntity.status=Active)])
+2019-10-14 18:21:13 - post Handle Interceptor.
+2019-10-14 18:21:13 - Session Metrics {
+    62189 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    53585 nanoseconds spent preparing 1 JDBC statements;
+    1548402 nanoseconds spent executing 1 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    301850 nanoseconds spent executing 1 flushes (flushing a total of 8 entities and 2 collections);
+    12581 nanoseconds spent executing 1 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 18:21:13 - afterCompletion Interceptor.
+2019-10-14 18:21:13 - pre Handle Interceptor.
+2019-10-14 18:21:13 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:21:13 - pre Handle Interceptor.
+2019-10-14 18:21:13 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:21:13 - post Handle Interceptor.
+2019-10-14 18:21:13 - Session Metrics {
+    60747 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    98642 nanoseconds spent preparing 2 JDBC statements;
+    1687776 nanoseconds spent executing 2 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    13746904 nanoseconds spent executing 1 flushes (flushing a total of 6 entities and 1 collections);
+    12140 nanoseconds spent executing 1 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 18:21:13 - afterCompletion Interceptor.
+2019-10-14 18:21:13 - post Handle Interceptor.
+2019-10-14 18:21:13 - Session Metrics {
+    60100 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    109201 nanoseconds spent preparing 2 JDBC statements;
+    4071857 nanoseconds spent executing 2 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    197369 nanoseconds spent executing 1 flushes (flushing a total of 6 entities and 1 collections);
+    11154 nanoseconds spent executing 1 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 18:21:13 - afterCompletion Interceptor.
+2019-10-14 18:21:15 - pre Handle Interceptor.
+2019-10-14 18:21:15 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:21:15 - CustomerRepositoryImpl.getCustomerDetailsList() criteria: CriteriaImpl(com.smart.rct.common.entity.CustomerDetailsEntity:this[Subcriteria(customerEntity:customerEntity)][(status=Active and customerEntity.status=Active)])
+2019-10-14 18:21:15 - post Handle Interceptor.
+2019-10-14 18:21:15 - Session Metrics {
+    352125 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    76792 nanoseconds spent preparing 1 JDBC statements;
+    1627167 nanoseconds spent executing 1 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    288260 nanoseconds spent executing 1 flushes (flushing a total of 8 entities and 2 collections);
+    12979 nanoseconds spent executing 1 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 18:21:15 - afterCompletion Interceptor.
+2019-10-14 18:21:15 - pre Handle Interceptor.
+2019-10-14 18:21:16 - FileUploadRepositoryImpl  getProgramTemplate() programId: 30, paramName: SCRIPT_STORE_TEMPLATE
+2019-10-14 18:21:16 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:21:16 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:21:16 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:21:16 - post Handle Interceptor.
+2019-10-14 18:21:16 - Session Metrics {
+    151267 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    619482 nanoseconds spent preparing 22 JDBC statements;
+    33322402 nanoseconds spent executing 22 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    447098 nanoseconds spent executing 4 flushes (flushing a total of 29 entities and 5 collections);
+    975962 nanoseconds spent executing 11 partial-flushes (flushing a total of 76 entities and 76 collections)
+}
+2019-10-14 18:21:16 - afterCompletion Interceptor.
+2019-10-14 18:21:16 - pre Handle Interceptor.
+2019-10-14 18:21:16 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:21:16 - CustomerRepositoryImpl.getCustomerDetailsList() criteria: CriteriaImpl(com.smart.rct.common.entity.CustomerDetailsEntity:this[Subcriteria(customerEntity:customerEntity)][(status=Active and customerEntity.status=Active)])
+2019-10-14 18:21:16 - post Handle Interceptor.
+2019-10-14 18:21:16 - Session Metrics {
+    290002 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    43833 nanoseconds spent preparing 1 JDBC statements;
+    12720084 nanoseconds spent executing 1 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    264701 nanoseconds spent executing 1 flushes (flushing a total of 8 entities and 2 collections);
+    12834 nanoseconds spent executing 1 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 18:21:16 - afterCompletion Interceptor.
+2019-10-14 18:21:16 - pre Handle Interceptor.
+2019-10-14 18:21:16 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:21:16 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:21:16 - FileUploadRepositoryImpl  getProgramTemplate() programId: 30, paramName: PROMPT_TEMPLATE
+2019-10-14 18:21:16 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:21:16 - post Handle Interceptor.
+2019-10-14 18:21:16 - Session Metrics {
+    179961 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    55419 nanoseconds spent preparing 5 JDBC statements;
+    1447093 nanoseconds spent executing 5 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    124237 nanoseconds spent executing 2 flushes (flushing a total of 7 entities and 1 collections);
+    89121 nanoseconds spent executing 3 partial-flushes (flushing a total of 2 entities and 2 collections)
+}
+2019-10-14 18:21:16 - afterCompletion Interceptor.
+2019-10-14 18:21:17 - pre Handle Interceptor.
+2019-10-14 18:21:17 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 18:21:17 - CustomerRepositoryImpl.getCustomerDetailsList() criteria: CriteriaImpl(com.smart.rct.common.entity.CustomerDetailsEntity:this[Subcriteria(customerEntity:customerEntity)][(status=Active and customerEntity.status=Active)])
+2019-10-14 18:21:17 - post Handle Interceptor.
+2019-10-14 18:21:17 - Session Metrics {
+    576333 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    43576 nanoseconds spent preparing 1 JDBC statements;
+    16883413 nanoseconds spent executing 1 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    225482 nanoseconds spent executing 1 flushes (flushing a total of 8 entities and 2 collections);
+    12828 nanoseconds spent executing 1 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 18:21:17 - afterCompletion Interceptor.
+2019-10-14 18:21:17 - pre Handle Interceptor.
+2019-10-14 18:21:17 - pre Handle Interceptor.
+2019-10-14 18:21:17 - post Handle Interceptor.
+2019-10-14 18:21:17 - post Handle Interceptor.
+2019-10-14 18:21:17 - Session Metrics {
+    796801 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    531546 nanoseconds spent preparing 42 JDBC statements;
+    11830066 nanoseconds spent executing 42 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    1110400 nanoseconds spent executing 11 flushes (flushing a total of 66 entities and 12 collections);
+    3029355 nanoseconds spent executing 17 partial-flushes (flushing a total of 118 entities and 118 collections)
+}
+2019-10-14 18:21:17 - Session Metrics {
+    31021 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    424411 nanoseconds spent preparing 42 JDBC statements;
+    8333596 nanoseconds spent executing 42 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    1014090 nanoseconds spent executing 11 flushes (flushing a total of 66 entities and 12 collections);
+    2554353 nanoseconds spent executing 17 partial-flushes (flushing a total of 118 entities and 118 collections)
+}
+2019-10-14 18:21:17 - afterCompletion Interceptor.
+2019-10-14 18:21:17 - afterCompletion Interceptor.
+2019-10-14 18:21:19 - pre Handle Interceptor.
+2019-10-14 18:21:19 - post Handle Interceptor.
+2019-10-14 18:21:19 - Session Metrics {
+    354268 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    2573526 nanoseconds spent preparing 206 JDBC statements;
+    27823865 nanoseconds spent executing 206 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    3760974 nanoseconds spent executing 11 flushes (flushing a total of 363 entities and 255 collections);
+    2905117 nanoseconds spent executing 17 partial-flushes (flushing a total of 178 entities and 178 collections)
+}
+2019-10-14 18:21:19 - afterCompletion Interceptor.
+2019-10-14 14:35:03 - pre Handle Interceptor.
+2019-10-14 14:35:03 - pre Handle Interceptor.
+2019-10-14 14:35:03 - pre Handle Interceptor.
+2019-10-14 14:35:03 - SpringBootJPAHikariCP - Failed to validate connection org.mariadb.jdbc.MariaDbConnection@5b4e6757 (Connection.setNetworkTimeout cannot be called on a closed connection)
+2019-10-14 14:35:03 - SpringBootJPAHikariCP - Failed to validate connection org.mariadb.jdbc.MariaDbConnection@3c3bad89 (Connection.setNetworkTimeout cannot be called on a closed connection)
+2019-10-14 14:35:03 - SpringBootJPAHikariCP - Failed to validate connection org.mariadb.jdbc.MariaDbConnection@4f2fb51b (Connection.setNetworkTimeout cannot be called on a closed connection)
+2019-10-14 14:35:03 - SpringBootJPAHikariCP - Failed to validate connection org.mariadb.jdbc.MariaDbConnection@6174d5af (Connection.setNetworkTimeout cannot be called on a closed connection)
+2019-10-14 14:35:03 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 14:35:03 - CustomerRepositoryImpl.getCustomerDetailsList() criteria: CriteriaImpl(com.smart.rct.common.entity.CustomerDetailsEntity:this[Subcriteria(customerEntity:customerEntity)][(status=Active and customerEntity.status=Active)])
+2019-10-14 14:35:03 - post Handle Interceptor.
+2019-10-14 14:35:03 - Session Metrics {
+    36175023 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    16758 nanoseconds spent preparing 1 JDBC statements;
+    587603 nanoseconds spent executing 1 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    84851 nanoseconds spent executing 1 flushes (flushing a total of 8 entities and 2 collections);
+    5072 nanoseconds spent executing 1 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 14:35:03 - afterCompletion Interceptor.
+2019-10-14 14:35:03 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 14:35:03 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 14:35:03 - RunTestRepositoryImpl.getRunTestDetails() criteria: CriteriaImpl(com.smart.rct.migration.entity.RunTestEntity:this[][(creationDate>=Mon Oct 07 00:00:00 IST 2019 and creationDate<=Mon Oct 14 23:59:59 IST 2019 and migrationType=postmigration and migrationSubType=RANATP and customerDetailsEntity.id=30)])
+2019-10-14 14:35:03 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 14:35:03 - RunTestRepositoryImpl.getRunTestDetails() totCount: 0, paginationNumber: 0
+2019-10-14 14:35:03 - post Handle Interceptor.
+2019-10-14 14:35:03 - Session Metrics {
+    28880577 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    481087 nanoseconds spent preparing 70 JDBC statements;
+    8013765 nanoseconds spent executing 70 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    1498644 nanoseconds spent executing 3 flushes (flushing a total of 343 entities and 171 collections);
+    1835250 nanoseconds spent executing 10 partial-flushes (flushing a total of 479 entities and 479 collections)
+}
+2019-10-14 14:35:03 - afterCompletion Interceptor.
+2019-10-14 14:35:03 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 14:35:03 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 14:35:03 - RunTestRepositoryImpl.getRunTestDetails() criteria: CriteriaImpl(com.smart.rct.migration.entity.RunTestEntity:this[][(creationDate>=Mon Oct 07 00:00:00 IST 2019 and creationDate<=Mon Oct 14 23:59:59 IST 2019 and migrationType=postmigration and migrationSubType=RANATP and customerDetailsEntity.id=30)])
+2019-10-14 14:35:03 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 14:35:03 - RunTestRepositoryImpl.getRunTestDetails() totCount: 0, paginationNumber: 0
+2019-10-14 14:35:03 - post Handle Interceptor.
+2019-10-14 14:35:03 - Session Metrics {
+    15998214 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    1150278 nanoseconds spent preparing 70 JDBC statements;
+    32725927 nanoseconds spent executing 70 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    1243367 nanoseconds spent executing 3 flushes (flushing a total of 343 entities and 171 collections);
+    1816764 nanoseconds spent executing 10 partial-flushes (flushing a total of 479 entities and 479 collections)
+}
+2019-10-14 14:35:03 - afterCompletion Interceptor.
+2019-10-14 14:35:05 - pre Handle Interceptor.
+2019-10-14 14:35:05 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 14:35:05 - CustomerRepositoryImpl.getCustomerDetailsList() criteria: CriteriaImpl(com.smart.rct.common.entity.CustomerDetailsEntity:this[Subcriteria(customerEntity:customerEntity)][(status=Active and customerEntity.status=Active)])
+2019-10-14 14:35:05 - pre Handle Interceptor.
+2019-10-14 14:35:05 - post Handle Interceptor.
+2019-10-14 14:35:05 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 14:35:05 - Session Metrics {
+    749276 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    44344 nanoseconds spent preparing 1 JDBC statements;
+    11519617 nanoseconds spent executing 1 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    289312 nanoseconds spent executing 1 flushes (flushing a total of 8 entities and 2 collections);
+    13024 nanoseconds spent executing 1 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 14:35:05 - afterCompletion Interceptor.
+2019-10-14 14:35:05 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 14:35:05 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 14:35:05 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 14:35:05 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 14:35:05 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 14:35:05 - pre Handle Interceptor.
+2019-10-14 14:35:05 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 14:35:05 - post Handle Interceptor.
+2019-10-14 14:35:05 - Session Metrics {
+    1145435 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    289241 nanoseconds spent preparing 16 JDBC statements;
+    8493585 nanoseconds spent executing 16 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    400818 nanoseconds spent executing 5 flushes (flushing a total of 44 entities and 7 collections);
+    544970 nanoseconds spent executing 9 partial-flushes (flushing a total of 48 entities and 48 collections)
+}
+2019-10-14 14:35:05 - afterCompletion Interceptor.
+2019-10-14 14:35:05 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 14:35:05 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 14:35:05 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 14:35:05 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 14:35:05 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 14:35:05 - post Handle Interceptor.
+2019-10-14 14:35:05 - Session Metrics {
+    37677 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    190388 nanoseconds spent preparing 16 JDBC statements;
+    3544909 nanoseconds spent executing 16 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    295180 nanoseconds spent executing 5 flushes (flushing a total of 44 entities and 7 collections);
+    453029 nanoseconds spent executing 9 partial-flushes (flushing a total of 48 entities and 48 collections)
+}
+2019-10-14 14:35:05 - afterCompletion Interceptor.
+2019-10-14 14:35:07 - pre Handle Interceptor.
+2019-10-14 14:35:07 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 14:35:07 - CustomerRepositoryImpl.getCustomerDetailsList() criteria: CriteriaImpl(com.smart.rct.common.entity.CustomerDetailsEntity:this[Subcriteria(customerEntity:customerEntity)][(status=Active and customerEntity.status=Active)])
+2019-10-14 14:35:07 - post Handle Interceptor.
+2019-10-14 14:35:07 - Session Metrics {
+    276661 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    44000 nanoseconds spent preparing 1 JDBC statements;
+    1543633 nanoseconds spent executing 1 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    5648512 nanoseconds spent executing 1 flushes (flushing a total of 8 entities and 2 collections);
+    11457 nanoseconds spent executing 1 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 14:35:07 - afterCompletion Interceptor.
+2019-10-14 14:35:07 - pre Handle Interceptor.
+2019-10-14 14:35:07 - pre Handle Interceptor.
+2019-10-14 14:35:07 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 14:35:07 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 14:35:07 - RunTestRepositoryImpl.getRunTestDetails() criteria: CriteriaImpl(com.smart.rct.migration.entity.RunTestEntity:this[][(creationDate>=Mon Oct 07 00:00:00 IST 2019 and creationDate<=Mon Oct 14 23:59:59 IST 2019 and migrationType=migration and migrationSubType=precheck and customerDetailsEntity.id=30)])
+2019-10-14 14:35:07 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 14:35:07 - RunTestRepositoryImpl.getRunTestDetails() totCount: 1, paginationNumber: 1
+2019-10-14 14:35:07 - post Handle Interceptor.
+2019-10-14 14:35:07 - Session Metrics {
+    162714 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    2707455 nanoseconds spent preparing 251 JDBC statements;
+    26131375 nanoseconds spent executing 251 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    1952874 nanoseconds spent executing 4 flushes (flushing a total of 548 entities and 413 collections);
+    12936547 nanoseconds spent executing 29 partial-flushes (flushing a total of 4050 entities and 4050 collections)
+}
+2019-10-14 14:35:07 - afterCompletion Interceptor.
+2019-10-14 14:35:07 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 14:35:07 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 14:35:07 - RunTestRepositoryImpl.getRunTestDetails() criteria: CriteriaImpl(com.smart.rct.migration.entity.RunTestEntity:this[][(creationDate>=Mon Oct 07 00:00:00 IST 2019 and creationDate<=Mon Oct 14 23:59:59 IST 2019 and migrationType=migration and migrationSubType=precheck and customerDetailsEntity.id=30)])
+2019-10-14 14:35:07 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-14 14:35:07 - RunTestRepositoryImpl.getRunTestDetails() totCount: 1, paginationNumber: 1
+2019-10-14 14:35:07 - post Handle Interceptor.
+2019-10-14 14:35:07 - Session Metrics {
+    115404 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    7251509 nanoseconds spent preparing 251 JDBC statements;
+    44756395 nanoseconds spent executing 251 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    2151783 nanoseconds spent executing 4 flushes (flushing a total of 548 entities and 413 collections);
+    22836371 nanoseconds spent executing 29 partial-flushes (flushing a total of 4050 entities and 4050 collections)
+}
+2019-10-14 14:35:07 - afterCompletion Interceptor.
+2019-10-14 14:35:09 - pre Handle Interceptor.
+2019-10-14 14:35:09 - post Handle Interceptor.
+2019-10-14 14:35:09 - Session Metrics {
+    793320 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 14:35:09 - afterCompletion Interceptor.
+2019-10-14 14:35:10 - pre Handle Interceptor.
+2019-10-14 14:35:10 - post Handle Interceptor.
+2019-10-14 14:35:10 - Session Metrics {
+    331693 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-14 14:35:10 - afterCompletion Interceptor.
+2019-10-14 14:35:17 - pre Handle Interceptor.
+2019-10-14 14:36:12 - Closing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@4824e2bf: startup date [Mon Oct 14 17:55:21 IST 2019]; root of context hierarchy
+2019-10-14 14:36:12 - Unregistering JMX-exposed beans on shutdown
+2019-10-14 14:36:12 - Unregistering JMX-exposed beans
+2019-10-14 14:36:12 - Closing JPA EntityManagerFactory for persistence unit 'default'

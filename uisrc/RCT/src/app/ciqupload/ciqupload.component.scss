@@ -1,0 +1,116 @@
+@import 'src/variable';
+.errorIcon{background: url("../../assets/images/smart-sprite.png") -71px -61px;cursor:pointer;margin-bottom: -10px;width: 20px;height: 20px;display: inline-block;}
+.displayNone{display: none !important}
+.buttonDisabledCreate{background: url("../../assets/images/smart-sprite.png") -23px -246px;cursor:not-allowed !important;color: #E4E9EA !important;background-color: #CBCFD0 !important;opacity: 1;}
+.buttonDisabledCreate:hover{background: url("../../assets/images/smart-sprite.png") -23px -246px;cursor:not-allowed !important;color:  #E4E9EA !important;background-color: #CBCFD0 !important;opacity: 1;}
+
+.progressWrapper {position:absolute;width: 80%;height: 20px;border-radius:4px;background:url("../../assets/images/progressbar-pattern-transparent.png") #dfe3e9;overflow: hidden;}   
+.progressPercentage {position:absolute;height: 100%;background:url("../../assets/images/progressbar-pattern-transparent.png") #39c2d6; border-top-left-radius:4px;border-bottom-left-radius:4px;}
+#progress{width:600px;margin: 0 auto;text-align: center;height:50px;margin-top:-10px;}
+#progress label{color:#1a1a1a;font-size:12px;font-family:arial;font-weight:bold;font-style: italic;}
+
+.radio-inline{position: relative;margin-bottom: 0;font-weight: 400;vertical-align: middle;cursor: pointer;float: left;    margin-right: 15px;margin-left: 30px;}
+.radio-inline input[type=radio]{position: absolute;margin-left: -20px;margin-top: 2px;}
+.infoRow{background-position-x: 3px}
+.scriptViewBtn {border: none!important;cursor: pointer;width: 30px;height: 25px;}
+.scriptViewBtn:focus {outline: none;}
+.scriptList_hr {margin-top: 5px;margin-bottom: 0;}
+.deleteScript{padding: 5px;font-size: 12px;float: right;color: red;cursor: pointer;}
+#market {
+    width: 225px !important;
+    height: 25px !important;
+    display: flex;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    box-shadow: none;
+    word-break: break-word;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: .25rem;
+}
+.viewContent{
+    height: 25px;
+    width: 24px;  
+}
+.scroptListViewBtn {
+    border: none !important;
+    outline: none;
+    cursor: pointer;
+    float: left;
+    margin-left: 13px;
+    width:10%;
+}
+.buttonBg{
+    background: url(../../../src/assets/images/smart-sprite.png) -149px -241px !important;
+}
+.scroptListViewBtn.buttonDisabled {
+    opacity: 0.3;
+}
+#viewFile{height: 300px;overflow: auto;display: block;border: 1px solid #b0bbcc;margin-top: 5px;margin-left: 10px;margin-right: 10px;padding: 10px;}
+.scriptViewtextArea {
+    width: 100%;
+    height: 100%;
+    padding: 5px;
+    border: 1px solid #d3d5d8;
+}
+.rfScriptContainer label {
+    width: auto;
+}
+
+#errorModalView {
+    overflow: auto;
+    max-height: 400px;
+}
+  
+.errorMsgBlock {
+    display: flex !important;
+    flex-direction: column;
+    overflow: auto;
+    display: block;
+    border: 1px solid #b8c0cc;
+    margin-top: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding: 10px;
+}
+.errorScriptHeader {
+    display: inline-block;
+    padding-right: 7px;
+}
+.errorPre {
+    font-family: Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+    font-size: 12px;
+   // background-color: #fafafa;
+    padding: 10px;
+}
+
+@media (min-width: 1200px) and (max-width: 1359px){
+    #market {width: $form-control-width-xs;}
+    .formEditRow #scriptFileName {max-width: $form-control-width-xs;}
+}
+@media (min-width: 1360px) and (max-width: 1599px){
+    #market {width: $form-control-width-sm;}
+    .formEditRow #scriptFileName {max-width: $form-control-width-sm;}
+}
+@media (min-width: 1600px) and (max-width: 1899px){
+    #market {width: $form-control-width-md;}
+    .formEditRow #scriptFileName {max-width: $form-control-width-md;}
+}
+@media (min-width: 1900px) {
+    #market {width: $form-control-width-lg;}
+    .formEditRow #scriptFileName {max-width: $form-control-width-lg;}
+}
+.dispHeader{display: flex;justify-content: center;color: #5161AC;margin-top: 10px;}
+
+.afterchecktext::after {content: "\1F6C8"; font-size: x-large; margin-right:5px;vertical-align:middle;font-size: 20px; margin-left: 5px; display: inline-block;
+    margin-top: -4px;} 
+  .afterchecktext{
+      margin-top: -10px;
+  }
+.errorheighlighted {
+    color:#f53404;
+    cursor: pointer;
+}
+.successheighlighted {
+    color:#5161AC;
+    cursor: pointer;
+}

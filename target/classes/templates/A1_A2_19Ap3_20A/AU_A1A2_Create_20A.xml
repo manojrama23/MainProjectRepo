@@ -1,0 +1,229 @@
+<nc:rpc xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <nc:edit-config>
+    <nc:target>
+      <nc:running></nc:running>
+    </nc:target>
+    <nc:default-operation>none</nc:default-operation>
+    <nc:config>
+      <gnbcp:managed-element xmlns:gnbcp="http://www.samsung.com/global/business/5GvRAN/ns/gnb-cu-cp">
+        <gnbcp:gnb-cu-cp-function>
+          <gnbcp:gnb-cu-cp-function-entries>
+            <gnbcp:gnodeb-id>560056</gnbcp:gnodeb-id>
+            <gnbcp:gutran-cu-cell>
+              <gnbcp:gutran-cu-cell-entries>
+                <gnbcp:cell-identity>609</gnbcp:cell-identity>
+                <gnbcp:report-config-entries nc:operation="create">
+                  <gnbcp:index>3</gnbcp:index>
+                  <gnbcp:report-type>event-based-A1</gnbcp:report-type>
+                  <gnbcp:a1-report-config nc:operation="create">
+                    <gnbcp:a1-time-to-trigger>ms128</gnbcp:a1-time-to-trigger>
+                    <gnbcp:a1-purpose>en-dc-in-nr-ul-coverage-ueulsplit-sup-purpose</gnbcp:a1-purpose>
+                  </gnbcp:a1-report-config>
+                </gnbcp:report-config-entries>
+                <gnbcp:report-config-entries nc:operation="create">
+                  <gnbcp:index>4</gnbcp:index>
+                  <gnbcp:report-type>event-based-A2</gnbcp:report-type>
+                  <gnbcp:a2-report-config nc:operation="create">
+                    <gnbcp:a2-time-to-trigger>ms128</gnbcp:a2-time-to-trigger>
+                    <gnbcp:a2-purpose>en-dc-out-of-nr-ul-coverage-ueulsplit-sup-purpose</gnbcp:a2-purpose>
+                  </gnbcp:a2-report-config>
+                </gnbcp:report-config-entries>
+                <gnbcp:report-config-entries nc:operation="create">
+                  <gnbcp:index>5</gnbcp:index>
+                  <gnbcp:report-type>event-based-A1</gnbcp:report-type>
+                  <gnbcp:a1-report-config nc:operation="create">
+                    <gnbcp:a1-time-to-trigger>ms128</gnbcp:a1-time-to-trigger>
+                    <gnbcp:a1-purpose>en-dc-in-nr-ul-coverage-ueulsplit-notsup-purpose</gnbcp:a1-purpose>
+                  </gnbcp:a1-report-config>
+                </gnbcp:report-config-entries>
+                <gnbcp:report-config-entries nc:operation="create">
+                  <gnbcp:index>6</gnbcp:index>
+                  <gnbcp:report-type>event-based-A2</gnbcp:report-type>
+                  <gnbcp:a2-report-config nc:operation="create">
+                    <gnbcp:a2-time-to-trigger>ms128</gnbcp:a2-time-to-trigger>
+                    <gnbcp:a2-purpose>en-dc-out-of-nr-ul-coverage-ueulsplit-notsup-purpose</gnbcp:a2-purpose>
+                  </gnbcp:a2-report-config>
+                </gnbcp:report-config-entries>
+              </gnbcp:gutran-cu-cell-entries>
+              <gnbcp:gutran-cu-cell-entries>
+                <gnbcp:cell-identity>610</gnbcp:cell-identity>
+                <gnbcp:report-config-entries nc:operation="create">
+                  <gnbcp:index>3</gnbcp:index>
+                  <gnbcp:report-type>event-based-A1</gnbcp:report-type>
+                  <gnbcp:a1-report-config nc:operation="create">
+                    <gnbcp:a1-time-to-trigger>ms128</gnbcp:a1-time-to-trigger>
+                    <gnbcp:a1-purpose>en-dc-in-nr-ul-coverage-ueulsplit-sup-purpose</gnbcp:a1-purpose>
+                  </gnbcp:a1-report-config>
+                </gnbcp:report-config-entries>
+                <gnbcp:report-config-entries nc:operation="create">
+                  <gnbcp:index>4</gnbcp:index>
+                  <gnbcp:report-type>event-based-A2</gnbcp:report-type>
+                  <gnbcp:a2-report-config nc:operation="create">
+                    <gnbcp:a2-time-to-trigger>ms128</gnbcp:a2-time-to-trigger>
+                    <gnbcp:a2-purpose>en-dc-out-of-nr-ul-coverage-ueulsplit-sup-purpose</gnbcp:a2-purpose>
+                  </gnbcp:a2-report-config>
+                </gnbcp:report-config-entries>
+                <gnbcp:report-config-entries nc:operation="create">
+                  <gnbcp:index>5</gnbcp:index>
+                  <gnbcp:report-type>event-based-A1</gnbcp:report-type>
+                  <gnbcp:a1-report-config nc:operation="create">
+                    <gnbcp:a1-time-to-trigger>ms128</gnbcp:a1-time-to-trigger>
+                    <gnbcp:a1-purpose>en-dc-in-nr-ul-coverage-ueulsplit-notsup-purpose</gnbcp:a1-purpose>
+                  </gnbcp:a1-report-config>
+                </gnbcp:report-config-entries>
+                <gnbcp:report-config-entries nc:operation="create">
+                  <gnbcp:index>6</gnbcp:index>
+                  <gnbcp:report-type>event-based-A2</gnbcp:report-type>
+                  <gnbcp:a2-report-config nc:operation="create">
+                    <gnbcp:a2-time-to-trigger>ms128</gnbcp:a2-time-to-trigger>
+                    <gnbcp:a2-purpose>en-dc-out-of-nr-ul-coverage-ueulsplit-notsup-purpose</gnbcp:a2-purpose>
+                  </gnbcp:a2-report-config>
+                </gnbcp:report-config-entries>
+              </gnbcp:gutran-cu-cell-entries>
+              <gnbcp:gutran-cu-cell-entries>
+                <gnbcp:cell-identity>611</gnbcp:cell-identity>
+                <gnbcp:report-config-entries nc:operation="create">
+                  <gnbcp:index>3</gnbcp:index>
+                  <gnbcp:report-type>event-based-A1</gnbcp:report-type>
+                  <gnbcp:a1-report-config nc:operation="create">
+                    <gnbcp:a1-time-to-trigger>ms128</gnbcp:a1-time-to-trigger>
+                    <gnbcp:a1-purpose>en-dc-in-nr-ul-coverage-ueulsplit-sup-purpose</gnbcp:a1-purpose>
+                  </gnbcp:a1-report-config>
+                </gnbcp:report-config-entries>
+                <gnbcp:report-config-entries nc:operation="create">
+                  <gnbcp:index>4</gnbcp:index>
+                  <gnbcp:report-type>event-based-A2</gnbcp:report-type>
+                  <gnbcp:a2-report-config nc:operation="create">
+                    <gnbcp:a2-time-to-trigger>ms128</gnbcp:a2-time-to-trigger>
+                    <gnbcp:a2-purpose>en-dc-out-of-nr-ul-coverage-ueulsplit-sup-purpose</gnbcp:a2-purpose>
+                  </gnbcp:a2-report-config>
+                </gnbcp:report-config-entries>
+                <gnbcp:report-config-entries nc:operation="create">
+                  <gnbcp:index>5</gnbcp:index>
+                  <gnbcp:report-type>event-based-A1</gnbcp:report-type>
+                  <gnbcp:a1-report-config nc:operation="create">
+                    <gnbcp:a1-time-to-trigger>ms128</gnbcp:a1-time-to-trigger>
+                    <gnbcp:a1-purpose>en-dc-in-nr-ul-coverage-ueulsplit-notsup-purpose</gnbcp:a1-purpose>
+                  </gnbcp:a1-report-config>
+                </gnbcp:report-config-entries>
+                <gnbcp:report-config-entries nc:operation="create">
+                  <gnbcp:index>6</gnbcp:index>
+                  <gnbcp:report-type>event-based-A2</gnbcp:report-type>
+                  <gnbcp:a2-report-config nc:operation="create">
+                    <gnbcp:a2-time-to-trigger>ms128</gnbcp:a2-time-to-trigger>
+                    <gnbcp:a2-purpose>en-dc-out-of-nr-ul-coverage-ueulsplit-notsup-purpose</gnbcp:a2-purpose>
+                  </gnbcp:a2-report-config>
+                </gnbcp:report-config-entries>
+              </gnbcp:gutran-cu-cell-entries>
+              <gnbcp:gutran-cu-cell-entries>
+                <gnbcp:cell-identity>612</gnbcp:cell-identity>
+                <gnbcp:report-config-entries nc:operation="create">
+                  <gnbcp:index>3</gnbcp:index>
+                  <gnbcp:report-type>event-based-A1</gnbcp:report-type>
+                  <gnbcp:a1-report-config nc:operation="create">
+                    <gnbcp:a1-time-to-trigger>ms128</gnbcp:a1-time-to-trigger>
+                    <gnbcp:a1-purpose>en-dc-in-nr-ul-coverage-ueulsplit-sup-purpose</gnbcp:a1-purpose>
+                  </gnbcp:a1-report-config>
+                </gnbcp:report-config-entries>
+                <gnbcp:report-config-entries nc:operation="create">
+                  <gnbcp:index>4</gnbcp:index>
+                  <gnbcp:report-type>event-based-A2</gnbcp:report-type>
+                  <gnbcp:a2-report-config nc:operation="create">
+                    <gnbcp:a2-time-to-trigger>ms128</gnbcp:a2-time-to-trigger>
+                    <gnbcp:a2-purpose>en-dc-out-of-nr-ul-coverage-ueulsplit-sup-purpose</gnbcp:a2-purpose>
+                  </gnbcp:a2-report-config>
+                </gnbcp:report-config-entries>
+                <gnbcp:report-config-entries nc:operation="create">
+                  <gnbcp:index>5</gnbcp:index>
+                  <gnbcp:report-type>event-based-A1</gnbcp:report-type>
+                  <gnbcp:a1-report-config nc:operation="create">
+                    <gnbcp:a1-time-to-trigger>ms128</gnbcp:a1-time-to-trigger>
+                    <gnbcp:a1-purpose>en-dc-in-nr-ul-coverage-ueulsplit-notsup-purpose</gnbcp:a1-purpose>
+                  </gnbcp:a1-report-config>
+                </gnbcp:report-config-entries>
+                <gnbcp:report-config-entries nc:operation="create">
+                  <gnbcp:index>6</gnbcp:index>
+                  <gnbcp:report-type>event-based-A2</gnbcp:report-type>
+                  <gnbcp:a2-report-config nc:operation="create">
+                    <gnbcp:a2-time-to-trigger>ms128</gnbcp:a2-time-to-trigger>
+                    <gnbcp:a2-purpose>en-dc-out-of-nr-ul-coverage-ueulsplit-notsup-purpose</gnbcp:a2-purpose>
+                  </gnbcp:a2-report-config>
+                </gnbcp:report-config-entries>
+              </gnbcp:gutran-cu-cell-entries>
+              <gnbcp:gutran-cu-cell-entries>
+                <gnbcp:cell-identity>613</gnbcp:cell-identity>
+                <gnbcp:report-config-entries nc:operation="create">
+                  <gnbcp:index>3</gnbcp:index>
+                  <gnbcp:report-type>event-based-A1</gnbcp:report-type>
+                  <gnbcp:a1-report-config nc:operation="create">
+                    <gnbcp:a1-time-to-trigger>ms128</gnbcp:a1-time-to-trigger>
+                    <gnbcp:a1-purpose>en-dc-in-nr-ul-coverage-ueulsplit-sup-purpose</gnbcp:a1-purpose>
+                  </gnbcp:a1-report-config>
+                </gnbcp:report-config-entries>
+                <gnbcp:report-config-entries nc:operation="create">
+                  <gnbcp:index>4</gnbcp:index>
+                  <gnbcp:report-type>event-based-A2</gnbcp:report-type>
+                  <gnbcp:a2-report-config nc:operation="create">
+                    <gnbcp:a2-time-to-trigger>ms128</gnbcp:a2-time-to-trigger>
+                    <gnbcp:a2-purpose>en-dc-out-of-nr-ul-coverage-ueulsplit-sup-purpose</gnbcp:a2-purpose>
+                  </gnbcp:a2-report-config>
+                </gnbcp:report-config-entries>
+                <gnbcp:report-config-entries nc:operation="create">
+                  <gnbcp:index>5</gnbcp:index>
+                  <gnbcp:report-type>event-based-A1</gnbcp:report-type>
+                  <gnbcp:a1-report-config nc:operation="create">
+                    <gnbcp:a1-time-to-trigger>ms128</gnbcp:a1-time-to-trigger>
+                    <gnbcp:a1-purpose>en-dc-in-nr-ul-coverage-ueulsplit-notsup-purpose</gnbcp:a1-purpose>
+                  </gnbcp:a1-report-config>
+                </gnbcp:report-config-entries>
+                <gnbcp:report-config-entries nc:operation="create">
+                  <gnbcp:index>6</gnbcp:index>
+                  <gnbcp:report-type>event-based-A2</gnbcp:report-type>
+                  <gnbcp:a2-report-config nc:operation="create">
+                    <gnbcp:a2-time-to-trigger>ms128</gnbcp:a2-time-to-trigger>
+                    <gnbcp:a2-purpose>en-dc-out-of-nr-ul-coverage-ueulsplit-notsup-purpose</gnbcp:a2-purpose>
+                  </gnbcp:a2-report-config>
+                </gnbcp:report-config-entries>
+              </gnbcp:gutran-cu-cell-entries>
+              <gnbcp:gutran-cu-cell-entries>
+                <gnbcp:cell-identity>614</gnbcp:cell-identity>
+                <gnbcp:report-config-entries nc:operation="create">
+                  <gnbcp:index>3</gnbcp:index>
+                  <gnbcp:report-type>event-based-A1</gnbcp:report-type>
+                  <gnbcp:a1-report-config nc:operation="create">
+                    <gnbcp:a1-time-to-trigger>ms128</gnbcp:a1-time-to-trigger>
+                    <gnbcp:a1-purpose>en-dc-in-nr-ul-coverage-ueulsplit-sup-purpose</gnbcp:a1-purpose>
+                  </gnbcp:a1-report-config>
+                </gnbcp:report-config-entries>
+                <gnbcp:report-config-entries nc:operation="create">
+                  <gnbcp:index>4</gnbcp:index>
+                  <gnbcp:report-type>event-based-A2</gnbcp:report-type>
+                  <gnbcp:a2-report-config nc:operation="create">
+                    <gnbcp:a2-time-to-trigger>ms128</gnbcp:a2-time-to-trigger>
+                    <gnbcp:a2-purpose>en-dc-out-of-nr-ul-coverage-ueulsplit-sup-purpose</gnbcp:a2-purpose>
+                  </gnbcp:a2-report-config>
+                </gnbcp:report-config-entries>
+                <gnbcp:report-config-entries nc:operation="create">
+                  <gnbcp:index>5</gnbcp:index>
+                  <gnbcp:report-type>event-based-A1</gnbcp:report-type>
+                  <gnbcp:a1-report-config nc:operation="create">
+                    <gnbcp:a1-time-to-trigger>ms128</gnbcp:a1-time-to-trigger>
+                    <gnbcp:a1-purpose>en-dc-in-nr-ul-coverage-ueulsplit-notsup-purpose</gnbcp:a1-purpose>
+                  </gnbcp:a1-report-config>
+                </gnbcp:report-config-entries>
+                <gnbcp:report-config-entries nc:operation="create">
+                  <gnbcp:index>6</gnbcp:index>
+                  <gnbcp:report-type>event-based-A2</gnbcp:report-type>
+                  <gnbcp:a2-report-config nc:operation="create">
+                    <gnbcp:a2-time-to-trigger>ms128</gnbcp:a2-time-to-trigger>
+                    <gnbcp:a2-purpose>en-dc-out-of-nr-ul-coverage-ueulsplit-notsup-purpose</gnbcp:a2-purpose>
+                  </gnbcp:a2-report-config>
+                </gnbcp:report-config-entries>
+              </gnbcp:gutran-cu-cell-entries>
+            </gnbcp:gutran-cu-cell>
+          </gnbcp:gnb-cu-cp-function-entries>
+        </gnbcp:gnb-cu-cp-function>
+      </gnbcp:managed-element>
+    </nc:config>
+  </nc:edit-config>
+</nc:rpc>

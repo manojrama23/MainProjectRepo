@@ -1,0 +1,1479 @@
+<div class="page-wrapper">
+  <rct-loader *ngIf="showLoader"></rct-loader>
+  <h1 class="mainHead">SCHEDULING </h1>
+  <button name="export" class="import myriadproBold formBtn white-btn float-sm-right float-md-right float-lg-right float-xl-right"
+    accesskey="n" (click)="downloadFile()" style="cursor: default;" [ngClass]="{'buttonDisabled' :(selCustName != '2') && (selCustName != '4')}"
+    [disabled]="selCustName != '2' && selCustName != '4'">EXPORT</button>
+  <button name="import" class="import myriadproBold formBtn white-btn float-sm-right float-md-right float-lg-right float-xl-right"
+    accesskey="n" [ngClass]="{'buttonDisabled' :(selCustName != '2') && (selCustName != '4')}" [disabled]="selCustName != '2' && selCustName != '4'">IMPORT<input
+      *ngIf="selCustName == '2' || selCustName == '4'" type="file" class="filePost" #filePost name="filePost" id="filePost"
+      [multiple]="false" (change)="uploadStateTar($event)" accept=".xls, .xlsx" /></button>
+
+
+  <ul class="nav nav-pills" role="tablist">
+    <li class="nav-item">
+      <div (click)="searchTabBind()" accesskey="h" name="sandi" class=" divalign float-sm-right float-md-right float-lg-right float-xl-right"
+        #searchTab>SEARCH</div>
+    </li>
+    <li class="nav-item">
+      <div (click)="createTabBind()" accesskey="n" name="fit" class="divalign float-sm-right float-md-right float-lg-right float-xl-right"
+        #createTab>CREATE</div>
+    </li>
+  </ul>
+
+
+
+
+  <div *ngIf="searchBlock">
+
+    <!-- search box -->
+    <div id="formWrapper" class="formWrapperMargin bluePrintFormWrapper">
+      <div *ngIf="currentUser=='Super Administrator'">
+        <ng-container *ngTemplateOutlet="customerName"></ng-container>
+      </div>
+      <div *ngIf="custId==2">
+        <ng-container *ngTemplateOutlet="searchVerizon"></ng-container>
+      </div>
+      <div *ngIf="custId==4">
+        <ng-container *ngTemplateOutlet="searchSprint"></ng-container>
+      </div>
+    </div>
+    <div *ngIf="custId==2">
+      <ng-container *ngTemplateOutlet="verizonScheduling"></ng-container>
+    </div>
+    <div *ngIf="custId==4">
+      <ng-container *ngTemplateOutlet="sprintScheduling"></ng-container>
+    </div>
+  </div>
+
+
+
+
+  <div *ngIf="createBlock">
+    <div id="formWrapper" class="bluePrintFormWrapper">
+      <div *ngIf="currentUser=='Super Administrator'">
+        <ng-container *ngTemplateOutlet="customerName"></ng-container>
+      </div>
+      <div *ngIf="custId==2">
+        <ng-container *ngTemplateOutlet="createVerizonScheduling"></ng-container>
+      </div>
+      <div *ngIf="custId==4">
+        <ng-container *ngTemplateOutlet="createSprintScheduling"></ng-container>
+      </div>
+    </div>
+  </div>
+
+
+
+  <ng-template #verizonScheduling>
+
+    <div id="dataWrapper" *ngIf="tableShowHide">
+      <div id="tableWrapper">
+        <div class="scrollHead">
+          <table class="table" id="schedulingVerizonModelList">
+            <thead>
+              <tr>
+                <th>
+                  <div (click)="changeSorting('forecastStartDate', $event, 0)" class="sorting form-control-small-3 ">FORECAST
+                    START DATE</div>
+                </th>
+                <th>
+                  <div (click)="changeSorting('compDate', $event, 1)" class="sorting form-control-small-3">COMP DATE</div>
+                </th>
+                <th>
+                  <div (click)="changeSorting('market', $event, 2)" class="sorting form-control-small-3">MARKET</div>
+                </th>
+                <th>
+                  <div (click)="changeSorting('enbId', $event, 3)" class="sorting form-control-small-3">NE ID</div>
+                </th>
+                <th>
+                  <div (click)="changeSorting('enbName', $event, 4)" class="sorting form-control-small-3">NE NAME</div>
+                </th>
+                <th>
+                  <div (click)="changeSorting('growRequest', $event, 5)" class="sorting form-control-small-3">GROW
+                    REQUESTED</div>
+                </th>
+                <th>
+                  <div (click)="changeSorting('growCompleted', $event, 6)" class="sorting form-control-small-3">GROW
+                    COMPLETED</div>
+                </th>
+                <th>
+                  <div (click)="changeSorting('ciqPresent', $event, 7)" class="sorting form-control-small-3">CIQ
+                    PRESENT</div>
+                </th>
+                <th>
+                  <div (click)="changeSorting('envCompleted', $event, 8)" class="sorting form-control-small-3">ENV
+                    COMPLETED</div>
+                </th>
+                <th>
+                  <div (click)="changeSorting('standardNonStandard', $event, 9)" class="sorting form-control-small-3">STANDARD/NON-STANDARD</div>
+                </th>
+                <th>
+                  <div (click)="changeSorting('carriers', $event, 10)" class="sorting form-control-small-3">CARRIERS</div>
+                </th>
+                <th>
+                  <div (click)="changeSorting('uda', $event, 11)" class="sorting form-control-small-3">UDA</div>
+                </th>
+                <th>
+                  <div (click)="changeSorting('softwareLevels', $event, 12)" class="sorting form-control-small-3">SOFTWARES
+                    LEVELS</div>
+                </th>
+                <th>
+                  <div (click)="changeSorting('feArrivalTime', $event, 13)" class="sorting form-control-small-3">FE
+                    ARRIVAL
+                    TIME</div>
+                </th>
+                <th>
+                  <div (click)="changeSorting('ciStartTime', $event, 14)" class="sorting form-control-small-3">C&I START
+                    TIME</div>
+                </th>
+                <th>
+                  <div (click)="changeSorting('dtHandoff', $event, 15)" class="sorting form-control-small-3">DT HANDOFF</div>
+                </th>
+                <th>
+                  <div (click)="changeSorting('ciEndTime', $event, 16)" class="sorting form-control-small-3">C&I END
+                    TIME</div>
+                </th>
+                <th>
+                  <div (click)="changeSorting('canRollComp', $event, 17)" class="sorting form-control-small-3">CANC/ROLL/COMPLETED</div>
+                </th>
+                <th>
+                  <div (click)="changeSorting('traffic', $event, 18)" class="sorting form-control-small-3">TRAFFIC</div>
+                </th>
+                <th>
+                  <div (click)="changeSorting('alarmPresent', $event, 19)" class="sorting form-control-small-3">ALARM
+                    PRESENT</div>
+                </th>
+                <th>
+                  <div (click)="changeSorting('ciEngineer', $event, 20)" class="sorting form-control-small-3">CA&I
+                    ENGINEER</div>
+                </th>
+                <th>
+                  <div (click)="changeSorting('ft', $event, 21)" class="sorting form-control-small-3">FT</div>
+                </th>
+                <th>
+                  <div (click)="changeSorting('dtT', $event, 22)" class="sorting form-control-small-3">DT</div>
+                </th>
+                <th>
+                  <div (click)="changeSorting('notes', $event, 23)" class="sorting form-control-small-3">NOTES</div>
+                </th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+
+
+
+        <div class="scrollBody">
+          <table class="table" id="genarateFileData">
+            <tbody id="rowCount">
+              <ng-container *ngFor="let key of verizonData; let index =index">
+                <tr id="row_id_{{key.id}}">
+
+                  <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                    <span class="eventColText" *ngIf="editIndex != index">{{key.forecastStartDate}}</span>
+                    <div *ngIf="editIndex == index">
+                      <input class="form-control form-control-small-3" name="forecastStartDate_{{index}}" [(ngModel)]="key.forecastStartDate" (dateTimeChange)="onChangeDate(key.forecastStartDate)" 
+                        [owlDateTimeTrigger]="forecastEditDate" [owlDateTime]="forecastEditDate" />
+                      <owl-date-time [pickerType]="'calendar'" #forecastEditDate></owl-date-time>
+                      <div class="error-message-block"></div>
+                    </div>
+                  </td>
+                  <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                    <span class="eventColText" *ngIf="editIndex != index">{{key.compDate}}</span>
+                    <div *ngIf="editIndex == index">
+                      <input class="form-control form-control-small-3" name="compDate_{{index}}" [(ngModel)]="key.compDate"
+                        [owlDateTimeTrigger]="compEditDate" [owlDateTime]="compEditDate" />
+                      <owl-date-time [pickerType]="'calendar'" #compEditDate></owl-date-time>
+                      <div class="error-message-block"></div>
+                    </div>
+                  </td>
+                  <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                    <span class="eventColText" *ngIf="editIndex != index">{{key.market}}</span>
+                    <select class="form-control-small-1 form-control" id="market_{{index}}" [(ngModel)]="key.market"
+                      name="market_{{index}}" *ngIf="editIndex === index">
+                      <option value="">--Select--</option>
+                      <option *ngFor="let key of createMarketList" value="{{key}}" id="{{key.id}}">{{key}}</option>
+                    </select>
+                    <div class="error-message-block" *ngIf="editIndex === index"></div>
+                  </td>
+                  <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                    <span class="eventColText" *ngIf="editIndex != index">{{key.enbId}}</span>
+
+                    <input type="text" class="form-control  form-control-small-1 enbId" id="enbId_{{index}}"
+                      [(ngModel)]="key.enbId" name="enbId_{{index}}" *ngIf="editIndex === index" />
+                    <div class="error-message-block" *ngIf="editIndex === index"></div>
+                  </td>
+                  <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                    <span class="eventColText" *ngIf="editIndex != index">{{key.enbName}}</span>
+
+                    <input type="text" class="form-control  form-control-small-1 enbName" id="enbName_{{index}}"
+                      [(ngModel)]="key.enbName" name="enbName_{{index}}" *ngIf="editIndex === index" />
+                    <div class="error-message-block" *ngIf="editIndex === index"></div>
+                  </td>
+
+                  <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                    <span class="eventColText" *ngIf="editIndex != index">{{key.growRequest}}</span>
+                    <select class="form-control-small-1 form-control" id="growRequest_{{index}}" [(ngModel)]="key.growRequest"
+                      name="growRequest_{{index}}" *ngIf="editIndex === index">
+                      <option value="">--Select--</option>
+                      <option value="Yes">Yes</option>
+                      <option value="No">No</option>
+                    </select>
+
+                    <div class="error-message-block" *ngIf="editIndex === index"></div>
+                  </td>
+
+                  <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                    <span class="eventColText" *ngIf="editIndex != index">{{key.growCompleted}}</span>
+
+                    <select class="form-control-small-1 form-control" id="growCompleted_{{index}}" [(ngModel)]="key.growCompleted"
+                      name="growCompleted{{index}}" *ngIf="editIndex === index">
+                      <option value="">--Select--</option>
+                      <option value="Yes">Yes</option>
+                      <option value="No">No</option>
+                    </select>
+                    <div class="error-message-block" *ngIf="editIndex === index"></div>
+                  </td>
+
+                  <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                    <span class="eventColText" *ngIf="editIndex != index">{{key.ciqPresent}}</span>
+
+                    <select class="form-control-small-1 form-control" id="ciqPresent_{{index}}" [(ngModel)]="key.ciqPresent"
+                      name="ciqPresent_{{index}}" *ngIf="editIndex === index">
+                      <option value="">--Select--</option>
+                      <option value="Yes">Yes</option>
+                      <option value="No">No</option>
+                    </select>
+
+                    <div class="error-message-block" *ngIf="editIndex === index"></div>
+                  </td>
+                  <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                    <span class="eventColText" *ngIf="editIndex != index">{{key.envCompleted}}</span>
+
+                    <select class="form-control-small-1 form-control" id="envCompleted_{{index}}" [(ngModel)]="key.envCompleted"
+                      name="envCompleted_{{index}}" *ngIf="editIndex === index">
+                      <option value="">--Select--</option>
+                      <option value="Yes">Yes</option>
+                      <option value="No">No</option>
+                    </select>
+
+                    <div class="error-message-block" *ngIf="editIndex === index"></div>
+                  </td>
+                  <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                    <span class="eventColText" *ngIf="editIndex != index">{{key.standardNonStandard}}</span>
+
+                    <select class="form-control-small-1 form-control" id="standardNonStandard_{{index}}" [(ngModel)]="key.standardNonStandard"
+                      name="standardNonStandard_{{index}}" *ngIf="editIndex === index">
+                      <option value="">--Select--</option>
+                      <option value="STANDARD">STANDARD</option>
+                      <option value="NON-STANDARD">NON-STANDARD</option>
+                    </select>
+
+                    <div class="error-message-block" *ngIf="editIndex === index"></div>
+                  </td>
+                  <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                    <span class="eventColText" *ngIf="editIndex != index">{{key.carriers}}</span>
+
+                    <input type="text" class="form-control  form-control-small-1 carriers" id="carriers_{{index}}"
+                      [(ngModel)]="key.carriers" name="carriers_{{index}}" *ngIf="editIndex === index" />
+                    <div class="error-message-block" *ngIf="editIndex === index"></div>
+                  </td>
+                  <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                    <span class="eventColText" *ngIf="editIndex != index">{{key.uda}}</span>
+
+                    <input type="text" class="form-control  form-control-small-1 uda" id="uda_{{index}}" [(ngModel)]="key.uda"
+                      name="uda_{{index}}" *ngIf="editIndex === index" />
+                    <div class="error-message-block" *ngIf="editIndex === index"></div>
+                  </td>
+                  <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                    <span class="eventColText" *ngIf="editIndex != index">{{key.softwareLevels}}</span>
+
+                    <input type="text" class="form-control form-control-small-1 enbId" id="softwareLevels_{{index}}"
+                      [(ngModel)]="key.softwareLevels" name="softwareLevels_{{index}}" *ngIf="editIndex === index" />
+                    <div class="error-message-block" *ngIf="editIndex === index"></div>
+                  </td>
+                  <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                    <span class="eventColText" *ngIf="editIndex != index">{{key.feArrivalTime}}</span>
+
+                    <input type="text" class="form-control  form-control-small-1" id="feArrivalTime_{{index}}"
+                    [(ngModel)]="key.feArrivalTime" name="feArrivalTime_{{index}}" *ngIf="editIndex === index" />
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+
+                    <!-- <div *ngIf="editIndex === index">
+                      <input class="form-control form-control-small-1" id="feArrivalTime_{{index}}" name="feArrivalTime_{{index}}"
+                        [(ngModel)]="key.feArrivalTime" [owlDateTimeTrigger]="editFeArrivalTime" [owlDateTime]="editFeArrivalTime">
+                      <owl-date-time [pickerType]="'timer'" #editFeArrivalTime></owl-date-time>
+                    </div> -->
+                  </td>
+                  <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                    <span class="eventColText" *ngIf="editIndex != index">{{key.ciStartTime}}</span>
+
+                    <input type="text" class="form-control  form-control-small-1" id="ciStartTime_{{index}}"
+                    [(ngModel)]="key.ciStartTime" name="ciStartTime_{{index}}" *ngIf="editIndex === index" />
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+
+                    <!-- <div *ngIf="editIndex === index">
+                      <input class="form-control form-control-small-1" id="ciStartTime_{{index}}" name="ciStartTime_{{index}}"
+                        [(ngModel)]="key.ciStartTime" [owlDateTimeTrigger]="editCiStartTime" [owlDateTime]="editCiStartTime">
+                      <owl-date-time [pickerType]="'timer'" #editCiStartTime></owl-date-time>
+                    </div> -->
+                  </td>
+                  <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                    <span class="eventColText" *ngIf="editIndex != index">{{key.dtHandoff}}</span>
+
+                    <input type="text" class="form-control  form-control-small-1 dtHandoff" id="dtHandoff_{{index}}"
+                      [(ngModel)]="key.dtHandoff" name="dtHandoff_{{index}}" *ngIf="editIndex === index" />
+                    <div class="error-message-block" *ngIf="editIndex === index"></div>
+                  </td>
+
+                  <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                    <span class="eventColText" *ngIf="editIndex != index">{{key.ciEndTime}}</span>
+
+                    <input type="text" class="form-control  form-control-small-1" id="ciEndTime_{{index}}"
+                    [(ngModel)]="key.ciEndTime" name="ciEndTime_{{index}}" *ngIf="editIndex === index" />
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+
+                    <!-- <div *ngIf="editIndex === index">
+                      <input class="form-control form-control-small-1" id="ciEndTime_{{index}}" name="ciEndTime_{{index}}"
+                        [(ngModel)]="key.ciEndTime" [owlDateTimeTrigger]="editCiEndTime" [owlDateTime]="editCiEndTime">
+                      <owl-date-time [pickerType]="'timer'" #editCiEndTime></owl-date-time>
+                    </div> -->
+                  </td>
+                  <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                    <span class="eventColText" *ngIf="editIndex != index">{{key.canRollComp}}</span>
+
+                    <select class="form-control-small-1 form-control" id="canRollComp_{{index}}" [(ngModel)]="key.canRollComp"
+                      name="canRollComp_{{index}}" *ngIf="editIndex === index">
+                      <option value="Cancelled">Cancelled</option>
+                      <option value="Rolled Back">Rolled Back</option>
+                      <option value="Completed">Completed</option>
+                    </select>
+
+                    <div class="error-message-block" *ngIf="editIndex === index"></div>
+                  </td>
+                  <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                    <span class="eventColText" *ngIf="editIndex != index">{{key.traffic}}</span>
+
+                    <input type="text" class="form-control form-control-small-1 traffic" id="traffic_{{index}}"
+                      [(ngModel)]="key.traffic" name="traffic_{{index}}" *ngIf="editIndex === index" />
+                    <div class="error-message-block" *ngIf="editIndex === index"></div>
+                  </td>
+                  <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                    <span class="eventColText" *ngIf="editIndex != index">{{key.alarmPresent}}</span>
+                    <select class="form-control-small-1 form-control" id="alarmPresent_{{index}}" [(ngModel)]="key.alarmPresent"
+                      name="alarmPresent_{{index}}" *ngIf="editIndex === index">
+                      <option value="">--Select--</option>
+                      <option value="Yes">Yes</option>
+                      <option value="No">No</option>
+                    </select>
+
+                    <div class="error-message-block" *ngIf="editIndex === index"></div>
+                  </td>
+                  <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                    <span class="eventColText" *ngIf="editIndex != index">{{key.ciEngineer}}</span>
+
+                    <select class="form-control-small-1 form-control" id="ciEngineer_{{index}}" [(ngModel)]="key.ciEngineer"
+                      name="ciEngineer_{{index}}" *ngIf="editIndex === index">
+                      <option value="">--Select--</option>
+                      <option *ngFor="let key of userList" value="{{key}}" id="{{key.id}}">{{key}}</option>
+                    </select>
+                    <div class="error-message-block" *ngIf="editIndex === index"></div>
+                  </td>
+                  <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                    <span class="eventColText" *ngIf="editIndex != index">{{key.ft}}</span>
+
+                    <select class="form-control-small-1 form-control" id="ft_{{index}}" [(ngModel)]="key.ft" name="ft_{{index}}"
+                      *ngIf="editIndex === index">
+                      <option value="">--Select--</option>
+                      <option *ngFor="let key of userList" value="{{key}}" id="{{key.id}}">{{key}}</option>
+                    </select>
+                    <div class="error-message-block" *ngIf="editIndex === index"></div>
+                  </td>
+                  <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                    <span class="eventColText" *ngIf="editIndex != index">{{key.dt}}</span>
+
+                    <select class="form-control-small-1 form-control" id="dt_{{index}}" [(ngModel)]="key.dt" name="dt_{{index}}"
+                      *ngIf="editIndex === index">
+                      <option value="">--Select--</option>
+                      <option *ngFor="let key of userList" value="{{key}}" id="{{key.id}}">{{key}}</option>
+                    </select>
+                    <div class="error-message-block" *ngIf="editIndex === index"></div>
+                  </td>
+
+                  <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                    <span class="eventColText" *ngIf="editIndex != index">{{key.notes}}</span>
+
+                    <div class="form-control-fixed iconsWrapper tableRowAction" id="fixedCol" ng-style="iconsWrapperPosition">
+                      <ng-template #save>Save</ng-template>
+                      <ng-template #cancel>Cancel</ng-template>
+                      <div (click)="addCloneRow($event, key, index)" class="cloneRow" placement="bottom" container="body"
+                        [ngbTooltip]="(editIndex === index) ? 'Clone':'Clone'"></div>
+                      <div (click)="editNeVersionRow($event, key, index)" class="editRow" placement="bottom" container="body"
+                        [ngbTooltip]="(editIndex === index) ? save:'Edit'"></div>
+                      <div (click)="deleteNeVersionRow(confirmModalDelete, key.id, $event,index)" class="deleteRow"
+                        placement="bottom" container="body" [ngbTooltip]="(editIndex === index) ?cancel:'Delete'"></div>
+                    </div>
+                    <input type="text" class="form-control form-control-small-1 notes" id="notes_{{index}}" [(ngModel)]="key.notes"
+                      name="notes_{{index}}" *ngIf="editIndex === index" />
+                    <div class="error-message-block" *ngIf="editIndex === index"></div>
+                  </td>
+                </tr>
+              </ng-container>
+              <ng-container #neversionContainer></ng-container>
+
+            </tbody>
+          </table>
+        </div>
+        <div id="paginationWrapper">
+          <div *ngIf="pageRenge.length" class="page" style="margin-left:20px;">
+            <div class="floatLeft" style="width: 75px;padding-top: 6px">Show</div>
+            <select [disabled]="paginationDisabbled" [(ngModel)]="pageSize" (change)="onChangeTableRowLength($event)"
+              style="margin-top: 4px; margin-right: 6px;margin-left: -39px;" class="form-control-pagination floatLeft"
+              aria-controls="TableRowLength" size="1" name="TableRowLength" id="TableRowLength">
+              <option selected="selected" value="10">10</option>
+              <option value="20">20</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+            <div class="floatLeft" style="width: 75px;padding-top: 6px">Entries</div>
+            <div class="floatRight page" style="padding-top: 3px;margin-right:20px;">
+              <ul *ngIf="pageRenge.length" class="pagination floatRight">
+                <li id="firstPage" [ngClass]="{disabled:(currentPage === 1 || paginationDisabbled)}" class="page-item">
+                  <a class="page-link" (click)="setPage(1)">FIRST</a>
+                </li>
+                <li id="previousPage" [ngClass]="{disabled:(currentPage === 1 || paginationDisabbled)}" class="page-item">
+                  <a class="page-link" (click)="setPage(pager.currentPage - 1)">PREV</a>
+                </li>
+                <li *ngFor="let n of pager.pages" [ngClass]="{active:currentPage === n, disabled:paginationDisabbled}"
+                  class="page-item">
+                  <a class="page-link" (click)="setPage(n)" id='{{n+1}}'>{{n}}</a>
+                </li>
+                <li id="nextPage" [ngClass]="{disabled:(currentPage === totalPages || paginationDisabbled)}" class="page-item">
+                  <a class="page-link" (click)="setPage(pager.currentPage + 1)">NEXT</a>
+                </li>
+                <li id="lastPage" [ngClass]="{disabled:(currentPage === totalPages || paginationDisabbled)}" class="page-item">
+                  <a class="page-link" (click)="setPage(pager.totalPages)">LAST</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+    </div>
+  </ng-template>
+  <!-- sprint table -->
+  <ng-template #sprintScheduling>
+    <div id="dataWrapper" *ngIf="tableShowHide">
+      <div id="tableWrapper">
+
+        <div class="scrollHead">
+          <table class="table" id="schedulingSprintEntity">
+            <thead>
+              <tr>
+                <th>
+                  <div (click)="changeSorting('startDate', $event, 0)" class="sorting form-control-small-3 ">START DATE</div>
+                </th>
+                <th>
+                  <div (click)="changeSorting('region', $event, 1)" class="sorting form-control-small-3">REGION</div>
+                </th>
+                <th>
+                  <div (click)="changeSorting('market', $event, 2)" class="sorting form-control-small-3">MARKET</div>
+                </th>
+                <th>
+                  <div (click)="changeSorting('cascade', $event, 3)" class="sorting form-control-small-3">CASCADE</div>
+                </th>
+                <th>
+                  <div (click)="changeSorting('ciEngineerNight', $event, 4)" class="sorting form-control-small-3">C&I
+                    ENG
+                    #1 (NIGHT)</div>
+                </th>
+                <th>
+                  <div (click)="changeSorting('bridgeOne', $event, 5)" class="sorting form-control-small-3">BRIDGE #1:</div>
+                </th>
+                <th>
+                  <div (click)="changeSorting('feRegion', $event, 6)" class="sorting form-control-small-3">FE REGION</div>
+                </th>
+                <th>
+                  <div (click)="changeSorting('feNight', $event, 7)" class="sorting form-control-small-3">FE #1 (NIGHT)</div>
+                </th>
+                <th>
+                  <div (click)="changeSorting('ciEngineerDay', $event, 8)" class="sorting form-control-small-3">C&I ENG
+                    #2 (DAY)</div>
+                </th>
+                <th>
+                  <div (click)="changeSorting('bridge', $event, 9)" class="sorting form-control-small-3">BRIDGE #:</div>
+                </th>
+                <th>
+                  <div (click)="changeSorting('feDay', $event, 10)" class="sorting form-control-small-3">FE #2 (Day)</div>
+                </th>
+                <th>
+                  <div (click)="changeSorting('notes', $event, 11)" class="sorting form-control-small-3">NOTES</div>
+                </th>
+                <th>
+                  <div (click)="changeSorting('status', $event, 12)" class="sorting form-control-small-3">STATUS</div>
+                </th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+        <div class="scrollBody">
+          <table class="table" id="genarateFileData">
+            <tbody id="rowCount">
+              <ng-container *ngFor="let key of sprintData; let index = index">
+                <tr id="row_id_{{key.id}}">
+                  <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                    <span class="eventColText" *ngIf="editIndex != index">{{key.startDate}}</span>
+                    <div *ngIf="editIndex == index">
+                      <input class="form-control form-control-small-3" name="startDate_{{index}}" [(ngModel)]="key.startDate"
+                        [owlDateTimeTrigger]="startEditDate" [owlDateTime]="startEditDate" />
+                      <owl-date-time [pickerType]="'calendar'" #startEditDate></owl-date-time>
+                      <div class="error-message-block"></div>
+                    </div>
+                  </td>
+                  <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                    <span class="eventColText" *ngIf="editIndex != index">{{key.region}}</span>
+                    <select class="form-control-small-1 form-control" id="region_{{index}}" [(ngModel)]="key.region"
+                      name="region_{{index}}" *ngIf="editIndex === index">
+                      <option *ngFor="let key of createRegionList" value="{{key}}" id="{{key.id}}">{{key}}</option>
+
+                    </select>
+                    <div class="error-message-block" *ngIf="editIndex === index"></div>
+                  </td>
+                  <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                    <span class="eventColText" *ngIf="editIndex != index">{{key.market}}</span>
+                    <select class="form-control-small-1 form-control" id="market_{{index}}" [(ngModel)]="key.market"
+                      name="market_{{index}}" *ngIf="editIndex === index">
+                      <option value="">--Select--</option>
+                      <option *ngFor="let key of createMarketList" value="{{key}}" id="{{key.id}}">{{key}}</option>
+
+                    </select>
+                    <div class="error-message-block" *ngIf="editIndex === index"></div>
+                  </td>
+                  <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                    <span class="eventColText" *ngIf="editIndex != index">{{key.cascade}}</span>
+
+                    <input type="text" class="form-control-small-1 cascade" id="cascade_{{index}}" [(ngModel)]="key.cascade"
+                      name="cascade_{{index}}" *ngIf="editIndex === index" />
+                    <div class="error-message-block" *ngIf="editIndex === index"></div>
+                  </td>
+                  <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                    <span class="eventColText" *ngIf="editIndex != index">{{key.ciEngineerNight}}</span>
+
+                    <select class="form-control-small-1 form-control" id="ciEngineerNight_{{index}}" [(ngModel)]="key.ciEngineerNight"
+                      name="ciEngineerNight_{{index}}" *ngIf="editIndex === index">
+                      <option value="">--Select--</option>
+                      <option *ngFor="let key of userList" value="{{key}}" id="{{key.id}}">{{key}}</option>
+                    </select>
+                    <div class="error-message-block" *ngIf="editIndex === index"></div>
+                  </td>
+                  <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                    <span class="eventColText" *ngIf="editIndex != index">{{key.bridgeOne}}</span>
+
+                    <input type="text" class="form-control-small-1 cascade" id="bridgeOne_{{index}}" [(ngModel)]="key.bridgeOne"
+                      name="bridgeOne_{{index}}" *ngIf="editIndex === index" />
+                    <div class="error-message-block" *ngIf="editIndex === index"></div>
+                  </td>
+                  <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                    <span class="eventColText" *ngIf="editIndex != index">{{key.feRegion}}</span>
+                    <select class="form-control-small-1 form-control" id="feRegion_{{index}}" [(ngModel)]="key.feRegion"
+                      name="feRegion_{{index}}" *ngIf="editIndex === index">
+                      <option value="">--Select--</option>
+                      <option *ngFor="let key of createFeregionList" value="{{key}}" id="{{key.id}}">{{key}}</option>
+                    </select>
+                    <div class="error-message-block" *ngIf="editIndex === index"></div>
+                  </td>
+                  <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                    <span class="eventColText" *ngIf="editIndex != index">{{key.feNight}}</span>
+
+                    <select class="form-control-small-1 form-control" id="feNight_{{index}}" [(ngModel)]="key.feNight"
+                      name="feNight_{{index}}" *ngIf="editIndex === index">
+                      <option value="">--Select--</option>
+                      <option *ngFor="let key of createFeNightList" value="{{key}}" id="{{key.id}}">{{key}}</option>
+                    </select>
+                    <div class="error-message-block" *ngIf="editIndex === index"></div>
+                  </td>
+                  <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                    <span class="eventColText" *ngIf="editIndex != index">{{key.ciEngineerDay}}</span>
+
+                    <select class="form-control-small-1 form-control" id="ciEngineerDay_{{index}}" [(ngModel)]="key.ciEngineerDay"
+                      name="ciEngineerDay_{{index}}" *ngIf="editIndex === index">
+                      <option value="">--Select--</option>
+                      <option *ngFor="let key of userList" value="{{key}}" id="{{key.id}}">{{key}}</option>
+                    </select>
+                    <div class="error-message-block" *ngIf="editIndex === index"></div>
+                  </td>
+                  <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                    <span class="eventColText" *ngIf="editIndex != index">{{key.bridge}}</span>
+
+                    <input type="text" class="form-control-small-1 cascade" id="bridge_{{index}}" [(ngModel)]="key.bridge"
+                      name="bridge_{{index}}" *ngIf="editIndex === index" />
+                    <div class="error-message-block" *ngIf="editIndex === index"></div>
+                  </td>
+
+
+
+                  <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                    <span class="eventColText" *ngIf="editIndex != index">{{key.feDay}}</span>
+
+                    <select class="form-control-small-1 form-control" id="feDay_{{index}}" [(ngModel)]="key.feDay" name="feDay_{{index}}"
+                      *ngIf="editIndex === index">
+                      <option value="">--Select--</option>
+                      <option *ngFor="let key of createFeDayList" value="{{key}}" id="{{key.id}}">{{key}}</option>
+                    </select>
+                    <div class="error-message-block" *ngIf="editIndex === index"></div>
+                  </td>
+
+                  <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                    <span class="eventColText" *ngIf="editIndex != index">{{key.notes}}</span>
+
+                    <input type="text" class="form-control-small-1 cascade" id="notes_{{index}}" [(ngModel)]="key.notes"
+                      name="notes_{{index}}" *ngIf="editIndex === index" />
+                    <div class="error-message-block" *ngIf="editIndex === index"></div>
+                  </td>
+
+                  <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                    <span class="eventColText" *ngIf="editIndex != index">{{key.remarks}}</span>
+
+                    <div class="form-control-fixed iconsWrapper tableRowAction" id="fixedCol" ng-style="iconsWrapperPosition">
+                      <ng-template #save>Save</ng-template>
+                      <ng-template #cancel>Cancel</ng-template>
+                      <div (click)="addCloneRow($event, key, index)" class="cloneRow" placement="bottom" container="body"
+                        [ngbTooltip]="(editIndex === index) ? 'Clone':'Clone'"></div>
+                      <div (click)="editNeVersionRow($event, key, index)" class="editRow" placement="bottom" container="body"
+                        [ngbTooltip]="(editIndex === index) ? save:'Edit'"></div>
+                      <div (click)="deleteNeVersionRow(confirmModalDelete, key.id, $event,index)" class="deleteRow"
+                        placement="bottom" container="body" [ngbTooltip]="(editIndex === index) ?cancel:'Delete'"></div>
+                    </div>
+                    <input type="text" class="form-control form-control-small-1 remarks" id="status_{{index}}"
+                      [(ngModel)]="key.status" name="status_{{index}}" *ngIf="editIndex === index" />
+                    <div class="error-message-block" *ngIf="editIndex === index"></div>
+                  </td>
+
+
+                </tr>
+
+              </ng-container>
+            </tbody>
+          </table>
+
+        </div>
+
+
+        <div id="paginationWrapper">
+          <div *ngIf="pageRenge.length" class="page" style="margin-left:20px;">
+            <div class="floatLeft" style="width: 75px;padding-top: 6px">Show</div>
+            <select [disabled]="paginationDisabbled" [(ngModel)]="pageSize" (change)="onChangeTableRowLength($event)"
+              style="margin-top: 4px; margin-right: 6px;margin-left: -39px;" class="form-control-pagination floatLeft"
+              aria-controls="TableRowLength" size="1" name="TableRowLength" id="TableRowLength">
+              <option selected="selected" value="10">10</option>
+              <option value="20">20</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+            <div class="floatLeft" style="width: 75px;padding-top: 6px">Entries</div>
+            <div class="floatRight page" style="padding-top: 3px;margin-right:20px;">
+              <ul *ngIf="pageRenge.length" class="pagination floatRight">
+                <li id="firstPage" [ngClass]="{disabled:(currentPage === 1 || paginationDisabbled)}" class="page-item">
+                  <a class="page-link" (click)="setPage(1)">FIRST</a>
+                </li>
+                <li id="previousPage" [ngClass]="{disabled:(currentPage === 1 || paginationDisabbled)}" class="page-item">
+                  <a class="page-link" (click)="setPage(pager.currentPage - 1)">PREV</a>
+                </li>
+                <li *ngFor="let n of pager.pages" [ngClass]="{active:currentPage === n, disabled:paginationDisabbled}"
+                  class="page-item">
+                  <a class="page-link" (click)="setPage(n)" id='{{n+1}}'>{{n}}</a>
+                </li>
+                <li id="nextPage" [ngClass]="{disabled:(currentPage === totalPages || paginationDisabbled)}" class="page-item">
+                  <a class="page-link" (click)="setPage(pager.currentPage + 1)">NEXT</a>
+                </li>
+                <li id="lastPage" [ngClass]="{disabled:(currentPage === totalPages || paginationDisabbled)}" class="page-item">
+                  <a class="page-link" (click)="setPage(pager.totalPages)">LAST</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+
+  </ng-template>
+
+
+  <ng-template #customerName id="customerName">
+    <div class="">
+      <div class="form-group">
+        <label for="templateName" class="asterisk_input">CUSTOMER NAME</label>
+        <select class="form-control" name="customerName" id="customerName" [(ngModel)]=selCustName (change)="custNameChange(selCustName)">
+          <option value="">--Select--</option>
+          <option *ngFor="let key of custList" value="{{key.id}}">{{key.customerName}}</option>
+
+        </select>
+        <div class="error-message-block"></div>
+      </div>
+    </div>
+  </ng-template>
+
+  <rct-nodata *ngIf="noDataVisibility" [subTitle]=""></rct-nodata>
+
+
+  <ng-template #searchSprint id="searchSprint">
+    <div *ngIf="currentUser=='Super Administrator'" style="border-bottom: 1px solid #ccc; margin-bottom: 20px; margin-top: 20px;"></div>
+
+    <form class="form-horizontal" id="bluePrintForm" #bluePrintForm>
+      <div class="row">
+        <div class="col-3">
+          <div class="form-group ">
+            <label for="templateName">SELECT DATE RANGE</label>
+            <input class="form-control form-control-small dateRangeAlign" id="searchStartDate" name="searchStartDate"
+              [(ngModel)]="searchStartDate" placeholder="FROM DATE" [owlDateTimeTrigger]="dt" [owlDateTime]="dt" [max]="max">
+            <owl-date-time [pickerType]="'calendar'" #dt></owl-date-time>
+            <input class="form-control form-control-small dateRangeAlign" id="searchEndDate" name="searchEndDate"
+              [(ngModel)]="searchEndDate" [min]="searchStartDate" [max]="max" [owlDateTimeTrigger]="dt1" placeholder="TO DATE"
+              [owlDateTime]="dt1">
+            <owl-date-time [pickerType]="'calendar'" #dt1></owl-date-time>
+            <div class="message" *ngIf="errMessage">Please Select Date Range</div>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="form-group">
+            <label for="templateName" class="">REGION</label>
+            <input class="form-control" autocomplete="off" id="searchRegion" name="searchRegion" #searchRegion type="text" value=""
+              maxlength="100" />
+            <!-- <select class="form-control" name="searchRegion" id="searchRegion" #searchRegion>
+              <option value="">--Select--</option>
+              <option *ngFor="let key of regionList" value="{{key}}" id="{{key.id}}">{{key}}</option>
+            </select> -->
+            <div class="error-message-block"></div>
+          </div>
+        </div>
+
+
+        <!-- <div class="col-3">
+          <div class="form-group">
+            <label for="templateName" class="">MARKET</label>
+            <select class="form-control" name="searchMarket" id="searchMarket" #searchMarket>
+              <option value="">--Select--</option>
+              <option value="">Upstate NY</option>
+              <option value="">England</option>
+              <option value="">New England</option>
+            </select>
+            <div class="error-message-block"></div>
+          </div>
+        </div> -->
+
+        <div class="col-3">
+          <div class="form-group">
+            <label for="templateName" class="">MARKET</label>
+            <input class="form-control" autocomplete="off" id="searchMarket" #searchMarket name="searchMarket" type="text" value=""
+              maxlength="100" />
+            <!-- <select class="form-control" name="searchMarket" id="searchMarket" #searchMarket>
+              <option value="">--Select--</option>
+              <option *ngFor="let key of marketList" value="{{key}}" id="{{key.id}}">{{key}}</option>
+            </select> -->
+            <div class="error-message-block"></div>
+          </div>
+        </div>
+
+
+        <div class="col-3 ">
+          <div class="form-group">
+            <label for="templateName">CASCADE</label>
+            <input class="form-control" autocomplete="off" id="searchCascade" name="searchCascade" type="text" value=""
+              maxlength="100" />
+            <div class="error-message-block"></div>
+          </div>
+        </div>
+      </div>
+
+      <!--   <div class="row">
+            <div class="col-3 ">
+              <div class="form-group">
+                <label for="templateName">CARRIERS</label>
+                <input class="form-control" autocomplete="off" id="carriers" name="carriers" type="text" value=""
+                  maxlength="100" />
+                <div class="error-message-block"></div>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="form-group">
+                <label for="templateName">ALARM PRESENT</label>
+                <select class="form-control" name="alarmPresent" id="alarmPresent" #alarmPresent>
+                  <option value="">--Select--</option>
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                </select>
+                <div class="error-message-block"></div>
+              </div>
+            </div>
+          </div> -->
+
+      <div class="textAlignCenter">
+
+
+        <button name="save" class="formBtn myriadproBold validateForm airlinecnfgSearch" id="searchButton" (click)="searchSchedulingDetails($event)"
+          accesskey="s">SEARCH</button>
+        <button type="button" id="cancelButton" name="CANCEL" class="formBtnCncl formBtn myriadproBold formBtn" (click)="clearSearchFrom()" accesskey="c">CLEAR</button>
+      </div>
+
+    </form>
+
+  </ng-template>
+
+  <ng-template #searchVerizon id="searchVerizon">
+    <div *ngIf="currentUser=='Super Administrator'" style="border-bottom: 1px solid #ccc; margin-bottom: 20px; margin-top: 20px;"></div>
+
+    <form class="form-horizontal" id="bluePrintForm" #bluePrintForm>
+
+
+      <div class="row">
+        <div class="col-3">
+          <div class="form-group ">
+            <label for="templateName">SELECT FORECAST DATE RANGE</label>
+            <input class="form-control form-control-small dateRangeAlign" id="searchForecastStartDate" name="searchForecastStartDate"
+              [(ngModel)]="searchForecastStartDate" placeholder="FROM DATE" [owlDateTimeTrigger]="dtFd" [owlDateTime]="dtFd"
+              [max]="max">
+            <owl-date-time [pickerType]="'calendar'" #dtFd></owl-date-time>
+            <input class="form-control form-control-small dateRangeAlign" id="searchForecastEndDate" name="searchForecastEndDate"
+              [(ngModel)]="searchForecastEndDate" [min]="searchForecastStartDate" [max]="max" [owlDateTimeTrigger]="dtFd1"
+              placeholder="TO DATE" [owlDateTime]="dtFd1">
+            <owl-date-time [pickerType]="'calendar'" #dtFd1></owl-date-time>
+            <div class="message" *ngIf="errMessage">Please Select Date Range</div>
+          </div>
+        </div>
+
+        <div class="col-3">
+          <div class="form-group ">
+            <label for="templateName">SELECT COMPLETION DATE RANGE</label>
+            <input class="form-control form-control-small dateRangeAlign" id="searchCompStartDate" name="searchCompStartDate"
+              [(ngModel)]="searchCompStartDate" placeholder="FROM DATE" [owlDateTimeTrigger]="dtCd" [owlDateTime]="dtCd"
+              [max]="max">
+            <owl-date-time [pickerType]="'calendar'" #dtCd></owl-date-time>
+            <input class="form-control form-control-small dateRangeAlign" id="searchCompEndDate" name="searchCompEndDate"
+              [(ngModel)]="searchCompEndDate" [min]="searchCompStartDate" [max]="max" [owlDateTimeTrigger]="dtCd1"
+              placeholder="TO DATE" [owlDateTime]="dtCd1">
+            <owl-date-time [pickerType]="'calendar'" #dtCd1></owl-date-time>
+            <div class="message" *ngIf="errMessage">Please Select Date Range</div>
+          </div>
+        </div>
+
+
+
+
+        <div class="col-3">
+          <div class="form-group">
+            <label for="templateName" class="">MARKET</label>
+            <input class="form-control" autocomplete="off" id="searchMarket" name="searchMarket" type="text" value=""
+              maxlength="100" #searchMarket />
+            <!-- <select class="form-control" name="searchMarket" id="searchMarket" #searchMarket>
+              <option value="">--Select--</option>
+              <option *ngFor="let key of marketList" value="{{key}}" id="{{key.id}}">{{key}}</option>
+            </select> -->
+            <div class="error-message-block"></div>
+          </div>
+        </div>
+
+
+        <div class="col-3">
+          <div class="form-group">
+            <label for="templateName" class="">NE ID</label>
+            <input class="form-control" autocomplete="off" id="searchEnbId" name="searchEnbId" type="text" value=""
+               maxlength="100" #searchEnbId />
+            <!-- <select class="form-control" name="searchEnbId" id="searchEnbId" #searchEnbId>
+              <option value="">--Select--</option>
+              <option *ngFor="let key of enbIdList" value="{{key}}" id="{{key.id}}">{{key}}</option>
+            </select> -->
+            <div class="error-message-block"></div>
+          </div>
+        </div>
+
+
+      </div>
+
+
+      <div class="row">
+
+
+        <div class="col-3">
+          <div class="form-group">
+            <label for="templateName" class="">NE NAME</label>
+            <input class="form-control" autocomplete="off" id="searchEnbName" name="searchEnbName" type="text" value=""
+              maxlength="100" #searchEnbName />
+            <!-- <select class="form-control" name="searchEnbName" id="searchEnbName" #searchEnbName>
+              <option value="">--Select--</option>
+              <option *ngFor="let key of enbNameList" value="{{key}}" id="{{key.id}}">{{key}}</option>
+            </select> -->
+            <div class="error-message-block"></div>
+          </div>
+        </div>
+        <div class="col-3 ">
+          <div class="form-group">
+            <label for="templateName">CARRIERS</label>
+            <input class="form-control" autocomplete="off" id="searchCarriers" name="searchCarriers" type="text" value=""
+              maxlength="100" />
+            <div class="error-message-block"></div>
+          </div>
+        </div>
+
+        <div class="col-3">
+          <div class="form-group">
+            <label for="templateName">ALARM PRESENT</label>
+            <select class="form-control" name="searchAlarmPresent" id="searchAlarmPresent" #searchAlarmPresent>
+              <option value="">--Select--</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+            <div class="error-message-block"></div>
+          </div>
+        </div>
+      </div>
+      <div class="textAlignCenter">
+        <button name="save" class="formBtn myriadproBold validateForm airlinecnfgSearch" id="searchButton" (click)="searchSchedulingDetails($event)"
+          accesskey="s">SEARCH</button>
+        <button type="button" id="cancelButton" name="CANCEL" class="formBtnCncl formBtn myriadproBold formBtn" (click)="clearSearchFrom()" accesskey="c">CLEAR</button>
+      </div>
+
+    </form>
+  </ng-template>
+
+
+
+  <!-- verizon create new -->
+  <ng-template #createVerizonScheduling id="createVerizonScheduling">
+    <div *ngIf="currentUser=='Super Administrator'" style="border-bottom: 1px solid #ccc; margin-bottom: 20px; margin-top: 20px;"></div>
+
+    <form class="form-horizontal">
+
+      <!-- row 1 -->
+      <div class="row">
+        <div class="col-3">
+          <div class="form-group ">
+            <label for="templateName" class="asterisk_input">SELECT FORECAST DATE</label>
+            <input class="form-control form-control dateRangeAlign" id="forecastStartDate" name="forecastStartDate"
+              [(ngModel)]="forecastStartDate" placeholder="SELECT DATE" [owlDateTimeTrigger]="dtVz" [owlDateTime]="dtVz"
+              [max]="toDate"  (dateTimeChange)="onChangeDate(forecastStartDate)">
+            <owl-date-time [pickerType]="'calendar'" #dtVz></owl-date-time>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="form-group ">
+            <label for="templateName" class="asterisk_input">SELECT COMP DATE</label>
+            <input class="form-control form-control dateRangeAlign" id="compDate" name="compDate" [(ngModel)]="compDate"
+              placeholder="SELECT COMP DATE" [owlDateTimeTrigger]="compDtVz" [owlDateTime]="compDtVz" [max]="toDate">
+            <owl-date-time [pickerType]="'calendar'" #compDtVz></owl-date-time>
+          </div>
+        </div>
+
+
+        <div class="col-3 ">
+          <div class="form-group">
+            <label for="templateName" class="asterisk_input">MARKET</label>
+            <select class="form-control" name="market" id="market" #market>
+              <option value="">--Select--</option>
+              <option *ngFor="let key of createMarketList" value="{{key}}" id="{{key.id}}">{{key}}</option>
+
+            </select>
+            <div class="error-message-block"></div>
+          </div>
+        </div>
+        <div class="col-3 ">
+          <div class="form-group">
+            <label for="templateName" class="asterisk_input">NE ID</label>
+            <input class="form-control" autocomplete="off" id="enbId" name="enbId" type="text" value="" maxlength="100" />
+            <div class="error-message-block"></div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3 ">
+          <div class="form-group">
+            <label for="templateName" class="asterisk_input">NE NAME</label>
+            <input class="form-control" autocomplete="off" id="enbName" name="enbName" type="text" value="" maxlength="100" />
+            <div class="error-message-block"></div>
+          </div>
+        </div>
+
+
+
+
+        <div class="col-3">
+          <div class="form-group">
+            <label for="templateName" class="">GROW REQUESTED</label>
+            <select class="form-control" name="growRequest" id="growRequest" #growRequest>
+              <option value="">--Select--</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+            <div class="error-message-block"></div>
+          </div>
+        </div>
+
+        <div class="col-3">
+          <div class="form-group">
+            <label for="templateName" class="">GROW COMPLETED</label>
+            <select class="form-control" name="growCompleted" id="growCompleted" #growCompleted>
+              <option value="">--Select--</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+            <div class="error-message-block"></div>
+          </div>
+        </div>
+
+
+        <!-- <div class="col-3">
+            <div class="form-group">
+              <label for="templateName" class="asterisk_input">GROW COMPLETED</label>
+              <select class="form-control" name="growCompleted" id="growCompleted" #growCompleted>
+                <option value="">--Select--</option>
+                <option value="Yes" id="{{key.id}}">Yes</option>
+                <option value="No" id="{{key.id}}">No</option>
+              </select>
+              <div class="error-message-block"></div>
+            </div>
+          </div> -->
+        <div class="col-3">
+          <div class="form-group">
+            <label for="templateName" class="">CIQ PRESENT</label>
+            <select class="form-control" name="ciqPresent" id="ciqPresent" #ciqPresent>
+              <option value="">--Select--</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+            <div class="error-message-block"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-3">
+          <div class="form-group">
+            <label for="templateName" class="">ENV COMPLETED</label>
+            <select class="form-control" name="envCompleted" id="envCompleted" #envCompleted>
+              <option value="">--Select--</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+            <div class="error-message-block"></div>
+          </div>
+        </div>
+
+
+        <div class="col-3">
+          <div class="form-group">
+            <label for="templateName" class="">STANDARD / NON-STANDARD</label>
+            <select class="form-control" name="standardNonStandard" id="standardNonStandard" #standardNonStandard>
+              <option value="">--Select--</option>
+              <option value="STANDARD">STANDARD</option>
+              <option value="NON-STANDARD">NON-STANDARD</option>
+            </select>
+            <div class="error-message-block"></div>
+          </div>
+        </div>
+        <div class="col-3 ">
+          <div class="form-group">
+            <label for="templateName">CARRIERS</label>
+            <input class="form-control" autocomplete="off" id="carriers" name="carriers" type="text" value="" maxlength="100" />
+            <div class="error-message-block"></div>
+          </div>
+        </div>
+        <!--   <div class="col-3">
+            <div class="form-group">
+              <label for="templateName" class="asterisk_input">CARRIERS</label>
+              <select class="form-control" name="carriers" id="carriers" #carriers>
+                <option value="">--Select--</option>
+                <option *ngFor="let key of carriers" value="{{key.carriers}}" id="{{key.id}}">{{key.role}}</option>
+              </select>
+              <div class="error-message-block"></div>
+            </div>
+          </div> -->
+        <div class="col-3 ">
+          <div class="form-group">
+            <label for="templateName">UDA</label>
+            <input class="form-control" autocomplete="off" id="uda" name="uda" type="text" value="" maxlength="100" />
+            <div class="error-message-block"></div>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="col-3">
+            <div class="form-group">
+              <label for="templateName" class="asterisk_input">UDA</label>
+              <select class="form-control" name="uda" id="uda" #uda>
+                <option value="">--Select--</option>
+                <option *ngFor="let key of uda" value="{{key.uda}}" id="{{key.id}}">{{key.role}}</option>
+              </select>
+              <div class="error-message-block"></div>
+            </div>
+          </div> -->
+      <div class="row">
+        <div class="col-3 ">
+          <div class="form-group">
+            <label for="templateName">SOFTWARE LEVELS</label>
+            <input class="form-control" autocomplete="off" id="softwareLevels" name="softwareLevels" type="text" value=""
+              maxlength="100" />
+            <div class="error-message-block"></div>
+          </div>
+        </div>
+
+
+
+        <!-- <div class="col-3">
+          <div class="form-group ">
+            <label for="templateName">FE ARRIVAL TIME</label>
+            <input class="form-control form-control dateRangeAlign" id="feArrivalTime" name="feArrivalTime" [(ngModel)]="feArrivalTime"
+              placeholder="FROM DATE" [owlDateTimeTrigger]="VzFeTime" [owlDateTime]="VzFeTime" [max]="toDate">
+            <owl-date-time [pickerType]="'timer'" #VzFeTime [hour12Timer]="false"></owl-date-time>
+          </div>
+        </div> -->
+        <div class="col-3 ">
+            <div class="form-group">
+              <label for="templateName" class="asterisk_input">FE ARRIVAL TIME</label>
+              <input class="form-control" autocomplete="off" id="feArrivalTime" name="feArrivalTime" type="text" value="" maxlength="100" />
+              <div class="error-message-block"></div>
+            </div>
+          </div>
+
+        <!-- <div class="col-3">
+          <div class="form-group ">
+            <label for="templateName">C&I START TIME</label>
+            <input class="form-control form-control dateRangeAlign" id="ciStartTime" name="ciStartTime" [(ngModel)]="ciStartTime"
+              placeholder="FROM DATE" [owlDateTimeTrigger]="VzCiStTime" [owlDateTime]="VzCiStTime" [max]="ciEndTime">
+            <owl-date-time [pickerType]="'timer'" #VzCiStTime></owl-date-time>
+          </div>
+        </div> -->
+        <div class="col-3 ">
+            <div class="form-group">
+              <label for="templateName" class="asterisk_input">C&I START TIME</label>
+              <input class="form-control" autocomplete="off" id="ciStartTime" name="ciStartTime" type="text" value="" maxlength="100" />
+              <div class="error-message-block"></div>
+            </div>
+          </div>
+
+        <!-- <div class="col-3 ">
+          <div class="form-group">
+            <label for="templateName">DT HAND OFF</label>
+            <input class="form-control" autocomplete="off" id="dtHandoff" name="dtHandoff" type="text" value=""
+              maxlength="100" />
+            <div class="error-message-block"></div>
+          </div>
+        </div> -->
+        <div class="col-3 ">
+            <div class="form-group">
+              <label for="templateName" class="asterisk_input">DT HAND OFF</label>
+              <input class="form-control" autocomplete="off" id="dtHandoff" name="dtHandoff" type="text" value="" maxlength="100" />
+              <div class="error-message-block"></div>
+            </div>
+          </div>
+      </div>
+      <div class="row">
+        <!-- <div class="col-3">
+          <div class="form-group ">
+            <label for="templateName">C&I END TIME</label>
+            <input class="form-control form-control dateRangeAlign" id="ciEndTime" name="ciEndTime" [(ngModel)]="ciEndTime"
+              placeholder="FROM DATE" [owlDateTimeTrigger]="VzCiEnTime" [owlDateTime]="VzCiEnTime" [min]="ciStartTime">
+            <owl-date-time [pickerType]="'timer'" #VzCiEnTime></owl-date-time>
+          </div>
+        </div> -->
+        <div class="col-3 ">
+            <div class="form-group">
+              <label for="templateName" class="asterisk_input">C&I END TIME</label>
+              <input class="form-control" autocomplete="off" id="ciEndTime" name="ciEndTime" type="text" value="" maxlength="100" />
+              <div class="error-message-block"></div>
+            </div>
+          </div>
+
+        <div class="col-3">
+          <div class="form-group">
+            <label for="templateName" class="">CANCELLED/ROLLEDBACK/COMPLETED</label>
+            <select class="form-control" name="canRollComp" id="canRollComp" #canRollComp>
+              <option value="">--Select--</option>
+              <option value="Cancelled">Cancelled</option>
+              <option value="Rolled Back">Rolled Back</option>
+              <option value="Completed">Completed</option>
+            </select>
+            <div class="error-message-block"></div>
+          </div>
+        </div>
+        <div class="col-3 ">
+          <div class="form-group">
+            <label for="templateName">TRAFFIC</label>
+            <input class="form-control" autocomplete="off" id="traffic" name="traffic" type="text" value="" maxlength="100" />
+            <div class="error-message-block"></div>
+          </div>
+        </div>
+        <!-- <div class="col-3">
+            <div class="form-group">
+              <label for="templateName" class="asterisk_input">TRAFFIC</label>
+              <select class="form-control" name="traffic" id="traffic" #traffic>
+                <option value="">--Select--</option>
+                <option *ngFor="let key of traffic" value="{{key.traffic}}" id="{{key.id}}">{{key.role}}</option>
+              </select>
+              <div class="error-message-block"></div>
+            </div>
+          </div> -->
+        <div class="col-3">
+          <div class="form-group">
+            <label for="templateName" class="">ALARM PRESENT</label>
+            <select class="form-control" name="alarmPresent" id="alarmPresent" #alarmPresent>
+              <option value="">--Select--</option>
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+            <div class="error-message-block"></div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3">
+          <div class="form-group">
+            <label for="templateName" class="">C&I ENGINEER</label>
+            <select class="form-control" name="ciEngineer" id="ciEngineer" #ciEngineer>
+              <option value="">--Select--</option>
+              <option *ngFor="let key of userList" value="{{key}}" id="{{key.id}}">{{key}}</option>
+            </select>
+            <div class="error-message-block"></div>
+          </div>
+        </div>
+
+        <div class="col-3">
+          <div class="form-group">
+            <label for="templateName" class="">FT</label>
+            <select class="form-control" name="ft" id="ft" #ft>
+              <option value="">--Select--</option>
+              <!-- <option *ngFor="let key of ft" value="{{key.ft}}" id="{{key.id}}">{{key.role}}</option> -->
+              <option *ngFor="let key of userList" value="{{key}}" id="{{key.id}}">{{key}}</option>
+            </select>
+            <div class="error-message-block"></div>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="form-group">
+            <label for="templateName" class="">DT</label>
+            <select class="form-control" name="dt" id="dt" #dt>
+              <option value="">--Select--</option>
+              <!-- <option *ngFor="let key of dt" value="{{key.dt}}" id="{{key.id}}">{{key.role}}</option> -->
+              <option *ngFor="let key of userList" value="{{key}}" id="{{key.id}}">{{key}}</option>
+            </select>
+            <div class="error-message-block"></div>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="form-group" style="margin-top: 0px;">
+            <label for="templateName" class="widthReg">NOTES</label>
+            <textarea rows="4" cols="50" class="customTextArea" name="notes" id="notes"></textarea>
+          </div>
+        </div>
+
+      </div>
+      <div class="textAlignCenter">
+        <button type="button" name="save" class="formBtn myriadproBold validateForm" id="addButton" (click)="addNewSchedule($event)"
+          accesskey="s">SAVE</button>
+        <button type="button" id="cancelButton" name="CANCEL" class="formBtnCncl formBtn myriadproBold formBtn" (click)="cancelCreateNew($event)"
+          accesskey="c">CANCEL</button>
+      </div>
+    </form>
+  </ng-template>
+
+
+  <!-- sprint create new -->
+
+  <ng-template #createSprintScheduling id="createSprintScheduling">
+    <div *ngIf="currentUser=='Super Administrator'" style="border-bottom: 1px solid #ccc; margin-bottom: 20px; margin-top: 20px;"></div>
+    <form class="form-horizontal" #createSprintSchedulingform>
+
+      <!-- row 1 -->
+      <div class="row">
+        <div class="col-3">
+          <div class="form-group ">
+            <label for="templateName">SELECT START DATE</label>
+            <input class="form-control form-control dateRangeAlign" id="sprintStartDate" name="sprintStartDate"
+              [(ngModel)]="sprintStartDate" placeholder="SELECT DATE" [owlDateTimeTrigger]="dtSp" [owlDateTime]="dtSp"
+              [max]="toDate">
+            <owl-date-time [pickerType]="'calendar'" #dtSp></owl-date-time>
+          </div>
+        </div>
+
+        <div class="col-3">
+          <div class="form-group">
+            <label for="templateName" class="asterisk_input">REGION</label>
+            <select class="form-control" name="sprintRegion" id="sprintRegion" #sprintRegion>
+              <option value="">--Select--</option>
+              <option *ngFor="let key of createRegionList" value="{{key}}" id="{{key.id}}">{{key}}</option>
+
+              <!-- <option *ngFor="let key of sprintRegion" value="{{key.region}}" id="{{key.id}}">{{key.region}}</option> -->
+            </select>
+            <div class="error-message-block"></div>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="form-group">
+            <label for="templateName" class=" asterisk_input">MARKET</label>
+            <select class="form-control" name="sprintMarket" id="sprintMarket" #sprintMarket>
+              <option value="">--Select--</option>
+              <option *ngFor="let key of createMarketList" value="{{key}}" id="{{key.id}}">{{key}}</option>
+
+
+            </select>
+            <div class="error-message-block"></div>
+          </div>
+        </div>
+        <div class="col-3 ">
+          <div class="form-group">
+            <label for="templateName">CASCADE</label>
+            <input class="form-control" autocomplete="off" id="sprintCascade" name="sprintCascade" type="text" value=""
+              maxlength="100" />
+            <div class="error-message-block"></div>
+          </div>
+        </div>
+      </div>
+
+
+
+      <div class="row">
+        <div class="col-3">
+          <div class="form-group">
+            <label for="templateName" class="">C&I Eng #1 (Night)</label>
+            <select class="form-control" name="sprintCiEng1" id="sprintCiEng1" #sprintCiEng1>
+              <option value="">--Select--</option>
+              <option *ngFor="let key of userList" value="{{key}}" id="{{key.id}}">{{key}}</option>
+            </select>
+            <div class="error-message-block"></div>
+          </div>
+        </div>
+        <div class="col-3 ">
+          <div class="form-group">
+            <label for="templateName">Bridge #1:</label>
+            <input class="form-control" autocomplete="off" id="sprintBridge1" name="sprintBridge1" type="text" value=""
+              maxlength="100" />
+            <div class="error-message-block"></div>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="form-group">
+            <label for="templateName" class="">FE REGION</label>
+            <select class="form-control" name="sprintFeRegion" id="sprintFeRegion" #sprintFeRegion>
+              <option value="">--Select--</option>
+              <option *ngFor="let key of createFeregionList" value="{{key}}" id="{{key.id}}">{{key}}</option>
+
+              <!-- <option *ngFor="let key of sprintFeRegion" value="{{key.sprintFeRegion}}" id="{{key.id}}">{{key.sprintFeRegion}}</option> -->
+            </select>
+            <div class="error-message-block"></div>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="form-group">
+            <label for="templateName" class="">FE #1 Night</label>
+            <select class="form-control" name="sprintFe1Night" id="sprintFe1Night" #sprintFe1Night>
+              <option value="">--Select--</option>
+              <option *ngFor="let key of createFeNightList" value="{{key}}" id="{{key.id}}">{{key}}</option>
+            </select>
+            <div class="error-message-block"></div>
+          </div>
+        </div>
+      </div>
+
+
+
+      <div class="row">
+        <div class="col-3">
+          <div class="form-group">
+            <label for="templateName" class="">C&I Eng #2 (DAY)</label>
+            <select class="form-control" name="sprintCiEng2" id="sprintCiEng2" #sprintCiEng2>
+              <option value="">--Select--</option>
+              <option *ngFor="let key of userList" value="{{key}}" id="{{key.id}}">{{key}}</option>
+            </select>
+            <div class="error-message-block"></div>
+          </div>
+        </div>
+        <div class="col-3 ">
+          <div class="form-group">
+            <label for="templateName">Bridge #</label>
+            <input class="form-control" autocomplete="off" id="sprintBridge2" name="sprintBridge2" type="text" value=""
+              maxlength="100" />
+            <div class="error-message-block"></div>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="form-group">
+            <label for="templateName" class="">FE #2 DAY</label>
+            <select class="form-control" name="sprintFe2Day" id="sprintFe2Day" #sprintFe2Day>
+              <option value="">--Select--</option>
+              <option *ngFor="let key of createFeDayList" value="{{key}}" id="{{key.id}}">{{key}}</option>
+            </select>
+            <div class="error-message-block"></div>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="form-group" style="margin-top: 0px;">
+            <label for="templateName" class="widthReg">NOTES</label>
+            <textarea rows="4" cols="50" class="customTextArea" name="sprintNotes" id="sprintNotes"></textarea>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row">
+        <div class="col-3">
+          <div class="form-group" style="margin-top: 0px;">
+            <label for="templateName" class="widthReg">REMARKS</label>
+            <textarea rows="4" cols="50" class="customTextArea" name="sprintRemarks" id="sprintRemarks"></textarea>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="textAlignCenter">
+        <button type="button" name="save" class="formBtn myriadproBold validateForm" id="addButton" (click)="addNewSchedule($event)"
+          accesskey="s">SAVE</button>
+        <button type="button" id="cancelButton" name="CANCEL" class="formBtnCncl formBtn myriadproBold formBtn" (click)="cancelCreateNew($event)"
+          accesskey="c">CANCEL</button>
+      </div>
+    </form>
+  </ng-template>
+
+
+
+  <ng-template #sessionExpiredModal let-c="close" let-d="dismiss">
+    <div class="failureIcon"></div>
+    <p id="sessionPopup">Session Expired</p>
+    <div class="modelDismiss" (click)="closeAndLogout()"></div>
+  </ng-template>
+
+  <ng-template #successModal let-c="close" let-d="dismiss">
+    <div class="successIcon"></div>
+    <p id="sessionPopup">{{message}}</p>
+
+    <div class="modelDismiss" (click)="closeModel()"></div>
+  </ng-template>
+  <!-- <div id="formWrapper" class="formWrapperMargin bluePrintFormWrapper">
+      
+    </div> -->
+
+
+
+
+  <ng-template #confirmModalDelete let-c="close" let-d="dismiss">
+    <div class="sucessContentWrapper">
+      <div class="confirmIcon"></div>
+      <div class="confirmContent deletePopup">
+        <p>
+          <b>Are You Sure, </b>
+        <!-- </p>
+        <br>
+        <p> -->You want to <b>Delete</b>
+        </p>
+      </div>
+    </div>
+    <div class="deletePopupBtn modal-footer textAlignCenter">
+      <button type="button" class="formBtn btn btn-secondary modal_button_yes" (click)="d('dismiss click')" id="deleteConfirmation">Yes</button>
+      <button type="button" class="formBtn btn btn-secondary modal_button_no" (click)="c('Close click')" id="modal_button_no">No</button>
+    </div>
+  </ng-template>
+  <rct-model *ngIf="showModelMessage" [message]="modelData"></rct-model>
+
+</div>

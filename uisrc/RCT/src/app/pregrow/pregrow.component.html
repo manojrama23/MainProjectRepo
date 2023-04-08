@@ -1,0 +1,572 @@
+<div class="page-wrapper">
+    <rct-loader *ngIf="showLoader"></rct-loader>
+    <h1 class="mainHead">NETWORK ELEMENT GROW</h1>
+    <ul class="nav nav-pills" role="tablist">
+        <li class="nav-item">
+            <div (click)="growTabBind()" accesskey="n" name="grow" class="divalign float-sm-right float-md-right float-lg-right float-xl-right"
+                #growTab>GROW</div>
+        </li>
+        <li class="nav-item">
+            <div (click)="searchTabBind()" accesskey="h" name="search" class=" divalign float-sm-right float-md-right float-lg-right float-xl-right"
+                #searchTab>SEARCH</div>
+        </li>
+
+    </ul>
+    <ng-template #confirmModal let-c="close" let-d="dismiss">
+        <div class="sucessContentWrapper">
+            <div class="confirmIcon"></div>
+            <div class="confirmContent">
+                <p>
+                    <b>File already exist, Are You Sure</b>
+                </p>
+                <br>
+                <p>You want to
+                    <b>Replace this file</b>
+                </p>
+            </div>
+        </div>
+        <div class="modal-footer textAlignCenter" style="margin-top:15px;">
+            <button type="button" class="formBtn btn btn-secondary modal_button_yes" (click)="d('dismiss click')" id="deleteConfirmation">YES</button>
+            <button type="button" class="formBtn btn btn-secondary modal_button_no" (click)="c('Close click')" id="modal_button_no">NO</button>
+        </div>
+    </ng-template>
+    <ng-template #confirmModalDelete let-c="close" let-d="dismiss">
+        <div class="sucessContentWrapper">
+            <div class="confirmIcon"></div>
+            <div class="confirmContent deletePopup">
+                <p>
+                    <b>Are You Sure, </b>
+                <!-- </p>
+                <br>
+                <p> -->You want to
+                    <b>Delete</b>
+                </p>
+            </div>
+        </div>
+        <div class="deletePopupBtn modal-footer textAlignCenter">
+            <button type="button" class="formBtn btn btn-secondary modal_button_yes" (click)="d('dismiss click')" id="deleteConfirmation">YES</button>
+            <button type="button" class="formBtn btn btn-secondary modal_button_no" (click)="c('Close click')" id="modal_button_no">NO</button>
+        </div>
+    </ng-template>
+
+    <ng-template #sessionExpiredModal let-c="close" let-d="dismiss">
+        <div class="failureIcon"></div>
+        <p id="sessionPopup">Session Expired</p>
+        <div class="modelDismiss" (click)="closeAndLogout()"></div>
+    </ng-template>
+
+    <ng-template #successModal let-c="close" let-d="dismiss">
+        <div class="successIcon"></div>
+        <p id="sessionPopup">{{message}}</p>
+
+        <div class="modelDismiss" (click)="closeModel()"></div>
+    </ng-template>
+
+    <!-- growTab -->
+    <div id="formWrapper" *ngIf="growBlock">
+        <form class="form-horizontal" #growForm>
+            <div class="row">
+               <!--  <div class="col-2">
+                    <label for="templateName" class="asterisk_input">SELECT DATE RANGE</label>
+                    <div class="form-group" style="display: inline-block;">
+                        <input class="form-control" style="width: 75px !important;word-break: break-word;margin-right: 5px;" id="fromDate" name="fromDt"
+                            [(ngModel)]="fromDate" [owlDateTimeTrigger]="dt" [owlDateTime]="dt" [max]="max" placeholder="FROM">
+                        <owl-date-time [pickerType]="'calendar'" #dt></owl-date-time>
+                    </div>
+                    <div class="form-group" style="display: inline-block;">
+                        <input class="form-control" style="width: 75px !important;word-break: break-word;" id="toDate" [min]="fromDt" [owlDateTimeTrigger]="dt1"
+                            name="toDt" [(ngModel)]="toDate" [owlDateTime]="dt1" placeholder="TO">
+                        <div class="error-message-block"></div>
+                        <owl-date-time [pickerType]="'calendar'" #dt1></owl-date-time>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <label for="templateName">CIQ FILE</label>
+                    <select class="form-control form-control-small-2" name="ciqFileName" id="ciqFileName">
+                        <option value="">--Select--</option>
+                        <option *ngFor="let key of tableData.ciqName" id="{{key}}" value="{{key}}">{{key}}</option>
+                    </select>
+                    <div class="error-message-block"></div>
+                </div>
+                <div class="col-2">
+                    <label for="templateName">NE NAME</label>
+                    <select class="form-control form-control-small-2" name="neName" id="neName">
+                        <option value="">--Select--</option>
+                        <option *ngFor="let key of tableData.neName" id="{{key}}" value="{{key}}">{{key}}</option>
+                    </select>
+                    <div class="error-message-block"></div>
+                </div> -->
+                <div class="col-3">
+                    <div class="form-group ">
+                        <label for="templateName">SELECT DATE RANGE</label>
+                        <input class="form-control form-control-small dateRangeAlign" id="fromDate" name="fromDate" [(ngModel)]="fromDate"
+                            placeholder="FROM DATE" [owlDateTimeTrigger]="dt" [owlDateTime]="dt" [max]="toDate" (dateTimeChange)="onChangeDate()">                        
+                        <owl-date-time [pickerType]="'calendar'" #dt></owl-date-time>                
+                        <input class="form-control form-control-small dateRangeAlign" id="toDate" name="toDate" [(ngModel)]="toDate"
+                            [min]="fromDate" [max]="max" [owlDateTimeTrigger]="dt1" placeholder="TO DATE" [owlDateTime]="dt1" (dateTimeChange)="onChangeDate()">                        
+                        <owl-date-time [pickerType]="'calendar'" #dt1></owl-date-time>
+                        <div class="message" *ngIf="errMessage">Please Select Date Range</div>                
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName">CIQ FILE</label>
+                        <select class="form-control" name="ciqName" id="ciqName" #ciqName (change)="getNEdata()" [(ngModel)]="ciqNEFileDetails">
+                            <option value="">--Select--</option>
+                            <option *ngFor="let key of getCiqList" [ngValue]="key">{{key.ciqFileName}}</option>
+                            <!-- <option *ngFor="let key of getCiqList" id="{{key.id}}" value="{{key.fileName}}">{{key.fileName}}</option> -->
+                        </select>
+                        <div class="error-message-block"></div>
+                    </div>
+                </div>
+                <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName">NE NAME</label>
+                            <select class="form-control" name="nes" id="nes" [(ngModel)]="neDetails">
+                                <option value="">--Select--</option>
+                                <option *ngFor="let key of getNeslist" [ngValue]="key">{{key.eNBName}}</option>
+                            </select>
+                            <div class="error-message-block"></div>
+                        </div>
+                </div>
+
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName" class="asterisk_input">GROW TEMPLATE</label>
+                        <input type="text" class="form-control" id="growTemplate" name="growTemplate" value="" maxlength="30" style="width:160px !important;"
+                        />
+                        <div class="error-message-block"></div>
+                    </div>
+                </div>
+                </div>
+               <!--  <div class="col-2">
+                    <label for="templateName">SM VERSION</label>
+                    <select class="form-control form-control-small-2" name="smVersion" id="smVersion">
+                        <option value="">--Select--</option>
+                        <option *ngFor="let key of tableData.smVersion" id="{{key}}" value="{{key}}">{{key}}</option>
+                    </select>
+                    <div class="error-message-block"></div>
+                </div>
+                <div class="col-2">
+                    <label for="templateName">SM NAME</label>
+                    <select class="form-control form-control-small-2" name="smName" id="smName">
+                        <option value="">--Select--</option>
+                        <option *ngFor="let key of tableData.smName" id="{{key}}" value="{{key}}">{{key}}</option>
+                    </select>
+                    <div class="error-message-block"></div>
+                </div> -->
+                <div class="row">
+               <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName" class="asterisk_input">SM VERSION</label>
+                        <select class="form-control" name="lsmVersion" id="lsmVersion" [(ngModel)]="selectedVersion" (change)="getLsmName(selectedVersion)">
+                            <option value="">--Select--</option>
+                            <option *ngFor="let version of lsmVersionDetails">{{version}}</option>
+                        </select>
+                        <div class="error-message-block"></div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName" class="asterisk_input">SM NAME</label>
+                        <select class="form-control" name="lsmName" id="lsmName" [(ngModel)]="selectedLsmName" >
+                            <option value="">--Select--</option>
+                            <option *ngFor="let name of lsmNameDetails">{{name}}</option>
+                        </select>
+                        <div class="error-message-block"></div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <label for="templateName">USE CASE</label>
+                    <select class="form-control form-control-small-2" name="useCaseName" id="useCaseName">
+                        <option value="">--Select--</option>
+                        <option *ngFor="let key of useCaseList" id="{{key}}" value="{{key}}">{{key.useCaseName}}</option>
+                    </select>
+                    <div class="error-message-block"></div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName" class="">REMARKS</label>
+                        <textarea rows="4" cols="50" class="uploadTextArea" name="remarks" id="remarks" style="width:160px !important;"></textarea>
+                        <div class="error-message-block"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <div class="form-group">
+                        <!-- <label></label> -->
+                        <input type="checkbox" style="margin-right: 3px;vertical-align: middle;" [(ngModel)]="ckeckedOrNot" name="check">Use
+                        current password
+                    </div>
+                </div>
+            </div>
+        <!--     <div class="col-12" style="margin: 10px;"> -->
+                <div class="textAlignCenter">
+                    <button name="save" style="width: 150px;" class="formBtn myriadproBold validateForm airlinecnfgSearch" id="uploadAndActivate"
+                        (click)="checkConnection($event)" accesskey="u">CHECK CONNECTION</button>
+                    <button name="save" class="formBtn myriadproBold validateForm airlinecnfgSearch" id="upload" (click)="grow($event)" accesskey="u">GROW</button>
+                    <ng-template #errorMsg>Select Valid File</ng-template>
+                    <div class="displayNone dbImportButtonDisabled errorIcon" placement="bottom" container="body" [ngbTooltip]="errorMsg"></div>
+                </div>
+            <!-- </div> -->
+        </form>
+    </div>
+
+    <!-- searchTab -->
+    <div id="formWrapper" *ngIf="searchBlock">
+        <form class="form-horizontal" #searchForm>
+            <div class="row">
+                <div class="col-2">
+                    <label for="templateName" class="asterisk_input">SELECT DATE RANGE</label>
+                    <div class="form-group" style="display: inline-block;">
+                        <input class="form-control" style="width: 75px !important;word-break: break-word;margin-right: 5px;" id="searchStartDate" name="fromDt"
+                            [(ngModel)]="fromDt" [owlDateTimeTrigger]="dt" [owlDateTime]="dt" [max]="searchEndDate ? searchEndDate : max" placeholder="FROM">
+                        <owl-date-time [pickerType]="'calendar'" #dt></owl-date-time>
+                    </div>
+                    <div class="form-group" style="display: inline-block;">
+                        <input class="form-control" style="width: 75px !important;word-break: break-word;" id="searchEndDate" name="searchEndDate" [(ngModel)]="searchEndDate" [min]="fromDt" [max]="max" [owlDateTimeTrigger]="dt1"
+                            [owlDateTime]="dt1" placeholder="TO">
+                        <div class="error-message-block"></div>
+                        <owl-date-time [pickerType]="'calendar'" #dt1></owl-date-time>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <label for="templateName">CIQ FILE</label>
+                    <select class="form-control form-control-small-2" name="searchCiqFileName" id="searchCiqFileName">
+                        <option value="">--Select--</option>
+                        <option *ngFor="let key of searchCiqList" id="{{key}}" value="{{key}}">{{key}}</option>
+                    </select>
+                    <div class="error-message-block"></div>
+                </div>
+                <div class="col-2">
+                    <label for="templateName">NE NAME</label>
+                    <select class="form-control form-control-small-2" name="searchNeName" id="searchNeName">
+                        <option value="">--Select--</option>
+                        <option *ngFor="let key of searchneNameList" id="{{key}}" value="{{key}}">{{key}}</option>
+                    </select>
+                    <div class="error-message-block"></div>
+                </div>
+                <div class="col-2">
+                    <div class="form-group">
+                        <label for="templateName" class="asterisk_input">GROW TEMPLATE</label>
+                        <input type="text" class="form-control" id="searchGrowTemplate" name="searchGrowTemplate" value="" maxlength="30" style="width:160px !important;"
+                        />
+                        <div class="error-message-block"></div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <label for="templateName">SM VERSION</label>
+                    <select class="form-control form-control-small-2" name="searchSmVersion" id="searchSmVersion">
+                        <option value="">--Select--</option>
+                        <option *ngFor="let key of searchsmversionList" id="{{key}}" value="{{key}}">{{key}}</option>
+                    </select>
+                    <div class="error-message-block"></div>
+                </div>
+                <div class="col-2">
+                    <label for="templateName">SM NAME</label>
+                    <select class="form-control form-control-small-2" name="searchSmName" id="searchSmName">
+                        <option value="">--Select--</option>
+                        <option *ngFor="let key of searchsmNameList" id="{{key}}" value="{{key}}">{{key}}</option>
+                    </select>
+                    <div class="error-message-block"></div>
+                </div>
+                <div class="col-2">
+                    <label for="templateName">USE CASE</label>
+                    <select class="form-control form-control-small-2" name="searchUseCaseName" id="searchUseCaseName">
+                        <option value="">--Select--</option>
+                        <option *ngFor="let key of searchuseCaseList" id="{{key}}" value="{{key}}">{{key}}</option>
+                    </select>
+                    <div class="error-message-block"></div>
+                </div>
+            </div>
+            <div class="col-12" style="margin: 10px;">
+                <div class="textAlignCenter">
+                    <button name="save" class="formBtn myriadproBold validateForm airlinecnfgSearch" id="searchNeGrow" (click)="searchNeGrow($event)"
+                        accesskey="u">SEARCH</button>
+                    <button type="button" id="cancelButton" name="CANCEL" class="formBtnCncl formBtn myriadproBold formBtn" (click)="clearSearchFrom()" accesskey="c">CLEAR</button>             
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!--Data Table-->
+    <div id="dataWrapper" *ngIf="tableShowHide" style="margin-top: -18px;">
+        <br>
+        <div id="tableWrapper">
+            <div class="scrollHead">
+                <table class="table" id="preGrowDetails">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div (click)="changeSorting('ciqFileName', $event, 0)" class="sorting form-control-small-1">CIQ FILE</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('neName', $event, 1)" class="sorting form-control-small-1">NE NAME</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('growingName', $event, 2)" class="sorting form-control-small-1">GROW TEMPLATE</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('smVersion', $event, 3)" class="sorting form-control-small-1">SM VERSION</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('smName', $event, 4)" class="sorting form-control-small-1">SM NAME</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('useCaseName', $event, 5)" class="sorting form-control-small-1">USE CASE</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('creationDate', $event, 6)" class="sorting form-control-small-1">TIME STAMP</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('status', $event, 7)" class="sorting form-control-small-1">STATUS</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('remarks', $event, 8)" class="sorting form-control-small-1">REMARKS</div>
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="scrollBody">
+                <table class="table" id="removalDetailsData">
+                    <tbody id="rowCount">
+                        <ng-container *ngFor="let key of tableData['neGrowdetails']; let index = index">
+                            <tr id="row_id_{{index}}" class="row_id_{{key.id}}">
+                                <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                    <div class="form-control-small-1">{{key.ciqFileName}}</div>
+                                </td>
+                                <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                    <div class="form-control-small-1">{{key.neName}}</div>
+                                </td>
+                                <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                    <div class="form-control-small-1">{{key.growingName}}</div>
+                                </td>
+                                <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                    <div class="form-control-small-1">{{key.smVersion}}</div>
+                                </td>
+                                <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                    <div class="form-control-small-1">{{key.smName}}</div>
+                                </td>
+                                <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                    <div class="form-control-small-1">{{key.useCaseName}}</div>
+                                </td>
+                                <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                    <div class="form-control-small-1">{{key.growingDate}}</div>
+                                </td>
+                                <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                    <div class="form-control-small-1">{{key.status}}</div>
+                                </td>
+                                <td class="form-control-small-1" data-toggle="tooltip" data-placement="right" data-container="body">
+                                    <span class="displayNone" class="eventColText">{{key.remarks}}</span>
+                                    <div #fixedCol class="form-control-fixed iconsWrapper tableRowAction" id="fixedCol" ng-style="iconsWrapperPosition">
+                                        <div (click)="preGrowRow($event, key, index, preGrowContent)" class="viewPreGrow" placement="bottom" container="body" ngbTooltip="pre grow"></div>
+                                        <div (click)="editRow($event, key, index)" class="editRow" placement="bottom" container="body" ngbTooltip="Edit"></div>
+                                        <div (click)="deleteRow($event,confirmModal, key.id,$event)" class="deleteRow" placement="bottom" container="body" ngbTooltip="Delete"></div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr *ngIf="checkFormEnable(index)" id="editedRow{{index}}">
+                                <td colspan="28" class="formEditRow ">
+                                    <div id="formWrapper" class="userManagementFormWrapper" [ngStyle]="{'width': formWidth, 'margin-left': scrollLeft}">
+                                        <form class="form-horizontal" id="bluePrintForm">
+                                            <div class="row">
+                                                <div class="col-2">
+                                                    <label for="templateName">CIQ FILE</label>
+                                                    <select class="form-control form-control-small-2" name="ciqFileName" id="ciqFileName">
+                                                        <option value="">--Select--</option>
+                                                        <option *ngFor="let key of tableData.ciqName" id="{{key}}" value="{{key}}">{{key}}</option>
+                                                    </select>
+                                                    <div class="error-message-block"></div>
+                                                </div>
+                                                <div class="col-2">
+                                                    <label for="templateName">NE NAME</label>
+                                                    <select class="form-control form-control-small-2" name="neName" id="neName">
+                                                        <option value="">--Select--</option>
+                                                        <option *ngFor="let key of tableData.neName" id="{{key}}" value="{{key}}">{{key}}</option>
+                                                    </select>
+                                                    <div class="error-message-block"></div>
+                                                </div>
+                                                <div class="col-2">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="asterisk_input">GROW TEMPLATE</label>
+                                                        <input type="text" class="form-control" id="growingName" name="growingName" value="" maxlength="30" style="width:160px !important;"
+                                                        />
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-2">
+                                                    <label for="templateName">SM VERSION</label>
+                                                    <select class="form-control form-control-small-2" name="smVersion" id="smVersion">
+                                                        <option value="">--Select--</option>
+                                                        <option *ngFor="let key of tableData.smVersion" id="{{key}}" value="{{key}}">{{key}}</option>
+                                                    </select>
+                                                    <div class="error-message-block"></div>
+                                                </div>
+                                                <div class="col-2">
+                                                    <label for="templateName">SM NAME</label>
+                                                    <select class="form-control form-control-small-2" name="smName" id="smName">
+                                                        <option value="">--Select--</option>
+                                                        <option *ngFor="let key of tableData.smName" id="{{key}}" value="{{key}}">{{key}}</option>
+                                                    </select>
+                                                    <div class="error-message-block"></div>
+                                                </div>
+                                                <div class="col-2">
+                                                    <label for="templateName">USE CASE</label>
+                                                    <select class="form-control form-control-small-2" name="useCaseName" id="useCaseName">
+                                                        <option value="">--Select--</option>
+                                                        <option *ngFor="let key of tableData.useCase" id="{{key}}" value="{{key}}">{{key}}</option>
+                                                    </select>
+                                                    <div class="error-message-block"></div>
+                                                </div>
+                                                <div class="col-2">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="">REMARKS</label>
+                                                        <textarea rows="4" cols="50" class="uploadTextArea" name="remarks" id="remarks" style="width:160px !important;"></textarea>
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="textAlignCenter" id="saveRow">
+                                                <button name="update" class="formBtn myriadproBold validateForm" id="updateButton" (click)="updateNeGrowDetails($event)"
+                                                    accesskey="u">UPDATE</button>
+                                                <button type="button" name="CANCEL" class="formBtnCncl formBtn myriadproBold formBtn" id="editCancelButton" (click)="cancelEditRow(index,key.id)"
+                                                    accesskey="c">CANCEL</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div id="paginationWrapper">
+            <div *ngIf="pageRenge.length" class="floatLeft page" style="padding-top: 0px;margin-left:20px;">
+                <div class="floatLeft" style="width: 75px;padding-top: 6px">Show</div>
+                <select [disabled]="paginationDisabbled" [(ngModel)]="pageSize" (change)="onChangeTableRowLength($event)" style="margin-top: 4px; margin-right: 6px;margin-left: -39px;"
+                    class="form-control-pagination floatLeft" aria-controls="TableRowLength" size="1" name="TableRowLength" id="TableRowLength">
+                    <option selected="selected" value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+                <div class="floatLeft" style="width: 75px;padding-top: 6px">Entries</div>
+            </div>
+            <div class="floatRight page" style="padding-top: 3px;margin-right:20px;">
+                <ul *ngIf="pageRenge.length" class="pagination floatRight">
+                    <li id="firstPage" [ngClass]="{disabled:(currentPage === 1 || paginationDisabbled)}" class="page-item">
+                        <a class="page-link" (click)="setPage(1)">FIRST</a>
+                    </li>
+                    <li id="previousPage" [ngClass]="{disabled:(currentPage === 1 || paginationDisabbled)}" class="page-item">
+                        <a class="page-link" (click)="setPage(pager.currentPage - 1)">PREV</a>
+                    </li>
+                    <li *ngFor="let n of pager.pages" [ngClass]="{active:currentPage === n, disabled:paginationDisabbled}" class="page-item">
+                        <a class="page-link" (click)="setPage(n)" id='{{n+1}}'>{{n}}</a>
+                    </li>
+                    <li id="nextPage" [ngClass]="{disabled:(currentPage === totalPages || paginationDisabbled)}" class="page-item">
+                        <a class="page-link" (click)="setPage(pager.currentPage + 1)">NEXT</a>
+                    </li>
+                    <li id="lastPage" [ngClass]="{disabled:(currentPage === totalPages || paginationDisabbled)}" class="page-item">
+                        <a class="page-link" (click)="setPage(pager.totalPages)">LAST</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+    <ng-template #preGrowContent let-c="close" let-modal>
+        <p style="text-align: center;padding: 5px;font-size: 16px;margin-bottom: 0px !important;">PRE-MIGRATION-NE GROW : </p>
+        <div class="modalBody" style="padding: 20px;">
+            <ngb-tabset>
+                <!-- (tabChange)="testResulPopUp($event)" -->
+                <ngb-tab title="Text View">
+                    <ng-template ngbTabContent>
+                        <div class="row" style="padding: 10px;">
+                            <div class="col-2">
+                                <b>N/W Type : </b>
+                            </div>
+                            <div class="col-3">
+                                <b>Program Name : </b>
+                            </div>
+                            <div class="col-3">
+                                <b>SM Name : </b>
+                            </div>
+                        </div>
+                        <div class="textViewDisp">
+                            <ul>
+                                <li *ngFor="let usecase of testResultsData">
+                                    <label>
+                                        <span>{{usecase.useCaseName}}</span>
+                                        <ul style="padding-left: 20px; font-size: 14px">
+                                            <li *ngFor="let script of usecase.script_status" style="list-style-type: disc;">
+                                                <span>{{script.scriptName}}</span>
+                                                <ul style="padding-left: 20px; font-size: 13px">
+                                                    <li *ngFor="let cmdStat of script.rule_status" style="list-style-type: square;font-weight: normal">
+                                                        <span>{{cmdStat.ruleName}} - {{cmdStat.status}}</span>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+
+                                    </label>
+                                </li>
+                                <!-- <p *ngIf="testResultsData.length == 0">NO DATA FOUND</p> -->
+                            </ul>
+
+                        </div>
+                    </ng-template>
+                </ngb-tab>
+                <ngb-tab title="Script Output" id="tab-script">
+                    <ng-template ngbTabContent>
+                        <form id="formWrapper" style="border: none !important;">
+                            <div class="row">
+                                <div class="col-1"></div>
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="templateName">SELECT USE CASE</label>
+                                        <select class="form-control" id="usecaseSO" name="usecaseSO" [(ngModel)]="useCaseSO" (change)="getScriptList(useCaseSO)">
+                                            <option value="">--Select--</option>
+                                            <option *ngFor="let key of testResultsData" value="{{key.useCaseName}}" id="{{key.useCaseId}}">{{key.useCaseName}}</option>
+                                        </select>
+
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="templateName">SELECT SCRIPT</label>
+                                        <select class="form-control" id="script">
+                                            <option value="">--Select--</option>
+                                            <option *ngFor="let key of scriptList" value="{{key.scriptName}}" id="{{key.scriptId}}">{{key.scriptName}}</option>
+                                        </select>
+
+                                    </div>
+                                </div>
+                                <div class="col-2" style="margin-top: 17px;">
+                                    <button type="submit" class="formBtn myriadproBold" (click)="getScriptOutput($event)">GET RESULT</button>
+                                </div>
+
+                            </div>
+                        </form>
+                        <div id="viewFile" *ngIf="showOutput">
+                            <pre>{{scriptOutput}}</pre>
+                        </div>
+                    </ng-template>
+                </ngb-tab>
+            </ngb-tabset>
+        </div>
+        <div class="modal-footer">
+            <div class="modalAction">
+                <button type="button" class="formBtnCncl btn btn-light" (click)="closeModelViewResult()">CLOSE</button>
+            </div>
+        </div>
+    </ng-template>
+
+    <rct-model *ngIf="showModelMessage" [message]="modelData"></rct-model>
+    <rct-nodata *ngIf="noDataVisibility" [subTitle]="'Please click on <u><b>CREATE NEW</b></u> to add users'"></rct-nodata>
+
+</div>

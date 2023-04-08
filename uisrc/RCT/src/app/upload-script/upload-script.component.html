@@ -1,0 +1,833 @@
+<div class="page-wrapper">
+    <rct-model *ngIf="showModelMessage" [message]="modelData"></rct-model>
+    <rct-loader *ngIf="showLoader"></rct-loader>
+    <h1 class="mainHead">SCRIPT STORE</h1>
+
+    <ng-template #confirmModal let-c="close" let-d="dismiss">
+        <div class="sucessContentWrapper">
+            <div class="confirmIcon"></div>
+            <div class="confirmContent">
+                <p>
+                    <b>Script already exist, Are You Sure</b>
+                </p>
+                <br>
+                <p>You want to
+                    <b>Replace this file</b>
+                </p>
+            </div>
+        </div>
+        <div class="modal-footer textAlignCenter" style="margin-top:15px;">
+            <button type="button" class="formBtn btn btn-secondary modal_button_yes" (click)="d('dismiss click')" id="deleteConfirmation">YES</button>
+            <button type="button" class="formBtn btn btn-secondary modal_button_no" (click)="c('Close click')" id="modal_button_no">NO</button>
+        </div>
+    </ng-template>
+
+
+
+    <ng-template #deleteModal let-c="close" let-d="dismiss">
+        <div class="sucessContentWrapper">
+            <div class="confirmIcon"></div>
+            <div class="confirmContent deletePopup">
+                <p>
+                    <b>Are You Sure, </b>
+                <!-- </p>
+                <br>
+                <p> -->You want to
+                    <b>Delete</b>
+                </p>
+            </div>
+        </div>
+        <div class="deletePopupBtn modal-footer textAlignCenter">
+            <button type="button" class="formBtn btn btn-secondary modal_button_yes" (click)="d('dismiss click')" id="deleteConfirmation">YES</button>
+            <button type="button" class="formBtn btn btn-secondary modal_button_no" (click)="c('Close click')" id="modal_button_no">NO</button>
+        </div>
+    </ng-template>
+
+    <!--  <div id="migTypeFormWrapper" class="formWrapperMargin bluePrintFormWrapper">
+            <div class="migrationBlock">
+                    <form class="form-horizontal"id="bluePrintForm" #bluePrintForm>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group radio-inline">
+                                    <input class="radio" type="radio" [(ngModel)]='migrationType' value="premigration" name="migrationBtn">
+                                    <label for="templateName">PRE MIGRATION</label>
+                                </div>
+                                <div class="form-group radio-inline">
+                                    <input class="radio" type="radio" [(ngModel)]='migrationType' value="migration" name="migrationBtn">
+                                    <label for="templateName">MIGRATION</label>
+                                </div>
+                                <div class="form-group radio-inline">
+                                    <input class="radio" type="radio" [(ngModel)]='migrationType' value="postmigration" name="migrationBtn">
+                                    <label for="templateName">POST MIGRATION</label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+        </div>    -->
+
+    <div class="migrationBlock">
+        <form class="form-horizontal">
+            <div class="row">
+                <div class="col-7">
+                    <div class="form-group radio-inline">
+                        <input class="radio" type="radio" [(ngModel)]='migrationType' value="premigration" name="migrationBtn" (click)="onChangeLoad('premigration')">
+                        <label for="templateName">PRE MIGRATION</label>
+                    </div>
+                    <div class="form-group radio-inline">
+                        <input class="radio" type="radio" [(ngModel)]='migrationType' value="nestatus" name="migrationBtn" (click)="onChangeLoad('nestatus')">
+                        <label for="templateName">NE STATUS</label>
+                    </div>
+                    <div class="form-group radio-inline">
+                        <input class="radio" type="radio" [(ngModel)]='migrationType' value="preaudit" name="migrationBtn" (click)="onChangeLoad('preaudit')">
+                        <label for="templateName">PRE AUDIT</label>
+                    </div>
+                    <div class="form-group radio-inline">
+                        <input class="radio" type="radio" [(ngModel)]='migrationType' value="migration" name="migrationBtn" (click)="onChangeLoad('migration')">
+                        <label for="templateName">MIGRATION</label>
+                    </div>
+                    <div class="form-group radio-inline">
+                        <input class="radio" type="radio" [(ngModel)]='migrationType' value="postmigration" name="migrationBtn" (click)="onChangeLoad('postmigration')">
+                        <label for="templateName">POST MIGRATION</label>
+                    </div>
+                </div>
+                <div class="col-5" *ngIf="migrationType == 'postmigration'">
+                    <select class="form-control form-control-small form-group" name="subType" id="subType" [(ngModel)]="subType" (change)="onChangeType(subType)"
+                        style="height:20px !important;padding: 0;">
+                        <option value="AUDIT">AUDIT</option>
+                        <option value="RANATP">RAN ATP</option>
+                    </select>
+                </div>
+                <div class="col-5" *ngIf="migrationType == 'migration'">
+                    <!-- <select class="form-control form-control-small-1 form-group" name="subType" id="subType" [(ngModel)]="subType" (change)="onChangeType(subType)"
+                        style="height:20px !important">
+                        <option value="PRECHECK">PRE CHECK</option>
+                        <option value="COMMISSION">COMMISSION</option>
+                        <option value="POSTCHECK">POST CHECK</option>
+                    </select> -->
+                    <div class="form-group radio-inline">
+                        <input class="radio" type="radio" [(ngModel)]='subType' value="PRECHECK" name="precheck" disabled>
+                        <label for="templateName">COMMISSION</label>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+    <ul class="nav nav-pills" role="tablist">
+        <li class="nav-item">
+            <div (click)="searchTabBind()" accesskey="n" name="search" class="divalign float-sm-right float-md-right float-lg-right float-xl-right"
+                #searchTab>SEARCH</div>
+        </li>
+        <li class="nav-item">
+            <div (click)="uploadTabBind()" accesskey="h" name="upload" class=" divalign float-sm-right float-md-right float-lg-right float-xl-right"
+                #uploadTab>UPLOAD SCRIPT</div>
+        </li>
+    </ul>
+
+
+
+
+    <!-- 
+        <div id="tabContentWrapper" class="flightSearchFormWrapper" *ngIf="createBlock">
+            <form class="form-horizontal" id="bluePrintForm" #bluePrintForm>
+                <form class="form-horizontal" >
+                  <div class="row">
+
+                    <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName" class="asterisk_input">SELECT FILES</label>
+                                <div>
+                                    <input type="file" class="filePost" #filePost name="filePost" id="filePost" [multiple]="true"
+                                        (change)="chooseFile($event)" />
+                                    <div class="error-message-block"></div>
+                                    <div class="iconsWrapper1">
+                                        <div class="hint"></div>
+                                        <div class="hintMessage">supports .sh and py files</div>
+                                    </div>
+                                </div>
+                            </div>
+                    </div> 
+                    <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName" class="widthReg">REMARKS</label>
+                                <textarea rows="4" cols="50" class="customTextArea remarksTextArea" name="remarks" id="remarks"></textarea>
+                            </div>
+                    </div>  
+                <div>
+                    <button name="save" class="UploadformBtn myriadproBold validateForm airlinecnfgSearch" id="upload"
+                    (click)="uploadAllDetails($event, confirmModal)" accesskey="u">UPLOAD</button>
+                    <ng-template #errorMsg>Select Valid File</ng-template>
+                    <div class="displayNone dbImportButtonDisabled errorIcon" placement="center" container="body"
+                    [ngbTooltip]="errorMsg"></div> 
+                </div>        
+                </div>
+                     <div class="textAlignCenter" id="saveRow">
+                     <button name="save" class="formBtn myriadproBold validateForm" id="AddButton" (click)="createFileRule($event)" accesskey="s">CREATE</button>
+                  </div>  
+                </form>
+            </form>
+        </div> -->
+    <div id="tabContentWrapper" class="flightSearchFormWrapper" *ngIf="uploadBlock">
+        <form class="form-horizontal" id="bluePrintForm" #bluePrintForm>
+            <div class="row">
+
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName" class="asterisk_input">SELECT FILES</label>
+                        <div>
+                            <input type="file" class="filePost" #filePost name="filePost" id="filePost"  (change)="chooseFile($event)"
+                            />
+                            <div class="error-message-block"></div>
+                            <!-- <div class="iconsWrapper1">
+                                <div class="hint"></div>
+                                <div class="hintMessage">supports .sh and py files</div>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName" class="asterisk_input">SCRIPT TYPE</label>
+                        <select class="form-control" name="scriptType" id="scriptType" [(ngModel)]="selectedScript">
+                            <option value="">--Select--</option>
+                            <option *ngFor="let type of scriptType">{{type}}</option>
+                        </select>
+                        <div class="error-message-block"></div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName" class="asterisk_input">TERMINALS</label>
+                        <!-- <select class="form-control" name="terminals" id="terminals" [(ngModel)]="selectedTerminal" (change)="getScriptType(selectedTerminal)">
+                            <option value="">--Select--</option>
+                            <option *ngFor="let term of terminals">{{term}}</option>
+                        </select> -->
+                        <select class="form-control" name="utility" id="utility" [(ngModel)]="selectedUtil" (change)="getScriptType(selectedUtil)">
+                            <option value="">--Select--</option>
+                            <option *ngFor="let util of utilities">{{util}}</option>
+                        </select>
+                        <div class="error-message-block"></div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName" class="asterisk_input">UTILITY</label>
+                        <!-- <select class="form-control" name="utility" id="utility" [(ngModel)]="selectedUtil">
+                            <option value="">--Select--</option>
+                            <option *ngFor="let util of utilities" [ngValue]="util">{{util.utilityName}}</option>
+                        </select> -->
+                        <select class="form-control" name="terminals" id="terminals" [(ngModel)]="selectedTerminal">
+                            <option value="">--Select--</option>
+                            <option *ngFor="let term of terminals" [ngValue]="term">{{term.terminalName}}</option>
+                        </select>
+                        <div class="error-message-block"></div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName" class="">ARGUMENTS</label>
+                        <input class="form-control" autocomplete="off" placeholder="" id="arguments" name="arguments" type="text" value=""/>
+                        <div class=" infoIcon"placement="bottom-left" [ngbPopover]="scriptFiles" popoverTitle="" container="body" 
+                        popoverClass="checkListTablePopOver" [autoClose]="true"  triggers="mannual:onclick mouseOver" #p1="ngbPopover" (click)="showListOfUseCases(p1)" id="htooltip">
+                                <ng-template #scriptFiles>
+                                    <ul class="maxHeight" *ngIf="argumentDetailsList.length != 0">
+                                        <li *ngFor="let item of argumentDetailsList | keyvalue">
+                                            <span class="popupKey">{{item.key}}</span>
+                                            <span class="popupValue">{{item.value}}</span>
+                                        </li>
+                                    </ul>
+                                    <div *ngIf="argumentDetailsList.length == 0" class="noDataPopover">
+                                        <span>NO DATA</span>
+                                    </div>
+                                </ng-template>
+                            </div>
+                        <div class="iconsWrapper1">
+                            <div class="hint"></div>
+                            <div class="hintMessage">Add an argument separated with comma</div>
+                        </div>    
+                        <div class="error-message-block"></div>
+
+                        
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName">SM VERSION</label>
+                        <select class="form-control" name="lsmVersion" id="lsmVersion" [(ngModel)]="selectedVersion" (change)="getLsmName(selectedVersion)">
+                            <option value="">--Select--</option>
+                            <option *ngFor="let version of lsmVersionDetails">{{version}}</option>
+                        </select>
+                        <div class="error-message-block"></div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName">SM NAME</label>
+                        <select class="form-control" name="lsmName" id="lsmName" [(ngModel)]="selectedLsmName">
+                            <option value="">--Select--</option>
+                            <option *ngFor="let name of lsmNameDetails">{{name}}</option>
+                        </select>
+                        <div class="error-message-block"></div>
+                    </div>
+                </div>
+
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName" class="widthReg">REMARKS</label>
+                        <textarea rows="4" cols="50" class="customTextArea remarksTextArea" name="remarks" id="remarks"></textarea>
+                    </div>
+                </div>
+                <!-- <div>
+                            <button name="save" class="UploadformBtn myriadproBold validateForm airlinecnfgSearch" id="upload" (click)="uploadAllDetails($event, confirmModal)"
+                                class="textAlignCenter" accesskey="u">UPLOAD</button>
+                            <ng-template #errorMsg>Select Valid File</ng-template>
+                            <div class="displayNone dbImportButtonDisabled errorIcon" placement="center" container="body" [ngbTooltip]="errorMsg"></div>
+                        </div> -->
+            </div>
+            <div class="textAlignCenter" id="saveRow">
+                <!-- <button name="save" class="formBtn myriadproBold validateForm" id="AddButton" (click)="createFileRule($event)" accesskey="s">CREATE</button> -->
+                <button name="save" class="UploadformBtn myriadproBold validateForm" id="upload" (click)="uploadAllDetails($event, confirmModal)"
+                    accesskey="u">UPLOAD</button>
+                <!-- <ng-template #errorMsg>Select Valid File</ng-template>
+                                <div class="displayNone dbImportButtonDisabled errorIcon" placement="bottom" container="body" [ngbTooltip]="errorMsg"></div> -->
+            </div>
+        </form>
+    </div>
+
+    <div *ngIf="searchBlock">
+        <div id="formWrapper" class="formWrapperMargin bluePrintFormWrapper">
+            <form class="form-horizontal" id="bluePrintForm" #bluePrintForm>
+                <form class="form-horizontal" #searchForm>
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName">FILE NAME</label>
+                                <input class="form-control" autocomplete="off" id="fileName" name="fileName" type="text" value="" maxlength="30" />
+                                <div class="error-message-block"></div>
+                            </div>
+                        </div>
+
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName">STATE</label>
+                                <select class="form-control" name="searchState" id="searchState">
+                                    <option value="">--Select--</option>
+                                    <option value="Created">Created</option>
+                                    <option value="Uploaded">Uploaded</option>
+                                </select>
+                                <div class="error-message-block"></div>
+                            </div>
+                        </div>
+
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName">UPLOADED BY</label>
+                                <input class="form-control" autocomplete="off" id="UploadedBy" name="UploadedBy" type="text" value="" maxlength="30" />
+                                <div class="error-message-block"></div>
+                            </div>
+                        </div>
+                        <!-- <div class="col-2">
+                                        <div class="form-group calenderForm calenderForm1">
+                                            <label for="templateName">START DATE</label>
+                                            <input class="form-control form-control-small-1" id="fromDate" name="fromDt" [(ngModel)]="fromDt" [owlDateTimeTrigger]="dt" [owlDateTime]="dt" [max]="max">
+                                            <owl-date-time [pickerType]="'calendar'" #dt></owl-date-time>
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="form-group calenderForm calenderForm1">
+                                            <label for="templateName">END DATE</label>
+                                            <input class="form-control form-control-small-1" id="toDate" [min]="fromDt" [owlDateTimeTrigger]="dt1" [owlDateTime]="dt1">                        
+                                            <div class="error-message-block"></div>
+                                            <owl-date-time [pickerType]="'calendar'" #dt1></owl-date-time>
+                                        </div>                    
+                                    </div> -->
+
+                        <div class="col-3">
+                            <div class="form-group ">
+                                <label for="templateName">SELECT DATE RANGE</label>
+                                <input class="form-control form-control-small dateRangeAlign" id="fromDate" name="fromDate" [(ngModel)]="fromDate" placeholder="FROM DATE"
+                                    [owlDateTimeTrigger]="dt" [owlDateTime]="dt" [max]="toDate ? toDate : max">
+                                <div class="error-message-block"></div>
+                                <owl-date-time [pickerType]="'calendar'" #dt></owl-date-time>
+
+                                <input class="form-control form-control-small dateRangeAlign" id="toDate" name="toDate" [(ngModel)]="toDate" [min]="fromDate"
+                                    [max]="max" [owlDateTimeTrigger]="dt1" placeholder="TO DATE" [owlDateTime]="dt1">
+                                <div class="error-message-block"></div>
+                                <owl-date-time [pickerType]="'calendar'" #dt1></owl-date-time>
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+                    <div class="textAlignCenter">
+                        <button name="save" class="formBtn myriadproBold validateForm airlinecnfgSearch" id="searchButton" (click)="searchFileRules($event)"
+                            accesskey="s">SEARCH</button>
+                        <button type="button" id="cancelButton" name="CANCEL" class="formBtnCncl formBtn myriadproBold formBtn" (click)="clearSearchFrom()" accesskey="c">CLEAR</button>             
+
+                    </div>
+                    <!-- <div class="textAlignCenter">
+                                <button name="save" class="formBtn myriadproBold validateForm airlinecnfgSearch" id="searchButton" (click)="getMelConfigDetails($event)"
+                                    accesskey="s">SEARCH</button>
+                            </div> -->
+                </form>
+            </form>
+        </div>
+    </div>
+
+    <!--Data Table-->
+    <div id="dataWrapper" *ngIf="tableShowHide" style="margin-top: -10px;">
+        <br>
+        <div id="tableWrapper">
+            <div class="scrollHead">
+                <table class="table" id="melConfigDetails">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div (click)="changeSorting('fileName', $event, 0)" class="sorting form-control-pnDifi">FILE NAME</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('lsmVersion', $event, 1)" class="sorting form-control-small-1">SM VERSION</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('lsmName', $event, 3)" class="sorting form-control-small-1">SM NAME</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('state', $event, 4)" class="sorting form-control-small-1">STATE</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('uploadedBy', $event, 5)" class="sorting form-control-small-1">USER NAME</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('creationDate', $event, 5)" class="sorting form-control-small-1">TIMESTAMP
+                                </div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('scriptType', $event, 6)" class="sorting form-control-small-1">SCRIPT TYPE
+                                </div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('connectionLocation', $event, 7)" class="sorting form-control-small-1">TERMINAL
+                                </div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('connectionTerminal', $event, 8)" class="sorting form-control-small-1">UTILITY
+                                </div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('arguments', $event, 9)" class="sorting form-control-small-1">ARGUMENTS
+                                </div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('remarks', $event, 10)" class="sorting form-control-pnDifi">REMARKS</div>
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+
+            <div class="scrollBody">
+                <table class="table" id="removalDetailsData">
+                    <tbody id="rowCount">
+                        <ng-container *ngFor="let key of tableData.uploadScriptTableDetails; let index = index">
+                            <tr id="row_{{index}}" class="row_id_{{key.id}}">
+                                <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                    <div class="form-control-pnDifi">
+                                        <span class="scriptLink" (click)="viewRowScript(scriptContent, key)">{{key.fileName}}</span>
+                                    </div>
+                                </td>
+                                <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                    <div class="form-control-small-1">{{key.lsmVersion}}</div>
+                                </td>
+
+                                <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                    <div class="form-control-small-1">{{key.lsmName}}</div>
+                                </td>
+                                <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                    <div class="form-control-small-1">{{key.state }}</div>
+                                </td>
+                                <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                    <div class="form-control-small-1">{{key.uploadedBy }}</div>
+                                </td>
+                                <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                    <div class="form-control-small-1">{{key.creationDate}}</div>
+                                </td>
+                                <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                    <div class="form-control-small-1">{{key.scriptType}}</div>
+                                </td>
+                                <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                    <div class="form-control-small-1">{{key.connectionLocation}}</div>
+                                </td>
+                                <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                    <div class="form-control-small-1">{{key.connectionTerminalDetails.connectionTerminal.terminalName}}</div>
+                                </td>
+                                <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                    <div class="form-control-small-1">{{key.arguments}}</div>
+                                </td>
+                                <td class="form-control-pnDifi" data-toggle="tooltip" data-placement="right" data-container="body">
+                                    <span class="displayNone" class="eventColText">{{key.remarks}}</span>
+                                    <div #fixedCol class="form-control-fixed iconsWrapper tableRowAction" id="fixedCol" ng-style="iconsWrapperPosition">
+                                        <div (click)="downLoadFile(key.fileName,key.filePath)" class="downloadGenScripts" placement="bottom" container="body" ngbTooltip="Download Script"></div>
+                                        <div (click)="editRow($event, key, index)" class="editRow" placement="bottom" container="body" ngbTooltip="Edit"></div>
+                                        <div (click)="deleteRow($event,deleteModal, key.id)" class="deleteRow" placement="bottom" container="body" ngbTooltip="Delete"></div>
+                                    </div>
+                                </td>
+                            </tr>
+
+
+
+
+                            <tr *ngIf="checkFormEnable(index)" id="editedRow{{index}}">
+                                <td colspan="11" class="formEditRow ">
+                                    <div id="formWrapper" class="userManagementFormWrapper" [ngStyle]="{'width': formWidth, 'margin-left': scrollLeft}">
+                                        <form class="form-horizontal" id="bluePrintForm">
+                                            <div class="row">
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName">FILE NAME</label>
+                                                        <input class="form-control" autocomplete="off" id="fileName" placeholder="" name="fileName" disabled="disabled" type="text"
+                                                            value="" maxlength="30" />
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName">SM VERSION</label>
+                                                        <input class="form-control" autocomplete="off" placeholder="" name="lsmVersion" id="lsmVersion" disabled="disabled" />
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName">SM NAME</label>
+                                                        <input class="form-control" name="lsmName" id="lsmName" disabled="disabled" />
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="asterisk_input">SCRIPT TYPE</label>
+                                                        <select class="form-control" name="scriptType" id="scriptType">
+                                                            <option value="">--Select--</option>
+                                                            <option *ngFor="let type of scriptType">{{type}}</option>
+                                                        </select>
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="asterisk_input">TERMINALS</label>
+                                                        <select class="form-control" name="connectionLocation" [(ngModel)]="selectedUtil" id="connectionLocation" (change)="getScriptType(selectedUtil)">
+                                                            <option value="">--Select--</option>
+                                                            <option *ngFor="let util of utilities">{{util}}</option>
+                                                        </select>
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="asterisk_input">UTILITY</label>
+                                                        <select class="form-control" name="connectionTerminal1" id="connectionTerminal1" [(ngModel)]="selectedTerminal" [compareWith]="compareFn">
+                                                            <option value="">--Select--</option>
+                                                            <option *ngFor="let term of terminals" [ngValue]="term">{{term.terminalName}}</option>
+                                                        </select>
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="">ARGUMENTS</label>
+                                                        <input class="form-control" autocomplete="off" placeholder="" id="arguments" name="arguments" type="text" value=""/>
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName">REMARKS</label>
+                                                        <textarea rows="4" cols="50" class="customTextArea remarksTextArea" name="remarks" id="remarks"></textarea>
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="textAlignCenter" id="saveRow">
+                                                <button name="update" class="formBtn myriadproBold validateForm" id="updateButton" (click)="updateUploadDetails($event,key)"
+                                                    accesskey="u">UPDATE</button>
+                                                <button type="button" name="CANCEL" class="formBtnCncl formBtn myriadproBold formBtn" id="editCancelButton" (click)="cancelEditRow(index,key.id)"
+                                                    accesskey="c">CANCEL</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div id="paginationWrapper">
+            <div *ngIf="pageRenge.length" class="floatLeft page" style="padding-top: 0px;margin-left:20px;">
+                <div class="floatLeft" style="width: 75px;padding-top: 6px">Show</div>
+                <select [disabled]="paginationDisabbled" [(ngModel)]="pageSize" (change)="onChangeTableRowLength($event)" style="margin-top: 4px; margin-right: 6px;margin-left: -39px;"
+                    class="form-control-pagination floatLeft" aria-controls="TableRowLength" size="1" name="TableRowLength" id="TableRowLength">
+                    <option selected="selected" value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+                <div class="floatLeft" style="width: 75px;padding-top: 6px">Entries</div>
+            </div>
+            <div class="floatRight page" style="padding-top: 3px;margin-right:20px;">
+                <ul *ngIf="pageRenge.length" class="pagination floatRight">
+                    <li id="firstPage" [ngClass]="{disabled:(currentPage === 1 || paginationDisabbled)}" class="page-item">
+                        <a class="page-link" (click)="setPage(1)">FIRST</a>
+                    </li>
+                    <li id="previousPage" [ngClass]="{disabled:(currentPage === 1 || paginationDisabbled)}" class="page-item">
+                        <a class="page-link" (click)="setPage(pager.currentPage - 1)">PREV</a>
+                    </li>
+                    <li *ngFor="let n of pager.pages" [ngClass]="{active:currentPage === n, disabled:paginationDisabbled}" class="page-item">
+                        <a class="page-link" (click)="setPage(n)" id='{{n+1}}'>{{n}}</a>
+                    </li>
+                    <li id="nextPage" [ngClass]="{disabled:(currentPage === totalPages || paginationDisabbled)}" class="page-item">
+                        <a class="page-link" (click)="setPage(pager.currentPage + 1)">NEXT</a>
+                    </li>
+                    <li id="lastPage" [ngClass]="{disabled:(currentPage === totalPages || paginationDisabbled)}" class="page-item">
+                        <a class="page-link" (click)="setPage(pager.totalPages)">LAST</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!--Data Table-->
+    <!--  <div id="dataWrapper" *ngIf="tableShowHide" style="margin-top: -18px;">
+        <br>
+        <div id="tableWrapper">
+            <div class="scrollHead">
+                <table class="table" id="melConfigDetails">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div (click)="changeSorting('fileName', $event, 0)" class="sorting form-control-pnDifi">FILE NAME
+                                </div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('lsmVersion', $event, 1)" class="sorting form-control-small-1">SM VERSION
+                                </div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('lsmName', $event, 2)" class="sorting form-control-small-1">SM NAME
+                                </div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('state', $event, 3)" class="sorting form-control-small-1">STATE
+                                </div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('uploadedBy', $event, 4)" class="sorting form-control-small-1">USER NAME
+                                </div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('creationDate', $event, 5)" class="sorting form-control-small-1">TIMESTAMP
+                                </div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('scriptType', $event, 6)" class="sorting form-control-small-1">SCRIPT TYPE
+                                </div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('connectionLocation', $event, 7)" class="sorting form-control-small-1">TERMINAL
+                                </div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('connectionTerminal', $event, 8)" class="sorting form-control-small-1">UTILITY
+                                </div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('remarks', $event, 9)" class="sorting form-control-pnDifi">REMARKS</div>
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="scrollBody">
+                <table class="table" id="removalDetailsData">
+                    <tbody id="rowCount">
+                        <ng-container *ngFor="let key of tableData.uploadScriptTableDetails; let index = index">
+                            <tr id="row_{{index}}" class="row_id_{{key.id}}">
+                                <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                    <div class="form-control-pnDifi">
+                                        <span class="scriptLink" (click)="viewRowScript(scriptContent, key)">{{key.fileName}}</span>
+                                    </div>
+                                </td>
+                                <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                    <div class="form-control-small-1">{{key.lsmVersion}}</div>
+                                </td>
+                                <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                    <div class="form-control-small-1">{{key.lsmName}}</div>
+                                </td>
+                                <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                    <div class="form-control-small-1">{{key.state }}</div>
+                                </td>
+                                <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                    <div class="form-control-small-1">{{key.uploadedBy }}</div>
+                                </td>
+                                <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                    <div class="form-control-small-1">{{key.creationDate}}</div>
+                                </td>
+                                <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                    <div class="form-control-small-1">{{key.scriptType}}</div>
+                                </td>
+                                <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                    <div class="form-control-small-1">{{key.connectionLocation}}</div>
+                                </td>
+                                <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                    <div class="form-control-small-1">{{key.connectionTerminal}}</div>
+                                </td>
+                                <td class="form-control-pnDifi" data-toggle="tooltip" data-placement="right" data-container="body">
+                                    <span class="displayNone" class="eventColText">{{key.remarks}}</span>
+                                    <div #fixedCol class="form-control-fixed iconsWrapper tableRowAction" id="fixedCol" ng-style="iconsWrapperPosition">
+                                        <div (click)="editRow($event, key, index)" class="editRow" placement="bottom" container="body" ngbTooltip="Edit"></div>
+                                        <div (click)="deleteRow($event,deleteModal, key.id)" class="deleteRow" placement="bottom" container="body" ngbTooltip="Delete"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr *ngIf="checkFormEnable(index)" id="editedRow{{index}}">
+                                <td colspan="10" class="formEditRow ">
+                                    <div id="formWrapper" class="userManagementFormWrapper" [ngStyle]="{'width': formWidth, 'margin-left': scrollLeft}">
+                                        <form class="form-horizontal" >
+                                            <div class="row">
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName">FILE NAME</label>
+                                                        <input class="form-control" autocomplete="off" id="fileName" name="fileName" disabled="disabled" type="text" value="" maxlength="30"
+                                                        />
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName">SM VERSION</label>
+                                                        <input class="form-control" name="lsmVersion" id="lsmVersion" [(ngModel)]="selectedVersion" disabled="disabled" />
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName">SM NAME</label>
+                                                        <input class="form-control" name="lsmName" id="lsmName" [(ngModel)]="selectedLsmName" disabled="disabled" />
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName">REMARKS</label>
+                                                        <textarea rows="4" cols="50" class="customTextArea remarksTextArea" name="remarks" id="remarks"></textarea>
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="textAlignCenter" id="saveRow">
+                                                <button name="update" class="formBtn myriadproBold validateForm" id="updateButton" (click)="updateUploadDetails($event,key)"
+                                                    accesskey="u">UPDATE</button>
+                                                <button type="button" name="CANCEL" class="formBtn myriadproBold formBtn" id="editCancelButton" (click)="cancelEditRow(index,key.id)"
+                                                    accesskey="c">CANCEL</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div id="paginationWrapper">
+            <div *ngIf="pageRenge.length" class="floatLeft page" style="padding-top: 0px;margin-left:20px;">
+                <div class="floatLeft" style="width: 75px;padding-top: 6px">Show</div>
+                <select [disabled]="paginationDisabbled" [(ngModel)]="pageSize" (change)="onChangeTableRowLength($event)" style="margin-top: 4px; margin-right: 6px;margin-left: -39px;"
+                    class="form-control-pagination floatLeft" aria-controls="TableRowLength" size="1" name="TableRowLength" id="TableRowLength">
+                    <option selected="selected" value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+                <div class="floatLeft" style="width: 75px;padding-top: 6px">Entries</div>
+            </div>
+            <div class="floatRight page" style="padding-top: 3px;margin-right:20px;">
+                <ul *ngIf="pageRenge.length" class="pagination floatRight">
+                    <li id="firstPage" [ngClass]="{disabled:(currentPage === 1 || paginationDisabbled)}" class="page-item">
+                        <a class="page-link" (click)="setPage(1)">FIRST</a>
+                    </li>
+                    <li id="previousPage" [ngClass]="{disabled:(currentPage === 1 || paginationDisabbled)}" class="page-item">
+                        <a class="page-link" (click)="setPage(pager.currentPage - 1)">PREV</a>
+                    </li>
+                    <li *ngFor="let n of pager.pages" [ngClass]="{active:currentPage === n, disabled:paginationDisabbled}" class="page-item">
+                        <a class="page-link" (click)="setPage(n)" id='{{n+1}}'>{{n}}</a>
+                    </li>
+                    <li id="nextPage" [ngClass]="{disabled:(currentPage === totalPages || paginationDisabbled)}" class="page-item">
+                        <a class="page-link" (click)="setPage(pager.currentPage + 1)">NEXT</a>
+                    </li>
+                    <li id="lastPage" [ngClass]="{disabled:(currentPage === totalPages || paginationDisabbled)}" class="page-item">
+                        <a class="page-link" (click)="setPage(pager.totalPages)">LAST</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div> -->
+    <rct-nodata *ngIf="showNoDataFound" [subTitle]=""></rct-nodata>
+    <!--Live Data Details Model-->
+
+    <ng-template #sessionExpiredModal let-c="close" let-d="dismiss">
+        <div class="failureIcon"></div>
+        <p id="sessionPopup">Session Expired</p>
+        <div class="modelDismiss" (click)="closeAndLogout()"></div>
+    </ng-template>
+
+    <ng-template #successModal let-c="close" let-d="dismiss">
+        <div class="successIcon"></div>
+        <p id="sessionPopup">{{message}}</p>
+        <div class="modelDismiss" (click)="closeModel()"></div>
+    </ng-template>
+
+    <ng-template #deleteUploadScriptModal let-c="close" let-d="dismiss">
+        <div class="successIcon"></div>
+        <p id="sessionPopup">{{message}}</p>
+        <div class="modelDismiss" (click)="closeDeleteModal()"></div>
+    </ng-template>
+
+    <ng-template #scriptContent let-c="close" let-d="dismiss">
+        <!--  <div class="modal-header">
+            <h4 class="modal-title">{{viewFileName}}</h4>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div> -->
+        <div class="modal-header">
+            <div class="dispHeader">
+                <h4>{{(viewFileName | uppercase).split(".",[1])}} </h4>
+            </div>
+
+            <!--  <button type="button" class="close" aria-label="Close" (click)="closeModelRunningLog()">
+                <span aria-hidden="true">&times;</span>
+            </button> -->
+        </div>
+        <div class="row" style="background-color: whitesmoke;padding:10px;margin: 0px 2px;">
+
+            <textarea contenteditable="true" class="col-12" rows="25" [(ngModel)]="scriptData.scriptFileContent"></textarea>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-light" (click)="saveScript(c)">Save</button>
+            <button type="button" class="btn btn-light" (click)="c('Close click')">Close</button>
+        </div>
+    </ng-template>
+
+</div>

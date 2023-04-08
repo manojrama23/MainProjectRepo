@@ -1,0 +1,59 @@
+@import 'src/variable';
+.radio-inline{position: relative;padding-left: 20px;margin-bottom: 0;font-weight: 400;vertical-align: middle;cursor: pointer;}
+.radio-inline input[type=radio]{position: absolute;margin-left: -20px;margin-top: 2px;}
+
+.col-half-offset{
+    margin-left:3.4%
+}
+.checklistSearch{width:325px !important;word-break: break-word}
+.searchMarginChecklist{margin-left: -15px;}
+.searchMarginCiq{margin-left: -54px;}
+/* .table tbody tr:hover{outline:0px double #5161AC; border:0px solid #fff !important;-webkit-backface-visibility:hidden;} */
+.scrollBody{max-height: 492px !important}
+
+/* .nodeName{font-weight: bold;} */
+#enodeBMenuList{border: 1px solid #D6DADC;background-color: #fff;padding: 0px 0px 0px 0px;border-radius: 3px;margin-bottom: 2px;position: relative;margin-left: 15px;}
+.enodeBMenuListData{background-color: #dce2e6;cursor: pointer;padding: 4px 0px 4px 10px; border-bottom: 1px #fff solid;font-weight:bold;}
+#enodeBTable{margin-right: -15px;padding-right: 30px;padding-left: 2px;}
+.dateRangeAlign{    
+    float: left;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+#ciqName {
+    width: 225px !important;
+    /* height: 25px !important; */
+    display: flex;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    box-shadow: none;
+    word-break: break-word;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: .25rem;
+}
+
+.dispHeader{display: flex;justify-content: center;color: #5161AC;margin-top: 10px;}
+.scriptDetailsWrapper,.scriptWrapper{margin:10px;}
+.scriptDetailsWrapper .scrollBody, .scriptWrapper .scrollBody {overflow-x: hidden;}
+.infoMsg{
+    display: flex;
+    position: relative;
+    right: 15px;
+    font-style: italic;
+    text-align: right;
+    justify-content: flex-end;
+}
+
+@media (min-width: 1200px) and (max-width: 1359px){
+    #ciqName {width: $form-control-width-xs;}
+}
+@media (min-width: 1360px) and (max-width: 1599px){
+    #ciqName {width: $form-control-width-sm;}
+}
+@media (min-width: 1600px) and (max-width: 1899px){
+    #ciqName {width: $form-control-width-md;}
+}
+@media (min-width: 1900px) {
+    #ciqName {width: $form-control-width-lg;}
+}

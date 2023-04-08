@@ -1,0 +1,744 @@
+<div class="page-wrapper">
+    <rct-loader *ngIf="showLoader"></rct-loader>
+    <h1 class="mainHead">GENERATE</h1>
+    <ng-template #confirmModal let-c="close" let-d="dismiss">
+        <div class="sucessContentWrapper">
+            <div class="confirmIcon"></div>
+            <div class="confirmContent">
+                <p>
+                    <b>File already exist, Are You Sure</b>
+                </p>
+                <br>
+                <p>You want to
+                    <b>Replace this file</b>
+                </p>
+            </div>
+        </div>
+        <div class="modal-footer textAlignCenter" style="margin-top:15px;">
+            <button type="button" class="formBtn btn btn-secondary modal_button_yes" (click)="d('dismiss click')" id="deleteConfirmation">YES</button>
+            <button type="button" class="formBtn btn btn-secondary modal_button_no" (click)="c('Close click')" id="modal_button_no">NO</button>
+        </div>
+    </ng-template>
+    <ng-template #confirmModalDelete let-c="close" let-d="dismiss">
+        <div class="sucessContentWrapper">
+            <div class="confirmIcon"></div>
+            <div class="confirmContent deletePopup">
+                <p>
+                    <b>Are You Sure, </b>
+                <!-- </p>
+                <br>
+                <p> -->You want to
+                    <b>Delete</b>
+                </p>
+            </div>
+        </div>
+        <div class="deletePopupBtn modal-footer textAlignCenter">
+            <button type="button" class="formBtn btn btn-secondary modal_button_yes" (click)="d('dismiss click')" id="deleteConfirmation">YES</button>
+            <button type="button" class="formBtn btn btn-secondary modal_button_no" (click)="c('Close click')" id="modal_button_no">NO</button>
+        </div>
+    </ng-template>
+    <!-- <rct-nodata *ngIf="noDataVisibility" [subTitle]="'Please click on <u><b>CREATE NEW</b></u> to add users'"></rct-nodata> -->
+
+    <ng-template #sessionExpiredModal let-c="close" let-d="dismiss">
+        <div class="failureIcon"></div>
+        <p id="sessionPopup">Session Expired</p>
+        <div class="modelDismiss" (click)="closeAndLogout()"></div>
+    </ng-template>
+
+    <ng-template #successModal let-c="close" let-d="dismiss">
+        <div class="successIcon"></div>
+        <p id="sessionPopup">{{message}}</p>
+
+        <div class="modelDismiss" (click)="closeModel()"></div>
+    </ng-template>
+
+
+
+
+    <div class="migrationBlock">
+        <form class="form-horizontal">
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group radio-inline" *ngIf="radioBtnActive.commissionScript">
+                        <input class="radio" type="radio" [(ngModel)]='fileType' value="COMMISSION_SCRIPT" name="cmsBtn" (click)="onChangeLoad('COMMISSION_SCRIPT')"
+                            [disabled]="!radioBtnActive.commissionScript">
+                        <label for="templateName">COMMISSIONING SCRIPT</label>
+                    </div>
+                    <div class="form-group radio-inline" *ngIf="radioBtnActive.env">
+                        <!-- || selectedNeVersion =='20.C.0' -->
+                        <input class="radio" type="radio" [(ngModel)]='fileType' value="ENV" name="envBtn" (click)="onChangeLoad('ENV')">
+                        <label for="templateName">ENV</label>
+                    </div>
+                    <div class="form-group radio-inline" *ngIf="radioBtnActive.csv">
+                        <input class="radio" type="radio" [(ngModel)]='fileType' value="CSV" name="migrationBtn" (click)="onChangeLoad('CSV')">
+                        <label for="templateName">GROW TEMPLATE</label>
+                    </div>
+                    <div class="form-group radio-inline" *ngIf="networkType=='5G' && radioBtnActive.endc">
+                        <input class="radio" type="radio" [(ngModel)]='fileType' value="ENDC" name="endcBtn" (click)="onChangeLoad('ENDC')">
+                        <label for="templateName">ENDC</label>
+                    </div>
+                    <div class="form-group radio-inline" *ngIf="radioBtnActive.all">
+                        <input class="radio" type="radio" [(ngModel)]='fileType' value="ALL" name="allBtn" (click)="onChangeLoad('ALL')">
+                        <label for="templateName">ALL</label>
+                    </div>
+                    <div class="form-group radio-inline">
+                        <input class="radio" type="radio" [(ngModel)]='fileType' value="OFFLINE" name="offlineBtn" (click)="onChangeLoad('OFFLINE')">
+                        <label for="templateName">OFFLINE</label>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <ul class="nav nav-pills" role="tablist">
+        <li class="nav-item">
+            <div (click)="generateTabBind()" accesskey="h" name="generate" class=" divalign float-sm-right float-md-right float-lg-right float-xl-right"
+                #generateTab>GENERATE</div>
+        </li>
+        <li class="nav-item">
+            <div (click)="searchTabBind()" accesskey="n" name="search" class="divalign float-sm-right float-md-right float-lg-right float-xl-right"
+                #searchTab>SEARCH</div>
+        </li>
+    </ul>
+
+    <div id="tabContentWrapper" class="flightSearchFormWrapper" *ngIf="generateBlock">
+        <form class="form-horizontal" id="bluePrintForm" #bluePrintForm>
+            <div class="row">
+                <div class="col-3">
+                    <div class="form-group ">
+                        <label for="templateName" class="asterisk_input">SELECT DATE RANGE</label>
+                        <input class="form-control form-control-small dateRangeAlign" [ngClass]="{'error-border':errMessage}" id="fromDate" name="fromDate"
+                            [(ngModel)]="fromDate" placeholder="FROM DATE" [owlDateTimeTrigger]="dt" [owlDateTime]="dt" [max]="max"
+                            (dateTimeChange)="onChangeDate()">
+                        <owl-date-time [pickerType]="'calendar'" #dt></owl-date-time>
+                        <input class="form-control form-control-small dateRangeAlign" [ngClass]="{'error-border':errMessage}" id="toDate" name="toDate"
+                            [(ngModel)]="toDate" [min]="fromDate" [max]="max" [owlDateTimeTrigger]="dt1" placeholder="TO DATE"
+                            [owlDateTime]="dt1" (dateTimeChange)="onChangeDate()">
+                        <owl-date-time [pickerType]="'calendar'" #dt1></owl-date-time>
+                        <div class="error-message-block" *ngIf="errMessage">Please Select Date Range</div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName" class="asterisk_input">CIQ NAME</label>
+                        <!--  <select class="form-control" name="ciqName" id="ciqName" #ciqName (change)="getNEdata()" [(ngModel)]="ciqNEFileDetails">
+                            <option value="">--Select--</option>
+                            <option *ngFor="let key of getCiqList" [ngValue]="key">{{key.ciqFileName}}</option>
+                            <option *ngFor="let key of getCiqList" id="{{key.id}}" value="{{key.fileName}}">{{key.fileName}}</option>
+                        </select> -->
+                        <div class="">
+                            <ngx-select-dropdown [config]="ciqNameConfig" id="ciqName" [options]="getCiqList" [(ngModel)]="ciqNEFileDetails" name="ciqName"
+                               (change)="getNEdata(true)"></ngx-select-dropdown>
+                        <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName" class="asterisk_input">NE NAME</label>
+                        <select class="form-control" name="nes" id="nes" [(ngModel)]="neDetails">
+                            <option value="">--Select--</option>
+                            <option *ngFor="let key of getNeslist" >{{key.eNBName}}</option>
+                        </select>
+                        <div class="error-message-block"></div>
+                    </div>
+                </div> -->
+
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName" class="asterisk_input">{{programName == "VZN-5G-MM" ? "SITE_NAME" : programName == "VZN-5G-DSS" ? "vDU NAME": "NE NAME" }}</label>
+                        <!-- <ng-multiselect-dropdown class="form-control" id="nes" [placeholder]="'--Select--'" [data]="getNeslist" [(ngModel)]="neDetails"
+                            [settings]="dropdownSettings" name="nes">
+                        </ng-multiselect-dropdown> -->
+                        <div class="row" name="useCase" id="useCase" style="margin-left: 0;float: left;">
+                            <ng-select *ngIf="programName!='VZN-5G-MM'" [multiple]="true" [virtualScroll]="true" [closeOnSelect]="false" [(ngModel)]="neDetails" name="nes" id="nes" class="" placeholder="--Select--"> <!-- (change)="onChangeNEs($event)" {{networkType=='5G' ? onChangeNEs($event) : '' -->
+                                <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                    <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                        <span class="ng-value-label">{{item.eNBId}}</span>
+                                        <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">x</span>
+                                    </div>
+                                    <div class="ng-value" *ngIf="items.length > 1">
+                                        <span class="ng-value-label">{{items.length - 1}} more...</span>
+                                    </div>
+                                </ng-template>
+                                <ng-option *ngFor="let key of getNeslist" [value]="key" [disabled]="false">{{key.eNBName}}</ng-option>
+                            </ng-select>
+                            <ng-select *ngIf="programName=='VZN-5G-MM'" [multiple]="true" [virtualScroll]="true" [closeOnSelect]="false"
+                                [(ngModel)]="neDetails" name="nes" id="nes" class="" placeholder="--Select--" (change)="onChangesites($event)">
+                            
+                                <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                    <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                        <span class="ng-value-label a">{{item.key}}</span>
+                                        <!-- <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">x</span> -->
+                                    </div>
+                                    <div class="ng-value" *ngIf="items.length > 1">
+                                        <span class="ng-value-label">+{{items.length - 1}} more...</span>
+                                    </div>
+                                </ng-template>
+                            
+                            
+                                <ng-option *ngFor="let key of getNesitelist | keyvalue" [value]="key" [disabled]="false">{{key.key}}
+                                </ng-option>
+                            </ng-select>
+
+                            <div class="error-message-block"></div>
+                            <button (click)="getNeList(getNeListModal)" *ngIf="programName=='VZN-5G-MM'" [disabled]="nenamebutton"class="viewContent chkConnLogBtn"style="margin: 6px 2 0 0px;margin-left:2px" placement="bottom"
+                                container="body" ngbTooltip="If selected,get all ne names"></button>
+                            <div class="calenderForm" style="text-align: right;">
+                                <label *ngIf="programName == 'VZN-4G-USM-LIVE'" class="filterSitesToggle">Support CA
+                                    <input type="checkbox" id="supportCA" name="supportCA" [(ngModel)]="supportCA" [checked]="supportCA"/>
+                                </label>
+                                <label class="filterSitesToggle">OV Update
+                                    <input type="checkbox" class="thcheckbox" [(ngModel)]="ovUpdate" name="ovUpdatecheck" >
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- <input *ngIf="programName == 'VZN-5G-MM'" type="checkbox" name="generateAllSites" [checked]="generateAllSites"
+                            [(ngModel)]="generateAllSites" placement="bottom" ngbTooltip="If selected, Generate for all sites" style="margin: 6px 0 0 25px;"/> -->
+                    </div>
+                </div>
+                
+                <!-- <div class="col-3" *ngIf="fileType == 'ENDC'">
+                    <div class="form-group">
+                        <label for="templateName" class="asterisk_input">NE ID</label>
+                        <ng-multiselect-dropdown id="neIDs" class="form-control" name="neIDs"
+                            [placeholder]="'--Select--'" [data]="getNeIDslist" [(ngModel)]="selectedNEIDs" [settings]="neIdDropdownSettings">
+                        </ng-multiselect-dropdown>
+                        <div class="error-message-block"></div>
+                    </div>
+                </div> -->
+
+                <!-- NOT TO SHOW FROM NOW : ARUN 09Nov21-->
+                <div class="col-3" *ngIf="false && programName=='VZN-4G-FSU'">
+                    <div class="form-group">
+                        <label for="templateName" class="asterisk_input">NE VERSION</label>
+                        <select class="form-control" name="neVersion" id="neVersion" [(ngModel)]="selectedNeVersion"><!-- [(ngModel)]="selectedNeVersion" -->
+                            <!-- <option value="19.A.0">19.A.0</option>
+                            <option value="20.A.0">20.A.0</option>
+                            <option value="">--Select--</option> -->
+                            <option value="21.B.0">21.B.0</option>
+                            <!-- <option value="20.C.0">20.C.0</option> -->
+                            <option value="21.A.0">21.A.0 (FOA)</option>
+                        </select>
+                        <div class="error-message-block"></div>
+                    </div>
+                </div>
+
+                <div class="col-3" *ngIf="programName=='VZN-4G-FSU'">
+                    <div class="form-group">
+                        <label for="templateName" class="">FSU TYPE</label>
+                        <select class="form-control" name="fsuType" id="fsuType" [(ngModel)]="selectedFSUType">
+                            <option value="">--Select--</option>
+                            <option value="FSU10">FSU10</option>
+                            <option value="FSU20">FSU20</option>
+                        </select>
+                        <div class="error-message-block"></div>
+                    </div>
+                </div>
+                <div class="col-3" *ngIf="programName=='VZN-4G-USM-LIVE' && fileType=='CSV'">
+                    <div class="form-group">
+                        <label for="templateName" class="">MIGRATION STRATEGY</label>
+                        <select class="form-control" name="migrationStrategy" id="migrationStrategy" [(ngModel)]="migrationStrategy">
+                            <option value="Legacy IP">Legacy IP</option>
+                            <option value="Pseudo IP">Pseudo IP</option>
+                        </select>
+                        <div class="error-message-block"></div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName" class="widthReg">REMARKS</label>
+                        <textarea rows="4" cols="50" class="customTextArea remarksTextArea" name="remarks" id="remarks" [(ngModel)]="remarks"></textarea>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="textAlignCenter" id=saveRow>
+                <!-- <button name="save" class="formBtn myriadproBold validateForm" id="AddButton" (click)="createFileRule($event)" accesskey="s">CREATE</button>  -->
+                <button name="save" class="formBtn myriadproBold validateForm" id="validatebutton" (click)="validate($event)" accesskey="u">VALIDATE</button>
+                <ng-template #errorMsg>Select Valid File</ng-template>
+                <div class="displayNone dbImportButtonDisabled errorIcon" placement="center" container="body" [ngbTooltip]="errorMsg"></div>
+
+                <button name="save" class="formBtn myriadproBold validateForm" id="generate" (click)="generate($event)" accesskey="u">GENERATE</button>
+                <ng-template #errorMsg>Select Valid File</ng-template>
+                <div class="displayNone dbImportButtonDisabled errorIcon" placement="center" container="body" [ngbTooltip]="errorMsg"></div>
+            </div>
+        </form>
+    </div>
+
+    <div *ngIf="searchBlock">
+        <div id="formWrapper" class="formWrapperMargin bluePrintFormWrapper">
+            <form class="form-horizontal" id="bluePrintForm" #bluePrintForm>
+                <div class="row">
+                    <!-- <div class="col-3">
+                        <div class="form-group ">
+                            <label for="templateName">SELECT DATE RANGE</label>
+                            <input class="form-control form-control-small dateRangeAlign" id="searchStartDate" name="searchStartDate" [(ngModel)]="searchStartDate"
+                                placeholder="FROM DATE" [owlDateTimeTrigger]="dt" [owlDateTime]="dt" [max]="searchEndDate" (dateTimeChange)="onChangeDate()">
+                            <div class="error-message-block"></div>
+                            <owl-date-time [pickerType]="'calendar'" #dt></owl-date-time>
+
+                            <input class="form-control form-control-small dateRangeAlign" id="searchEndDate" name="searchEndDate" [(ngModel)]="searchEndDate"
+                                [min]="searchStartDate" [max]="max" [owlDateTimeTrigger]="dt1" placeholder="TO DATE" [owlDateTime]="dt1" (dateTimeChange)="onChangeDate()">
+                            <div class="emigrationrror-message-block"></div>
+                            <owl-date-time [pickerType]="'calendar'" #dt1></owl-date-time>
+                                
+                        </div>
+                    </div> -->
+
+                    <div class="col-3">
+                        <div class="form-group ">
+                            <label for="templateName">SELECT DATE RANGE</label>
+                            <input class="form-control form-control-small dateRangeAlign" id="searchStartDate" name="searchStartDate" [(ngModel)]="searchStartDate"
+                                placeholder="FROM DATE" [owlDateTimeTrigger]="dt" [owlDateTime]="dt" [max]="searchEndDate ? searchEndDate : max">
+                            <owl-date-time [pickerType]="'calendar'" #dt></owl-date-time>
+                            <input class="form-control form-control-small dateRangeAlign" id="searchEndDate" name="searchEndDate" [(ngModel)]="searchEndDate"
+                                [min]="searchStartDate" [max]="max" [owlDateTimeTrigger]="dt1" placeholder="TO DATE" [owlDateTime]="dt1">
+                            <owl-date-time [pickerType]="'calendar'" #dt1></owl-date-time>
+                            <div class="message" *ngIf="errMessage">Please Select Date Range</div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-3 ">
+                        <div class="form-group">
+                            <label for="templateName">FILE NAME</label>
+                            <input class="form-control" autocomplete="off" id="fileName" name="fileName" type="text" value="" maxlength="100" />
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName">CIQ NAME</label>
+                            <input class="form-control" autocomplete="off" id="searchCiqName" name="searchCiqName" type="text" value="" maxlength="100" />
+                            <!-- <select class="form-control" name="searchCiqName" id="searchCiqName" #searchCiqName>
+                                <option value="">--Select--</option> -->
+                                <!-- <option *ngFor="let key of searchCiqList" value="{{key.ciqFileName}}">{{key.ciqFileName}}</option> -->
+                                <!-- <option *ngFor="let key of searchCiqList" value="{{key}}">{{key}}</option>
+
+                            </select> -->
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                    <div class="col-3" *ngIf="programName == 'VZN-5G-MM'">
+                        <div class="form-group">
+                            <label for="templateName">SITE NAME</label>
+                            <input class="form-control" autocomplete="off" id="searchSiteName" name="searchSiteName" type="text" value="" maxlength="100" />
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName">{{networkType=="5G" ? "GNB_AU_NAME" : "NE NAME"}}</label>
+                            <input class="form-control" autocomplete="off" id="searchNeName" name="searchNeName" type="text" value="" maxlength="30"
+                            />
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+
+                    <!-- <div class="col-3">
+                                    <label for="templateName"></label>
+                                    <button name="save" class="formBtn myriadproBold validateForm airlinecnfgSearch" id="searchButton" (click)="searchFileRules($event)"
+                                        accesskey="s">SEARCH</button>
+                                </div> -->
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName">USER NAME</label>
+                            <input type="text" class="form-control" id="searchUserName" name="searchUserName" value="" maxlength="30" />
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="textAlignCenter">
+                    <button name="save" class="formBtn myriadproBold validateForm airlinecnfgSearch" id="searchButton" (click)="searchGenerate($event)"
+                        accesskey="s">SEARCH</button>
+                    <button type="button" id="cancelButton" name="CANCEL" class="formBtnCncl formBtn myriadproBold formBtn" (click)="clearSearchFrom()" accesskey="c">CLEAR</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="filterTable">
+        <label [ngClass]="{disabled:searchBlock}" class="switch filterSitesToggle">Show my sites
+            <input type="checkbox" name="showMySites" (change)="toggleSitesTable()"
+                [checked]="showMySites" [(ngModel)]="showMySites" [disabled]="searchBlock"/>
+                <!-- <span class="switch-label" data-on="ALL" data-off="NONE"></span>
+                <span class="switch-handle updateExeToggleHandle"></span> -->
+        </label>
+    </div>
+
+    <!--Data Table-->
+
+    <div id="dataWrapper" *ngIf="tableShowHide" style="padding-top:10px;">
+        <div id="tableWrapper">
+            <div class="scrollHead">
+                <table class="table" id="csvAuditTrailDetModels">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div (click)="changeSorting('fileName', $event, 0)" class="sorting form-control-max">FILE NAME</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('ciqFileName', $event, 1)" class="sorting form-control-small-1">CIQ NAME</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('neName', $event, 2)" class="sorting form-control-small-1">{{networkType=="5G" ? "GNB_AU_NAME" : "NE NAME"}}</div>
+                            </th>
+                            <th *ngIf="programName == 'VZN-5G-MM'">
+                                <div (click)="changeSorting('siteName', $event, 3)" class="sorting form-control-small-1">SITE NAME</div>
+                            </th>
+                            <!-- <th>
+                                <div (click)="changeSorting('networkType', $event, 1)" class="sorting form-control-small">N/W TYPE</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('lsmVersion', $event, 2)" class="sorting form-control-small">LSM VERSION</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('csvFilepath', $event, 1)" class="sorting form-control-440">FILE PATH</div>
+                            </th> -->
+                            <th>
+                                <div (click)="changeSorting('generateBy', $event, 4)" class="sorting form-control-small-1">USER</div>
+                            </th>
+							<th>
+                                <div (click)="changeSorting('ovUpdateStatus', $event, 5)" class="sorting form-control-small-1">OV UPDATE STATUS</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('generationDate', $event, 6)" class="sorting form-control-small-1">CREATION DATE</div>
+                            </th>
+                            <th *ngIf="programName == 'VZN-4G-USM-LIVE' && fileType == 'CSV'">
+                                <div class="sorting form-control-small-1">MIGRATION STRATEGY</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('remarks', $event, 7)" class="sorting form-control-small-1">REMARKS</div>
+                            </th>
+
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="scrollBody">
+                <table class="table" id="genarateFileData">
+                    <tbody id="rowCount">
+                        <ng-container *ngFor="let key of tableData['csvAuditTrailDetModels']; let index = index">
+                            <tr id="row_id_{{key.ID}}">
+                                <td class="form-control-max" data-toggle="tooltip" data-placement="right" data-container="body">
+                                    <a style="cursor: pointer;text-decoration: underline;" (click)="downLoadFile(key.fileName,key.filePath)">{{key.fileName}}</a>
+                                </td>
+                                <!-- <td class="form-control-max" data-toggle="tooltip" data-placement="right" data-container="body">{{key.fileName}}</td> -->
+                                <td class="form-control-small-1" data-toggle="tooltip" data-placement="right" data-container="body">{{key.ciqFileName}}</td>
+                                <td class="form-control-small-1" data-toggle="tooltip" data-placement="right" data-container="body">{{key.neName}}</td>
+                                <td *ngIf="programName == 'VZN-5G-MM'" class="form-control-small-1" data-toggle="tooltip" data-placement="right" data-container="body">{{key.siteName}}</td>
+                                <!-- <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">{{key.networkType}}</td>
+                                    <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">{{key.lsmVersion}}</td>
+                                    <td class="form-control-440" data-toggle="tooltip" data-placement="right" data-container="body">{{key.csvFilePath}}</td> -->
+                                <td class="form-control-small-1" data-toggle="tooltip" data-placement="right" data-container="body">{{key.generatedBy}}</td>
+                                <td class="form-control-small-1" data-toggle="tooltip" data-placement="right"
+                                    data-container="body">
+                                    <div class="row">
+                                        <div class="col-10 useCaseField">{{key.ovUpdateStatus}}</div><!-- (key.ovUpdateStatus && key.ovUpdateStatus.indexOf('Failure') >= 0) -->
+                                        <div *ngIf="key.ovUpdateStatus && (userGroupDetails == 'Super Administrator' || userGroupDetails == 'Administrator')" class="col-2" [ngClass]="key.ovUpdateStatus && key.ovUpdateStatus.indexOf('Failure') >= 0 ? 'infoRowBigError' : 'infoRowBigPass'" (click)="viewOVFailureMessagae(ovFailureErrorModal, key)" 
+                                            placement="bottom" style="color:#3c3c3c;cursor: pointer;padding-left: 5px;" container="body" ngbTooltip="More Information"></div>
+                                    </div>
+                                </td>
+                                <td class="form-control-small-1" data-toggle="tooltip" data-placement="right" data-container="body">{{key.generationDate}}</td>
+                                <td *ngIf="programName == 'VZN-4G-USM-LIVE' && fileType == 'CSV'" class="form-control-small-1" data-toggle="tooltip" data-placement="right" data-container="body">{{key.integrationType}}</td>
+                                <td class="form-control-small-1" data-toggle="tooltip" data-placement="right" data-container="body">
+                                    <span class="eventColText">{{key.remarks}}</span>
+
+                                    <!-- 
+                                <td class="form-control-small-1" data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <div [ngClass]="{'completed':key.status =='COMPLETED', 'failed':key.status=='FAILED','inprogress':key.status=='IN PROGRESS'}"></div>
+                                        <span class="eventColText">{{key.status}}</span>
+                                        <div class="form-control-fixed iconsWrapper tableRowAction" id="fixedCol" ng-style="iconsWrapperPosition">
+                                            <div (click)="editRow($event, key, index)" class="editRow" id="{{index}}" placement="bottom" container="body" ngbTooltip="Edit"></div>
+                                            <div (click)="deleteRow(confirmModalDelete, key.userName, key.id, key.fileName,key.filePath)" class="deleteRow" placement="bottom" container="body" ngbTooltip="Delete"></div>
+                                        </div>
+                                    </td> -->
+
+
+                                    <div class="form-control-fixed iconsWrapper tableRowAction" id="fixedCol" ng-style="iconsWrapperPosition">
+                                            <div (click)="mailFile($event, mailPopUp, key, index)" class="mailIcon" placement="bottom" container="body" ngbTooltip="Mail"></div>
+                                        <div (click)="editRow($event, key, index)" class="editRow" id="{{index}}" placement="bottom" container="body" ngbTooltip="Edit"></div>
+                                        <div (click)="deleteRow(confirmModalDelete, key.userName, key.id, key.fileName,key.filePath,$event)" class="deleteRow" placement="bottom"
+                                            container="body" ngbTooltip="Delete"></div>
+                                    </div>
+                                </td>
+
+
+                            </tr>
+                            <tr *ngIf="checkFormEnable(index)" id="editedRow{{index}}">
+                                <td colspan="6" class="formEditRow">
+                                    <div id="formWrapper" class="userManagementFormWrapper" [ngStyle]="{'width': formWidth, 'margin-left': scrollLeft}">
+                                        <form class="form-horizontal">
+
+                                            <div class="row">
+                                                <input type="text" class="displayNone" id="id" name="id" value="" />
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName">FILE NAME</label>
+                                                        <input disabled="disabled" type="text" class="form-control" id="fileName" name="fileName" value="" maxlength="100" />
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName">CIQ NAME</label>
+                                                        <input disabled="disabled" type="text" class="form-control" id="ciqFileName" name="ciqFileName" value="" maxlength="100"
+                                                        />
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName">{{networkType=="5G" ? "GNB_AU_NAME" : "NE NAME"}}</label>
+                                                        <input disabled="disabled" type="text" class="form-control" name="neName" id="neName" maxlength="100" />
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName">Creation Date</label>
+                                                        <input disabled="disabled" type="text" class="form-control" id="generationDate" name="generationDate" value="" maxlength="100"
+                                                        />
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="widthReg">REMARKS</label>
+                                                        <textarea rows="4" cols="50" class="customTextArea remarksTextArea" name="remarks" id="remarks"></textarea>
+                                                    </div>
+                                                </div>
+
+
+                                                <!-- <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="asterisk_input">STATUS</label>
+                                                        <select class="form-control" name="status" id="status">
+                                                            <option value="">--Select--</option>
+                                                            <option value="COMPLETED">COMPLETED</option>
+                                                            <option value="IN PROGRESS">IN PROGRESS</option>
+                                                            <option value="FAILED">FAILED</option>
+                                                        </select>
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div> -->
+                                            </div>
+
+                                            <div class="textAlignCenter">
+                                                <button name="update" class="formBtn myriadproBold validateForm" id="updateButton" type="submit" (click)="updateEditRow(index, key, $event)"
+                                                    accesskey="u">UPDATE</button>
+                                                <button type="button" name="CANCEL" class="formBtnCncl formBtn myriadproBold" id="editCancelButton" (click)="cancelEditRow(index,key.id)"
+                                                    accesskey="c">CANCEL</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+            <div id="paginationWrapper">
+                <div *ngIf="pageRenge.length" class="page" style="margin-left:20px;">
+                    <div class="floatLeft" style="width: 75px;padding-top: 6px">Show</div>
+                    <select [disabled]="paginationDisabbled" [(ngModel)]="pageSize" (change)="onChangeTableRowLength($event)" style="margin-top: 4px; margin-right: 6px;margin-left: -39px;"
+                        class="form-control-pagination floatLeft" aria-controls="TableRowLength" size="1" name="TableRowLength"
+                        id="TableRowLength">
+                        <option selected="selected" value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                    <div class="floatLeft" style="width: 75px;padding-top: 6px">Entries</div>
+                    <div class="floatRight page" style="padding-top: 3px;margin-right:20px;">
+                        <ul *ngIf="pageRenge.length" class="pagination floatRight">
+                            <li id="firstPage" [ngClass]="{disabled:(currentPage === 1 || paginationDisabbled)}" class="page-item">
+                                <a class="page-link" (click)="setPage(1)">FIRST</a>
+                            </li>
+                            <li id="previousPage" [ngClass]="{disabled:(currentPage === 1 || paginationDisabbled)}" class="page-item">
+                                <a class="page-link" (click)="setPage(pager.currentPage - 1)">PREV</a>
+                            </li>
+                            <li *ngFor="let n of pager.pages" [ngClass]="{active:currentPage === n, disabled:paginationDisabbled}" class="page-item">
+                                <a class="page-link" (click)="setPage(n)" id='{{n+1}}'>{{n}}</a>
+                            </li>
+                            <li id="nextPage" [ngClass]="{disabled:(currentPage === totalPages || paginationDisabbled)}" class="page-item">
+                                <a class="page-link" (click)="setPage(pager.currentPage + 1)">NEXT</a>
+                            </li>
+                            <li id="lastPage" [ngClass]="{disabled:(currentPage === totalPages || paginationDisabbled)}" class="page-item">
+                                <a class="page-link" (click)="setPage(pager.totalPages)">LAST</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <rct-nodata *ngIf="noDataVisibility" [subTitle]=""></rct-nodata>    <!-- [subTitle]="'Please click on <u><b>GENERATE</b></u> to add new data'" -->
+    <rct-model *ngIf="showModelMessage" [message]="modelData"></rct-model>
+
+    <ng-template #viewModal let-c="close" let-modal>
+        <div class="modal-header">
+            <div class="validationHeader">
+                <span class="failureIconBigger"></span>
+                <h4> VALIDATION FAILED</h4>
+            </div>
+
+            <span class="errorHeading">
+                <b>CIQ File NAME : </b> {{this.ciqNEFileDetails.ciqFileName}}</span>
+        </div>
+        <div class="modelBody">
+            <form class="form-horizontal">
+                <div id="dataWrapper">
+                    <div id="">
+                        <table class="table" id="demo-table">
+                            <thead>
+                                <tr>
+                                    <th (click)="changeSortingVal('rowId', $event, 5)" class="lineHeight sorting form-control-mini">ROW ID</th>
+                                    <th (click)="changeSortingVal('sheetName', $event, 6)" class="lineHeight sorting form-control-genValidate">SHEET NAME</th>
+                                    <th (click)="changeSortingVal('subSheetName', $event, 7)" class="lineHeight sorting form-control-genValidate">SUB SHEET NAME</th>
+                                    <th (click)="changeSortingVal('cellId', $event, 8)" class="lineHeight sorting form-control-validatemini">CELL ID</th>
+                                    <th (click)="changeSortingVal('enbName', $event, 9)" class="lineHeight sorting form-control-genValidate">ENB NAME</th>
+                                    <th (click)="changeSortingVal('propertyName', $event, 10)" class="lineHeight sorting form-control-genValidate">COLUMN NAME</th>
+                                    <th (click)="changeSortingVal('errorMessage', $event, 11)" class="lineHeight sorting form-control-genValidate">ERROR MESSAGE</th>
+                                </tr>
+                            </thead>
+                            <tbody id="rowCount">
+                                <!-- <ng-container *ngFor="let errdata of validateDetails | objectKeyValues"> -->
+                                        <ng-container *ngFor="let errdata of validateDetails">
+
+                                    <tr id="row_id_{{errdata.rowId}}">
+                                        <td class="form-control-mini" data-toggle="tooltip" data-placement="right" data-container="body">{{errdata.rowId}}</td>
+                                        <td class="form-control-genValidate" data-toggle="tooltip" data-placement="right" data-container="body">{{errdata.sheetName}}</td>
+                                        <td class="form-control-genValidate" data-toggle="tooltip" data-placement="right" data-container="body">{{errdata.subSheetName}}</td>
+                                        <td class="form-control-validatemini" data-toggle="tooltip" data-placement="right" data-container="body">{{errdata.cellId}}</td>
+                                        <td class="form-control-genValidate" data-toggle="tooltip" data-placement="right" data-container="body">{{errdata.enbName}}</td>
+                                        <td class="form-control-genValidate" data-toggle="tooltip" data-placement="right" data-container="body">{{errdata.propertyName}}</td>
+                                        <td class="form-control-genValidate" data-toggle="tooltip" data-placement="right" data-container="body">{{errdata.errorMessage}}
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <div class="modalAction">
+                <button type="button" class="formBtn btn btn-light" (click)="downloadErrorData()">DOWNLOAD</button>
+                <button type="button" class="formBtnCncl btn btn-light" (click)="closeView()">CANCEL</button>
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template #mailPopUp let-c="close" let-d="dismiss" ng-style="background-color:#fff;">
+        <div class="sucessContentWrapper">
+            <div class="emailHead">
+                <h4 class="emailField modal-title">SEND MAIL</h4>
+            </div>
+            <div style="margin: 5px;padding: 20px;">
+                <div class="row">
+                    <div class="col-1"></div>
+                    <div class="col-2" style="padding-top: 4px !important;">
+                        <label class="asterisk_input" style="color: #5160ac;">EMAIL ID:</label>
+                    </div>
+                    <div class="col-6" style="padding: 0px 0px 0px 0px !important;">
+                        <input type="email" name="emailaddress" class="form-control" style="width: inherit !important;" id="email" [(ngModel)]="emailId" required/>
+                    </div>
+                    <div class="col-2">
+                        <button type="button" class="formBtn myriadproBold"  (click)="d('dismiss click')" id="mailConfirmation">SEND</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer textAlignCenter">
+            <button type="button"  class="formBtnCncl formBtn myriadproBold" (click)="c('Close click')" id="mailConfirmation">CANCEL</button>
+        </div>
+    </ng-template>
+    <ng-template #getNeListModal let-c="close" let-modal>
+        <div class="modal-header">
+         
+            <div class="dispHeader">
+                <h4>NE NAMES BASED ON SITE NAME</h4>
+            </div>
+    
+        </div>
+        <div class="modelBody">
+            <div id="viewFile" style="padding: 100px;">
+                <div class="row" style="margin-top: -85px;">
+                
+                      <div class="col-6">      
+                        <label>NE NAME</label>
+                        <ng-multiselect-dropdown id="location" class="form-control" name="location"
+                        [placeholder]="'--Select--'" [data]="dropdownListNE" [(ngModel)]="selectedItemsNE"
+                        [settings]="dropdownSettingsNEs" >
+                         </ng-multiselect-dropdown>  
+                      </div>
+                      <div class="col-6">
+                          <label>Selected NE Names</label>
+                          <div  *ngIf="selectedItemsNE?.length" class="card">
+                                <li *ngFor="let item of selectedItemsNE">{{ item }} </li>
+                            </div>
+                      </div>
+                 </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="modalAction">
+                <button type="button" class="formBtnCncl btn btn-light" (click)="closeModelcheckConn()">CLOSE</button>
+            </div>
+        </div>
+    </ng-template>
+    <!-- OV Update Failure Error Message -->
+    <ng-template #ovFailureErrorModal let-c="close" let-modal>
+        <div class="modal-header">
+            <div class="dispHeader">
+                <h4>OV UPDATE STATUS</h4>
+            </div>
+        </div>
+        <div class="modelBody" style="padding: 0px 25px">
+            <fieldset class="scheduler-border" *ngIf="milestoneResult.length > 0">
+                <legend class="scheduler-border">Milestone</legend>
+                <div class="scrollBody mileStoneResult">
+                    <div *ngFor="let mileStone of milestoneResult; let i = index">
+                        <div class="mileStoneRows">
+                            <div class="mileStoneName"><span>{{i+1}}.</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>{{mileStone.name}}</span></div>
+                            <i *ngIf="mileStone.status === 'fail'" (click)="ovRetryFailedMilestone(mileStone.name)" class="mileStoneRetryIcon" ngbTooltip="Retry" placement="top" container="body"></i>
+                            <i [ngbTooltip]="mileStone.status === 'pass' ? 'Success' : 'Failed'" [class]="mileStone.status === 'pass' ? 'mileStoneRetrySuccess' : 'mileStoneRetryFail'" placement="top" container="body"></i>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="scheduler-border" *ngIf="milestoneResult.length > 0">
+                <legend class="scheduler-border">History</legend>
+                <div class="scrollBody mileStoneResult">
+                    <pre>{{historyResult}}</pre>
+                </div>
+            </fieldset>
+            <div id="viewFile" class="errorMsgBlock" *ngIf="milestoneResult.length == 0 && historyResult.length == 0">
+                <rct-nodata [subTitle]=""></rct-nodata>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="modalAction">
+                <button type="button" class="formBtnCncl btn btn-light" (click)="ovRetry()">RETRY</button>
+                <button type="button" class="formBtnCncl btn btn-light" (click)="closeModelFailureMsg()">CLOSE</button>
+            </div>
+        </div>
+		<rct-loader class="innerLoader" *ngIf="showInnerLoader"></rct-loader>
+    </ng-template>
+</div>

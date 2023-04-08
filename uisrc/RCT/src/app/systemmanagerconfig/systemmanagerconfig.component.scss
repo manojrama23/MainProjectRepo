@@ -1,0 +1,36 @@
+@import 'src/variable';
+
+.import{padding-top: 5px;text-align: center;margin-top: -6px}
+.import input[type=file] {width: 100px;position: relative;left: 0;top: -23px;opacity: 0;}
+.addServer{
+    text-align: right;
+    margin: 5px;
+  }
+  .inlineTable .scrollBody {overflow-x:hidden !important;}
+  .scriptTableRowAction{display:none;}
+.scrollBody #serverTableData tr:hover .scriptTableRowAction{display:block;}
+
+#programName {
+  width: 225px !important;
+  /* height: 25px !important; */
+  display: flex;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  box-shadow: none;
+  word-break: break-word;
+  border: 1px solid rgba(0,0,0,.15);
+  border-radius: .25rem;
+}
+
+@media (min-width: 1200px) and (max-width: 1359px){
+  #programName {width: $form-control-width-xs;}
+}
+@media (min-width: 1360px) and (max-width: 1599px){
+  #programName {width: $form-control-width-sm;}
+}
+@media (min-width: 1600px) and (max-width: 1899px){
+  #programName {width: $form-control-width-md;}
+}
+@media (min-width: 1900px) {
+  #programName {width: $form-control-width-lg;}
+}

@@ -1,0 +1,445 @@
+<div class="page-wrapper">
+    <rct-loader *ngIf="showLoader"></rct-loader>
+    <h1 class="mainHead">RAN CONFIGURATION</h1>
+    <ul class="nav nav-pills" role="tablist">
+        <li class="nav-item">
+            <div (click)="searchByCiq()" accesskey="h" name="seatch" class=" divalign float-sm-right float-md-right float-lg-right float-xl-right" #searchTab>CIQ</div>
+        </li>
+        <li class="nav-item">
+            <div (click)="searchByNes()" accesskey="n" name="createnew" class="divalign float-sm-right float-md-right float-lg-right float-xl-right" #createNewTab>NE</div>
+        </li>
+    </ul>
+
+    <ng-template #confirmModal let-c="close" let-d="dismiss">
+        <div class="sucessContentWrapper">
+            <div class="confirmIcon"></div>
+            <div class="confirmContent deletePopup">
+                <p>
+                    <b>Are You Sure, </b>
+                <!-- </p>
+                <br>
+                <p> -->You want to <b>Delete</b>
+                </p>
+            </div>
+        </div>
+        <div class="deletePopupBtn modal-footer textAlignCenter">
+            <button type="button" class="formBtn btn btn-secondary modal_button_yes" (click)="d('dismiss click')" id="deleteConfirmation">YES</button>
+            <button type="button" class="formBtn btn btn-secondary modal_button_no" (click)="c('Close click')" id="modal_button_no">NO</button>
+        </div>
+    </ng-template>
+    <ng-template #sessionExpiredModal let-c="close" let-d="dismiss">
+        <div class="failureIcon"></div>
+        <p id="sessionPopup">Session Expired</p>
+        <div class="modelDismiss" (click)="closeAndLogout()"></div>
+    </ng-template>
+    <ng-template #successModal let-c="close" let-d="dismiss">
+        <div class="successIcon"></div>
+        <p id="sessionPopup">{{message}}</p>
+
+        <div class="modelDismiss" (click)="closeModel()"></div>
+    </ng-template>
+    <rct-model *ngIf="showModelMessage" [message]="modelData"></rct-model>
+    <div id="formWrapper" class="formWrapperMargin" *ngIf="searchByCiqBlock">
+        <form class="form-horizontal">
+            <div class="row">
+                <div class="col-3">
+                    <div class="form-group ">
+                        <label for="templateName">SELECT DATE RANGE</label>
+                        <input class="form-control form-control-small dateRangeAlign" id="fromDate" name="fromDate" [(ngModel)]="fromDate"
+                            placeholder="FROM DATE" [owlDateTimeTrigger]="dt" [owlDateTime]="dt" [max]="toDate" (dateTimeChange)="onChangeDate()">                        
+                        <owl-date-time [pickerType]="'calendar'" #dt></owl-date-time>
+                        <input class="form-control form-control-small dateRangeAlign" id="toDate" name="toDate" [(ngModel)]="toDate" [min]="fromDate" [max]="max" [owlDateTimeTrigger]="dt1"
+                        placeholder="TO DATE" [owlDateTime]="dt1" (dateTimeChange)="onChangeDate()">                         
+                        <owl-date-time [pickerType]="'calendar'" #dt1></owl-date-time>
+                        <div class="message" *ngIf="errMessage">Please Select Date Range</div>
+                    </div>
+                </div>
+              
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName">CIQ NAME</label>
+                        <!--  <select class="form-control" name="ciqName" id="ciqName" #ciqName [(ngModel)]="ciqFileDetails">
+                            <option value="">--Select--</option>
+                            <option *ngFor="let key of getCiqList" [ngValue]="key">{{key.ciqFileName}}</option>
+                        </select> -->
+                        <div class="">
+                            <ngx-select-dropdown [config]="ciqNameConfig" id="ciqName" [options]="getCiqList" [(ngModel)]="ciqFileDetails" name="ciqName"
+                            (change)="getNEdata(true, false)"></ngx-select-dropdown>                    
+                        <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName"></label>                        
+                            <button name="save" class="formBtn myriadproBold validateForm airlinecnfgSearch" id="searchButton" (click)="getDeatilsByCiq($event, 'CIQ')"
+                                accesskey="s">SEARCH</button>                        
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+    <div id="formWrapper" class="formWrapperMargin" *ngIf="searchByNesBlock">
+        <form class="form-horizontal">
+            <div class="row">
+                <div class="col-3">
+                    <div class="form-group ">
+                        <label for="templateName">SELECT DATE RANGE</label>
+                        <input class="form-control form-control-small dateRangeAlign" id="fromDate" name="fromDate" [(ngModel)]="fromDate"
+                            placeholder="FROM DATE" [owlDateTimeTrigger]="dt" [owlDateTime]="dt" [max]="toDate" (dateTimeChange)="onChangeDateNE()">                        
+                        <owl-date-time [pickerType]="'calendar'" #dt></owl-date-time>                
+                        <input class="form-control form-control-small dateRangeAlign" id="toDate" name="toDate" [(ngModel)]="toDate"
+                            [min]="fromDate" [max]="max" [owlDateTimeTrigger]="dt1" placeholder="TO DATE" [owlDateTime]="dt1" (dateTimeChange)="onChangeDateNE()">                        
+                        <owl-date-time [pickerType]="'calendar'" #dt1></owl-date-time>
+                        <div class="message" *ngIf="errMessage">Please Select Date Range</div>
+                
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName">CIQ NAME</label>
+                         <!-- <select class="form-control" name="ciqName" id="ciqName" #ciqName (change)="getNEdata()" [(ngModel)]="ciqNEFileDetails">
+                            <option value="">--Select--</option>
+                            <option *ngFor="let key of getCiqList" [ngValue]="key">{{key.ciqFileName}}</option>
+                        </select> -->
+                        <div class="">
+                            <ngx-select-dropdown [config]="ciqNameConfig" id="ciqName" [options]="getCiqList" [(ngModel)]="ciqNEFileDetails" name="ciqName"
+                            (change)="getNEdata(true, true)"></ngx-select-dropdown>                    
+                        <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName">NE NAME</label>
+                        <select class="form-control" name="nes" id="nes" [(ngModel)]="nes">
+                            <option value="">--Select--</option>
+                            <option *ngFor="let key of getNeslist" id="{{key.eNBId}}" value="{{key.eNBName}}">{{key.eNBName}}</option>
+                        </select>
+                        <div class="error-message-block"></div>
+                    </div>
+                </div> -->
+
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName">{{programName=="VZN-5G-MM" ? "GNB_AU_NAME" : programName =="VZN-5G-DSS" ? "vDU NAME": "NE NAME"}}</label>
+                            <!-- <ng-multiselect-dropdown class="form-control" name="nes" id="nes" 
+                              [placeholder]="'--Select--'"
+                              [data]="getNeslist"
+                              [(ngModel)]="nes"
+                              [settings]="dropdownSettings">
+                            </ng-multiselect-dropdown> -->
+                            <ng-select [multiple]="false" [virtualScroll]="true" [(ngModel)]="nes" name="nes" id="nes" class="" placeholder="--Select--">
+                                <ng-option *ngFor="let key of getNeslist" [value]="key" [disabled]="false">{{key.eNBName}}</ng-option>
+                            </ng-select>
+                            <div class="error-message-block"></div>
+                            <div *ngIf="programName == 'VZN-4G-USM-LIVE'" class="calenderForm" style="text-align: right;height: 25px;">
+                                <label class="filterSitesToggle">Support CA
+                                    <input type="checkbox" id="supportCA" name="supportCA" [(ngModel)]="supportCA" [checked]="supportCA"
+                                        style="margin: 6px 0 0 5px;"/>
+                                </label>
+                            </div>
+                        
+                    </div>
+                </div> 
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName"></label>                        
+                            <button name="save" class="formBtn myriadproBold validateForm airlinecnfgSearch" id="searchButton"  (click)="getDeatilsByEnb($event, 'ENB', nes)" accesskey="s">SEARCH</button>                        
+                    </div>
+                </div>
+                <div class="col-3" *ngIf="programName=='VZN-4G-USM-LIVE'">
+                    <div class="form-group">
+                        <label for="templateName" class="">MIGRATION STRATEGY</label>
+                        <select class="form-control" name="migrationStrategy" id="migrationStrategy" [(ngModel)]="migrationStrategy">
+                            <option value="Legacy IP">Legacy IP</option>
+                            <option value="Pseudo IP">Pseudo IP</option>
+                        </select>
+                        <div class="error-message-block"></div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="ciqTabList" *ngIf="sheetDispTab">
+        <ul class="nav nav-pills" role="tablist">
+            <li class="nav-item"  *ngFor="let list of ciqSheetList; let index= index">
+                <div (click)="getSubSheetList(list,index)" id="sheet{{index}}"  accesskey="h" name="seatch" class=" divalign float-sm-right float-md-right float-lg-right float-xl-right" [ngClass] ="{'activeTab':sheetHighlight == index,'inactiveTab':sheetHighlight!= index }">{{list | uppercase}}</div>
+            </li>           
+        </ul>
+    </div> 
+    <div *ngIf="!showForm">
+        <rct-nodata *ngIf="noDataVisibility" [subTitle]="'Please click on <u><b>Search</b></u> to see the details'"></rct-nodata>
+    </div>
+    <div id="formWrapper" *ngIf="showForm" style="padding:10px;">
+        <div class="col-3 subSheet" *ngIf="subSheetList.length > 0">       
+            <select class="form-control form-control-small-1" name="subsheet" id="subsheet" [(ngModel)]="selSubSheet" (change)="changeSubSheet()">                
+                <option *ngFor="let key of subSheetList;" id="{{key}}" value="{{key}}">{{key}}</option>
+            </select>         
+        </div>
+        
+        
+        
+
+        <!-- SEARCH CONTAINER -->
+        
+        <div *ngIf="sheetDispTab" class="searchContainer">
+            <form class="form-horizontal" #runTestForm>
+                <div class="row">
+                    <ng-container *ngFor="let ciq of ciqTableData[0].ciqMap | objectKeyValues; let index = index">
+                        <!-- <th data-toggle="tooltip" title={{ciq.value.headerName}}>
+                            <div [ngClass]="{'form-control-ciq':objectKeys(ciqTableData[0].ciqMap).length == 1, 'form-control-common':objectKeys(ciqTableData[0].ciqMap).length == 2, 'form-control-pnDifi':objectKeys(ciqTableData[0].ciqMap).length == 3, 'form-control-max1':objectKeys(ciqTableData[0].ciqMap).length == 4, 'form-control-max':objectKeys(ciqTableData[0].ciqMap).length > 4}">{{ciq.value.headerName | uppercase}}</div>
+                        </th> -->
+                        <div *ngIf="index < 8 || searchExpand == true" class="col-3">
+                            <div class="form-group">
+                                <label for="templateName" class="">{{ciq.value.headerName}}</label>
+                                <input class="form-control" autocomplete="off" name="searchField_{{index}}" type="text" [(ngModel)]="searchFormField[ciq.key]" value=""
+                                    maxlength="30" />
+                                <div class="error-message-block"></div>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+
+                <div class="textAlignCenter">
+                    <button name="save" class="formBtn myriadproBold validateForm" id="AddButton" (click)="searchRanConfig($event)"
+                        accesskey="s">SEARCH</button>
+                    <button type="button" id="cancelButton" name="CANCEL" class="formBtnCncl formBtn myriadproBold formBtn" (click)="clearSearchFrom()" accesskey="c">CLEAR</button>
+                </div>
+            </form>
+            <button class="searchExpandBtn" [ngClass]="{disabledIcon: objectKeys(ciqTableData[0].ciqMap).length < 8, 'expanded':searchExpand == true, 'notExpanded':searchExpand == false}" [disabled]="objectKeys(ciqTableData[0].ciqMap).length < 8" (click)="searchExpand = !searchExpand">
+                
+            </button>
+        </div>
+
+        <!-- SEARCH CONTAINER -->
+
+
+
+        <rct-nodata *ngIf="noDataVisibility" [subTitle]="'Please click on <u><b>Search</b></u> to see the details'"></rct-nodata>
+        <div id="tableWrapper" *ngIf="tableShowHide">
+            <div class="scrollHead">
+                <table class="table" id="uploadDetails">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="form-control-mini">ROW ID</div>
+                            </th>
+                            <ng-container *ngFor="let ciq of ciqTableData[0].ciqMap | objectKeyValues; let index = index">
+                                <th data-toggle="tooltip" title={{ciq.value.headerName}}>
+                                    <div [ngClass]="{'form-control-ciq':objectKeys(ciqTableData[0].ciqMap).length == 1, 'form-control-common':objectKeys(ciqTableData[0].ciqMap).length == 2, 'form-control-pnDifi':objectKeys(ciqTableData[0].ciqMap).length == 3, 'form-control-max1':objectKeys(ciqTableData[0].ciqMap).length == 4, 'form-control-max':objectKeys(ciqTableData[0].ciqMap).length > 4}">{{ciq.value.headerName | uppercase}}</div>
+                                </th>
+                            </ng-container>
+                            <!-- <th>
+                                <div></div>
+                            </th> -->
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="scrollBody">
+                <table class="table" id="systemMgrData">                                         
+                        <tbody id="rowCount">
+                            <tr id="row_id_{{key.id}}" *ngFor="let key of ciqTableData; let enodeIndex = index"> 
+                                <td>
+                                    <div class="form-control-mini" id ="rowId">{{key.sheetId}}</div>
+                                </td>
+                                <ng-container *ngFor="let ciqData of key.ciqMap | objectKeyValues; let index = index">                                    
+                                    <td>
+                                        <div [attr.data-parentkey]="ciqData.key" id="{{ciqData.value.headerName}}" [ngClass]="{'form-control-ciq':objectKeys(ciqTableData[0].ciqMap).length == 1, 'form-control-common':objectKeys(ciqTableData[0].ciqMap).length == 2, 'form-control-pnDifi':objectKeys(ciqTableData[0].ciqMap).length == 3, 'form-control-max1':objectKeys(ciqTableData[0].ciqMap).length == 4, 'form-control-max':objectKeys(ciqTableData[0].ciqMap).length > 4}">{{ciqData.value.headerValue}}</div>
+                                    </td>                                    
+                                </ng-container>
+                                <!-- <td class="" data-toggle="tooltip" data-placement="right" data-container="body"> -->
+                                    <span class="eventColText"></span>
+                                    <div style="margin-top:4px" class="form-control-fixed iconsWrapper tableRowAction" id="fixedCol" ng-style="iconsWrapperPosition">
+                                        <ng-template  #save>Save</ng-template>
+                                        <ng-template  #cancel>Cancel</ng-template>
+                                        <div (click)="addRow($event, key, enodeIndex)" class="cloneRow" placement="bottom" container="body" [ngbTooltip]="(addtableFormArray[0] == enodeIndex) ? save:'Clone'"></div>
+                                        <div (click)="editRow($event, key, enodeIndex)" class="editRow" placement="bottom" container="body" [ngbTooltip]="(editableFormArray[0] == enodeIndex) ? save:'Edit'"></div>
+                                        <div (click)="deleteRow(confirmModal, key.id, $event)" class="deleteRow" placement="bottom" container="body" [ngbTooltip]="(addtableFormArray[0] == enodeIndex || editableFormArray[0] == enodeIndex) ? cancel:'Delete'"></div>
+                                    </div>
+                                <!-- </td> -->
+                            </tr>
+                        </tbody>                    
+                </table>
+            </div>
+            <div id="paginationWrapper">
+                <div *ngIf="pageRenge.length" class="page" style="margin-left:20px;">
+                    <div class="floatLeft" style="width: 75px;padding-top: 6px">Show</div>
+                    <select [disabled]="paginationDisabbled" [(ngModel)]="pageSize" (change)="onChangeTableRowLength($event)" style="margin-top: 4px; margin-right: 6px;margin-left: -39px;" class="form-control-pagination floatLeft" aria-controls="TableRowLength" size="1" name="TableRowLength" id="TableRowLength">
+                        <option selected="selected" value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                    <div class="floatLeft" style="width: 75px;padding-top: 6px">Entries</div>
+                    <div class="floatRight page" style="padding-top: 3px;margin-right:20px;">
+                        <ul *ngIf="pageRenge.length" class="pagination floatRight">
+                            <li id="firstPage" [ngClass]="{disabled:(currentPage === 1 || paginationDisabbled)}" class="page-item">
+                                <a class="page-link" (click)="setPage(1)">FIRST</a>
+                            </li>
+                            <li id="previousPage" [ngClass]="{disabled:(currentPage === 1 || paginationDisabbled)}" class="page-item">
+                                <a class="page-link" (click)="setPage(pager.currentPage - 1)">PREV</a>
+                            </li>
+                            <li *ngFor="let n of pager.pages" [ngClass]="{active:currentPage === n, disabled:paginationDisabbled}" class="page-item">
+                                <a class="page-link" (click)="setPage(n)" id='{{n+1}}'>{{n}}</a>
+                            </li>
+                            <li id="nextPage" [ngClass]="{disabled:(currentPage === totalPages || paginationDisabbled)}" class="page-item">
+                                <a class="page-link" (click)="setPage(pager.currentPage + 1)">NEXT</a>
+                            </li>
+                            <li id="lastPage" [ngClass]="{disabled:(currentPage === totalPages || paginationDisabbled)}" class="page-item">
+                                <a class="page-link" (click)="setPage(pager.totalPages)">LAST</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="dataWrapper" class="row" *ngIf="treeShowHide">
+        <div id="enodeBMenuList" class="col-2">
+            <div class="enodeBMenuListData" *ngFor="let list of enbMenuListDetails['enbMenuList']; let index = index" (click)="getEnodeBDetails(index, list)" [ngClass] ="{'activeTab':ciqSheetHighlight == index,'inactiveTab':ciqSheetHighlight!= index }">{{list | uppercase}}</div>    
+        </div>
+        <div id="enodeBTable" class="col-10">
+            <rct-nodata *ngIf="noDataVisibilityENodeB" [subTitle]="'Please click on <u><b>EnodeB Menu List</b></u> to see the details'"></rct-nodata>
+            <div *ngIf="eNodeBTableShowHide" id="tableWrapper">
+                <div class="scrollHead">
+                    <table class="table" id="uploadDetails">
+                        <thead>
+                            <tr>
+                                <ng-container *ngFor="let eNode of eNodeMapData['eNodeMapDetails'][0].ciqMap | objectKeyValues; let index = index">
+                                    <th *ngIf="eNode.value.headerName !='Comments'">
+                                        <!-- <div *ngIf="objectKeys(eNodeMapData['eNodeMapDetails'][0].ciqMap).length > 4" class="form-control-ciq">{{eNode | uppercase}}</div> -->
+                                        <div [ngClass]="{'form-control-ciq':objectKeys(eNodeMapData['eNodeMapDetails'][0].ciqMap).length == 1, 'form-control-powerConfig':objectKeys(eNodeMapData['eNodeMapDetails'][0].ciqMap).length == 2, 'form-control-pnDifi':objectKeys(eNodeMapData['eNodeMapDetails'][0].ciqMap).length == 3, 'form-control-max1':objectKeys(eNodeMapData['eNodeMapDetails'][0].ciqMap).length == 4, 'form-control-ciq':objectKeys(eNodeMapData['eNodeMapDetails'][0].ciqMap).length > 4}">{{eNode.value.headerName | uppercase}}</div>
+                                    </th>
+                                    <th *ngIf="eNode.value.headerName =='Comments'">
+                                        <div class="form-control-column-3">{{eNode | uppercase}}</div>
+                                    </th>
+                                </ng-container>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="scrollBody">
+                    <table class="table" id="systemMgrData">
+                        <tbody id="rowCount">
+                            <tr id="row_id_{{eNode.id}}" *ngFor="let eNode of eNodeMapData['eNodeMapDetails']; let eNodeindex = index">
+                                    <ng-container *ngFor="let eNodeData of eNode.ciqMap | objectKeyValues; let index = index">
+                                        <td *ngIf="eNodeData.value.headerName  !='Comments'">
+                                            <div [ngClass]="{'form-control-ciq':objectKeys(eNodeMapData['eNodeMapDetails'][0].ciqMap).length == 1, 'form-control-powerConfig':objectKeys(eNodeMapData['eNodeMapDetails'][0].ciqMap).length == 2, 'form-control-pnDifi':objectKeys(eNodeMapData['eNodeMapDetails'][0].ciqMap).length == 3, 'form-control-max1':objectKeys(eNodeMapData['eNodeMapDetails'][0].ciqMap).length == 4, 'form-control-ciq':objectKeys(eNodeMapData['eNodeMapDetails'][0].ciqMap).length > 4}" [attr.data-parentkey]="eNodeData.key"  id="{{eNodeData.value.headerName}}">{{eNodeData.value.headerValue}}</div>
+                                        </td>
+                                        <td *ngIf="eNodeData.value.headerName  =='Comments'">
+                                            <div class="form-control-column-3" [attr.data-parentkey]="eNodeData.key" id="Comments">{{eNodeData.value.headerValue}}</div>
+                                        </td>
+                                    </ng-container>                                    
+                                    <!-- <td class="form-control-dateTime" data-toggle="tooltip" data-placement="right" data-container="body"> -->
+                                        <span class="eventColText"></span>
+                                        <div style="margin-top:4px" class="form-control-fixed iconsWrapper tableRowAction" id="fixedCol" ng-style="iconsWrapperPosition">
+                                            <ng-template  #save>Save</ng-template>
+                                            <ng-template  #cancel>Cancel</ng-template>                                            
+                                            <div (click)="editRow($event, eNode, eNodeindex)" class="editRow" placement="bottom" container="body" [ngbTooltip]="(editableFormArray[0] == eNodeindex) ? save:'Edit'"></div>
+                                            <div (click)="deleteRow(confirmModal, eNode.id, $event)" class="deleteRowDisabled" placement="bottom" container="body" [ngbTooltip]="(addtableFormArray[0] == eNodeindex || editableFormArray[0] == eNodeindex) ? cancel:'Delete'"></div>                                           
+                                        </div>
+                                    <!-- </td> -->
+                                </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="paginationWrapper">
+                    <div *ngIf="pageRenge.length" class="page" style="margin-left:20px;">
+                        <div class="floatLeft" style="width: 75px;padding-top: 6px">Show</div>
+                        <select [disabled]="paginationDisabbled" [(ngModel)]="pageSize" (change)="onChangeTableRowLength($event)" style="margin-top: 4px; margin-right: 6px;margin-left: -39px;" class="form-control-pagination floatLeft" aria-controls="TableRowLength" size="1" name="TableRowLength" id="TableRowLength">
+                            <option selected="selected" value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                        <div class="floatLeft" style="width: 75px;padding-top: 6px">Entries</div>
+                        <div class="floatRight page" style="padding-top: 3px;margin-right:20px;">
+                            <ul *ngIf="pageRenge.length" class="pagination floatRight">
+                                <li id="firstPage" [ngClass]="{disabled:(currentPage === 1 || paginationDisabbled)}" class="page-item">
+                                    <a class="page-link" (click)="setPage(1)">FIRST</a>
+                                </li>
+                                <li id="previousPage" [ngClass]="{disabled:(currentPage === 1 || paginationDisabbled)}" class="page-item">
+                                    <a class="page-link" (click)="setPage(pager.currentPage - 1)">PREV</a>
+                                </li>
+                                <li *ngFor="let n of pager.pages" [ngClass]="{active:currentPage === n, disabled:paginationDisabbled}" class="page-item">
+                                    <a class="page-link" (click)="setPage(n)" id='{{n+1}}'>{{n}}</a>
+                                </li>
+                                <li id="nextPage" [ngClass]="{disabled:(currentPage === totalPages || paginationDisabbled)}" class="page-item">
+                                    <a class="page-link" (click)="setPage(pager.currentPage + 1)">NEXT</a>
+                                </li>
+                                <li id="lastPage" [ngClass]="{disabled:(currentPage === totalPages || paginationDisabbled)}" class="page-item">
+                                    <a class="page-link" (click)="setPage(pager.totalPages)">LAST</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="textAlignCenter" *ngIf="eNodeBTableShowHide">
+                <button (click)="validateFile($event)" name="createnew" class="createbtn myriadproBold formBtn white-btn" accesskey="n">VALIDATE</button>
+                <button (click)="generateFile($event)" name="createnew" class="createbtn myriadproBold formBtn white-btn" accesskey="n">GENERATE</button>
+            </div>
+        </div>
+
+    </div>
+    <div class="textAlignCenter" *ngIf="tableShowHide">
+        <button (click)="validateFile($event)" name="createnew" class="createbtn myriadproBold formBtn white-btn" accesskey="n">VALIDATE</button>
+        <button (click)="generateFile($event)" name="createnew" class="createbtn myriadproBold formBtn white-btn" accesskey="n">GENERATE</button>
+    </div>
+
+    <ng-template #viewModal let-c="close" let-modal>
+            <div class="modal-header">
+               <div class="validationHeader">
+                    <span class="failureIconBigger"></span> 
+                    <h4> VALIDATION FAILED</h4>
+            </div>
+                
+                <span class="errorHeading"><b>CIQ File NAME : </b> {{fileName}}</span>
+            </div>
+            <div class="modelBody">
+            <form class="form-horizontal">
+                <div id="dataWrapper">                
+                    <div id="">                
+                        <table class="table" id="demo-table">
+                            <thead>
+                                <tr>
+                                    <th class="sorting form-control-mini">ROW ID</th>
+                                    <th class="sorting form-control-validate">SHEET NAME</th>
+                                    <th class="sorting form-control-validate">SUB SHEET NAME</th>
+                                    <th class="sorting form-control-mini">CELL ID</th>
+                                    <th class="sorting form-control-validate">ENB NAME</th>
+                                    <th class="sorting form-control-validate">COLUMN NAME</th>
+                                    <th class="sorting form-control-validate">ERROR MESSAGE</th>
+                                </tr>
+                            </thead>                
+                            <tbody id="rowCount">
+                                <ng-container *ngFor="let errdata of validateDetails | objectKeyValues">
+                                    <tr id="row_id_{{errdata.value.rowId}}">
+                                        <td class="form-control-mini" data-toggle="tooltip" data-placement="right" data-container="body">{{errdata.value.rowId}}</td>
+                                        <td class="form-control-validate" data-toggle="tooltip" data-placement="right" data-container="body">{{errdata.value.sheetName}}</td>
+                                        <td class="form-control-validate" data-toggle="tooltip" data-placement="right" data-container="body">{{errdata.value.subSheetName}}</td>
+                                        <td class="form-control-mini" data-toggle="tooltip" data-placement="right" data-container="body">{{errdata.value.cellId}}</td>
+                                        <td class="form-control-validate" data-toggle="tooltip" data-placement="right" data-container="body">{{errdata.value.enbName}}</td>
+                                        <td class="form-control-validate" data-toggle="tooltip" data-placement="right" data-container="body">{{errdata.value.propertyName}}</td>
+                                        <td class="form-control-validate" data-toggle="tooltip" data-placement="right" data-container="body">{{errdata.value.errorMessage}}
+                                        </td>                
+                                    </tr>
+                                </ng-container>                
+                            </tbody>
+                        </table>                
+                    </div>                
+                </div>
+            </form>
+            </div>
+            <div class="modal-footer">
+                <div class="modalAction">
+                    <button type="button" class="formBtn btn btn-light" (click)="downloadErrorData()">DOWNLOAD</button>                   
+                    <button type="button" class="formBtnCncl btn btn-light" (click)="closeView()">CANCEL</button>                   
+                </div>
+            </div>
+        </ng-template>
+</div>
+            

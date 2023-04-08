@@ -1,0 +1,289 @@
+<nc:rpc xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <nc:edit-config>
+    <nc:target>
+      <nc:running></nc:running>
+    </nc:target>
+    <nc:default-operation>none</nc:default-operation>
+    <nc:config>
+      <gnbcp:managed-element xmlns:gnbcp="http://www.samsung.com/global/business/5GvRAN/ns/gnb-cu-cp">
+        <gnbcp:gnb-cu-cp-function>
+          <gnbcp:gnb-cu-cp-function-entries>
+            <gnbcp:gnodeb-id>560056</gnbcp:gnodeb-id>
+            <gnbcp:gutran-cu-cell>
+              <gnbcp:gutran-cu-cell-entries nc:operation="merge">
+                <gnbcp:cell-identity>609</gnbcp:cell-identity>
+                <gnbcp:nr-ul-coverage-method>A1-A2</gnbcp:nr-ul-coverage-method>
+                <gnbcp:report-config-entries>
+                  <gnbcp:index>1</gnbcp:index>
+                  <gnbcp:a2-report-config nc:operation="merge" xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+                    <gnbcp:a2-threshold-rsrp>48</gnbcp:a2-threshold-rsrp>
+                    <gnbcp:a2-time-to-trigger>ms40</gnbcp:a2-time-to-trigger>
+                  </gnbcp:a2-report-config>
+                </gnbcp:report-config-entries>
+                <gnbcp:report-config-entries>
+                  <gnbcp:index>2</gnbcp:index>
+                  <gnbcp:a3-report-config nc:operation="merge" xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+                    <gnbcp:a3-time-to-trigger>ms128</gnbcp:a3-time-to-trigger>
+                  </gnbcp:a3-report-config>
+                </gnbcp:report-config-entries>
+                <gnbcp:report-config-entries>
+                  <gnbcp:index>3</gnbcp:index>
+                  <gnbcp:a1-report-config nc:operation="merge" xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+                    <gnbcp:a1-threshold-rsrp>63</gnbcp:a1-threshold-rsrp>
+                    <gnbcp:a1-time-to-trigger>ms128</gnbcp:a1-time-to-trigger>
+                  </gnbcp:a1-report-config>
+                </gnbcp:report-config-entries>
+                <gnbcp:report-config-entries>
+                  <gnbcp:index>4</gnbcp:index>
+                  <gnbcp:a2-report-config nc:operation="merge" xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+                    <gnbcp:a2-threshold-rsrp>60</gnbcp:a2-threshold-rsrp>
+                    <gnbcp:a2-time-to-trigger>ms128</gnbcp:a2-time-to-trigger>
+                  </gnbcp:a2-report-config>
+                </gnbcp:report-config-entries>
+                <gnbcp:report-config-entries>
+                  <gnbcp:index>5</gnbcp:index>
+                  <gnbcp:a1-report-config nc:operation="merge" xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+                    <gnbcp:a1-threshold-rsrp>63</gnbcp:a1-threshold-rsrp>
+                    <gnbcp:a1-time-to-trigger>ms128</gnbcp:a1-time-to-trigger>
+                  </gnbcp:a1-report-config>
+                </gnbcp:report-config-entries>
+                <gnbcp:report-config-entries>
+                  <gnbcp:index>6</gnbcp:index>
+                  <gnbcp:a2-report-config nc:operation="merge" xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+                    <gnbcp:a2-threshold-rsrp>60</gnbcp:a2-threshold-rsrp>
+                    <gnbcp:a2-time-to-trigger>ms128</gnbcp:a2-time-to-trigger>
+                  </gnbcp:a2-report-config>
+                </gnbcp:report-config-entries>
+              </gnbcp:gutran-cu-cell-entries>
+              <gnbcp:gutran-cu-cell-entries nc:operation="merge">
+                <gnbcp:cell-identity>610</gnbcp:cell-identity>
+                <gnbcp:nr-ul-coverage-method>A1-A2</gnbcp:nr-ul-coverage-method>
+                <gnbcp:report-config-entries>
+                  <gnbcp:index>1</gnbcp:index>
+                  <gnbcp:a2-report-config nc:operation="merge" xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+                    <gnbcp:a2-threshold-rsrp>48</gnbcp:a2-threshold-rsrp>
+                    <gnbcp:a2-time-to-trigger>ms40</gnbcp:a2-time-to-trigger>
+                  </gnbcp:a2-report-config>
+                </gnbcp:report-config-entries>
+                <gnbcp:report-config-entries>
+                  <gnbcp:index>2</gnbcp:index>
+                  <gnbcp:a3-report-config nc:operation="merge" xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+                    <gnbcp:a3-time-to-trigger>ms128</gnbcp:a3-time-to-trigger>
+                  </gnbcp:a3-report-config>
+                </gnbcp:report-config-entries>
+                <gnbcp:report-config-entries>
+                  <gnbcp:index>3</gnbcp:index>
+                  <gnbcp:a1-report-config nc:operation="merge" xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+                    <gnbcp:a1-threshold-rsrp>63</gnbcp:a1-threshold-rsrp>
+                    <gnbcp:a1-time-to-trigger>ms128</gnbcp:a1-time-to-trigger>
+                  </gnbcp:a1-report-config>
+                </gnbcp:report-config-entries>
+                <gnbcp:report-config-entries>
+                  <gnbcp:index>4</gnbcp:index>
+                  <gnbcp:a2-report-config nc:operation="merge" xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+                    <gnbcp:a2-threshold-rsrp>60</gnbcp:a2-threshold-rsrp>
+                    <gnbcp:a2-time-to-trigger>ms128</gnbcp:a2-time-to-trigger>
+                  </gnbcp:a2-report-config>
+                </gnbcp:report-config-entries>
+                <gnbcp:report-config-entries>
+                  <gnbcp:index>5</gnbcp:index>
+                  <gnbcp:a1-report-config nc:operation="merge" xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+                    <gnbcp:a1-threshold-rsrp>63</gnbcp:a1-threshold-rsrp>
+                    <gnbcp:a1-time-to-trigger>ms128</gnbcp:a1-time-to-trigger>
+                  </gnbcp:a1-report-config>
+                </gnbcp:report-config-entries>
+                <gnbcp:report-config-entries>
+                  <gnbcp:index>6</gnbcp:index>
+                  <gnbcp:a2-report-config nc:operation="merge" xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+                    <gnbcp:a2-threshold-rsrp>60</gnbcp:a2-threshold-rsrp>
+                    <gnbcp:a2-time-to-trigger>ms128</gnbcp:a2-time-to-trigger>
+                  </gnbcp:a2-report-config>
+                </gnbcp:report-config-entries>
+              </gnbcp:gutran-cu-cell-entries>
+              <gnbcp:gutran-cu-cell-entries nc:operation="merge">
+                <gnbcp:cell-identity>611</gnbcp:cell-identity>
+                <gnbcp:nr-ul-coverage-method>A1-A2</gnbcp:nr-ul-coverage-method>
+                <gnbcp:report-config-entries>
+                  <gnbcp:index>1</gnbcp:index>
+                  <gnbcp:a2-report-config nc:operation="merge" xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+                    <gnbcp:a2-threshold-rsrp>48</gnbcp:a2-threshold-rsrp>
+                    <gnbcp:a2-time-to-trigger>ms40</gnbcp:a2-time-to-trigger>
+                  </gnbcp:a2-report-config>
+                </gnbcp:report-config-entries>
+                <gnbcp:report-config-entries>
+                  <gnbcp:index>2</gnbcp:index>
+                  <gnbcp:a3-report-config nc:operation="merge" xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+                    <gnbcp:a3-time-to-trigger>ms128</gnbcp:a3-time-to-trigger>
+                  </gnbcp:a3-report-config>
+                </gnbcp:report-config-entries>
+                <gnbcp:report-config-entries>
+                  <gnbcp:index>3</gnbcp:index>
+                  <gnbcp:a1-report-config nc:operation="merge" xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+                    <gnbcp:a1-threshold-rsrp>63</gnbcp:a1-threshold-rsrp>
+                    <gnbcp:a1-time-to-trigger>ms128</gnbcp:a1-time-to-trigger>
+                  </gnbcp:a1-report-config>
+                </gnbcp:report-config-entries>
+                <gnbcp:report-config-entries>
+                  <gnbcp:index>4</gnbcp:index>
+                  <gnbcp:a2-report-config nc:operation="merge" xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+                    <gnbcp:a2-threshold-rsrp>60</gnbcp:a2-threshold-rsrp>
+                    <gnbcp:a2-time-to-trigger>ms128</gnbcp:a2-time-to-trigger>
+                  </gnbcp:a2-report-config>
+                </gnbcp:report-config-entries>
+                <gnbcp:report-config-entries>
+                  <gnbcp:index>5</gnbcp:index>
+                  <gnbcp:a1-report-config nc:operation="merge" xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+                    <gnbcp:a1-threshold-rsrp>63</gnbcp:a1-threshold-rsrp>
+                    <gnbcp:a1-time-to-trigger>ms128</gnbcp:a1-time-to-trigger>
+                  </gnbcp:a1-report-config>
+                </gnbcp:report-config-entries>
+                <gnbcp:report-config-entries>
+                  <gnbcp:index>6</gnbcp:index>
+                  <gnbcp:a2-report-config nc:operation="merge" xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+                    <gnbcp:a2-threshold-rsrp>60</gnbcp:a2-threshold-rsrp>
+                    <gnbcp:a2-time-to-trigger>ms128</gnbcp:a2-time-to-trigger>
+                  </gnbcp:a2-report-config>
+                </gnbcp:report-config-entries>
+              </gnbcp:gutran-cu-cell-entries>
+              <gnbcp:gutran-cu-cell-entries nc:operation="merge">
+                <gnbcp:cell-identity>612</gnbcp:cell-identity>
+                <gnbcp:nr-ul-coverage-method>A1-A2</gnbcp:nr-ul-coverage-method>
+                <gnbcp:report-config-entries>
+                  <gnbcp:index>1</gnbcp:index>
+                  <gnbcp:a2-report-config nc:operation="merge" xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+                    <gnbcp:a2-threshold-rsrp>48</gnbcp:a2-threshold-rsrp>
+                    <gnbcp:a2-time-to-trigger>ms40</gnbcp:a2-time-to-trigger>
+                  </gnbcp:a2-report-config>
+                </gnbcp:report-config-entries>
+                <gnbcp:report-config-entries>
+                  <gnbcp:index>2</gnbcp:index>
+                  <gnbcp:a3-report-config nc:operation="merge" xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+                    <gnbcp:a3-time-to-trigger>ms128</gnbcp:a3-time-to-trigger>
+                  </gnbcp:a3-report-config>
+                </gnbcp:report-config-entries>
+                <gnbcp:report-config-entries>
+                  <gnbcp:index>3</gnbcp:index>
+                  <gnbcp:a1-report-config nc:operation="merge" xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+                    <gnbcp:a1-threshold-rsrp>63</gnbcp:a1-threshold-rsrp>
+                    <gnbcp:a1-time-to-trigger>ms128</gnbcp:a1-time-to-trigger>
+                  </gnbcp:a1-report-config>
+                </gnbcp:report-config-entries>
+                <gnbcp:report-config-entries>
+                  <gnbcp:index>4</gnbcp:index>
+                  <gnbcp:a2-report-config nc:operation="merge" xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+                    <gnbcp:a2-threshold-rsrp>60</gnbcp:a2-threshold-rsrp>
+                    <gnbcp:a2-time-to-trigger>ms128</gnbcp:a2-time-to-trigger>
+                  </gnbcp:a2-report-config>
+                </gnbcp:report-config-entries>
+                <gnbcp:report-config-entries>
+                  <gnbcp:index>5</gnbcp:index>
+                  <gnbcp:a1-report-config nc:operation="merge" xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+                    <gnbcp:a1-threshold-rsrp>63</gnbcp:a1-threshold-rsrp>
+                    <gnbcp:a1-time-to-trigger>ms128</gnbcp:a1-time-to-trigger>
+                  </gnbcp:a1-report-config>
+                </gnbcp:report-config-entries>
+                <gnbcp:report-config-entries>
+                  <gnbcp:index>6</gnbcp:index>
+                  <gnbcp:a2-report-config nc:operation="merge" xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+                    <gnbcp:a2-threshold-rsrp>60</gnbcp:a2-threshold-rsrp>
+                    <gnbcp:a2-time-to-trigger>ms128</gnbcp:a2-time-to-trigger>
+                  </gnbcp:a2-report-config>
+                </gnbcp:report-config-entries>
+              </gnbcp:gutran-cu-cell-entries>
+              <gnbcp:gutran-cu-cell-entries nc:operation="merge">
+                <gnbcp:cell-identity>613</gnbcp:cell-identity>
+                <gnbcp:nr-ul-coverage-method>A1-A2</gnbcp:nr-ul-coverage-method>
+                <gnbcp:report-config-entries>
+                  <gnbcp:index>1</gnbcp:index>
+                  <gnbcp:a2-report-config nc:operation="merge" xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+                    <gnbcp:a2-threshold-rsrp>48</gnbcp:a2-threshold-rsrp>
+                    <gnbcp:a2-time-to-trigger>ms40</gnbcp:a2-time-to-trigger>
+                  </gnbcp:a2-report-config>
+                </gnbcp:report-config-entries>
+                <gnbcp:report-config-entries>
+                  <gnbcp:index>2</gnbcp:index>
+                  <gnbcp:a3-report-config nc:operation="merge" xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+                    <gnbcp:a3-time-to-trigger>ms128</gnbcp:a3-time-to-trigger>
+                  </gnbcp:a3-report-config>
+                </gnbcp:report-config-entries>
+                <gnbcp:report-config-entries>
+                  <gnbcp:index>3</gnbcp:index>
+                  <gnbcp:a1-report-config nc:operation="merge" xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+                    <gnbcp:a1-threshold-rsrp>63</gnbcp:a1-threshold-rsrp>
+                    <gnbcp:a1-time-to-trigger>ms128</gnbcp:a1-time-to-trigger>
+                  </gnbcp:a1-report-config>
+                </gnbcp:report-config-entries>
+                <gnbcp:report-config-entries>
+                  <gnbcp:index>4</gnbcp:index>
+                  <gnbcp:a2-report-config nc:operation="merge" xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+                    <gnbcp:a2-threshold-rsrp>60</gnbcp:a2-threshold-rsrp>
+                    <gnbcp:a2-time-to-trigger>ms128</gnbcp:a2-time-to-trigger>
+                  </gnbcp:a2-report-config>
+                </gnbcp:report-config-entries>
+                <gnbcp:report-config-entries>
+                  <gnbcp:index>5</gnbcp:index>
+                  <gnbcp:a1-report-config nc:operation="merge" xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+                    <gnbcp:a1-threshold-rsrp>63</gnbcp:a1-threshold-rsrp>
+                    <gnbcp:a1-time-to-trigger>ms128</gnbcp:a1-time-to-trigger>
+                  </gnbcp:a1-report-config>
+                </gnbcp:report-config-entries>
+                <gnbcp:report-config-entries>
+                  <gnbcp:index>6</gnbcp:index>
+                  <gnbcp:a2-report-config nc:operation="merge" xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+                    <gnbcp:a2-threshold-rsrp>60</gnbcp:a2-threshold-rsrp>
+                    <gnbcp:a2-time-to-trigger>ms128</gnbcp:a2-time-to-trigger>
+                  </gnbcp:a2-report-config>
+                </gnbcp:report-config-entries>
+              </gnbcp:gutran-cu-cell-entries>
+              <gnbcp:gutran-cu-cell-entries nc:operation="merge">
+                <gnbcp:cell-identity>614</gnbcp:cell-identity>
+                <gnbcp:nr-ul-coverage-method>A1-A2</gnbcp:nr-ul-coverage-method>
+                <gnbcp:report-config-entries>
+                  <gnbcp:index>1</gnbcp:index>
+                  <gnbcp:a2-report-config nc:operation="merge" xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+                    <gnbcp:a2-threshold-rsrp>48</gnbcp:a2-threshold-rsrp>
+                    <gnbcp:a2-time-to-trigger>ms40</gnbcp:a2-time-to-trigger>
+                  </gnbcp:a2-report-config>
+                </gnbcp:report-config-entries>
+                <gnbcp:report-config-entries>
+                  <gnbcp:index>2</gnbcp:index>
+                  <gnbcp:a3-report-config nc:operation="merge" xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+                    <gnbcp:a3-time-to-trigger>ms128</gnbcp:a3-time-to-trigger>
+                  </gnbcp:a3-report-config>
+                </gnbcp:report-config-entries>
+                <gnbcp:report-config-entries>
+                  <gnbcp:index>3</gnbcp:index>
+                  <gnbcp:a1-report-config nc:operation="merge" xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+                    <gnbcp:a1-threshold-rsrp>63</gnbcp:a1-threshold-rsrp>
+                    <gnbcp:a1-time-to-trigger>ms128</gnbcp:a1-time-to-trigger>
+                  </gnbcp:a1-report-config>
+                </gnbcp:report-config-entries>
+                <gnbcp:report-config-entries>
+                  <gnbcp:index>4</gnbcp:index>
+                  <gnbcp:a2-report-config nc:operation="merge" xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+                    <gnbcp:a2-threshold-rsrp>60</gnbcp:a2-threshold-rsrp>
+                    <gnbcp:a2-time-to-trigger>ms128</gnbcp:a2-time-to-trigger>
+                  </gnbcp:a2-report-config>
+                </gnbcp:report-config-entries>
+                <gnbcp:report-config-entries>
+                  <gnbcp:index>5</gnbcp:index>
+                  <gnbcp:a1-report-config nc:operation="merge" xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+                    <gnbcp:a1-threshold-rsrp>63</gnbcp:a1-threshold-rsrp>
+                    <gnbcp:a1-time-to-trigger>ms128</gnbcp:a1-time-to-trigger>
+                  </gnbcp:a1-report-config>
+                </gnbcp:report-config-entries>
+                <gnbcp:report-config-entries>
+                  <gnbcp:index>6</gnbcp:index>
+                  <gnbcp:a2-report-config nc:operation="merge" xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+                    <gnbcp:a2-threshold-rsrp>60</gnbcp:a2-threshold-rsrp>
+                    <gnbcp:a2-time-to-trigger>ms128</gnbcp:a2-time-to-trigger>
+                  </gnbcp:a2-report-config>
+                </gnbcp:report-config-entries>
+              </gnbcp:gutran-cu-cell-entries>
+            </gnbcp:gutran-cu-cell>
+          </gnbcp:gnb-cu-cp-function-entries>
+        </gnbcp:gnb-cu-cp-function>
+      </gnbcp:managed-element>
+    </nc:config>
+  </nc:edit-config>
+</nc:rpc>

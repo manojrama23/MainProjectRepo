@@ -1,0 +1,659 @@
+<div class="page-wrapper">
+    <rct-loader *ngIf="showLoader"></rct-loader>
+    <h1 class="mainHead">USER MANAGEMENT</h1>
+    <!-- <div class="topButtonWrapper">
+        <button (click)="createNew($event)" name="createnew" id="createnewBtn" class="createbtn myriadproBold formBtn white-btn float-sm-right float-md-right float-lg-right float-xl-right" accesskey="n">+ CREATE NEW</button>
+    </div> -->
+    <ul class="nav nav-pills" role="tablist">
+        <li class="nav-item">
+            <div (click)="searchTabBind()" accesskey="n" name="search" class="divalign float-sm-right float-md-right float-lg-right float-xl-right"
+                #searchTab>SEARCH</div>
+        </li>
+        <li class="nav-item">
+            <div (click)="createNew($event)" accesskey="h" name="createNew" class="divalign float-sm-right float-md-right float-lg-right float-xl-right"
+                #createTab>CREATE NEW</div>
+        </li>
+    </ul>
+
+    <ng-template #confirmModal let-c="close" let-d="dismiss">
+        <div class="sucessContentWrapper">
+            <div class="confirmIcon"></div>
+            <div class="confirmContent deletePopup">
+                <p>
+                    <b>Are You Sure, </b>
+                <!-- </p>
+                <br>
+                <p> -->You want to <b>Delete</b>
+                </p>
+            </div>
+        </div>
+        <div class="deletePopupBtn modal-footer textAlignCenter">
+            <button type="button" class="formBtn btn btn-secondary modal_button_yes" (click)="d('dismiss click')" id="deleteConfirmation">YES</button>
+            <button type="button" class="formBtn btn btn-secondary modal_button_no" (click)="c('Close click')" id="modal_button_no">NO</button>
+        </div>
+    </ng-template>
+
+    <div #container></div>
+
+    <div *ngIf="searchBlock">
+      <div id="formWrapper" class="formWrapperMargin bluePrintFormWrapper">
+        <form class="form-horizontal" id="bluePrintForm" #bluePrintForm>
+          <form class="form-horizontal" #searchForm>
+            <div class="row">
+    
+              <div class="col-3">
+                <div class="form-group">
+                  <label for="templateName">USER NAME</label>
+                  <input class="form-control" autocomplete="off" id="searchUserName" name="searchUserName" type="text" value="" maxlength="30"
+                  />
+                  <div class="error-message-block"></div>
+                </div>
+              </div>
+    
+              <div class="col-3">
+                <div class="form-group">
+                  <label for="templateName">NAME</label>
+                  <input class="form-control" autocomplete="off" id="searchName" name="searchName" type="text" value="" />
+                  <div class="error-message-block"></div>
+                </div>
+              </div>
+    
+              <div class="col-3">
+                <div class="form-group"><!--  -->
+                  <label for="templateName">ROLE</label>
+                  <select class="form-control" name="searchRole" id="searchRole" [(ngModel)]="selectedSearchRole" [compareWith]="compareFn">
+                    <option value="">--Select--</option>
+                    <option *ngFor="let key of tableData['roleList']" [ngValue]="key" id="{{key.id}}">{{key.role}}</option>
+                  </select>
+                  <!-- <input class="form-control" autocomplete="off" id="searchRole" name="searchRole" type="text" value="" /> -->
+                  <div class="error-message-block"></div>
+                </div>
+              </div>
+    
+              <div class="col-3">
+                <div class="form-group">
+                  <label for="templateName">CUSTOMER NAME</label>
+                  <select class="form-control" name="searchCustomer" id="searchCustomer" [(ngModel)]="selectedSearchCustomer" [compareWith]="compareFn">
+                      <option value="">--Select--</option>
+                      <option *ngFor="let key of tableData['customerList']" [ngValue]="key" id="{{key.id}}">{{key.customerName}}</option>
+                  </select>
+                  <!-- <input class="form-control" autocomplete="off" id="searchCustomer" name="searchCustomer" type="text" value="" /> -->
+                  <div class="error-message-block"></div>
+                </div>
+              </div>
+    
+              <div class="col-3">
+                <div class="form-group">
+                  <label for="templateName">PROGRAM NAME</label>
+                  <select class="form-control" name="searchProgName" id="searchProgName" [(ngModel)]="selectedSearchProgram">
+                      <option value="">--Select--</option>
+                      <option value="All">All</option>
+                      <option *ngFor="let key of searchProgList" [value]="key.programName" id="{{key.id}}">{{key.programName}}</option>
+                  </select>
+                  <!-- <input class="form-control" autocomplete="off" id="searchProgName" name="searchProgName" type="text" value="" /> -->
+                  <div class="error-message-block"></div>
+                </div>
+              </div>
+    
+              <div class="col-3">
+                <div class="form-group">
+                  <label for="templateName">EMAIL</label>
+                  <input class="form-control" autocomplete="off" id="searchEmail" name="searchEmail" type="text" value="" />
+                  <div class="error-message-block"></div>
+                </div>
+              </div>
+    
+              <div class="col-3">
+                <div class="form-group">
+                  <label for="templateName">STATUS</label>
+                  <select class="form-control" name="searchStatus" id="searchStatus">
+                    <option value="">--Select--</option>
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                  </select>
+                  <div class="error-message-block"></div>
+                </div>
+              </div>
+    
+              <div class="col-3">
+                <div class="form-group">
+                  <label for="templateName">CREATED BY</label>
+                  <input class="form-control" autocomplete="off" id="searchCreatedBy" name="searchCreatedBy" type="text" value="" />
+                  <div class="error-message-block"></div>
+                </div>
+              </div>
+    
+            </div>
+            <div class="textAlignCenter">
+              <button name="save" class="formBtn myriadproBold validateForm airlinecnfgSearch" id="searchButton" (click)="searchUserMgmt($event)"
+                accesskey="s">SEARCH</button>
+              <button type="button" id="cancelButton" name="CANCEL" class="formBtnCncl formBtn myriadproBold formBtn" (click)="clearSearchFrom()"
+                accesskey="c">CLEAR</button>
+    
+            </div>
+          </form>
+        </form>
+      </div>
+    </div>
+
+    <div id="dataWrapper" *ngIf="tableShowHide">
+        <div id="tableWrapper">
+            <div class="scrollHead">
+                <table class="table" id="ManageUserDetails">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div (click)="changeSorting('userName', $event, 0)" class="sorting form-control-small-1">USER NAME</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('userFullName', $event, 1)" class="sorting form-control-small-1">NAME</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('role', $event, 2)" class="sorting form-control-small-1">ROLE</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('customerName', $event, 3)" class="sorting form-control-small-1">CUSTOMER NAME</div>
+                            </th>
+                           <!--  <th>
+                                <div (click)="changeSorting('networkType', $event, 4)" class="sorting form-control-small-1">N/W TYPE</div>
+                            </th> -->
+                            <th>
+                                <div (click)="changeSorting('programName', $event, 4)" class="sorting form-control-small-1">PROGRAM NAME</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('emailId', $event, 5)" class="sorting form-control-max">EMAIL</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('vpnUserName', $event, 6)" class="sorting form-control-small-1">VPN USERNAME</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('status', $event, 7)" class="sorting form-control-mini">STATUS</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('createdBy', $event, 8)" class="sorting form-control-dateTime">CREATED BY</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('creationDate', $event, 9)" class="sorting form-control-dateTime">TIMESTAMP</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('remarks', $event, 10)" class="sorting form-control-max1">REMARKS</div>
+                            </th>
+                            <!-- <th>
+                                <div (click)="changeSorting('lastLoginDate', $event, 11)" class="sorting form-control-dateTime">LAST LOGIN DATE</div>
+                            </th> -->
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="scrollBody">
+                <table class="table" id="userListData">
+                    <tbody id="rowCount">
+                        <ng-container *ngFor="let key of tableData['userList']; let index = index">
+                            <tr id="row_{{index}}" class="row_id_{{key.id}}">
+                                <td class="form-control-small-1" data-toggle="tooltip" data-placement="right" data-container="body">{{key.userName}}</td>
+                                <td class="form-control-small-1" data-toggle="tooltip" data-placement="right" data-container="body">{{key.userFullName}}</td>
+                                <td class="form-control-small-1" data-toggle="tooltip" data-placement="right" data-container="body">{{key.role}}</td>
+                                <td class="form-control-small-1" data-toggle="tooltip" data-placement="right" data-container="body">{{key.customerName}}</td>
+                                <!-- <td class="form-control-small-1" data-toggle="tooltip" data-placement="right" data-container="body">{{key.networkType}}</td> -->
+                                <td class="form-control-small-1" data-toggle="tooltip" data-placement="right" data-container="body">{{key.programName}}</td>
+                                <td class="form-control-max" data-toggle="tooltip" data-placement="right" data-container="body">{{key.emailId}}</td>
+                                <td class="form-control-small-1" data-toggle="tooltip" data-placement="right" data-container="body">{{key.vpnUserName}}</td>
+                                <td class="form-control-mini" data-toggle="tooltip" data-placement="right" data-container="body">{{key.status}}</td>
+                                <td class="form-control-dateTime" data-toggle="tooltip" data-placement="right" data-container="body">{{key.createdBy}}</td>
+                                <td class="form-control-dateTime" data-toggle="tooltip" data-placement="right" data-container="body">{{key.creationDate}}</td>
+                                <!-- <td class="form-control-max1" data-toggle="tooltip" data-placement="right" data-container="body">{{key.remarks}}</td> -->
+                                <td class="form-control-max1" data-toggle="tooltip" data-placement="right" data-container="body">
+                                    <span class="eventColText">{{key.remarks}}</span>
+                                    <div class="form-control-fixed iconsWrapper tableRowAction" id="fixedCol" ng-style="iconsWrapperPosition" > <!-- *ngIf="(userGroupDetails == 'Super Administrator' && key.role !='Super Administrator') || (userGroupDetails == 'Administrator' && key.role !='Administrator' && key.role !='Super Administrator')" -->
+                                        <div (click)="editRow($event, key, index)" class="editRow" placement="bottom" container="body" ngbTooltip="Edit"></div>
+                                        <!-- <div (click)="deleteRow(confirmModal, key.userName, key.id)" class="deleteRow" placement="bottom" container="body" ngbTooltip="Delete"></div> -->
+                                        <!-- <div  *ngIf="userGroupDetails != 'Super Administrator'" (click)="deleteRow(confirmModal, key.userName, key.id)" class="deleteRow" placement="bottom" container="body" ngbTooltip="Delete"></div> -->
+                                        <div  *ngIf="userGroupDetails != key.role" (click)="deleteRow(confirmModal, key.userName, key.id,$event)" class="deleteRow" placement="bottom" container="body" ngbTooltip="Delete"></div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr *ngIf="checkFormEnable(index)" id="editedRow{{index}}">
+                                <td colspan="11" class="formEditRow">
+                                    <div id="formWrapper" class="userManagementFormWrapper" [ngStyle]="{'width': formWidth, 'margin-left': scrollLeft}">
+                                        <form class="form-horizontal">
+
+                                            <div class="row">
+                                                <input type="text" class="displayNone" id="id" name="id" value="" />
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="asterisk_input">USER NAME</label>
+                                                        <input type="text" class="form-control" disabled="disabled" id="userName" name="userName" value="" maxlength="30" />
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="asterisk_input">NAME</label>
+                                                        <input type="text" class="form-control" id="userFullName" name="userFullName" value="" maxlength="30" />
+
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="asterisk_input">PASSWORD</label>
+                                                        <input type="password" class="form-control" id="password" name="password" value="" maxlength="100" />
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="asterisk_input">CONFIRM PASSWORD</label>
+                                                        <input type="password" class="form-control" id="cnfrmPswd" name="cnfrmPswd" value="" maxlength="100" />
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="row">
+                                                <!-- <div class="col-3">
+												<div class="form-group">
+													<label id="rsLabel" for="templateName">REPAIR STATION</label>
+														<ng-multiselect-dropdown  name="location" id="location" 
+														  [placeholder]="'--Select--'"
+														  [data]="mOptions"
+														  [(ngModel)]="selectedItemsLocationEdit"
+														  [settings]="dropdownSettings"
+														  (onSelect)="onItemSelect($event)"
+														  (onSelectAll)="onSelectAll($event)">
+														</ng-multiselect-dropdown>
+													<div class="error-message-block"></div>
+												</div>
+											</div>
+											<div class="col-3">
+												<div class="form-group">
+													<label id="anLabel" for="templateName">AIRLINE NAME</label>
+														<ng-multiselect-dropdown  name="airlineName" id="airlineName" 
+														  [placeholder]="'--Select--'"
+														  [data]="mOptionsAirline"
+														  [(ngModel)]="selectedItemsAirlineEdit"
+														  [settings]="dropdownSettings"
+														  (onSelect)="onItemSelect($event)"
+														  (onSelectAll)="onSelectAll($event)">
+														</ng-multiselect-dropdown>
+													<div class="error-message-block"></div>
+												</div>
+											</div> -->
+                                                <!-- <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="asterisk_input">ROLE</label>
+                                                        <select class="form-control" name="role" id="role" #role (change)="onChnageRole(role.value)">
+                                                            <option value="">--Select--</option>
+                                                            <option *ngFor="let key of tableData['roleList']" value="{{key.role}}" id="{{key.id}}" [disabled]="key.role == 'Super Administrator'">{{key.role}}</option>
+                                                        </select>
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div> -->
+                                                <!-- <div class="col-3" *ngIf="userGroupDetails == 'Administrator'">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="asterisk_input">ROLE</label>
+                                                        <select class="form-control" name="role" id="role" #role (change)="onChnageRole(role.value)">
+                                                            <option value="">--Select--</option>
+                                                            <option *ngFor="let key of tableData['roleList']" value="{{key.role}}" id="{{key.id}}" [disabled]="(key.role == 'Super Administrator') || (key.role == 'Administrator')">{{key.role}}</option>
+                                                        </select>
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3" *ngIf="userGroupDetails != 'Administrator'">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="asterisk_input">ROLE</label>
+                                                        <select class="form-control" name="role" id="role" #role (change)="onChnageRole(role.value)">
+                                                            <option value="">--Select--</option>
+                                                            <option *ngFor="let key of tableData['roleList']" value="{{key.role}}" id="{{key.id}}" [disabled]="key.role == 'Super Administrator'">{{key.role}}</option>
+                                                        </select>
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div> -->
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="asterisk_input">ROLE</label>
+                                                        <select class="form-control" name="role" id="role" #role (change)="onChnageRole(role.value)" [disabled]="key.role == this.userGroupDetails">
+                                                            <option value="">--Select--</option>
+                                                            <option *ngFor="let key of userRoleList" value="{{key.role}}" id="{{key.id}}" [disabled]="!key.isAllowed">{{key.role}}</option>
+                                                        </select>
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="asterisk_input">CUSTOMER NAME</label>
+                                                        <select class="form-control" name="customerName" id="customerName" [(ngModel)]="selectedCustomerName" (change)="getProgramName(selectedCustomerName)" [disabled]="key.role == userGroupDetails || (userGroupDetails != 'Default User' && userGroupDetails != 'Super Administrator')" >
+                                                            <option value="">--Select--</option>
+                                                            <option *ngFor="let key of tableData['customerList']" value="{{key.customerName}}" id="{{key.id}}">{{key.customerName}}</option>
+                                                        </select>
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                                <!-- <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="asterisk_input">PROGRAM NAME</label>
+                                                        <ng-multiselect-dropdown id="programName" class="form-control" name="programName" [placeholder]="'--Select--'" [data]="dropdownList"
+                                                            [(ngModel)]="selectedItems" [settings]="dropdownSettings">
+                                                        </ng-multiselect-dropdown>
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div> -->
+                                                <div class="col-3" *ngIf="showProgramList">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="asterisk_input">PROGRAM NAME</label>
+                                                        <ng-multiselect-dropdown id="programName" class="form-control" name="programName" [placeholder]="'--Select--'" [data]="dropdownList"
+                                                            [(ngModel)]="selectedItems" [settings]="dropdownSettings" [disabled]="key.role == this.userGroupDetails">
+                                                        </ng-multiselect-dropdown>
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3" *ngIf="!showProgramList">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="asterisk_input">PROGRAM NAME</label>
+                                                        <select class="form-control" name="programName1" id="programName1">
+                                                            <option value="All">All</option>
+                                                        </select>
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="asterisk_input">EMAIL</label>
+                                                        <input type="text" class="form-control" id="emailId" name="email" value="" maxlength="100">
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="asterisk_input">VPN USERNAME</label>
+                                                        <input type="text" class="form-control" id="vpnUserName" name="vpnUserName" value="" maxlength="30" autocomplete="off" />
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="asterisk_input">VPN PASSWORD</label>
+                                                        <input type="password" class="form-control" id="vpnPassword" name="vpnPassword" value="" maxlength="30" autocomplete="off"
+                                                        />
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label id="statusLabel" for="templateName">STATUS</label>
+                                                        <select class="form-control" name="status" id="status" (change)="onChange($event)" [disabled]="key.role == this.userGroupDetails">
+                                                            <option value="Active">Active</option>
+                                                            <option value="Inactive">Inactive</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName">TIMESTAMP</label>
+                                                        <input type="text" class="form-control" id="creationDate" name="creationDate" value="" [disabled]="true" />
+                                                    </div>
+                                                </div>
+                                                <!-- <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName">LOGIN DATE</label>
+                                                        <input type="text" class="form-control" id="lastLoginDate" name="lastLoginDate" value="" [disabled]="true" />
+                                                    </div>
+                                                </div> -->
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="widthReg">REMARKS</label>
+                                                        <textarea rows="4" cols="50" class="customTextArea" name="remarks" id="remarks"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="textAlignCenter">
+                                                <button name="update" class="formBtn myriadproBold validateForm" id="updateButton" type="submit" (click)="updateEditRow(index, key.id, key.role, $event)" accesskey="u">UPDATE</button>
+                                                <button type="button" name="CANCEL" class="formBtn myriadproBold formBtn formBtnCncl" id="editCancelButton" (click)="cancelEditRow(index,key.id)" accesskey="c">CANCEL</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div id="paginationWrapper">
+                <div *ngIf="pageRenge.length" class="floatLeft page" style="padding-top: 0px;margin-left:20px;">
+                    <div class="floatLeft" style="width: 75px;padding-top: 6px">Show</div>
+                    <select [disabled]="paginationDisabbled" [(ngModel)]="pageSize" (change)="onChangeTableRowLength($event)" style="margin-top: 4px; margin-right: 6px;margin-left: -39px;"
+                        class="form-control-pagination floatLeft" aria-controls="TableRowLength" size="1" name="TableRowLength"
+                        id="TableRowLength">
+                        <option selected="selected" value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                    <div class="floatLeft" style="width: 75px;padding-top: 6px">Entries</div>
+                </div>
+                <div class="floatRight page" style="padding-top: 3px;margin-right:20px;">
+                    <ul *ngIf="pageRenge.length" class="pagination floatRight">
+                        <li id="firstPage" [ngClass]="{disabled:(currentPage === 1 || paginationDisabbled)}" class="page-item">
+                            <a class="page-link" (click)="setPage(1)">FIRST</a>
+                        </li>
+                        <li id="previousPage" [ngClass]="{disabled:(currentPage === 1 || paginationDisabbled)}" class="page-item">
+                            <a class="page-link" (click)="setPage(pager.currentPage - 1)">PREV</a>
+                        </li>
+                        <li *ngFor="let n of pager.pages" [ngClass]="{active:currentPage === n, disabled:paginationDisabbled}" class="page-item">
+                            <a class="page-link" (click)="setPage(n)" id='{{n+1}}'>{{n}}</a>
+                        </li>
+                        <li id="nextPage" [ngClass]="{disabled:(currentPage === totalPages || paginationDisabbled)}" class="page-item">
+                            <a class="page-link" (click)="setPage(pager.currentPage + 1)">NEXT</a>
+                        </li>
+                        <li id="lastPage" [ngClass]="{disabled:(currentPage === totalPages || paginationDisabbled)}" class="page-item">
+                            <a class="page-link" (click)="setPage(pager.totalPages)">LAST</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+    </div>
+
+    <rct-nodata *ngIf="noDataVisibility" [subTitle]="'Please click on <u><b>CREATE NEW</b></u> to add users'"></rct-nodata>
+
+    <!-- <ng-template #clone id="userManagementFormConfig"> -->
+        <div *ngIf="createForm" id="formWrapper" class="bluePrintFormWrapper">
+            <form class="form-horizontal">
+
+                <div class="row">
+
+                    <div class="col-3">
+                        <input type="text" class="displayNone" id="dbId" name="dbId" value="" />
+                        <div class="form-group">
+                            <label for="templateName" class="asterisk_input">USER NAME</label>
+                            <input type="text" class="form-control" id="userName" name="userName" value="" maxlength="30" autocomplete="off"/>
+
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName" class="asterisk_input">NAME</label>
+                            <input type="text" class="form-control" id="userFullName" name="userFullName" value="" maxlength="30" autocomplete="off"/>
+
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName" class="asterisk_input">PASSWORD</label>
+                            <input type="password" class="form-control" id="password" name="password" value="" maxlength="30" autocomplete="off"/>
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName" class="asterisk_input">CONFIRM PASSWORD</label>
+                            <input type="password" class="form-control" id="cnfrmPswd" name="cnfrmPswd" value="" maxlength="30" autocomplete="off"/>
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <!-- <div class="col-3">
+						<div class="form-group">
+							<label id="rsLabel" for="templateName">REPAIR STATION</label>
+								<ng-multiselect-dropdown  name="location" id="location" 
+								  [placeholder]="'--Select--'"
+								  [data]="mOptions"
+								  [(ngModel)]="selectedItemsLocation"
+								  [settings]="dropdownSettings"
+								  (onSelect)="onItemSelect($event)"
+								  (onSelectAll)="onSelectAll($event)">
+								</ng-multiselect-dropdown>
+							<div class="error-message-block"></div>
+						</div>
+					</div>
+					<div class="col-3">
+						<div class="form-group">
+							<label id="anLabel" for="templateName">AIRLINE NAME</label>
+								<ng-multiselect-dropdown  name="airlineName" id="airlineName" 
+								  [placeholder]="'--Select--'"
+								  [data]="mOptionsAirline"
+								  [(ngModel)]="selectedItemsAirline"
+								  [settings]="dropdownSettings"
+								  (onSelect)="onItemSelect($event)"
+								  (onSelectAll)="onSelectAll($event)">
+								</ng-multiselect-dropdown>
+							<div class="error-message-block"></div>
+						</div>
+					</div> -->
+
+                    <!-- <div class="col-3" *ngIf="userGroupDetails == 'Administrator'">
+                        <div class="form-group">
+                            <label for="templateName" class="asterisk_input">ROLE</label>
+                            <select class="form-control" name="role" id="role" #role (change)="onChnageRole(role.value)">
+                                <option value="">--Select--</option>
+                                <option *ngFor="let key of tableData['roleList']" value="{{key.role}}" id="{{key.id}}" [disabled]="(key.role == 'Super Administrator') || (key.role == 'Administrator')">{{key.role}}</option>
+                            </select>
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                    <div class="col-3" *ngIf="userGroupDetails != 'Administrator'">
+                        <div class="form-group">
+                            <label for="templateName" class="asterisk_input">ROLE</label>
+                            <select class="form-control" name="role" id="role" #role (change)="onChnageRole(role.value)">
+                                <option value="">--Select--</option>
+                                <option *ngFor="let key of tableData['roleList']" value="{{key.role}}" id="{{key.id}}" [disabled]="key.role == 'Super Administrator'">{{key.role}}</option>
+                            </select>
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div> -->
+
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName" class="asterisk_input">ROLE</label>
+                            <select class="form-control" name="role" id="role" #role (change)="onChnageRole(role.value)">
+                                <option value="">--Select--</option>
+                                <option *ngFor="let key of userRoleList" value="{{key.role}}" id="{{key.id}}" [disabled]="!key.isAllowed">{{key.role}}</option>
+                            </select>
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName" class="asterisk_input">CUSTOMER NAME</label>
+                            <select class="form-control" name="customerName" id="customerName" [(ngModel)]="selectedCustomerName" (change)="getProgramName(selectedCustomerName)" [disabled]="(userGroupDetails != 'Default User' ) && (userGroupDetails != 'Super Administrator')" >
+                                <!-- <select *ngif="('Default User' == userGroupDetails) || ('Super Administrator' == userGroupDetails)"> -->    
+                                    <option value="">--Select--</option>
+                                    <option *ngFor="let key of tableData['customerList']" value="{{key.customerName}}" id="{{key.id}}">{{key.customerName}}</option>
+                                      
+                            </select>
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                    <div class="col-3" *ngIf="showProgramList">
+                        <div class="form-group">
+                            <label for="templateName" class="asterisk_input">PROGRAM NAME</label>
+                            <ng-multiselect-dropdown id="programName" class="form-control" name="programName" [placeholder]="'--Select--'" [data]="dropdownList"
+                                [(ngModel)]="selectedItems" [settings]="dropdownSettings">
+                            </ng-multiselect-dropdown>
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                    <div class="col-3" *ngIf="!showProgramList">
+                        <div class="form-group">
+                            <label for="templateName" class="asterisk_input">PROGRAM NAME</label>
+                            <select class="form-control" name="programName1" id="programName1">
+                                <option value="All">All</option>
+                            </select>
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName" class="asterisk_input">EMAIL</label>
+                            <input type="text" class="form-control" id="emailId" name="email" value="" maxlength="100">
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName" class="asterisk_input">VPN USERNAME</label>
+                            <input type="text" class="form-control" id="vpnUserName" name="vpnUserName" value="" maxlength="30" autocomplete="off" />
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName" class="asterisk_input">VPN PASSWORD</label>
+                            <input type="password" class="form-control" id="vpnPassword" name="vpnPassword" value="" maxlength="30" autocomplete="off" />
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label id="statusLabel" for="templateName">STATUS</label>
+                            <select class="form-control" name="status" id="status">
+                                <option value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName" class="widthReg">REMARKS</label>
+                            <textarea rows="4" cols="50" class="customTextArea" name="remarks" id="remarks"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="textAlignCenter">
+                    <button type="button" name="save" class="formBtn myriadproBold validateForm" id="addButton" (click)="addNewRow($event)" accesskey="s">SAVE</button>
+                    <button type="button" id="cancelButton" name="CANCEL" class="formBtnCncl formBtn myriadproBold formBtn" (click)="cancelCreateNew($event)" accesskey="c">CANCEL</button>
+                </div>
+            </form>
+        </div>
+    <!-- </ng-template> -->
+
+    <ng-template #sessionExpiredModal let-c="close" let-d="dismiss">
+        <div class="failureIcon"></div>
+        <p id="sessionPopup">Session Expired</p>
+        <div class="modelDismiss" (click)="closeAndLogout()"></div>
+    </ng-template>
+
+    <ng-template #successModal let-c="close" let-d="dismiss">
+        <div class="successIcon"></div>
+        <p id="sessionPopup">{{message}}</p>
+        <div class="modelDismiss" (click)="closeModel()"></div>
+    </ng-template>
+
+    <rct-model *ngIf="showModelMessage" [message]="modelData"></rct-model>
+
+</div>

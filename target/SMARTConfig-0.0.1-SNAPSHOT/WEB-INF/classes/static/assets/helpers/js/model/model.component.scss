@@ -1,0 +1,16 @@
+.modelDismiss {
+    background: url(../../../images/smart-sprite.png) -183px -16px;
+    width: 25px;
+    height: 25px;
+    margin-top: -12px;
+    position: absolute;
+    cursor: pointer;
+    right: 15px;
+    background-color: #CD174D;
+    border-radius: 4px;
+}
+
+
+.confirmIcon{background: url("../../../images/smart-sprite.png") -94px -316px;width:55px;height:70px;margin-left: 75px;margin-top: 15px;float:left;}
+.successIcon{background: url("../../../images/smart-sprite.png") -172px -315px;margin-right: 6px;width:60px;height:80px;margin-left: 60px;float:left;}
+.failureIcon{background:url("../../../images/smart-sprite.png") -19px -335px no-repeat;margin-right: 10px;width:48px;height:60px;margin-left: 45px;margin-top: 35px;float:left;}

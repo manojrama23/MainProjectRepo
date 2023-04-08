@@ -1,0 +1,773 @@
+<div class="page-wrapper">
+    <rct-loader *ngIf="showLoader"></rct-loader>
+    <h1 class="mainHead">RETRIEVE CIQ</h1>
+
+    <ng-template #confirmModal let-c="close" let-d="dismiss">
+        <div class="sucessContentWrapper">
+            <div class="confirmIcon"></div>
+            <div class="confirmContent">
+                <p>
+                    <b>File already exist, Are You Sure</b>
+                </p>
+                <br>
+                <p>You want to
+                    <b>Replace this file</b>
+                </p>
+            </div>
+        </div>
+        <div class="modal-footer textAlignCenter" style="margin-top:15px;">
+            <button type="button" class="formBtn btn btn-secondary modal_button_yes" (click)="d('dismiss click')" id="deleteConfirmation">YES</button>
+            <button type="button" class="formBtn btn btn-secondary modal_button_no" (click)="cancelModel(c)" id="modal_button_no">NO</button>
+        </div>
+    </ng-template>
+
+    <ng-template #confirmFetchModal let-c="close" let-d="dismiss">
+        <div class="sucessContentWrapper">
+            <div class="confirmIcon"></div>
+            <div class="confirmContent">
+                <p>
+                    <b>File already fetched, Are You Sure</b>
+                </p>
+                <br>
+                <p>You want to
+                    <b>fetch this file again</b>
+                </p>
+            </div>
+        </div>
+        <div class="modal-footer textAlignCenter">
+            <button type="button" class="formBtn btn btn-secondary modal_button_yes" (click)="d('dismiss click')" id="deleteConfirmation">YES</button>
+            <button type="button" class="formBtn btn btn-secondary modal_button_no" (click)="cancelModel(c)" id="modal_button_no">NO</button>
+        </div>
+    </ng-template>
+
+    <ng-template #confirmModalDelete let-c="close" let-d="dismiss">
+        <div class="sucessContentWrapper">
+            <div class="confirmIcon"></div>
+            <div class="confirmContent deletePopup">
+                <p>
+                    <b>Are You Sure, </b>
+                <!-- </p>
+                <br>
+                <p> -->You want to
+                    <b>Delete</b>
+                </p>
+            </div>
+        </div>
+        <div class="deletePopupBtn modal-footer textAlignCenter" style="margin-top:15px;">
+            <button type="button" class="formBtn btn btn-secondary modal_button_yes" (click)="d('dismiss click')" id="deleteConfirmation">YES</button>
+            <button type="button" class="formBtn btn btn-secondary modal_button_no" (click)="c('Close click')" id="modal_button_no">NO</button>
+        </div>
+    </ng-template>
+
+    <ng-template #sessionExpiredModal let-c="close" let-d="dismiss">
+        <div class="failureIcon"></div>
+        <p id="sessionPopup">Session Expired</p>
+        <div class="modelDismiss" (click)="closeAndLogout()"></div>
+    </ng-template>
+
+    <ng-template #successModal let-c="close" let-d="dismiss">
+        <div class="successIcon"></div>
+        <p id="sessionPopup">{{message}}</p>
+
+        <div class="modelDismiss" (click)="closeModel()"></div>
+    </ng-template>
+
+    <ul class="nav nav-pills" role="tablist">
+        <li class="nav-item">
+            <div (click)="retrieveCiq()" accesskey="r" name="retrieveCiq" class="active divalign float-sm-right float-md-right float-lg-right float-xl-right"
+                #retrieveTab>RETRIEVE</div>
+        </li>
+        <li class="nav-item">
+            <div (click)="searchCiq()" accesskey="s" name="searchCiq" class="divalign float-sm-right float-md-right float-lg-right float-xl-right"
+                #searchTab>SEARCH</div>
+        </li>
+    </ul>
+
+    <!-- RETRIEVE CIQ BLOCK -->
+    <div id="formWrapper" class="formWrapperMargin bluePrintFormWrapper" *ngIf="retriveCiq">
+        <form class="form-horizontal" style="border-bottom: 1px solid #D6DADC;margin-bottom: 5px;">
+            <div class="row">
+                <div class="col-8">
+                    <div class="form-group radio-inline">
+                        <input class="radio" type="radio" [(ngModel)]='radioOperation' name="uploadBtn" (change)="resetData($event)"
+                            value="UPLOAD">
+                        <label for="templateName">UPLOAD CIQ</label>
+                    </div>
+                    <div class="form-group radio-inline">
+                        <input class="radio" type="radio" [(ngModel)]='radioOperation' name="fetchBtn" value="FETCH" (change)="resetData($event)">
+                        <label for="templateName">FETCH FROM SERVER</label>
+                    </div>
+                    <div class="form-group radio-inline" *ngIf="programName == 'VZN-4G-USM-LIVE'">
+                        <input class="radio" type="radio" [(ngModel)]='radioOperation' name="fetchRfBtn" value="IMPORT" (change)="resetData($event)">
+                        <label for="templateName">FETCH FROM RF DB</label>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <form class="form-horizontal" *ngIf="radioOperation == 'UPLOAD'" #retrieveCiqForm>
+            <div class="row">
+                <div class="form-group floatLeft col-3">
+                    <label for="templateName" class="asterisk_input">UPLOAD CIQ</label>
+                    <div>
+                        <input type="file" class="ciqUpload form-control-small-3" #ciqUpload name="ciqUpload" id="ciqUpload" [multiple]="false" (change)="uploadStateTar($event,'CIQ')"
+                            accept=".xlsx" />
+                        <div class="error-message-block"></div>
+                        <div class="iconsWrapper1">
+                            <div class="hint"></div>
+                            <div class="hintMessage">supports .xlsx format</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group floatLeft col-3">
+                    <label for="templateName" [ngClass]="{'asterisk_input':ovCkeckedOrNot}">UPLOAD SCRIPT</label>
+                    <div>
+                        <input type="file" class="ciqUpload form-control-small-3" #uploadScript name="uploadScript" id="uploadScript" [multiple]="true"
+                            (change)="uploadZipAndTar($event)" accept=".zip, .7z, .txt" />
+                        <div class="error-message-block"></div>
+                        <div class="iconsWrapper1">
+                            <div class="hint"></div>
+                            <div class="hintMessage">supports .zip .7z .txt format</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group floatLeft col-3">
+                    <label for="templateName">UPLOAD CHECKLIST</label>
+                    <div>
+                        <input type="file" class="ciqUpload form-control-small-3" #uploadCheckList name="uploadCheckList" id="uploadCheckList" [multiple]="false"
+                            (change)="uploadStateTar($event,'CHECKLIST')" accept=".xlsx" />
+                        <div class="error-message-block"></div>
+                        <div class="iconsWrapper1">
+                            <div class="hint"></div>
+                            <div class="hintMessage">supports .xlsx format</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="form-group floatLeft" style="width:20%">
+                        <label for="templateName" class="asterisk_input">N/W TYPE</label>
+                        <select class="form-control" name="networkType" id="networkType" #networkType (change)="onChangeNetworkType(networkType.value)">
+                            <option value="">--Select--</option>
+                            <option *ngFor="let key of netWorkDetails" id="{{key.id}}" value="{{key.networkType}}">{{key.networkType}}</option>
+                        </select>
+                        <div class="error-message-block"></div>
+                    </div>
+                    <div class="form-group floatLeft" style="width:20%">
+                        <label for="templateName" class="asterisk_input">LSM VERSION</label>
+                        <select class="form-control" name="lsmVersion" id="lsmVersion">
+                            <option value="">--Select--</option>
+                            <option *ngFor="let key of lsmVersionList" id="{{key}}" value="{{key}}">{{key}}</option>
+                        </select>
+                        <div class="error-message-block"></div>
+                    </div> -->
+                <div class="form-group floatLeft col-3">
+                    <div class="row">
+                        <div class="col-6">
+                            <label for="templateName" class="widthReg">REMARKS</label>
+                            <textarea rows="4" cols="50" class="customTextArea" name="remarks" id="remarks"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <label></label>
+                            <input type="checkbox" [disabled]="ovOverallInteraction == 'OFF'" class="thcheckbox" style="margin-right: 3px;vertical-align: middle;"
+                            [(ngModel)]="ovCkeckedOrNot" name="check" >OV Interaction
+                            <span class="afterchecktext" *ngIf="ovOverallInteraction == 'OFF'" container="body" ngbTooltip= "Request admin to enable ‘OV Overall Interaction’ in General Settings" id="tooltip" placement="bottom"></span>
+                            <span class="afterchecktext" *ngIf="ovOverallInteraction == 'ON'" container="body" ngbTooltip= "Upon selection allows OV Interaction" id="tooltip" placement="bottom"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <!-- <div class="col-12" style="margin: 10px;"> -->
+                    <div class="textAlignCenter">
+                        <button name="save" class="formBtn myriadproBold validateForm airlinecnfgSearch" id="upload" (click)="uplaodCiqDeatailsFile($event, confirmModal,false)"
+                            accesskey="u" [ngClass]="{'buttonDisabled':ciqFileType ||listFileType ||scriptFileType}" [disabled]="ciqFileType || listFileType || scriptFileType">UPLOAD</button>
+                        <!-- <button name="save" style="width: 150px;" class="formBtn myriadproBold validateForm airlinecnfgSearch" id="uploadAndActivate"
+                            (click)="uplaodCiqDeatailsFile($event, confirmModal,true)" accesskey="u" [ngClass]="{'buttonDisabled':ciqFileType||listFileType || scriptFileType }" [disabled]="ciqFileType || listFileType || scriptFileType">UPLOAD & ACTIVATE</button> -->
+                        <ng-template #errorMsg>Select Valid File</ng-template>
+                        <div *ngIf="ciqFileType || listFileType || scriptFileType" class="errorIcon" placement="bottom" container="body" [ngbTooltip]="errorMsg"></div>
+                    </div>
+                <!-- </div> -->
+            
+        </form>
+
+        <form class="form-horizontal" *ngIf="radioOperation == 'FETCH'">
+            <div class="row">
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName">CIQ SERVER NAME</label>
+                        <input disabled="disabled" type="text" class="form-control" id="ciqServer" name="ciqServer" value="{{tableData.ciqServer}}"
+                        />
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName">CIQ SERVER IP ADDRESS</label>
+                        <input disabled="disabled" type="text" class="form-control" id="ciqServerIp" name="ciqServerIp" value="{{tableData.ciqServerIp}}"
+                        />
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName">SCRIPT SERVER</label>
+                        <input disabled="disabled" type="text" class="form-control" id="scriptServer" name="scriptServer" value="{{tableData.scriptServer}}"
+                        />
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName">SCRIPT SERVER IP ADDRESS</label>
+                        <input disabled="disabled" type="text" class="form-control" id="scriptServerIp" name="scriptServerIp"
+                            value="{{tableData.scriptServerIp}}" />
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName" class="asterisk_input">MARKET</label>
+                        <ng-multiselect-dropdown id="market" class="form-control" name="market"
+                            [placeholder]="'--Select--'" [data]="marketDropDownList" [(ngModel)]="selectedMarkets"
+                            [settings]="dropdownSettings">
+                        </ng-multiselect-dropdown>
+                        <div class="error-message-block"></div>
+                    </div>
+                </div>
+
+                <div class="col-3 rfScriptContainer">
+                    <div style="display: flex;">
+                        <label for="templateName">SITE LIST</label>
+                        <div class="infoRow col-2"  [ngClass]="{'asterisk_input':ovCkeckedOrNot}" placement="bottom" [ngbPopover]="rfScriptInfoMsg" #p1="ngbPopover"
+                            popoverTitle="" style="cursor: pointer;" triggers="mouseenter:mouseleave"></div>
+                    </div>
+                    <ng-template #rfScriptInfoMsg>
+                        <span>Please paste the site list in chronological order. e.g.</span>
+                        <ul style="padding: 5px;">
+                            <li *ngFor="let neIds of getNEIDProgramBased()" style="padding: 3px;">
+                                <span>{{neIds}}</span>
+                            </li>
+                        </ul>
+                    </ng-template>
+                    
+                    <div class="row" name="useCase" id="useCase" style="margin-left: 0;float: left;">
+                        <textarea rows="4" cols="50" class="customTextArea" name="scriptList" id="scriptList" [(ngModel)]="rfScriptList"></textarea>
+                        <div class="error-message-block"></div>
+                    </div>
+                    <button (click)="viewScripts(scriptListModal)" class="viewContent scroptListViewBtn" [ngClass]="{'buttonDisabled':!rfScriptList, 'buttonBg':!rfScriptList}"
+                        placement="bottom" container="body" ngbTooltip="View" [disabled]="!rfScriptList"></button>
+                </div>
+                
+                <!-- <div class="col-1" style="margin-top: 5px;padding: 0px;">
+                    <label></label>
+                    <input type="checkbox" class="thcheckbox" style="margin-right: 3px;vertical-align: middle;" [(ngModel)]="ckeckedOrNot" name="check">CHECKLIST
+                </div> -->
+                <div class="col-3">
+                    <label for="templateName">REMARKS</label>
+                    <textarea rows="4" cols="50" class="customTextArea" name="remarks" id="remarks"></textarea>
+                </div>
+                <div class="col-3">
+                    <label></label>
+                    <input type="checkbox" [disabled]="ovOverallInteraction == 'OFF'" class="thcheckbox" style="margin-right: 3px;vertical-align: middle;"
+                    [(ngModel)]="ovCkeckedOrNot" name="check" >OV Interaction
+                    <span class="afterchecktext" *ngIf="ovOverallInteraction == 'OFF'" container="body" ngbTooltip= "Request admin to enable ‘OV Overall Interaction’ in General Settings" id="tooltip" placement="bottom"></span>
+                    <span class="afterchecktext" *ngIf="ovOverallInteraction == 'ON'" container="body" ngbTooltip= "Upon selection allows OV Interaction" id="tooltip" placement="bottom"></span>
+                </div>
+            </div>
+               <!--  <div class="col-12" style="margin: 10px;"> -->
+                    <div class="textAlignCenter">
+                        <button name="save" class="formBtn myriadproBold validateForm airlinecnfgSearch" id="fetch" (click)="fetchCiqDeatailsFile($event,confirmFetchModal,false)"
+                            accesskey="u">FETCH</button>
+                        <!-- <button name="save" style="width: 150px;" class="formBtn myriadproBold validateForm airlinecnfgSearch" id="fetchAndActivate"
+                            (click)="fetchCiqDeatailsFile($event,confirmFetchModal,true)" accesskey="u">FETCH & ACTIVATE</button> -->
+                        <ng-template #errorMsg>Select Valid File</ng-template>
+                        <div class="displayNone dbImportButtonDisabled errorIcon" placement="bottom" container="body" [ngbTooltip]="errorMsg"></div>
+                    </div>
+                <!-- </div> -->
+            
+        </form>
+        <form class="form-horizontal" *ngIf="radioOperation == 'IMPORT'">
+            <div class="row">
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName">RF SERVER NAME</label>
+                        <input disabled="disabled" type="text" class="form-control" id="ciqServer" name="ciqServer" value="{{tableData.ciqServer}}"
+                        />
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName">RF SERVER IP ADDRESS</label>
+                        <input disabled="disabled" type="text" class="form-control" id="ciqServerIp" name="ciqServerIp" value="{{tableData.ciqServerIp}}"
+                        />
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName">SCRIPT SERVER</label>
+                        <input disabled="disabled" type="text" class="form-control" id="scriptServer" name="scriptServer" value="{{tableData.scriptServer}}"
+                        />
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName">SCRIPT SERVER IP ADDRESS</label>
+                        <input disabled="disabled" type="text" class="form-control" id="scriptServerIp" name="scriptServerIp"
+                            value="{{tableData.scriptServerIp}}" />
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName" class="asterisk_input">MARKET</label>
+                        <ng-multiselect-dropdown id="market" class="form-control" name="market"
+                            [placeholder]="'--Select--'" [data]="marketDropDownList" [(ngModel)]="selectedMarkets"
+                            [settings]="dropdownSettings">
+                        </ng-multiselect-dropdown>
+                        <div class="error-message-block"></div>
+                    </div>
+                </div>
+                <div class="col-3 rfScriptContainer">
+                    <div style="display: flex;">
+                        <label for="templateName">SITE LIST</label>
+                        <div class="infoRow col-2"  [ngClass]="ovCkeckedOrNot ? 'asterisk_input': importSelectedSites ? 'asterisk_input': ''" placement="bottom" [ngbPopover]="rfScriptInfoMsg" #p1="ngbPopover"
+                            popoverTitle="" style="cursor: pointer;" triggers="mouseenter:mouseleave"></div>
+                    </div>
+                    <ng-template #rfScriptInfoMsg>
+                        <span>Please paste the site list in chronological order. e.g.</span>
+                        <ul style="padding: 5px;">
+                            <li *ngFor="let neIds of getNEIDProgramBased()" style="padding: 3px;">
+                                <span>{{neIds}}</span>
+                            </li>
+                        </ul>
+                    </ng-template>                    
+                    <div class="row" name="useCase" id="useCase" style="margin-left: 0;float: left;">
+                        <textarea rows="4" cols="50" class="customTextArea" name="scriptList" id="scriptList" [(ngModel)]="rfScriptList"></textarea>
+                        <div class="error-message-block"></div>
+                    </div>
+                    <button (click)="viewScripts(scriptListModal)" class="viewContent scroptListViewBtn" [ngClass]="{'buttonDisabled':!rfScriptList, 'buttonBg':!rfScriptList}"
+                        placement="bottom" container="body" ngbTooltip="View" [disabled]="!rfScriptList"></button>
+                </div>
+                <div class="col-3">
+                    <label for="templateName">REMARKS</label>
+                    <textarea rows="4" cols="50" class="customTextArea" name="remarks" id="remarks"></textarea>
+                </div>
+                <div class="col-3">
+                    <div class="col-12">
+                        <input type="checkbox" [disabled]="ovOverallInteraction == 'OFF'" class="thcheckbox" style="margin-right: 3px;vertical-align: middle;"
+                        [(ngModel)]="ovCkeckedOrNot" name="check" >OV Interaction
+                        <span class="afterchecktext" *ngIf="ovOverallInteraction == 'OFF'" container="body" ngbTooltip= "Request admin to enable ‘OV Overall Interaction’ in General Settings" id="tooltip" placement="bottom"></span>
+                        <span class="afterchecktext" *ngIf="ovOverallInteraction == 'ON'" container="body" ngbTooltip= "Upon selection allows OV Interaction" id="tooltip" placement="bottom"></span>
+                    </div>
+                    <div class="col-12">
+                        <input type="checkbox" class="thcheckbox" style="margin-right: 3px;vertical-align: middle;"
+                        [(ngModel)]="importSelectedSites" name="check" >Import Selected Sites
+                    </div>
+                </div>
+            </div>
+                <div class="textAlignCenter">
+                    <button name="save" class="formBtn myriadproBold validateForm airlinecnfgSearch" id="fetch" (click)="fetchCiqDeatailsFile($event,confirmFetchModal,false)"
+                        accesskey="u">FETCH</button>
+                </div>
+        </form>
+    </div>
+
+    <!-- SEARCH CIQ BLOCK -->
+    <form *ngIf="searchBlock" class="form-horizontal" #searchForm>
+        <div id="formWrapper">
+            <div class="row">
+                <div class="col-3">
+                    <label for="templateName">SELECT DATE RANGE</label>
+                    <div class="form-group" style="display: inline-block;">
+                        <input class="form-control" style="width: 75px !important;word-break: break-word;margin-right: 8px;" id="fromDate" name="fromDt"
+                            [(ngModel)]="fromDt" [owlDateTimeTrigger]="dt" [owlDateTime]="dt" [max]="toDate ? toDate : max" placeholder="FROM">
+                        <owl-date-time [pickerType]="'calendar'" #dt></owl-date-time>
+                    </div>
+                    <div class="form-group" style="display: inline-block;">
+                        <input class="form-control" style="width: 75px !important;word-break: break-word;" id="toDate" name="toDate" [min]="fromDt" [max]="max"  [(ngModel)]="toDate" [owlDateTimeTrigger]="dt1"
+                            [owlDateTime]="dt1" placeholder="TO">
+                        <div class="error-message-block"></div>
+                        <owl-date-time [pickerType]="'calendar'" #dt1></owl-date-time>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <label for="templateName">CIQ NAME</label>
+                    <input class="form-control" autocomplete="off" id="ciqName" name="ciqName" type="text" value="" maxlength="100" />    
+                    <!-- <select class="form-control" name="ciqName" id="ciqName">
+                        <option value="">--Select--</option>
+                        <option *ngFor="let key of tableData.ciqName" id="{{key}}" value="{{key}}">{{key}}</option>
+                    </select> -->
+                    <div class="error-message-block"></div>
+                </div>
+                <div class="col-3">
+                    <label for="templateName">SCRIPT NAME</label>
+                    <input class="form-control" autocomplete="off" id="scriptName" name="scriptName" type="text" value="" maxlength="100" />                   
+                    <!-- <select class="form-control" name="scriptName" id="scriptName">
+                        <option value="">--Select--</option>
+                        <option *ngFor="let key of tableData.scriptName" id="{{key}}" value="{{key}}">{{key}}</option>
+                    </select> -->
+                    <div class="error-message-block"></div>
+                </div>
+                <div class="col-3">
+                    <label for="templateName">CHECKLIST</label>
+                    <input class="form-control" autocomplete="off" id="checkList" name="checkList" type="text" value="" maxlength="100" />                   
+                    <!-- <select class="form-control" name="checkList" id="checkList">
+                        <option value="">--Select--</option>
+                        <option *ngFor="let key of tableData.checkList" id="{{key}}" value="{{key}}">{{key}}</option>
+                    </select> -->
+                    <div class="error-message-block"></div>
+                </div>
+                </div>
+                <div class="row">
+                <div class="col-3">
+                <div class="form-group">
+                    <label for="templateName">CIQ VERSION</label>
+                    <select class="form-control" name="ciqVersion" id="ciqVersion">
+                        <option value="">--Select--</option>
+                        <option value="ORIGINAL">ORIGINAL</option>
+                        <option value="MODIFIED">MODIFIED</option>
+                    </select>
+                    <div class="error-message-block"></div>
+                    </div>
+                </div>
+                <div class="col-3">
+                        <div class="form-group">
+                    <label for="templateName">TYPE</label>
+                    <select class="form-control" name="types" id="types">
+                        <option value="">--Select--</option>
+                        <option value="UPLOAD">UPLOAD</option>
+                        <option value="FETCH">FETCH</option>
+                    </select>
+                    <div class="error-message-block"></div>
+                    </div>
+                </div>
+                <div class="col-3">
+                        <div class="form-group">
+                    <label for="templateName">USER NAME</label>
+                    <input class="form-control" autocomplete="off" id="userName" name="userName" type="text" value="" maxlength="100" />
+                    <!-- <select class="form-control" name="userName" id="userName">
+                        <option value="">--Select--</option>
+                        <option *ngFor="let key of tableData.userName" id="{{key}}" value="{{key}}">{{key}}</option>
+                    </select> -->
+                    <div class="error-message-block"></div>
+                    </div>
+                </div>
+                </div>
+               <!--  <div class="col-12" style="margin: 5px;"> -->
+                    <div class="textAlignCenter">
+                        <button name="save" class="formBtn myriadproBold validateForm airlinecnfgSearch" id="searchButton" (click)="searchCiqData($event)"
+                            accesskey="s">SEARCH</button>
+                    <button type="button" id="cancelButton" name="CANCEL" class="formBtnCncl formBtn myriadproBold formBtn" (click)="clearSearchFrom()" accesskey="c">CLEAR</button>             
+
+                    </div>
+                <!-- </div> -->
+            
+        </div>
+    </form>
+
+    <rct-nodata *ngIf="noDataVisibility" [subTitle]="'Please click on <u><b>Upload</b></u> to see the ciq details'"></rct-nodata>
+    <rct-model *ngIf="showModelMessage" [message]="modelData"></rct-model>
+    <div id="dataWrapper" *ngIf="tableShowHide" style="padding-top:10px;">
+        <div id="tableWrapper">
+            <div class="scrollHead">
+                <table class="table" id="uploadDetails">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div (click)="changeSorting('ciqFileName', $event, 0)" class="sorting form-control-column-4">CIQ NAME</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('scriptFileName', $event, 1)" class="sorting form-control-column-4">SCRIPT NAME</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('checkListFileName', $event, 2)" class="sorting form-control-middle">CHECKLIST</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('ciqVersion', $event, 3)" class="sorting form-control-middle">CIQ VERSION</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('fileSourceType', $event, 4)" class="sorting form-control-max">TYPE</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('uploadBy', $event, 5)" class="sorting form-control-middle">USER</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('timeStamp', $event, 6)" class="sorting form-control-column-4">TIMESTAMP</div>
+                            </th>
+
+                            <th>
+                                <div (click)="changeSorting('remarks', $event, 7)" class="sorting form-control-column-4">REMARKS</div>
+                            </th>
+
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="scrollBody">
+                <table class="table" id="systemMgrData">
+                    <tbody id="rowCount">
+                        <ng-container *ngFor="let key of tableData['ciqUploadAuditTrailDetModels']; let index = index">
+                            <tr id="row_{{index}}" class="row_id_{{key.ID}}">
+                                <td class="form-control-column-4" data-toggle="tooltip" data-placement="right" data-container="body">
+                                    <a style="cursor: pointer;text-decoration: underline;" (click)="downLoadFile(key.ciqFileName,key.ciqFilePath)">{{key.ciqFileName}}</a>
+                                </td>
+                                <td class="form-control-column-4" data-toggle="tooltip" data-placement="right" data-container="body">
+                                    <div class="row">
+                                        <div class="col-10" (click)="downLoadFile(key.scriptFileName,key.scriptFilePath, key.ciqFileName)" style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"><a style="cursor: pointer;text-decoration: underline;">{{key.scriptFileName}}</a></div>
+                                        <div class="infoRowBig col-2" placement="bottom" [ngbPopover]="scriptFiles" triggers="mannual:onclick mouseOver" #p1="ngbPopover"
+                                            container="body" popoverTitle="" (click)="showListOfSCriptFiles(p1,key)" style="color:#5161AC;cursor: pointer;"></div>
+                                        <ng-template #scriptFiles>
+                                            <ul style="padding: 5px;" *ngIf="scriptFilesData.length > 0">
+                                                <li *ngFor="let item of scriptFilesData" style="padding: 3px;">
+                                                    <a style="cursor: pointer;text-decoration: underline;font-family: Arial,sans-serif;font-size: 10px;color:#252728; " (click)="downLoadFile(item,key.scriptFilePath)">{{item}}</a>
+                                                </li>
+                                            </ul>
+                                            <ul style="padding: 5px;" *ngIf="scriptFilesData.length == 0">No data found</ul>
+                                        </ng-template>
+                                    </div>
+                                </td>
+
+
+                                <td class="form-control-middle" data-toggle="tooltip" data-placement="right" data-container="body">
+                                    <a style="cursor: pointer;text-decoration: underline;" (click)="downLoadFile(key.checklistFileName,key.checklistFilePath)">{{key.checklistFileName}}</a>
+                                </td>
+                                <td class="form-control-middle" data-toggle="tooltip" data-placement="right" data-container="body">{{key.ciqVersion}}</td>
+                                <td class="form-control-max" data-toggle="tooltip" data-placement="right" data-container="body">
+                                    <!-- {{key.fileSourceType}} -->
+                                    <div class="row">
+                                        <div class="col-10 useCaseField">{{key.fileSourceType}}</div>
+                                        <div *ngIf="key.fetchInfo" class="infoRowBig col-2" (click)="viewFetchInfo(fetchInfoModal, key.fetchInfo)" 
+                                            placement="bottom" [ngClass]="iserrorFetchInfo(key.fetchInfo)"
+                                            container="body" ngbTooltip="Fetch Info"></div>
+                                    </div>
+                                </td>
+                                <td class="form-control-middle" data-toggle="tooltip" data-placement="right" data-container="body">{{key.uploadBy}}</td>
+                                <td class="form-control-column-4" data-toggle="tooltip" data-placement="right" data-container="body">{{key.creationDate}}</td>
+
+                                <td class="form-control-column-4" data-toggle="tooltip" data-placement="right" data-container="body">
+                                    <span class="eventColText">{{key.remarks}}</span>
+                                    <div class="form-control-fixed iconsWrapper tableRowAction" id="fixedCol" ng-style="iconsWrapperPosition">
+                                        <div (click)="editRow($event, key, index)" class="editRow" id="{{index}}" placement="bottom" container="body" ngbTooltip="Edit"></div>
+                                        <div *ngIf="currentLoggedInUserGroup == 'Super Administrator' || currentLoggedInUserGroup == 'Administrator'" (click)="deleteRow(confirmModalDelete, key,$event)" class="deleteRow" placement="bottom" container="body" ngbTooltip="Delete"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr *ngIf="checkFormEnable(index)" id="editedRow{{index}}">
+                                <td colspan="8" class="formEditRow">
+                                    <div id="formWrapper" class="userManagementFormWrapper" [ngStyle]="{'width': formWidth, 'margin-left': scrollLeft}">
+                                        <form class="form-horizontal">
+                                            <div class="row">
+                                                <input type="text" class="displayNone" id="id" name="id" value="" />
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="asterisk_input">CIQ NAME</label>
+                                                        <input disabled="disabled" type="text" class="form-control" id="ciqFileName" name="ciqFileName" value="" maxlength="30" />
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="">SCRIPT NAME</label>
+                                                        <div class="row" name="useCase" id="useCase" style="margin-left: 0;float: left;">
+                                                            <input disabled="disabled" type="text" class="col-11 form-control" id="scriptFileName" name="scriptFileName" value=""
+                                                                maxlength="30" style="background-color: #ffffff;"/>    <!-- [value]="scriptFileNameList.join(',')" -->
+                                                            <div placement="bottom" container="body" ngbTooltip="Delete Script Files">
+                                                                <button class="viewContent scriptViewBtn" placement="bottom" [ngbPopover]="scriptFiles"
+                                                                    triggers="mannual:onclick mouseOver" #scriptListPopover="ngbPopover" container="body" popoverTitle="" (click)="showListOfSCriptFiles(scriptListPopover,key)"
+                                                                    style="cursor: pointer;text-decoration: underline;" [autoClose]="false"></button>
+                                                                    <!-- <div class="infoRow col-2" placement="bottom" [ngbPopover]="scriptFiles" triggers="mannual:onclick mouseOver" #p1="ngbPopover"
+                                                                        container="body" popoverTitle="" (click)="showListOfSCriptFiles(p1,key)" style="cursor: pointer;text-decoration: underline;"></div> -->
+                                                                <ng-template #scriptFiles>
+                                                                    <!-- <ul style="padding: 5px;">
+                                                                        <li *ngFor="let item of scriptFilesData" style="padding: 3px;">
+                                                                            <a style="cursor: pointer;text-decoration: underline;font-family: Arial,sans-serif;font-size: 10px;color:#252728; " (click)="downLoadFile(item,key.scriptFilePath)">{{item}}</a>
+                                                                        </li>
+                                                                    </ul> -->
+
+                                                                    <div class="row cPointer">
+                                                                        <div class="col-12 useCase" *ngFor="let scriptFile of scriptFileNameList; let index = index" (click)="lastSevenDaysPcap(scriptFile, p1)">
+                                                                            <span style="padding: 5px;font-size: 12px;display: inline-block;">{{scriptFile}}</span>
+                                                                            <span class="deleteScript" (click)="deleteFromScriptList($event, index, scriptFile);">X</span>
+                                                                            <hr class="scriptList_hr" *ngIf="index != scriptFilesData.length - 1" />
+                                                                        </div>
+                                                                        <div class="col-12" style="text-align: center;">
+                                                                            <button class="formBtn myriadproBold validateForm" (click)="scriptListPopover.close()"  style="background-color:#204ba7 !important;margin: 10px 0;">CLOSE</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </ng-template>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                        <div style="margin-top:5px">
+                                                            <input type="file" class="ciqUpload form-control-small-3" #editUploadScript name="editUploadScript" id="editUploadScript"
+                                                                [multiple]="true" (change)="validateUploadFile($event,'SCRIPT')" accept=".zip, .7z, .txt" />
+                                                            <div class="error-message-block"></div>
+                                                            <div class="iconsWrapper1">
+                                                                <div class="hint"></div>
+                                                                <div class="hintMessage">supports .zip .7z .txt format</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                    <!-- <button (click)="viewUseCase(viewModal, key)" class="viewContent useCaseViewBtn" [ngClass]="{'buttonDisabled':selectedItems?.length <= 0,'buttonBg':selectedItems?.length <= 0}"
+                                                        placement="bottom" container="body" ngbTooltip="View" [disabled]="selectedItems?.length <= 0"></button> -->
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="">CHECKLIST</label>
+                                                        <input disabled="disabled" type="text" class="form-control" id="checklistFileName" name="checklistFileName" value=""
+                                                            maxlength="30" style="background-color: #ffffff;"/>
+                                                        <div style="margin-top:5px">
+                                                            <input type="file" class="ciqUpload form-control-small-3" #editUploadCheckList name="editUploadCheckList" id="editUploadCheckList"
+                                                                [multiple]="false" (change)="validateUploadFile($event,'CHECKLIST')" accept=".xlsx" />
+                                                            <div class="error-message-block"></div>
+                                                            <div class="iconsWrapper1">
+                                                                <div class="hint"></div>
+                                                                <div class="hintMessage">supports .xlsx format</div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="asterisk_input">CIQ VERSION</label>
+                                                        <input disabled="disabled" type="text" class="form-control" id="ciqVersion" name="ciqVersion" value="" maxlength="30" />
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="asterisk_input">TYPE</label>
+                                                        <input disabled="disabled" type="text" class="form-control" id="fileSourceType" name="fileSourceType" value="" maxlength="30"
+                                                        />
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="asterisk_input">USER NAME</label>
+                                                        <input disabled="disabled" type="text" class="form-control" id="uploadBy" name="uploadBy" value="" maxlength="30" />
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="asterisk_input">TIME TIMESTAMP</label>
+                                                        <input disabled="disabled" type="text" class="form-control" id="creationDate" name="creationDate" value="" maxlength="30"
+                                                        />
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="">REMARKS</label>
+                                                        <textarea rows="4" cols="50" class="customTextArea" name="remarks" id="remarks"></textarea>
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="textAlignCenter">
+                                                <button name="update" class="formBtn myriadproBold validateForm" id="updateButton" type="submit" (click)="updateEditRow(index, key, $event)"
+                                                    accesskey="u" [ngClass]="{'buttonDisabled':editScriptType || editListType}" [disabled]="editScriptType || editListType ">UPDATE</button>                                                   
+                                                <ng-template #errorMsg>Select Valid File</ng-template>
+                                                <div *ngIf="editScriptType || editListType" class="errorIcon" placement="bottom" container="body" [ngbTooltip]="errorMsg"></div>
+                                                <button type="button" name="CANCEL" class="formBtnCncl formBtn myriadproBold formBtn" id="editCancelButton" (click)="cancelEditRow(index,key.id)"
+                                                    accesskey="c">CANCEL</button>
+                                            </div>
+                                        </form>
+
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+            <div id="paginationWrapper">
+                <div *ngIf="pageRenge.length" class="page" style="margin-left:20px;">
+                    <div class="floatLeft" style="width: 75px;padding-top: 3px">Show</div>
+                    <select [disabled]="paginationDisabbled" [(ngModel)]="pageSize" (change)="onChangeTableRowLength($event)" style="margin-right: 6px;margin-left: -39px;"
+                        class="form-control-pagination floatLeft" aria-controls="TableRowLength" size="1" name="TableRowLength"
+                        id="TableRowLength">
+                        <option selected="selected" value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                    <div class="floatLeft" style="width: 75px;padding-top: 3px">Entries</div>
+                    <div class="floatRight page" style="padding-top: 3px;margin-right:20px;">
+                        <ul *ngIf="pageRenge.length" class="pagination floatRight">
+                            <li id="firstPage" [ngClass]="{disabled:(currentPage === 1 || paginationDisabbled)}" class="page-item">
+                                <a class="page-link" (click)="setPage(1)">FIRST</a>
+                            </li>
+                            <li id="previousPage" [ngClass]="{disabled:(currentPage === 1 || paginationDisabbled)}" class="page-item">
+                                <a class="page-link" (click)="setPage(pager.currentPage - 1)">PREV</a>
+                            </li>
+                            <li *ngFor="let n of pager.pages" [ngClass]="{active:currentPage === n, disabled:paginationDisabbled}" class="page-item">
+                                <a class="page-link" (click)="setPage(n)" id='{{n+1}}'>{{n}}</a>
+                            </li>
+                            <li id="nextPage" [ngClass]="{disabled:(currentPage === totalPages || paginationDisabbled)}" class="page-item">
+                                <a class="page-link" (click)="setPage(pager.currentPage + 1)">NEXT</a>
+                            </li>
+                            <li id="lastPage" [ngClass]="{disabled:(currentPage === totalPages || paginationDisabbled)}" class="page-item">
+                                <a class="page-link" (click)="setPage(pager.totalPages)">LAST</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+            <!-- Script List -->
+    <ng-template #scriptListModal let-c="close" let-modal>
+        <div class="modal-header">
+            <div class="dispHeader">
+                <h4>SCRIPT LIST</h4>
+            </div>
+    
+            <!--  <button type="button" class="close" aria-label="Close" (click)="closeModelScriptList()">
+                    <span aria-hidden="true">&times;</span>
+                </button> -->
+        </div>
+        <div class="modelBody">
+            <div id="viewFile">
+                <!-- <span>{{rfScriptList}}</span> -->
+                <textarea class="scriptViewtextArea" name="scriptList" id="scriptList" [(ngModel)]="rfScriptListModel"></textarea>
+            </div>
+            <!-- <rct-loader class="innerLoader" *ngIf="showInnerLoader"></rct-loader> -->
+        </div>
+        <div class="modal-footer">
+            <div class="modalAction">
+                <button type="button" class="formBtn btn btn-light" (click)="updateScriptList()">UPDATE</button>
+                <button type="button" class="formBtnCncl btn btn-light" (click)="closeModelScriptList()">CLOSE</button>
+            </div>
+        </div>
+    </ng-template>
+
+    <!-- Failure Error Message -->
+    <ng-template #fetchInfoModal let-c="close" let-modal>
+        <div class="modal-header">
+            <div class="dispHeader">
+                <h4>FETCH INFO</h4>
+            </div>
+        </div>
+        <div class="modelBody">
+            <div id="errorModalView">
+                <div class="errorMsgBlock">
+                    <pre id="errorMsgPre" class="errorPre">{{fetchInfoMsg}}</pre>
+                </div>
+            </div>
+            <div id="viewFile" class="errorMsgBlock" *ngIf="!fetchInfoMsg">
+                <rct-nodata [subTitle]=""></rct-nodata>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="modalAction">
+                <button type="button" class="formBtnCncl btn btn-light" (click)="closeModelFetchInfo()">CLOSE</button>
+            </div>
+        </div>
+    </ng-template>
+</div>
+            
+
+    

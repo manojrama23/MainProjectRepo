@@ -1,0 +1,40 @@
+table tbody > tr:nth-child(even) > td {
+    background-color: #ffffff !important;
+}
+.table tbody tr:hover{
+    outline:none !important;//1px double #efefef !important ;
+    border:none !important;//1px solid #efefef !important;
+}
+.table > thead > tr > th {
+    vertical-align: top;
+    border: 1px solid #efefef;
+    background-color: #fff;
+    color: #5160ac;
+    font-weight: bold;
+    white-space: nowrap;
+}
+/* .table > thead > tr > th {
+    padding: 5px;
+}  */
+table tbody > tr:nth-child(odd) > td {
+    background-color:transparent !important;
+}
+table tbody > tr:nth-child(even) > td{
+    background-color:transparent !important;
+}
+#staticTrTd td:hover{
+    border: transparent !important;
+}
+.table tbody tr td, .table thead tr th {
+    padding: 0.3rem 0rem 0.2rem 1rem;
+    vertical-align: middle;
+}
+
+.cellStyle{padding: 3px 3px 3px 10px;}
+.cellBorderTop{border-top: 1px solid #e7f0f5;}
+.cellBorderBottom{border-bottom: 1px solid #e7f0f5;}
+.cellBorderLeft{border-left: 1px solid #e7f0f5;}
+.cellBorderRight{border-right: 1px solid #e7f0f5;}
+.cellColor{color: #5160ac;}
+.totalRow{font-size: 14px;font-weight: bold;color: #fff;background-color: #5160ac;}
+.thStyle{font-size: 12px;font-weight: bold;}

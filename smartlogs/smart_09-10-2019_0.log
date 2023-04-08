@@ -1,0 +1,573 @@
+2019-10-09 16:43:55 - Starting RctUserManagementApplication on linux with PID 7869 (/home/user/Swetha/trunk/Installer/SMARTConfig/target/classes started by user in /home/user/Swetha/trunk/Installer/SMARTConfig)
+2019-10-09 16:43:55 - No active profile set, falling back to default profiles: default
+2019-10-09 16:43:55 - Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@1e3cb281: startup date [Wed Oct 09 16:43:55 IST 2019]; root of context hierarchy
+2019-10-09 16:43:57 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2019-10-09 16:43:58 - Multiple Spring Data modules found, entering strict repository configuration mode!
+2019-10-09 16:43:58 - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$dbca6f99] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-10-09 16:43:59 - Tomcat initialized with port(s): 8020 (https)
+2019-10-09 16:43:59 - Initializing ProtocolHandler ["https-jsse-nio-8020"]
+2019-10-09 16:43:59 - Starting service [Tomcat]
+2019-10-09 16:43:59 - Starting Servlet Engine: Apache Tomcat/8.5.34
+2019-10-09 16:43:59 - The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [/usr/java/packages/lib/amd64:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib]
+2019-10-09 16:43:59 - At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+2019-10-09 16:43:59 - Initializing Spring embedded WebApplicationContext
+2019-10-09 16:43:59 - Root WebApplicationContext: initialization completed in 3841 ms
+2019-10-09 16:44:00 - Cluster created with settings {hosts=[localhost:27017], mode=MULTIPLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms', maxWaitQueueSize=500}
+2019-10-09 16:44:00 - Adding discovered server localhost:27017 to client view of cluster
+2019-10-09 16:44:00 - Opened connection [connectionId{localValue:1, serverValue:5}] to localhost:27017
+2019-10-09 16:44:00 - Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, version=ServerVersion{versionList=[4, 0, 6]}, minWireVersion=0, maxWireVersion=7, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=11446271}
+2019-10-09 16:44:00 - Discovered cluster type of STANDALONE
+2019-10-09 16:44:16 - Mapping filter: 'characterEncodingFilter' to: [/*]
+2019-10-09 16:44:16 - Mapping filter: 'webMvcMetricsFilter' to: [/*]
+2019-10-09 16:44:16 - Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2019-10-09 16:44:16 - Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2019-10-09 16:44:16 - Mapping filter: 'requestContextFilter' to: [/*]
+2019-10-09 16:44:16 - Mapping filter: 'httpTraceFilter' to: [/*]
+2019-10-09 16:44:16 - Servlet dispatcherServlet mapped to [/]
+2019-10-09 16:44:16 - SpringBootJPAHikariCP - Starting...
+2019-10-09 16:44:16 - SpringBootJPAHikariCP - Start completed.
+2019-10-09 16:44:17 - Building JPA container EntityManagerFactory for persistence unit 'default'
+2019-10-09 16:44:17 - HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2019-10-09 16:44:17 - HHH000412: Hibernate Core {5.2.17.Final}
+2019-10-09 16:44:17 - HHH000206: hibernate.properties not found
+2019-10-09 16:44:17 - HCANN000001: Hibernate Commons Annotations {5.0.1.Final}
+2019-10-09 16:44:17 - HHH000400: Using dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+2019-10-09 16:44:18 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2019-10-09 16:44:20 - Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2019-10-09 16:44:20 - Looking for @ControllerAdvice: org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@1e3cb281: startup date [Wed Oct 09 16:43:55 IST 2019]; root of context hierarchy
+2019-10-09 16:44:20 - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2019-10-09 16:44:20 - Mapped "{[/getAuditTrail],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.AuditTrailController.getAuditTrail(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/getAuditFilter],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.AuditTrailController.getAuditFilters(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/getCIReport],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.CIReportController.getCIReport(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/getMapEnodeBDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.EnodeBViewMapController.getMapEnodeBDetails(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/dashBoardDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.EnodeBViewMapController.dashBoardDetails(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/getCpuUsage],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.EnodeBViewMapController.getCpuUsage(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/getMapDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.EnodeBViewMapController.getMapDetails(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/getCustomerList],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.GeneralConfigController.getCustomerList(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/getConfigDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.GeneralConfigController.getConfigDetails(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/saveConfigDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.GeneralConfigController.saveConfigDetails(java.lang.String)
+2019-10-09 16:44:20 - Mapped "{[/saveNetworkType],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.GeneralConfigController.addNetworkType(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/getNetworkTypeDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.GeneralConfigController.getNetworkTypeDetails(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/deleteNetworkType],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.GeneralConfigController.deleteNetwokTypeDetials(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/getProgramList],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.GeneralConfigController.getProgramList(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/addCustomer],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.GeneralConfigController.addCustomer(org.springframework.web.multipart.MultipartFile,java.lang.String,java.lang.String,java.lang.String)
+2019-10-09 16:44:20 - Mapped "{[/saveCustomer],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.GeneralConfigController.saveCustomer(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/updateCustomerIcon],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.GeneralConfigController.updateCustomerIcon(org.springframework.web.multipart.MultipartFile,java.lang.String,java.lang.String,java.lang.String,java.lang.String)
+2019-10-09 16:44:20 - Mapped "{[/deleteCustomer],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.GeneralConfigController.deleteCustomer(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/deleteCustomerDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.GeneralConfigController.deleteCustomerDetails(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/programTemplateUpdate],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.GeneralConfigController.programTemplateUpdate(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/saveNeVersion],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.GeneralConfigController.saveNeVersion(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/getNeVersionDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.GeneralConfigController.getNeVersionDetails(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/deleteNeVersionDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.GeneralConfigController.deleteNeVersionDetails(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/updateSchedulingTemplate],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.GeneralConfigController.updateSchedulingTemplate(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/saveNetworkConfigDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.NetworkConfigController.saveNetworkConfigDetails(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/getNetworkConfigDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.NetworkConfigController.getNetworkConfigDetails(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/deleteNetworkConfigDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.NetworkConfigController.deleteNetworkConfigDetails(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/importNetworkConfigDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.NetworkConfigController.importNetworkConfigDetails(org.springframework.web.multipart.MultipartFile,java.lang.String,java.lang.String)
+2019-10-09 16:44:20 - Mapped "{[/deleteNetworkConfigServerDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.NetworkConfigController.deleteNetworkConfigServerDetails(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/exportNetworkConfigDetails],methods=[POST]}" onto public void com.smart.rct.common.controller.NetworkConfigController.exportNetworkConfigDetails(org.json.simple.JSONObject,javax.servlet.http.HttpServletResponse) throws java.io.IOException
+2019-10-09 16:44:20 - Mapped "{[/downloadFile],methods=[POST]}" onto public void com.smart.rct.common.controller.NetworkConfigController.downloadFile(org.json.simple.JSONObject,javax.servlet.http.HttpServletResponse) throws java.io.IOException
+2019-10-09 16:44:20 - Mapped "{[/isZipAvilableForNwConfig],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.common.controller.NetworkConfigController.isZipAvilableForNwConfig(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/downloadNwConfigZip],methods=[POST]}" onto public void com.smart.rct.common.controller.NetworkConfigController.downloadNwConfigZip(org.json.simple.JSONObject,javax.servlet.http.HttpServletResponse) throws java.io.IOException
+2019-10-09 16:44:20 - Mapped "{[/createCmdRuleBuilder],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.CmdRuleBuilderController.createCmdRuleBuilder(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/updateCmdRuleBuilder],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.CmdRuleBuilderController.updateCmdRuleBuilder(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/deleteCmdRuleBuilder],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.CmdRuleBuilderController.deleteCmdRuleBuilder(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/getCmdRuleBuilder],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.CmdRuleBuilderController.getCmdRuleBuilder(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/createFileRuleBuilder],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.FileRuleBuilderController.createFileRuleBuilder(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/getFileRuleBuilder],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.FileRuleBuilderController.getFileRuleBuilder(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/updateFileRuleBuilder],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.FileRuleBuilderController.updateFileRuleBuilder(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/deleteFileRuleBuilder],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.FileRuleBuilderController.deleteFileRuleBuilder(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/loadrunTest],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.RunTestController.loadrunTest(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/loadUsecase],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.RunTestController.loadUsecase(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/runTest],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.RunTestController.runTest(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/generateScript],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.RunTestController.generateScript(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/runTestRanAtp],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.RunTestController.runTestRanAtp(org.springframework.web.multipart.MultipartFile,java.lang.String)
+2019-10-09 16:44:20 - Mapped "{[/deleteRunTestData],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.RunTestController.deleteRunTest(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/ruleResult],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.RunTestController.runTestViewResult(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/scriptResult],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.RunTestController.scriptResult(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/reRunTest],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.RunTestController.reRunTest(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/getRunningLogs],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.RunTestController.getRunningLogs(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/getConnectionLog],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.RunTestController.getConnectionLog(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/downloadScripts],methods=[POST]}" onto public void com.smart.rct.migration.controller.RunTestController.downloadScripts(org.json.simple.JSONObject,javax.servlet.http.HttpServletResponse) throws java.io.IOException
+2019-10-09 16:44:20 - Mapped "{[/downloadLogs],methods=[POST]}" onto public void com.smart.rct.migration.controller.RunTestController.downloadLogFile(org.json.simple.JSONObject,javax.servlet.http.HttpServletResponse) throws java.io.IOException
+2019-10-09 16:44:20 - Mapped "{[/downloadHtml],methods=[POST]}" onto public void com.smart.rct.migration.controller.RunTestController.downloadHtmlFile(org.json.simple.JSONObject,javax.servlet.http.HttpServletResponse) throws java.io.IOException
+2019-10-09 16:44:20 - Mapped "{[/checkConnection],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.RunTestController.checkConnection(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/fetchBandName],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.RunTestController.getBandName(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/updateShellCmdRuleBuilder],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.ShellCmdRuleBuilderController.updateCmdRuleBuilder(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/deleteShellCmdRuleBuilder],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.ShellCmdRuleBuilderController.deleteCmdRuleBuilder(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/createShellCmdRuleBuilder],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.ShellCmdRuleBuilderController.createShellCmdRuleBuilder(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/getShellCmdRuleBuilder],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.ShellCmdRuleBuilderController.getShellCmdRuleBuilder(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/saveUploadScript],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.UploadFileController.saveUploadScript(org.springframework.web.multipart.MultipartFile,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)
+2019-10-09 16:44:20 - Mapped "{[/updateUploadScript],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.UploadFileController.updateUploadScript(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/getUploadScript],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.UploadFileController.getUploadScript(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/saveViewScript],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.UploadFileController.saveViewScript(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/viewScript],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.UploadFileController.viewScript(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/deleteUploadScript],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.UploadFileController.deleteUploadData(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/searchUploadScript],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.UploadFileController.searchUploadScript(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/updateUseCaseBuilder],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.UseCaseBuilderController.updateUseCaseBuilder(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/saveUseCaseViewScript],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.UseCaseBuilderController.saveUseCaseViewScript(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/loadUseCaseBuilder],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.UseCaseBuilderController.loadUseCaseBuilder(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/deleteUseCaseBuilder],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.UseCaseBuilderController.deleteUseCaseBuilder(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/viewUseCaseScript],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.UseCaseBuilderController.viewUseCaseScript(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/createUseCaseBuilder],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.UseCaseBuilderController.createUseCaseBuilder(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/createXmlFileRule],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.XmlRuleBuilderController.createXmlFileRule(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/loadXmlFileRule],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.XmlRuleBuilderController.loadXmlFileRule(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/updateXmlFileRule],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.XmlRuleBuilderController.updateXmlFileRule(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/deleteXmlFileRule],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.migration.controller.XmlRuleBuilderController.deleteXmlFileRule(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/deleteEodReportsDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.postmigration.controller.EodReportsController.deleteEodReportsDetails(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/getEodReportsDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.postmigration.controller.EodReportsController.getEodReportsDetails(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/saveEodReportsDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.postmigration.controller.EodReportsController.saveEodReportsDetails(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/exportEodReportsDetails],methods=[POST]}" onto public void com.smart.rct.postmigration.controller.EodReportsController.exportEodReportsDetails(org.json.simple.JSONObject,javax.servlet.http.HttpServletResponse) throws java.io.IOException
+2019-10-09 16:44:20 - Mapped "{[/saveOverallReportsDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.postmigration.controller.OverallReportsController.saveOverallReportsDetails(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/deleteOverallReportsDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.postmigration.controller.OverallReportsController.deleteOverallReportsDetails(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/getOverallReportsDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.postmigration.controller.OverallReportsController.getOverallReportsDetails(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/exportOverallDetails],methods=[POST]}" onto public void com.smart.rct.postmigration.controller.OverallReportsController.exportOverallDetails(org.json.simple.JSONObject,javax.servlet.http.HttpServletResponse) throws java.io.IOException
+2019-10-09 16:44:20 - Mapped "{[/importOverallDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.postmigration.controller.OverallReportsController.importOverallDetails(org.springframework.web.multipart.MultipartFile,java.lang.String,java.lang.String,java.lang.Integer)
+2019-10-09 16:44:20 - Mapped "{[/saveSchedulingDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.postmigration.controller.SchedulingSRController.saveSchedulingDetails(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/deleteSchedulingDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.postmigration.controller.SchedulingSRController.deleteSchedulingDetails(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/getSchedulingDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.postmigration.controller.SchedulingSRController.getSchedulingDetails(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/exportSchedulingDetails],methods=[POST]}" onto public void com.smart.rct.postmigration.controller.SchedulingSRController.exportSchedulingDetails(org.json.simple.JSONObject,javax.servlet.http.HttpServletResponse) throws java.io.IOException
+2019-10-09 16:44:20 - Mapped "{[/importSchedulingDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.postmigration.controller.SchedulingSRController.importSchedulingDetails(org.springframework.web.multipart.MultipartFile,java.lang.String,java.lang.String,java.lang.Integer)
+2019-10-09 16:44:20 - Mapped "{[/getCustomerIdList],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.postmigration.controller.SchedulingSRController.getCustomerIdList(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/getSiteDataDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.postmigration.controller.SiteDataController.getSiteDataDetails(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/packEnbData],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.postmigration.controller.SiteDataController.packEnbData(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/updateSiteDataDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.postmigration.controller.SiteDataController.updateSiteDataDetails(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/deleteSiteDataDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.postmigration.controller.SiteDataController.deleteSiteDataDetails(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/sendMailWithAttachment],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.postmigration.controller.SiteDataController.sendMailWithAttachment(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/getCheckListBasedScriptExecutionDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.CheckListScriptController.getCheckListBasedScriptExecutionDetails(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/saveCheckListBasedScriptExecutionDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.CheckListScriptController.saveCheckListBasedScriptExecutionDetails(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/getNeGrowDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.EnbPreGrowController.getNeGrowDetails(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/csvFileGeneration],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.GenerateCsvController.csvFileGeneration(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/deleteGeneratedFileDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.GenerateCsvController.deleteGeneratedFileDetails(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/updateGeneratedFileDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.GenerateCsvController.updateGeneratedFileDetails(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/getCsvAuditDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.GenerateCsvController.getCsvAuditDetails(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/transferCiqAuditFile],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.GenerateCsvController.transferCiqAuditFile(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/ciqFileValidation],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.GenerateCsvController.ciqFileValidation(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/transferCsvFileAndGrow],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.GenerateCsvController.transferCsvFileAndGrow(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/getGenFileSearchDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.GenerateCsvController.getGenFileSearchDetails(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/generateCiqBasedFiles],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.GenerateCsvController.generateCiqBasedFiles(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/generateCiqNeBasedFiles],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.GenerateCsvController.generateCiqNeBasedFiles(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/generateFile],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.GenerateCsvController.generateFile(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/getNeMappingDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.NeMappingController.getNeMappingDetails(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/saveNeMappingDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.NeMappingController.saveNeMappingDetails(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/getCiqList],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.getCiqList(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/getCheckListAllSheetNames],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.getCheckListAllSheetNames(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/insertChecklistDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.insertChecklistDetails(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/updateCheckListFileDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.updateCheckListFileDetails(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/getEnbDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.getEnbDetails(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/uploadCiq],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.uploadCIQFile(org.springframework.web.multipart.MultipartFile,java.util.List<org.springframework.web.multipart.MultipartFile>,org.springframework.web.multipart.MultipartFile,java.lang.String)
+2019-10-09 16:44:20 - Mapped "{[/retriveCiqDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.retriveCiqDetails(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/fetchPreMigrationFiles],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.fetchPreMigrationFiles(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/getCiqAuditDetailsList],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.getCiqAuditDetailsList(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/updateCiqAuditDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.updateCiqAuditDetails(java.util.List<org.springframework.web.multipart.MultipartFile>,org.springframework.web.multipart.MultipartFile,java.lang.String)
+2019-10-09 16:44:20 - Mapped "{[/deleteCiq],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.deleteCiq(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/updateCiqFileDetaiils],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.updateCiqFileDetaiils(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/createCiqFileDetaiils],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.createCiqFileDetaiils(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/deleteCiqRowDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.deleteCiqRowDetails(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/getEnbInfo],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.getEnbInfo(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/getEnbTableInfo],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.getEnbTableInfo(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/getEnbDetailsFilename],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.getEnbDetailsFilename(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/updateCiqFileDetaiilsEnbs],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.updateCiqFileDetaiilsEnbs(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/getCiqSheetName],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.getCiqSheeTname(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/getCiqSheetDisply],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.getCiqSheetDisply(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/getCheckListData],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.getCheckList(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/getChecklistSheetDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.getCheckListSheetNames(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/getDeatilsByChecklist],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.getDeatilsByChecklist(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/getAllDetailsByChecklist],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.getAllDetailsByChecklist(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/saveCheckListFileDetaiils],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.saveCheckListFileDetaiils(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/deleteChecklistRowDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.deleteCheckListRowDetails(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/validationCiqDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.validationCiqDetails(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/validationEnbDetails],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.premigration.controller.UploadCIQController.validationEnbDetails(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/scheduling],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.scheduling.controller.SchedulingController.addSchedulingDetails(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/loginAction],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.usermanagement.controller.LoginActionController.loginAction(org.json.simple.JSONObject,javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpSession)
+2019-10-09 16:44:20 - Mapped "{[/logoutAction],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.usermanagement.controller.LoginActionController.logoutAction(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/forgotPassword],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.usermanagement.controller.LoginActionController.forgotPassword(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/changePassword],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.usermanagement.controller.LoginActionController.changePassword(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/createUser],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.usermanagement.controller.UserDetailsController.createUser(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/updateUser],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.usermanagement.controller.UserDetailsController.updateUser(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/userList],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.usermanagement.controller.UserDetailsController.userList(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/deleteUser],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.usermanagement.controller.UserDetailsController.deleteUser(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/updateRole],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.usermanagement.controller.UserRoleController.updateRole(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/deleteRole],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.usermanagement.controller.UserRoleController.deleteRole(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/getRoleList],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.usermanagement.controller.UserRoleController.getRoleList(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/createRole],methods=[POST]}" onto public org.json.simple.JSONObject com.smart.rct.usermanagement.controller.UserRoleController.createRole(org.json.simple.JSONObject)
+2019-10-09 16:44:20 - Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2019-10-09 16:44:20 - Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2019-10-09 16:44:21 - /home/user/Swetha/trunk/Installer/SMARTConfig
+2019-10-09 16:44:21 - Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2019-10-09 16:44:21 - Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2019-10-09 16:44:21 - Mapped URL path [/customer/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2019-10-09 16:44:21 - Adding welcome page: class path resource [static/index.html]
+2019-10-09 16:44:21 - LiveReload server is running on port 35729
+2019-10-09 16:44:21 - Exposing 2 endpoint(s) beneath base path '/actuator'
+2019-10-09 16:44:21 - Mapped "{[/actuator/health],methods=[GET],produces=[application/vnd.spring-boot.actuator.v2+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.web.servlet.AbstractWebMvcEndpointHandlerMapping$OperationHandler.handle(javax.servlet.http.HttpServletRequest,java.util.Map<java.lang.String, java.lang.String>)
+2019-10-09 16:44:21 - Mapped "{[/actuator/info],methods=[GET],produces=[application/vnd.spring-boot.actuator.v2+json || application/json]}" onto public java.lang.Object org.springframework.boot.actuate.endpoint.web.servlet.AbstractWebMvcEndpointHandlerMapping$OperationHandler.handle(javax.servlet.http.HttpServletRequest,java.util.Map<java.lang.String, java.lang.String>)
+2019-10-09 16:44:21 - Mapped "{[/actuator],methods=[GET],produces=[application/vnd.spring-boot.actuator.v2+json || application/json]}" onto protected java.util.Map<java.lang.String, java.util.Map<java.lang.String, org.springframework.boot.actuate.endpoint.web.Link>> org.springframework.boot.actuate.endpoint.web.servlet.WebMvcEndpointHandlerMapping.links(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2019-10-09 16:44:21 - Registering beans for JMX exposure on startup
+2019-10-09 16:44:21 - Bean with name 'dataSource' has been autodetected for JMX exposure
+2019-10-09 16:44:21 - Located MBean 'dataSource': registering with JMX server as MBean [com.zaxxer.hikari:name=dataSource,type=HikariDataSource]
+2019-10-09 16:44:21 - ..................ApplicationListener Initialization of Fault codes Started ............
+2019-10-09 16:44:21 - ..................ApplicationListener Initialization of RCT properties Started ............
+2019-10-09 16:44:21 - ..................ApplicationListener Initialization of Fault codes End............
+2019-10-09 16:44:21 - Starting ProtocolHandler ["https-jsse-nio-8020"]
+2019-10-09 16:44:22 - Using a shared selector for servlet write/read
+2019-10-09 16:44:22 - Tomcat started on port(s): 8020 (https) with context path ''
+2019-10-09 16:44:22 - Started RctUserManagementApplication in 27.084 seconds (JVM running for 28.073)
+2019-10-09 16:44:32 - Initializing Spring FrameworkServlet 'dispatcherServlet'
+2019-10-09 16:44:32 - FrameworkServlet 'dispatcherServlet': initialization started
+2019-10-09 16:44:32 - FrameworkServlet 'dispatcherServlet': initialization completed in 18 ms
+2019-10-09 16:44:32 - pre Handle Interceptor.
+2019-10-09 16:44:32 - post Handle Interceptor.
+2019-10-09 16:44:32 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-09 16:44:32 - afterCompletion Interceptor.
+2019-10-09 16:44:32 - pre Handle Interceptor.
+2019-10-09 16:44:32 - pre Handle Interceptor.
+2019-10-09 16:44:32 - pre Handle Interceptor.
+2019-10-09 16:44:32 - post Handle Interceptor.
+2019-10-09 16:44:32 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-09 16:44:32 - afterCompletion Interceptor.
+2019-10-09 16:44:32 - pre Handle Interceptor.
+2019-10-09 16:44:32 - pre Handle Interceptor.
+2019-10-09 16:44:32 - pre Handle Interceptor.
+2019-10-09 16:44:32 - post Handle Interceptor.
+2019-10-09 16:44:32 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-09 16:44:32 - afterCompletion Interceptor.
+2019-10-09 16:44:32 - post Handle Interceptor.
+2019-10-09 16:44:32 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-09 16:44:32 - afterCompletion Interceptor.
+2019-10-09 16:44:32 - post Handle Interceptor.
+2019-10-09 16:44:32 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-09 16:44:32 - afterCompletion Interceptor.
+2019-10-09 16:44:32 - post Handle Interceptor.
+2019-10-09 16:44:32 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-09 16:44:32 - afterCompletion Interceptor.
+2019-10-09 16:44:33 - post Handle Interceptor.
+2019-10-09 16:44:33 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-09 16:44:33 - afterCompletion Interceptor.
+2019-10-09 16:44:33 - pre Handle Interceptor.
+2019-10-09 16:44:33 - pre Handle Interceptor.
+2019-10-09 16:44:33 - pre Handle Interceptor.
+2019-10-09 16:44:33 - post Handle Interceptor.
+2019-10-09 16:44:33 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-09 16:44:33 - afterCompletion Interceptor.
+2019-10-09 16:44:33 - post Handle Interceptor.
+2019-10-09 16:44:33 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-09 16:44:33 - afterCompletion Interceptor.
+2019-10-09 16:44:33 - post Handle Interceptor.
+2019-10-09 16:44:33 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-09 16:44:33 - afterCompletion Interceptor.
+2019-10-09 16:44:35 - pre Handle Interceptor.
+2019-10-09 16:44:35 - pre Handle Interceptor.
+2019-10-09 16:44:35 - post Handle Interceptor.
+2019-10-09 16:44:35 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-09 16:44:35 - afterCompletion Interceptor.
+2019-10-09 16:44:35 - post Handle Interceptor.
+2019-10-09 16:44:35 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-09 16:44:35 - afterCompletion Interceptor.
+2019-10-09 16:44:39 - pre Handle Interceptor.
+2019-10-09 16:44:39 - post Handle Interceptor.
+2019-10-09 16:44:39 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-09 16:44:39 - afterCompletion Interceptor.
+2019-10-09 16:44:43 - pre Handle Interceptor.
+2019-10-09 16:44:43 - UserActionRepositoryImpl.getUserDetails() userName: superadmin
+2019-10-09 16:44:43 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-09 16:44:44 - HHH000397: Using ASTQueryTranslatorFactory
+2019-10-09 16:44:44 - UserActionRepositoryImpl.getRoleById() roleId: 2
+2019-10-09 16:44:44 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-09 16:44:44 - CustomerRepositoryImpl.getCustomerDetailsList() criteria: CriteriaImpl(com.smart.rct.common.entity.CustomerDetailsEntity:this[Subcriteria(customerEntity:customerEntity)][(status=Active and customerEntity.status=Active)])
+2019-10-09 16:44:44 - post Handle Interceptor.
+2019-10-09 16:44:44 - Session Metrics {
+    824614 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    6151394 nanoseconds spent preparing 13 JDBC statements;
+    17028287 nanoseconds spent executing 12 JDBC statements;
+    3256004 nanoseconds spent executing 1 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    37916739 nanoseconds spent executing 5 flushes (flushing a total of 27 entities and 8 collections);
+    71784 nanoseconds spent executing 4 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-09 16:44:44 - afterCompletion Interceptor.
+2019-10-09 16:44:44 - pre Handle Interceptor.
+2019-10-09 16:44:44 - pre Handle Interceptor.
+2019-10-09 16:44:44 - post Handle Interceptor.
+2019-10-09 16:44:44 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-09 16:44:44 - afterCompletion Interceptor.
+2019-10-09 16:44:44 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-09 16:44:44 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-09 16:44:44 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-09 16:44:45 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-09 16:44:45 - post Handle Interceptor.
+2019-10-09 16:44:45 - Session Metrics {
+    43194 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    725804 nanoseconds spent preparing 7 JDBC statements;
+    31774800 nanoseconds spent executing 7 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    75134142 nanoseconds spent executing 5 flushes (flushing a total of 5590 entities and 4 collections);
+    43478 nanoseconds spent executing 5 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-09 16:44:45 - afterCompletion Interceptor.
+2019-10-09 16:44:45 - pre Handle Interceptor.
+2019-10-09 16:44:45 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-09 16:44:45 - CustomerRepositoryImpl.getCustomerDetailsList() criteria: CriteriaImpl(com.smart.rct.common.entity.CustomerDetailsEntity:this[Subcriteria(customerEntity:customerEntity)][(status=Active and customerEntity.status=Active)])
+2019-10-09 16:44:45 - post Handle Interceptor.
+2019-10-09 16:44:45 - Session Metrics {
+    70377 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    423601 nanoseconds spent preparing 1 JDBC statements;
+    1924601 nanoseconds spent executing 1 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    3009531 nanoseconds spent executing 1 flushes (flushing a total of 10 entities and 2 collections);
+    12941 nanoseconds spent executing 1 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-09 16:44:45 - afterCompletion Interceptor.
+2019-10-09 16:44:45 - pre Handle Interceptor.
+2019-10-09 16:44:48 - pre Handle Interceptor.
+2019-10-09 16:44:48 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-09 16:44:48 - CustomerRepositoryImpl.getCustomerDetailsList() criteria: CriteriaImpl(com.smart.rct.common.entity.CustomerDetailsEntity:this[Subcriteria(customerEntity:customerEntity)][(status=Active and customerEntity.status=Active)])
+2019-10-09 16:44:48 - pre Handle Interceptor.
+2019-10-09 16:44:48 - post Handle Interceptor.
+2019-10-09 16:44:48 - Session Metrics {
+    636284 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    118114 nanoseconds spent preparing 1 JDBC statements;
+    6130087 nanoseconds spent executing 1 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    551409 nanoseconds spent executing 1 flushes (flushing a total of 10 entities and 2 collections);
+    7670 nanoseconds spent executing 1 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-09 16:44:48 - afterCompletion Interceptor.
+2019-10-09 16:44:53 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-09 16:44:53 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-09 16:44:53 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-09 16:44:53 - post Handle Interceptor.
+2019-10-09 16:44:53 - Session Metrics {
+    73219 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    1653464 nanoseconds spent preparing 23 JDBC statements;
+    13798345 nanoseconds spent executing 23 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    1139266 nanoseconds spent executing 4 flushes (flushing a total of 44 entities and 6 collections);
+    10458906 nanoseconds spent executing 11 partial-flushes (flushing a total of 100 entities and 100 collections)
+}
+2019-10-09 16:44:53 - afterCompletion Interceptor.
+2019-10-09 16:44:53 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-09 16:44:53 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-09 16:44:53 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-09 16:44:53 - post Handle Interceptor.
+2019-10-09 16:44:53 - Session Metrics {
+    6319865 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    2368459 nanoseconds spent preparing 22 JDBC statements;
+    9195767 nanoseconds spent executing 22 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    1102695 nanoseconds spent executing 4 flushes (flushing a total of 29 entities and 5 collections);
+    3694328 nanoseconds spent executing 11 partial-flushes (flushing a total of 76 entities and 76 collections)
+}
+2019-10-09 16:44:53 - afterCompletion Interceptor.
+2019-10-09 16:44:57 - pre Handle Interceptor.
+2019-10-09 16:44:57 - pre Handle Interceptor.
+2019-10-09 16:44:57 - post Handle Interceptor.
+2019-10-09 16:44:57 - Session Metrics {
+    0 nanoseconds spent acquiring 0 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    0 nanoseconds spent preparing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    0 nanoseconds spent executing 0 flushes (flushing a total of 0 entities and 0 collections);
+    0 nanoseconds spent executing 0 partial-flushes (flushing a total of 0 entities and 0 collections)
+}
+2019-10-09 16:44:57 - afterCompletion Interceptor.
+2019-10-09 16:46:27 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-09 16:46:27 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-09 16:46:27 - HHH90000022: Hibernate's legacy org.hibernate.Criteria API is deprecated; use the JPA javax.persistence.criteria.CriteriaQuery instead
+2019-10-09 16:46:27 - post Handle Interceptor.
+2019-10-09 16:46:27 - Session Metrics {
+    1405303 nanoseconds spent acquiring 1 JDBC connections;
+    0 nanoseconds spent releasing 0 JDBC connections;
+    6727795 nanoseconds spent preparing 22 JDBC statements;
+    9509735 nanoseconds spent executing 22 JDBC statements;
+    0 nanoseconds spent executing 0 JDBC batches;
+    0 nanoseconds spent performing 0 L2C puts;
+    0 nanoseconds spent performing 0 L2C hits;
+    0 nanoseconds spent performing 0 L2C misses;
+    1920484 nanoseconds spent executing 4 flushes (flushing a total of 37 entities and 5 collections);
+    5313565 nanoseconds spent executing 11 partial-flushes (flushing a total of 80 entities and 80 collections)
+}
+2019-10-09 16:46:27 - afterCompletion Interceptor.

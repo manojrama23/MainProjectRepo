@@ -1,0 +1,30 @@
+<div id="homeTheme" class="page-wrapper RCT">
+    <div id="homeContainer">
+        <div id="homwWrapper">
+            <ng-container *ngFor="let key of userGroupDetails.customerList; let index = index">
+            	<div class="homeTiles ng-scope" id="actmanageMenu" routerLink="/dashboard" *ngIf="(userGroup == 'Administrator') || (userGroup == 'Super Administrator')" (click)="selectedCustomerName(key.customerName)">
+	                <div class="icons">
+	                	<img src="{{key.iconPath}}" class="homePgImgSize"/>
+	                </div>
+                	<!-- ../../assets/images/icons/Verizon.png -->
+                	<!-- <div *ngIf="key.customerName == 'Verizon'" class="verizonImg">
+	                </div>
+	                <div *ngIf="key.customerName == 'AT&T'" class="atNtImg"></div>
+	                <div *ngIf="key.customerName == 'Sprint'" class="sprintImg"></div> -->
+	            </div>
+	        </ng-container>
+	            <!-- <div class="homeTiles ng-scope" id="actmanageMenu" routerLink="/dashboard" *ngIf="(userGroup == 'Administrator') || (userGroup == 'Super Administrator')" (click)="selectedCustomerName('Verizon')">
+	                <div class="verizonImg">
+	                </div>
+	            </div>
+	            <div class="homeTiles ng-scope" id="aircraftconfigMenu" routerLink="/dashboard" *ngIf="(userGroup == 'Administrator') || (userGroup == 'Super Administrator')" (click)="selectedCustomerName('AT&T')">
+	                <div class="atNtImg">
+	                </div>
+	            </div>
+	            <div class="atNt homeTiles ng-scope" id="adminMenu" routerLink="/dashboard" *ngIf="(userGroup == 'Administrator') || (userGroup == 'Super Administrator')" (click)="selectedCustomerName('Sprint')">
+	                <div class="sprintImg">
+	                </div>
+	            </div> -->
+        </div>
+    </div>
+</div>

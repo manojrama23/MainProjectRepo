@@ -1,0 +1,180 @@
+@import '../../assets/helpers/css/_variables';
+
+header {background : #efefef;height: 75px; box-shadow: 0px 2px 5px #dcdcdc;}
+.navbar-brand{font-size: 25pt;padding:0;color:#fff;cursor: pointer;margin-right: 0;}
+.navbar-brand:hover{font-size: 25pt;padding:0;color:#fff;}
+.navbar-brand-caption{font-size: 10pt; margin-top: 14px; margin-left: -6px; line-height: 14px;color:#0f193a;}
+.navbar{/* background : #0f193c; */ padding: 0px 10px;height: 45px;width: 82%;}
+
+.nav-link li.active a{background: #2aa6b8;color: #fff;padding-top: 21px;padding-bottom: 17px;padding-right: 10px;padding-left: 10px;}
+.nav-link.active{background: #2aa6b8;padding-top: 22px !important;padding-bottom: 18px !important;color: #fff !important;}
+.nav-link:hover{color: #fff !important;}
+#logoWrapper{padding:9px 0px 2px 2px;font-family: myriadpro-regular;font-weight: bold;}
+
+/*Main Menu*/
+#mainMenu li{padding-top: 16px;padding-bottom: 13px;}
+#mainMenu li.active{/* border-bottom:1px #5161ac solid; */ box-shadow: inset 0 -1px 0 white;padding-top: 16px;padding-bottom: 13px;}
+#mainMenu li.active a{/* background:#fff; */color:#fff; text-decoration: none; padding-left: 15px; padding-right: 15px}
+#mainMenu li:last-child a{border-right: 1px double #515a7b;}
+#mainMenu a{border-left:1px #515a7b solid; color:#73788a/* #6f7073 */;font-size:14px;font-family: myriadpro-bold;line-height: 0px; padding-left: 15px; padding-right: 15px;}
+#mainMenu a:hover{color:#fff/* #6f7372 */;text-decoration: none;}
+
+
+/*Sub Menu*/
+#subMenuBlock{height: 30px;/* background-color: #f0f2f8; *//* border-bottom: 1px #dde0e5 solid */}
+#subMenu{margin-left:205px; margin-top:2px; display: block;}
+#subMenu li{display: inline-block;margin-top: 5px;}
+#subMenuBlock a{cursor:pointer;font-weight: bold;font-family: myriadpro-regular;font-size:12px;color:#9597a0;border-right: 1px double #bebebe;padding: 3px 12px;text-transform: uppercase;line-height: 3px;margin-top: 6px; padding-left: 20px; padding-right: 20px;}
+#subMenuBlock a:hover{text-decoration:none; font-weight: bold;}
+#subMenuBlock .active a{color:#5161AC;text-decoration:none;background:inherit; font-weight: bold;}
+#subMenuWrapper{margin-left:260px;height:20px;}
+#subMenuBlock .dropdown-menu a{border:0;line-height: 25px;color:#8C8B88;}
+#subMenuBlock .dropdown-menu a:hover{background:#fff;text-decoration:none;}
+#subMenuBlock li:last-child a{border-right: 0px double #bebebe;}
+.userMenu{margin-top: -84px;height: 78px;}
+.userMenu ul {/* background : #0f193c; */margin-top: -2px; list-style-type: none;margin-left: -80px;padding: 0;height: 55px;}//78px
+.userMenu li { float: left;}
+.userMenu li a {color: white;text-decoration: none;}
+.modal-header{padding:4px;}
+.userMenu li div span{color:#ffffff;}
+.userMenu li div{color:#ffffff;}
+.userDetails{float:left;margin-right:51px;font-family: myriadpro-regular;font-weight:bold;font-size: 12px;margin-top:23px;line-height: 13px;}
+.userDetails:focus{outline: none;}
+.secondSubMenu{margin-left:-118px;}
+.tooltip-inner{white-space:nowrap;max-width:none;text-align: left;}
+/*.onclick-menu {background: url("../../assets/images/smart-sprite.png") -229px -659px;width: 24px;height: 19px;position: relative; display: inline-block;left: -18px;top: 31px;}*/
+.onclick-menu:before { content: "";width: 60px;height: 30px;}
+.onclick-menu:focus { pointer-events: none;outline: none;}
+.onclick-menu:focus .onclick-menu-content {cursor:pointer;opacity: 1;visibility: visible;pointer-events: auto;}
+.onclick-menu-content {position: absolute;z-index: 1;opacity: 0;visibility: hidden;transition: visibility 0.5s;width: 130px;height: 62px;top: 46px;border: 1px solid #ccc;}
+.onclick-menu-content li a{color: black;font-family: "Arial";transition: visibility 0.5s;font-weight: normal;}
+.onclick-menu-content li a:hover{color: #161f3c;}
+.onclick-menu-content li:nth-child(odd){background: #ffffff;width: 128px;padding: 6px;}
+.onclick-menu-content li:nth-child(even){background: #eaeff2;width: 128px;padding: 6px;height: 24px;}
+.displayNone{display: none}
+.userIcon {background: url("../../assets/images/smart-sprite.png") -237px -16px;width: 27px;height: 37px;position: relative; display: inline-block;left: 25px;top: 0px;}
+.dwnIcon {background: url("../../assets/images/smart-sprite.png") -40px -208px;width: 20px;height: 19px;position: relative; display: inline-block;left: 25px;top: 0px;}
+.settingIcon {background: url("../../assets/images/smart-sprite.png") -137px -62px;width: 20px;height: 21px;position: relative; display: inline-block;left: 25px;top: 5px; cursor: pointer;}
+.helpIcon {background: url("../../assets/images/smart-sprite.png") -16px -208px;width: 20px;height: 19px;position: relative; display: inline-block;left: 25px;top: 5px; cursor: pointer;}
+// .homeIcon {height: 21px;position: relative; display: inline-block;left: 10px;top: 2px; cursor: pointer;}
+ @media (max-width: 768px) {
+ 
+ .userMenu.floatRight{
+ 	display: none;
+ }
+ .userMenu{display: none;}
+ .navbar-toggler{
+ 	top:10px;
+ }
+ #logoWrapper{
+ 	margin-left: 60px;
+ }
+ .navbar{
+ 	width: 100%;
+ }
+}
+@media (min-width: 767px) {
+  .nav-side-menu .menu-list .menu-content {
+    display: block;
+  }
+}  
+
+.programDropDownContainer {
+  position: absolute;
+  right: 30px;
+}
+
+.programDropDown {
+    border: none;
+    background: none;
+    margin-top: 7px;
+    font-weight: bold;
+    padding: 0px 5px 4px 10px;
+    color: #3c3b50;
+    font-size: 14px;
+    float: right;
+}
+.programDropDown:focus {
+  outline: none;
+}
+#tooltip {
+    position: relative;
+    display: inline-block;
+    border: 1px solid #0f193c;
+  }
+  
+  #tooltip .tooltiptext {
+    visibility: hidden;    
+    font-style: normal;
+    font-family: inherit;
+    background-color: #070606;
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    top: 100%;
+    left: 112%;    
+    margin-top: 5px;
+    border: 1px solid #434c6b;
+  }
+
+
+#htooltip {
+  position: relative;
+  display: inline-block;
+  // border: 1px solid #0f193c;
+}
+
+#htooltip .htooltiptext {
+  visibility: hidden;
+  font-style: normal;
+  font-family: inherit;
+  background-color: #070606;
+  color: #fff;
+  text-align: center;
+  border-radius: 2px;
+  padding: 3px 0;
+  position: absolute;
+  z-index: 1;
+  top: 100%;
+  left: 50%;
+  margin-left: 45px;
+  margin-top: -9px;
+  border:1px #fff;
+  font-size: 11px;
+  border-radius:.25rem;
+  padding:-.75rem .2rem;
+  border: 1px solid #434c6b;
+}
+  
+  #tooltip:hover .tooltiptext {
+    visibility: visible;
+  }
+
+
+  #htooltip:hover .htooltiptext {
+    visibility: visible;
+  }
+
+  .duoConnectStatus {
+    width: 20px;
+    height: 20px;
+    border-radius: 25px;
+    display: inline-block;
+    margin-top: 5px;
+  }
+
+  .connected {
+    background-color: green;
+    cursor: pointer;
+  }
+  .disconnected {
+    background-color: red;
+  }
+
+
+
+
+  // {max-width:200px;padding:.25rem .5rem;color:#fff;text-align:center;background-color:#000;border-radius:.25rem}

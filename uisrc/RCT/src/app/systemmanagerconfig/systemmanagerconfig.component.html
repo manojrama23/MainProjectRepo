@@ -1,0 +1,914 @@
+<div class="page-wrapper">
+	<rct-loader *ngIf="showLoader"></rct-loader>
+    <h1 class="mainHead">NETWORK CONFIGURATION</h1>    
+    <div name="export" class="import myriadproBold formBtn white-btn float-sm-right float-md-right float-lg-right float-xl-right" accesskey="n" (click)="downloadFile()" style="cursor: default;">EXPORT</div>
+    <div name="import" class="import myriadproBold formBtn white-btn float-sm-right float-md-right float-lg-right float-xl-right" accesskey="n">IMPORT<input type="file" class="filePost" #filePost  name="filePost" id="filePost" [multiple]="false" (change)="uploadStateTar($event)" accept=".xls, .xlsx" /> </div>
+    <ul class="nav nav-pills" role="tablist">
+            <li class="nav-item">
+                <div (click)="searchTabBind()"  accesskey="h" name="seatch" class=" divalign float-sm-right float-md-right float-lg-right float-xl-right"
+                    #searchTab>SEARCH</div>
+            </li>
+            <li class="nav-item">
+                <div (click)="createNewTabBind()" accesskey="n" name="createnew" class="divalign float-sm-right float-md-right float-lg-right float-xl-right"
+                    #createNewTab>CREATE NEW</div>
+            </li>            
+    </ul>
+    
+	<ng-template #confirmModalDelete let-c="close" let-d="dismiss">
+      <div class="sucessContentWrapper">
+                <div class="confirmIcon"></div>
+                <div class="confirmContent deletePopup">
+                    <p>
+                        <b>Are You Sure, </b>
+                    <!-- </p>
+                    <br>
+                    <p> -->You want to <b>Delete</b>
+                    </p>
+                </div>
+            </div>
+      <div class="deletePopupBtn modal-footer textAlignCenter">
+        <button type="button" class="formBtn btn btn-secondary modal_button_yes" (click)="d('dismiss click')" id="deleteConfirmation" >YES</button>
+        <button type="button" class="formBtn btn btn-secondary modal_button_no" (click)="c('Close click')" id="modal_button_no" >NO</button>
+      </div>
+    </ng-template>
+    <div #container></div>
+    <ng-template #serverCreateFormTemplate>
+        <div id="formWrapper" class="formWrapperMargin" *ngIf="serverCreateForm">
+            <form class="form-horizontal" *ngFor="let key of serverList; let index = index">
+                <div class="row">
+                    <input type="text" class="displayNone" id="id" name="id" value="" />
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName" class="asterisk_input">STEP</label>
+                            <input type="text" class="form-control" id="step" name="step" value="" [(ngModel)]="key.step"
+                                maxlength="30" />
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName" class="asterisk_input">SERVER TYPE</label>
+                            <select class="form-control" name="serverType" id="serverType" [(ngModel)]="key.serverTypeEntity">
+                                <option value="">--Select--</option>
+                                <option *ngFor="let type of serverTypeList" [ngValue]="type">{{type.serverType}}</option>
+                            </select>
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName" class="asterisk_input">SERVER NAME</label>
+                            <input type="text" class="form-control" id="serverName" name="serverName" [(ngModel)]="key.serverName"
+                                value="" maxlength="30" />
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName" class="asterisk_input">IP ADDRESS</label>
+                            <input type="text" class="form-control" id="serverIp" name="serverIp" [(ngModel)]="key.serverIp"
+                                value="" maxlength="30" />
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName" class="asterisk_input">USER NAME</label>
+                            <input autocomplete="off" type="text" class="form-control" id="serverUserName" name="serverUserName"
+                                [(ngModel)]="key.serverUserName" value="" maxlength="30" />
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName" class="asterisk_input">PASSWORD</label>
+                            <input autocomplete="off" type="password" class="form-control" id="serverPassword" name="serverPassword"
+                                [(ngModel)]="key.serverPassword" value="" maxlength="30" #serverPswd />
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName" class="asterisk_input">CONFIRM PASSWORD</label>
+                            <input type="password" class="form-control" id="serverCnfrmPswd" name="serverCnfrmPswd"
+                                [(ngModel)]="key.serverCnfrmPswd" value="" maxlength="100" />
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName" class="asterisk_input">LOGIN TYPE</label>
+                            <select class="form-control" name="serverLoginType" id="serverLoginType" [(ngModel)]="key.loginTypeEntity">
+                                <option value="">--Select--</option>
+                                <option *ngFor="let type of loginTypeList" [ngValue]="type">{{type.loginType}}</option>
+                            </select>
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName">PATH</label>
+                            <input autocomplete="off" type="text" class="form-control" id="path" name="path" [(ngModel)]="key.path"
+                                value="" maxlength="30" />
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName" class="asterisk_input">USER PROMPT</label>
+                            <input autocomplete="off" type="text" class="form-control" id="userPrompt" name="userPrompt" [(ngModel)]="key.userPrompt"
+                                value="" maxlength="30" />
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName" class="asterisk_input">SUPER USER PROMPT</label>
+                            <input autocomplete="off" type="text" class="form-control" id="superUserPrompt" name="superUserPrompt" [(ngModel)]="key.superUserPrompt"
+                                value="" maxlength="30" />
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="textAlignCenter">
+                    <button type="button" name="save" class="formBtnSmall myriadproBold validateForm formBtn " id="addButton"
+                        (click)="saveServerDetails($event,index)" accesskey="s">ADD</button>
+                    <button type="button" id="cancelButton" name="CANCEL" class="formBtnSmallCncl formBtnSmall myriadproBold formBtn"
+                        (click)="cancelServerDetails($event)" accesskey="c">CANCEL</button>
+                </div>
+            </form>
+        </div>
+    </ng-template>
+    <ng-template #serverTableTemplate>
+        <div id="tableWrapper" class="inlineTable">
+            <div class="scrollHead">
+                <table class="table" id="serverTableDetails">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div (click)="changeSorting('step', $event, 13, 'serverTableDetails')" class="sorting form-control-mini">STEP</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('serverType', $event, 14, 'serverTableDetails', 'serverTypeEntity')" class="sorting form-control-small">SERVER
+                                    TYPE</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('serverName', $event, 15, 'serverTableDetails')" class="sorting form-control-small">SERVER
+                                    NAME</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('serverIp', $event, 16, 'serverTableDetails')" class="sorting form-control-100">IP
+                                    ADDRESS</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('serverUserName', $event, 17, 'serverTableDetails')" class="sorting form-control-small">USER
+                                    NAME</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('loginType', $event, 18, 'serverTableDetails', 'loginTypeEntity')" class="sorting form-control-100">LOGIN
+                                    TYPE</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('path', $event, 19, 'serverTableDetails')" class="sorting form-control-100">PATH</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('userPrompt', $event, 20, 'serverTableDetails')" class="sorting form-control-100">USER PROMPT</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('superUserPrompt', $event, 21, 'serverTableDetails')" class="sorting form-control-100">SU PROMPT</div>
+                            </th>
+    
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="scrollBody">
+                <table class="table" id="serverTableData">
+                    <tbody id="rowCount">
+                        <ng-container *ngFor="let key of serverData; let index = index">
+                            <tr id="row_{{index}}" class="row_id_{{key.id}}">
+                                <td class="form-control-mini" data-toggle="tooltip" data-placement="right"
+                                    data-container="body">{{key.step}}</td>
+                                <td class="form-control-small" data-toggle="tooltip" data-placement="right"
+                                    data-container="body">{{key.serverTypeEntity.serverType}}</td>
+                                <td class="form-control-small" data-toggle="tooltip" data-placement="right"
+                                    data-container="body">{{key.serverName}}</td>
+                                <td class="form-control-100" data-toggle="tooltip" data-placement="right"
+                                    data-container="body">{{key.serverIp}}</td>
+                                <td class="form-control-small" data-toggle="tooltip" data-placement="right"
+                                    data-container="body">{{key.serverUserName}}</td>
+                                <td class="form-control-100" data-toggle="tooltip" data-placement="right"
+                                    data-container="body">{{key.loginTypeEntity.loginType}}</td>
+                                <td class="form-control-100" data-toggle="tooltip" data-placement="right"
+                                    data-container="body">{{key.path}}</td>
+                                <td class="form-control-100" data-toggle="tooltip" data-placement="right"
+                                    data-container="body">{{key.userPrompt}}</td>
+                                <td class="form-control-100" data-toggle="tooltip" data-placement="right"
+                                    data-container="body">
+                                    <span class="eventColText">{{key.superUserPrompt}}</span>
+                                    <div class="form-control-fixed iconsWrapper scriptTableRowAction" id="fixedCol" ng-style="iconsWrapperPosition">
+                                        <div (click)="editServerRow($event, key, index)" class="editRow" placement="bottom"
+                                            container="body" ngbTooltip="Edit"></div>
+                                        <div (click)="deleteServerRow(confirmModalDelete, key,index,$event)" class="deleteRow"
+                                            placement="bottom" container="body" ngbTooltip="Delete"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr *ngIf="checkServerFormEnable(index)" id="editedRow{{index}}">
+                                <td colspan="9" class="formEditRow">
+                                    <div id="formWrapper" class="userManagementFormWrapper">
+                                        <form class="form-horizontal">
+                                            <div class="row">
+                                                <input type="text" class="displayNone" id="id" name="id" value="" />
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="asterisk_input">STEP</label>
+                                                        <input type="text" class="form-control" id="step" name="step" value=""
+                                                            maxlength="30" />
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="asterisk_input">SERVER TYPE</label>
+                                                        <select class="form-control" name="serverType" id="serverType"
+                                                            [(ngModel)]="serverType">
+                                                            <option value="">--Select--</option>
+                                                            <option *ngFor="let type of serverTypeList" id="{{type.id}}"
+                                                                value="{{type.serverType}}">{{type.serverType}}</option>
+                                                        </select>
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="asterisk_input">SERVER NAME</label>
+                                                        <input type="text" class="form-control" id="serverName" name="serverName"
+                                                            value="" maxlength="30" />
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="asterisk_input">IP ADDRESS</label>
+                                                        <div class="row" style="margin-left: 0;float: left;">
+                                                            <input type="text" class="form-control" id="serverIp" name="serverIp"
+                                                                value="" maxlength="30" />
+                                                            <div class="error-message-block"></div>
+                                                         </div>
+                                                        <input *ngIf="serverType=='SANE'" style="margin: 6px 0 0 20px;"ngbTooltip="If selected, All sane server IP will update"type="checkbox" (click)="updateip()"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="asterisk_input">USER NAME</label>
+                                                        <input autocomplete="off" type="text" class="form-control" id="serverUserName"
+                                                            name="serverUserName" value="" maxlength="30" />
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="asterisk_input">PASSWORD</label>
+                                                        <input autocomplete="off" type="password" class="form-control" id="serverPassword"
+                                                            name="serverPassword" value="" maxlength="30" #serverPswd />
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="asterisk_input">LOGIN TYPE</label>
+                                                        <select class="form-control" name="serverLoginType" id="serverLoginType"
+                                                            [(ngModel)]="serverLoginType">
+                                                            <option value="">--Select--</option>
+                                                            <option *ngFor="let type of loginTypeList" id="{{type.id}}"
+                                                                value="{{type.loginType}}">{{type.loginType}}</option>
+                                                        </select>
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName">PATH</label>
+                                                        <input autocomplete="off" type="text" class="form-control" id="path"
+                                                            name="path" value="" maxlength="30" />
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="asterisk_input">USER PROMPT</label>
+                                                        <input autocomplete="off" type="text" class="form-control" id="userPrompt" name="userPrompt" [(ngModel)]="key.userPrompt"
+                                                            value="" maxlength="30" />
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="asterisk_input">SUPER USER PROMPT</label>
+                                                        <input autocomplete="off" type="text" class="form-control" id="superUserPrompt" name="superUserPrompt" [(ngModel)]="key.superUserPrompt"
+                                                            value="" maxlength="30" />
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="textAlignCenter">
+                                                <button type="button" name="save" class="formBtnSmall myriadproBold validateForm"
+                                                    id="addButton" (click)="updateServerEditRow($event,index,key.id)"
+                                                    accesskey="s">UPDATE</button>
+                                                <button type="button" id="cancelButton" name="CANCEL" class="formBtnSmallCncl formBtnSmall myriadproBold formBtn"
+                                                    (click)="cancelServerEditRow(index,key.id)" accesskey="c">CANCEL</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </ng-template>
+    
+    <div id="tabContentWrapper" class="flightSearchFormWrapper" *ngIf="searchBlock">
+        <form class="form-horizontal" #searchForm>
+            <div class="row">
+                <!-- <input type="text" class="displayNone" id="id" name="id" value="" /> -->
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName">PROGRAM NAME</label>
+                        <select class="form-control" name="searchPgmName" id="searchPgmName" [compareWith]= "compareFn" [(ngModel)]="searchPgmName" (change)="loadNEVersionList(searchPgmName)">
+                            <option value="">--Select--</option>
+                            <option *ngFor="let name of programNamesList" id="{{name.id}}" [ngValue]="name">{{name.programName}}</option>
+                        </select>
+                        <div class="error-message-block"></div>
+                    </div>
+                </div>
+              <!--   <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName">MARKET</label>
+                        <select class="form-control" name="searchMarketName" id="searchMarketName">
+                            <option value="">--Select--</option>
+                            <option *ngFor="let name of neMarketList" value="{{name}}">{{name}}</option>
+                        </select>
+                        <div class="error-message-block"></div>
+                    </div>
+                </div> -->
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName">MARKET</label>
+                        <input class="form-control" autocomplete="off" id="searchMarketName" name="searchMarketName" type="text" value=""/>
+                        <div class="error-message-block"></div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName">NE TYPE</label>
+                        <select class="form-control" name="searchNeType" id="searchNeType" [compareWith]= "compareFn"  [(ngModel)]="searchNeType">                           
+                            <option value="">--Select--</option>
+                            <option *ngFor="let type of neTypeList" id="{{type.id}}" [ngValue]="type">{{type.neType}}</option>
+                        </select>
+                        <div class="error-message-block"></div>
+                    </div>
+                </div>
+               <!--  <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName">NE NAME</label>
+                        <select class="form-control" name="searchNeName" id="searchNeName">                           
+                            <option value="">--Select--</option>
+                            <option *ngFor="let name of neNameList" value="{{name}}">{{name}}</option>
+                        </select>
+                        <div class="error-message-block"></div>
+                    </div>
+                </div> -->
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName">NE NAME</label>
+                        <input class="form-control" autocomplete="off" id="searchNeName" name="searchNeName" type="text" value=""/>
+                        <div class="error-message-block"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row"> 
+                <!-- <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName">NE VERSION</label>
+                        <select class="form-control" name="searchNeVersion" id="searchNeVersion" [(ngModel)]="searchNeVersion">                           
+                            <option value="">--Select--</option>
+                            <option *ngFor="let version of neVersionList" [ngValue]="version" >{{version.neVersion}}</option>
+                        </select>
+                        <div class="error-message-block"></div>
+                    </div>
+                </div>  -->    
+                <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName">NE VERSION</label>
+                            <input class="form-control" autocomplete="off" id="searchNeVersion" name="searchNeVersion" [(ngModel)]="searchNeVersion" type="text" value=""/>
+                            <div class="error-message-block"></div>
+                        </div>
+                </div>  
+             
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName">LOGIN TYPE</label>
+                        <select class="form-control" name="searchLoginType" id="searchLoginType"  [compareWith]= "compareFn" [(ngModel)]="searchLoginType">
+                            <option value="">--Select--</option>
+                            <option *ngFor="let type of loginTypeList" id="{{type.id}}" [ngValue]="type">{{type.loginType}}</option>
+                        </select>
+                        <div class="error-message-block"></div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName">STATUS</label>
+                        <select class="form-control" name="searchStatus" id="searchStatus">
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+                        <div class="error-message-block"></div>
+                    </div>
+                </div>            
+            </div>
+            
+            <div class="textAlignCenter">
+                <button name="save" class="formBtn myriadproBold airlinecnfgSearch" id="searchButton" (click)="searchNE($event)" accesskey="s">SEARCH</button>       
+                <button type="button" id="cancelButton" name="CANCEL" class="formBtnCncl formBtn myriadproBold formBtn" (click)="clearSearchFrom()" accesskey="c">CLEAR</button>             
+            </div>
+            
+        </form>
+    </div>
+    <rct-nodata *ngIf="noDataVisibility" [subTitle]="'Please upload <u><b>FILE</b></u> in Pre Migration'"></rct-nodata>
+    <ng-template #networkConfigForm>
+        <div *ngIf="createForm" id="formWrapper" class="formWrapperMargin bluePrintFormWrapper">
+        <form class="form-horizontal">
+            <div class="row">
+                <input type="text" class="displayNone" id="id" name="id" value="" />
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName" class="asterisk_input">PROGRAM NAME</label>
+                        <!-- <select class="form-control" name="programName" id="programName" [(ngModel)]="programDetailsEntity" (change)="loadNEVersionList(programDetailsEntity)">
+                            <option value="">--Select--</option>
+                            <option *ngFor="let name of programNamesList" [ngValue]="name">{{name.programName}}</option>
+                        </select> -->       
+                        <div class="">
+                            <ngx-select-dropdown [config]="pgmNameConfig" id="programName" [options]="programNamesList" [(ngModel)]="programDetailsEntity" name="programDetailsEntity"
+                                (change)="loadNEVersionList(programDetailsEntity)"></ngx-select-dropdown>                    
+                        <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName" class="asterisk_input">NE TYPE</label>
+                        <select class="form-control" name="neType" id="neType" (change)="onChangeLoad()" [(ngModel)] ="neTypeEntity" >
+                            <option  value="">--Select--</option>
+                            <option *ngFor="let type of neTypeList" [ngValue]="type">{{type.neType}}</option>
+                        </select>
+                        <div class="error-message-block"></div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName" [ngClass]="{asterisk_input: neTypeEntity && (neTypeEntity.neType == 'LSM' || neTypeEntity.neType == 'VLSM' || neTypeEntity.neType == 'BSM' || neTypeEntity.neType == 'CSR' || neTypeEntity.neType == 'USM'  || neTypeEntity.neType == 'AU' || neTypeEntity.neType == 'ACPF' || neTypeEntity.neType == 'AUPF')}">MARKET</label>
+                        <input autocomplete="off" type="text" class="form-control" id="neMarket" name="neMarket" maxlength="30" [(ngModel)]="neMarketEntity"
+                            [disabled]="neTypeEntity && neTypeEntity.neType != 'LSM' && neTypeEntity.neType != 'VLSM' && neTypeEntity.neType != 'BSM' && neTypeEntity.neType != 'CSR' && neTypeEntity.neType != 'USM' && neTypeEntity.neType != 'AU' && neTypeEntity.neType != 'ACPF' && neTypeEntity.neType != 'AUPF'" />
+                        <div class="error-message-block"></div>
+                    </div>
+                </div>
+              
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName" class="asterisk_input">NE NAME</label>
+                        <input autocomplete="off" type="text" class="form-control" id="neName" name="neName" value="" maxlength="30" />
+                        <div class="error-message-block"></div>
+                    </div>
+                </div>
+            </div>
+             <div class="row">                        
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName" [ngClass]="{asterisk_input: neTypeEntity && (neTypeEntity.neType == 'LSM' || neTypeEntity.neType == 'VLSM' || neTypeEntity.neType == 'BSM' || neTypeEntity.neType == 'CSR' || neTypeEntity.neType == 'USM' || neTypeEntity.neType == 'AU' || neTypeEntity.neType == 'ACPF' || neTypeEntity.neType == 'AUPF')}"class="">NE VERSION</label>
+                        <select class="form-control" name="neVersion" id="neVersion" (change)="onChangeNEVersion(neVersionEntity)" [(ngModel)]="neVersionEntity" [disabled]="neTypeEntity && neTypeEntity.neType != 'LSM' && neTypeEntity.neType != 'VLSM' && neTypeEntity.neType != 'BSM' && neTypeEntity.neType != 'CSR' && neTypeEntity.neType != 'USM' && neTypeEntity.neType != 'AU' && neTypeEntity.neType != 'ACPF' && neTypeEntity.neType != 'AUPF'">
+                            <option value="">--Select--</option>
+                            <option *ngFor="let version of neVersionList" [ngValue]="version">{{version.neVersion}}</option>
+                        </select>
+                        <div class="error-message-block"></div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName" [ngClass]="{asterisk_input: neTypeEntity && (neTypeEntity.neType == 'LSM' || neTypeEntity.neType == 'VLSM' || neTypeEntity.neType == 'BSM' || neTypeEntity.neType == 'CSR' || neTypeEntity.neType == 'USM' || neTypeEntity.neType == 'AU' || neTypeEntity.neType == 'ACPF' || neTypeEntity.neType == 'AUPF')}"class="">RELEASE VERSION</label>
+                        <select class="form-control" name="relVersion" id="relVersion" [(ngModel)]="neRelVersion" [disabled]="neTypeEntity && neTypeEntity.neType != 'LSM' && neTypeEntity.neType != 'VLSM' && neTypeEntity.neType != 'BSM' && neTypeEntity.neType != 'CSR' && neTypeEntity.neType != 'USM' && neTypeEntity.neType != 'AU' && neTypeEntity.neType != 'ACPF' && neTypeEntity.neType != 'AUPF'">
+                            <option value="">--Select--</option>
+                            <option *ngFor="let relVersion of neRelVersionList" [ngValue]="relVersion">{{relVersion}}</option>
+                        </select>
+                        <div class="error-message-block"></div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName" class="asterisk_input">IP ADDRESS</label>
+                        <input type="text" class="form-control" id="neIp" name="neIp" value="" maxlength="40" />
+                        <div class="error-message-block"></div>
+                    </div>
+                </div>  
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName"  [ngClass]="{asterisk_input: neTypeEntity && (neTypeEntity.neType == 'LSM' || neTypeEntity.neType == 'VLSM' || neTypeEntity.neType == 'BSM' || neTypeEntity.neType == 'CSR' || neTypeEntity.neType == 'USM' || neTypeEntity.neType == 'AU' || neTypeEntity.neType == 'ACPF' || neTypeEntity.neType == 'AUPF')}" >RS IP</label>
+                        <input autocomplete="off" type="text" class="form-control" id="neRsIp" name="neRsIp"  maxlength="40" [(ngModel)]="neRsIPEntity"   [disabled]="neTypeEntity && neTypeEntity.neType != 'LSM' && neTypeEntity.neType != 'VLSM' && neTypeEntity.neType != 'BSM' && neTypeEntity.neType != 'CSR' && neTypeEntity.neType != 'USM' && neTypeEntity.neType != 'AU' && neTypeEntity.neType != 'ACPF' && neTypeEntity.neType != 'AUPF'"/>
+                        <div class="error-message-block"></div>
+                    </div>
+                </div>  
+            </div>
+
+            <div class="row">
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName" class="asterisk_input">USER NAME</label>
+                        <input autocomplete="off" type="text" class="form-control" id="neUserName" name="neUserName" value="" maxlength="30" />
+                        <div class="error-message-block"></div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName" class="asterisk_input">PASSWORD</label>
+                        <input autocomplete="off" type="password" class="form-control" id="nePassword" name="nePassword" value="" maxlength="30" />
+                        <div class="error-message-block"></div>
+                    </div>
+                </div>                           
+              <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName" class="asterisk_input">CONFIRM PASSWORD</label>
+                                <input type="password" class="form-control" id="cnfrmPswd" name="cnfrmPswd" value="" maxlength="100" />
+                                <div class="error-message-block"></div>
+                            </div>
+                  </div> 
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName" class="asterisk_input">LOGIN TYPE</label>
+                        <select class="form-control" name="loginType" id="loginType" [(ngModel)]="loginTypeEntity">
+                                <option value="">--Select--</option>
+                                <option *ngFor="let type of loginTypeList" [ngValue]="type">{{type.loginType}}</option>
+                        </select>
+                        <div class="error-message-block"></div>
+                    </div>
+                </div>  
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName">STATUS</label>
+                        <select class="form-control" name="status" id="status">
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+                        <div class="error-message-block"></div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName" class="asterisk_input">USER PROMPT</label>
+                        <input autocomplete="off" type="text" class="form-control" id="neUserPrompt" name="neUserPrompt"
+                            value="" maxlength="30" />
+                        <div class="error-message-block"></div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName" class="asterisk_input">SUPER USER PROMPT</label>
+                        <input autocomplete="off" type="text" class="form-control" id="neSuperUserPrompt" name="neSuperUserPrompt"
+                            value="" maxlength="30" />
+                        <div class="error-message-block"></div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName">REMARKS</label>
+                        <textarea rows="4" cols="50" class="customTextArea" name="remarks" id="remarks"></textarea>
+                        <div class="error-message-block"></div>
+                    </div>
+                </div>
+            </div>                 
+            <div class="addServer">
+                <button name="save" class="formBtn myriadproBold" (click)="addServerForm($event)" accesskey="s" [ngClass]="{'buttonDisabled':isDisabled()|| !neTypeEntity}" [disabled] = "isDisabled()|| !neTypeEntity">ADD SERVER</button>
+            </div>
+            <ng-container *ngTemplateOutlet ="serverCreateFormTemplate"></ng-container>           
+            <div id="dataWrapper" *ngIf="serverTable">
+                <ng-container *ngTemplateOutlet="serverTableTemplate"></ng-container> 
+            </div>
+            <div class="textAlignCenter">
+                <button type="button" name="save" class="formBtn myriadproBold validateForm" id="addButton" (click)="addNewLsmDetail($event)" accesskey="s" [ngClass]="{'buttonDisabled':serverCreateForm}">SAVE</button>
+                <button type="button" id="cancelButton" name="CANCEL" class="formBtnCncl formBtn myriadproBold formBtn" (click)="cancelCreateNew($event)" accesskey="c">CANCEL</button>
+            </div>               
+        </form>  
+    </div>
+    </ng-template>
+	<div id="dataWrapper" *ngIf="tableShowHide">
+		<div id="tableWrapper" class="networkTable">
+			<div class="scrollHead">
+				<table class="table" id="SystemManagerDetails">
+					<thead>
+						<tr>
+							<th>
+								<div (click)="changeSorting('programName', $event, 0, 'SystemManagerDetails', 'programDetailsEntity')" class="sorting form-control-small-2">PROGRAM NAME</div>
+                            </th>
+                            <th>
+                                    <div (click)="changeSorting('neMarket', $event, 1, 'SystemManagerDetails')" class="sorting form-control-small-2">MARKET</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('neType', $event, 2, 'SystemManagerDetails', 'neTypeEntity')" class="sorting form-control-small-2">NE TYPE</div>
+                            </th>	
+                            <th>
+                                <div (click)="changeSorting('neName', $event, 3, 'SystemManagerDetails')" class="sorting form-control-small-2">NE NAME</div>
+                            </th>
+                            <th>
+								<div (click)="changeSorting('neVersion', $event, 4, 'SystemManagerDetails', 'neVersionEntity')" class="sorting form-control-small-2">NE VERSION</div>
+                            </th>
+                            <th>
+								<div (click)="changeSorting('neRelVersion', $event, 5, 'SystemManagerDetails', 'neVersionEntity')" class="sorting form-control-small-2">RELEASE VERSION</div>
+							</th>
+							<th>
+								<div (click)="changeSorting('neIp', $event, 6, 'SystemManagerDetails')" class="sorting form-control-small-2">IP ADDRESS</div>
+                            </th>
+                            <th>
+                                    <div (click)="changeSorting('neRsIp', $event, 7, 'SystemManagerDetails')" class="sorting form-control-small-2">RS IP</div>
+                             </th>
+                            <th>
+                                <div (click)="changeSorting('neUserName', $event, 8, 'SystemManagerDetails')" class="sorting form-control-small-2">USER NAME</div>
+                            </th>							
+							<th>
+								<div (click)="changeSorting('loginTypeEntity', $event, 9, 'SystemManagerDetails')" class="sorting form-control-small-2">LOGIN TYPE</div>
+                            </th>	
+                            <th>
+                                <div (click)="changeSorting('status', $event, 10, 'SystemManagerDetails')" class="sorting form-control-small-2">STATUS</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('neUserPrompt', $event, 11, 'SystemManagerDetails')" class="sorting form-control-small-2">USER PROMPT</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('neSuperUserPrompt', $event, 12, 'SystemManagerDetails')" class="sorting form-control-small-2">SU PROMPT</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('createdBy', $event, 13, 'SystemManagerDetails')" class="sorting form-control-small-2">CREATED BY</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('creationDate', $event, 14, 'SystemManagerDetails')" class="sorting form-control-small-2">TIME STAMP</div>
+                            </th>
+							<th>
+								<div (click)="changeSorting('remarks', $event, 15, 'SystemManagerDetails')" class="sorting form-control-small-2">REMARKS</div>
+							</th>
+
+						</tr>
+					</thead>
+				</table>
+			</div>
+			<div class="scrollBody">
+				<table class="table" id="systemMgrData" >
+					<tbody id="rowCount">
+						<ng-container *ngFor="let key of tableData.networkConfigList; let index = index">
+							<tr id="row_{{index}}" class="row_id_{{key.id}} networkRow">
+                                <td class="form-control-small-2" data-toggle="tooltip" data-placement="right" data-container="body">{{key.programDetailsEntity.programName}}</td>
+                                <td class="form-control-small-2" data-toggle="tooltip" data-placement="right" data-container="body">{{key.neMarket}}</td>
+                                <td class="form-control-small-2" data-toggle="tooltip" data-placement="right" data-container="body">{{key.neTypeEntity.neType}}</td>
+                                <td class="form-control-small-2" data-toggle="tooltip" data-placement="right" data-container="body">{{key.neName}}</td>
+                                <td class="form-control-small-2" data-toggle="tooltip" data-placement="right" data-container="body">{{key.neVersionEntity ? key.neVersionEntity.neVersion : "-"}}</td>
+                                <td class="form-control-small-2" data-toggle="tooltip" data-placement="right" data-container="body">{{key.neRelVersion}}</td>
+                                <td class="form-control-small-2" data-toggle="tooltip" data-placement="right" data-container="body">{{key.neIp}}</td>  
+                                <td class="form-control-small-2" data-toggle="tooltip" data-placement="right" data-container="body">{{key.neRsIp}}</td>                          
+                                <td class="form-control-small-2" data-toggle="tooltip" data-placement="right" data-container="body">{{key.neUserName}}</td>
+                                <td class="form-control-small-2" data-toggle="tooltip" data-placement="right" data-container="body">{{key.loginTypeEntity.loginType}}</td>
+                                <td class="form-control-small-2" data-toggle="tooltip" data-placement="right" data-container="body">{{key.status}}</td>
+                                <td class="form-control-small-2" data-toggle="tooltip" data-placement="right" data-container="body">{{key.neUserPrompt}}</td>
+                                <td class="form-control-small-2" data-toggle="tooltip" data-placement="right" data-container="body">{{key.neSuperUserPrompt}}</td>
+                                <td class="form-control-small-2" data-toggle="tooltip" data-placement="right" data-container="body">{{key.createdBy}}</td>
+                                <td class="form-control-small-2" data-toggle="tooltip" data-placement="right" data-container="body">{{key.creationDate}}</td>
+								<td class="form-control-small-2" data-toggle="tooltip" data-placement="right" data-container="body">
+                                    <span class="eventColText">{{key.remarks}}</span>
+                                    <div class="form-control-fixed iconsWrapper tableRowAction" id="fixedCol" ng-style="iconsWrapperPosition">
+                                        <div (click)="editRow($event, key, index)" class="editRow" placement="bottom" container="body" ngbTooltip="Edit"></div>
+                                        <div (click)="deleteRow(confirmModalDelete, key,$event)" class="deleteRow" placement="bottom" container="body" ngbTooltip="Delete"></div>
+                                    </div>
+                                </td>
+							</tr>
+							<tr *ngIf="checkFormEnable(index)" id="editedRow{{index}}">
+                                <td colspan="16" class="formEditRow">
+                                    <div id="formWrapper" class="networkWrapper" [ngStyle]="{'width': formWidth, 'margin-left': scrollLeft}">
+                                        <form class="form-horizontal">
+                                            <div class="row">
+                                                <input type="text" class="displayNone" id="id" name="id" value="" />
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="asterisk_input">PROGRAM NAME</label>
+                                                        <!-- <select class="form-control" name="programName" id="programName" [compareWith]="compareFn" [(ngModel)] ="programDetailsEntity" (change)="loadNEVersionList(programDetailsEntity)">
+                                                        <option value="">--Select--</option>
+                                                        <option *ngFor="let name of programNamesList" [ngValue]="name">{{name.programName}}</option>
+                                                        </select> -->
+                                                        <ngx-select-dropdown [config]="pgmNameConfig" id="programName" [options]="programNamesList" [(ngModel)]="programDetailsEntity"
+                                                            name="programDetailsEntity" (change)="loadNEVersionList(programDetailsEntity)"></ngx-select-dropdown>
+                                                    
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="asterisk_input">NE TYPE</label>
+                                                        <select class="form-control" name="neType" id="neType" [compareWith]="compareFn" (change)="onChangeLoad()"[(ngModel)] ="neTypeEntity">
+                                                            <option value="">--Select--</option>
+                                                            <option *ngFor="let type of neTypeList" [ngValue]="type">{{type.neType}}</option>
+                                                        </select>
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                        <div class="form-group">
+                                                            <label for="templateName"  [ngClass]="{asterisk_input: neTypeEntity && (neTypeEntity.neType == 'LSM' || neTypeEntity.neType == 'VLSM' || neTypeEntity.neType == 'BSM' || neTypeEntity.neType == 'CSR' || neTypeEntity.neType == 'USM' || neTypeEntity.neType == 'AU' || neTypeEntity.neType == 'ACPF' || neTypeEntity.neType == 'AUPF')}">MARKET</label>
+                                                            <input autocomplete="off" type="text" class="form-control" id="neMarket" name="neMarket" value="" maxlength="30"  [disabled]="neTypeEntity && neTypeEntity.neType != 'LSM' && neTypeEntity.neType != 'VLSM' && neTypeEntity.neType != 'BSM' && neTypeEntity.neType != 'CSR' && neTypeEntity.neType != 'USM' && neTypeEntity.neType != 'AU' && neTypeEntity.neType != 'ACPF' && neTypeEntity.neType != 'AUPF'"/>
+                                                            <div class="error-message-block"></div>
+                                                        </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="asterisk_input">NE NAME</label>
+                                                        <input autocomplete="off" type="text" class="form-control" id="neName" name="neName" value="" maxlength="30" />
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" [ngClass]="{asterisk_input: neTypeEntity && (neTypeEntity.neType == 'LSM' || neTypeEntity.neType == 'VLSM' || neTypeEntity.neType == 'BSM' || neTypeEntity.neType == 'CSR' || neTypeEntity.neType == 'USM' || neTypeEntity.neType == 'AU' || neTypeEntity.neType == 'ACPF' || neTypeEntity.neType == 'AUPF')}" class="">NE VERSION</label>
+                                                        <!-- <input type="text" class="form-control" id="neVersion" name="neVersion" value="" maxlength="30" /> -->
+                                                        <select class="form-control" name="neVersion" id="neVersion" (change)="onChangeNEVersion(neVersionEntity)" [compareWith]="compareFn" [(ngModel)]="neVersionEntity" [disabled]="neTypeEntity && neTypeEntity.neType != 'LSM' && neTypeEntity.neType != 'VLSM' && neTypeEntity.neType != 'BSM' && neTypeEntity.neType != 'CSR' && neTypeEntity.neType != 'USM' && neTypeEntity.neType != 'AU' && neTypeEntity.neType != 'ACPF' && neTypeEntity.neType != 'AUPF'">
+                                                            <option value="">--Select--</option>
+                                                            <option *ngFor="let version of neVersionList" [ngValue]="version">{{version.neVersion}}</option>
+                                                        </select>
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" [ngClass]="{asterisk_input: neTypeEntity && (neTypeEntity.neType == 'LSM' || neTypeEntity.neType == 'VLSM' || neTypeEntity.neType == 'BSM' || neTypeEntity.neType == 'CSR' || neTypeEntity.neType == 'USM' || neTypeEntity.neType == 'AU' || neTypeEntity.neType == 'ACPF' || neTypeEntity.neType == 'AUPF')}"class="">RELEASE VERSION</label>
+                                                        <select class="form-control" name="relVersion" id="relVersion" [(ngModel)]="neRelVersion" [disabled]="neTypeEntity && neTypeEntity.neType != 'LSM' && neTypeEntity.neType != 'VLSM' && neTypeEntity.neType != 'BSM' && neTypeEntity.neType != 'CSR' && neTypeEntity.neType != 'USM' && neTypeEntity.neType != 'AU' && neTypeEntity.neType != 'ACPF' && neTypeEntity.neType != 'AUPF'">
+                                                            <option value="">--Select--</option>
+                                                            <option *ngFor="let relVersion of neRelVersionList" [ngValue]="relVersion">{{relVersion}}</option>
+                                                        </select>
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="asterisk_input">IP ADDRESS</label>
+                                                        <input type="text" class="form-control" id="neIp" name="neIp" value="" maxlength="40" />
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>  
+                                                <div class="col-3">
+                                                        <div class="form-group">
+                                                            <label for="templateName" [ngClass]="{asterisk_input: neTypeEntity && (neTypeEntity.neType == 'LSM' || neTypeEntity.neType == 'VLSM' || neTypeEntity.neType == 'BSM' || neTypeEntity.neType == 'CSR' || neTypeEntity.neType == 'USM' || neTypeEntity.neType == 'AU' || neTypeEntity.neType == 'ACPF' || neTypeEntity.neType == 'AUPF')}">RS IP</label>
+                                                            <input type="text" class="form-control" id="neRsIp" name="neRsIp" value="" maxlength="40" [disabled]="neTypeEntity && neTypeEntity.neType != 'LSM' && neTypeEntity.neType != 'VLSM' && neTypeEntity.neType != 'BSM' && neTypeEntity.neType != 'CSR' && neTypeEntity.neType != 'USM' && neTypeEntity.neType != 'AU' && neTypeEntity.neType != 'ACPF' && neTypeEntity.neType != 'AUPF'" />
+                                                            <div class="error-message-block"></div>
+                                                        </div>
+                                                </div>  
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="asterisk_input">USER NAME</label>
+                                                        <input type="text" class="form-control" id="neUserName" name="neUserName" value="" maxlength="30" />
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                        <div class="form-group">
+                                                            <label for="templateName" class="asterisk_input">PASSWORD</label>
+                                                            <input autocomplete="off" type="password" class="form-control" id="nePassword" name="nePassword" value="" maxlength="30" />
+                                                            <div class="error-message-block"></div>
+                                                        </div>
+                                                    </div>
+                                                     
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="asterisk_input">LOGIN TYPE</label>
+                                                        <select class="form-control" name="loginType" id="loginType" [compareWith]="compareFn" [(ngModel)] ="loginTypeEntity">
+                                                                <option value="">--Select--</option>
+                                                                <option *ngFor="let type of loginTypeList" [ngValue]="type">{{type.loginType}}</option>
+                                                        </select>
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                            
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName">STATUS</label>
+                                                        <select class="form-control" name="status" id="status">
+                                                            <option value="Active">Active</option>
+                                                            <option value="Inactive">Inactive</option>
+                                                        </select>
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="asterisk_input">USER PROMPT</label>
+                                                        <input autocomplete="off" type="text" class="form-control" id="neUserPrompt" name="neUserPrompt"
+                                                            value="" maxlength="30" />
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="asterisk_input">SUPER USER PROMPT</label>
+                                                        <input autocomplete="off" type="text" class="form-control" id="neSuperUserPrompt" name="neSuperUserPrompt"
+                                                            value="" maxlength="30" />
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName">REMARKS</label>
+                                                        <textarea rows="4" cols="50" class="customTextArea" name="remarks" id="remarks"></textarea>
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="addServer">
+                                                <button name="save" class="formBtn myriadproBold" (click)="addServerForm($event)" accesskey="s" [ngClass]="{'buttonDisabled':isDisabled()}">ADD SERVER</button>
+                                            </div>
+                                            <ng-container *ngTemplateOutlet ="serverCreateFormTemplate"></ng-container>
+                                            <div id="dataWrapper">
+                                               <ng-container *ngTemplateOutlet ="serverTableTemplate"></ng-container>                                               
+                                            </div>
+                                            <div class="textAlignCenter" style="margin-top:20px">
+                                                <button name="update" class="formBtn myriadproBold validateForm" id="updateButton" type="submit" (click)="updateEditRow(index, key.id, $event)" accesskey="u" [ngClass]="{'buttonDisabled':checkServerFormEnable(index)}">UPDATE</button>
+                                                <button type="button" name="CANCEL" class="formBtnCncl formBtn myriadproBold formBtn" id="editCancelButton" (click)="cancelEditRow(index,key.id)" accesskey="c">CANCEL</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+						</ng-container>
+					</tbody>
+				</table>
+			</div>
+			<div id="paginationWrapper">
+                <div *ngIf="pageRenge.length" class="page" style="margin-left:20px;">
+                    <div class="floatLeft" style="width: 75px;padding-top: 6px">Show</div>
+                    <select [disabled]="paginationDisabbled" [(ngModel)]="pageSize" (change)="onChangeTableRowLength($event)" style="margin-top: 4px; margin-right: 6px;margin-left: -39px;" class="form-control-pagination floatLeft" aria-controls="TableRowLength" size="1" name="TableRowLength" id="TableRowLength">
+                        <option selected="selected" value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                    <div class="floatLeft" style="width: 75px;padding-top: 6px">Entries</div>
+                    <div class="floatRight page" style="padding-top: 3px;margin-right:20px;">
+                        <ul *ngIf="pageRenge.length" class="pagination floatRight">
+                            <li id="firstPage" [ngClass]="{disabled:(currentPage === 1 || paginationDisabbled)}" class="page-item">
+                                <a class="page-link" (click)="setPage(1)">FIRST</a>
+                            </li>
+                            <li id="previousPage" [ngClass]="{disabled:(currentPage === 1 || paginationDisabbled)}" class="page-item">
+                                <a class="page-link" (click)="setPage(pager.currentPage - 1)">PREV</a>
+                            </li>
+                            <li *ngFor="let n of pager.pages" [ngClass]="{active:currentPage === n, disabled:paginationDisabbled}" class="page-item">
+                                <a class="page-link" (click)="setPage(n)" id='{{n+1}}'>{{n}}</a>
+                            </li>
+                            <li id="nextPage" [ngClass]="{disabled:(currentPage === totalPages || paginationDisabbled)}" class="page-item">
+                                <a class="page-link" (click)="setPage(pager.currentPage + 1)">NEXT</a>
+                            </li>
+                            <li id="lastPage" [ngClass]="{disabled:(currentPage === totalPages || paginationDisabbled)}" class="page-item">
+                                <a class="page-link" (click)="setPage(pager.totalPages)">LAST</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+             </div>
+		</div>
+    </div>
+    
+  
+	<!-- <ng-template #clone id="userManagementFormConfig"> -->
+       
+    <!-- </ng-template> -->
+	<ng-template #sessionExpiredModal let-c="close" let-d="dismiss">
+		<div class="failureIcon"></div>
+			<p id="sessionPopup">Session Expired</p>
+		<div class="modelDismiss" (click)="closeAndLogout()"></div>
+	</ng-template>
+
+	<ng-template #successModal let-c="close" let-d="dismiss">
+  		<div class="successIcon"></div>
+  		<p id="sessionPopup">{{message}}</p>
+  		
+  		<div class="modelDismiss" (click)="closeModel()"></div>
+	</ng-template>	
+	<!-- <div id="formWrapper" class="formWrapperMargin bluePrintFormWrapper">
+		
+	</div> -->
+
+	<rct-model *ngIf="showModelMessage" [message]="modelData"></rct-model> 
+
+</div>

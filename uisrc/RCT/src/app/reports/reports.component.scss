@@ -1,0 +1,107 @@
+@import 'src/variable';
+.dateRangeAlign{    float:left;
+    display: inline-block;
+    margin-right: 5px;}
+
+
+.import{padding-top: 5px;text-align: center;margin-top: -55px}
+.import123{padding-top: 50px;text-align: center;margin-top: -6px}
+.import input[type=file] {width: 100px;position: relative;left: 0;top: -23px;opacity: 0;}
+#programName {
+  width: 225px !important;
+  height: 25px !important;
+  display: flex;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  box-shadow: none;
+  word-break: break-word;
+  border: 1px solid rgba(0,0,0,.15);
+  border-radius: .25rem;
+}
+#location {
+    width: 225px !important;
+    height: 25px !important;
+    display: flex;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    box-shadow: none;
+    word-break: break-word;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: .25rem;
+}
+@media (min-width: 1200px) and (max-width: 1359px){
+  #programName {width: $form-control-width-xs;}
+}
+@media (min-width: 1360px) and (max-width: 1599px){
+  #programName {width: $form-control-width-sm;}
+}
+@media (min-width: 1600px) and (max-width: 1899px){
+  #programName {width: $form-control-width-md;}
+}
+@media (min-width: 1900px) {
+  #programName {width: $form-control-width-lg;}
+}
+.form-control-small-3{width:216px !important;word-break: break-word}
+
+.searchContainer {
+    position: relative;
+    border: 1px solid #ccc;
+    margin: 20px;
+    padding: 20px;
+  }
+  .searchContainer .searchExpandBtn {
+    position: absolute;
+    bottom: -3px;
+    right: 50%;
+    width: 28px;
+    height: 12px;
+    display: inline-block;
+    border: none;
+  }
+  .searchContainer .searchExpandBtn:focus{
+    border: none;
+    outline: none;
+    outline-color: transparent;
+  }
+  .searchContainer .notExpanded {
+    background: url("../../assets/images/smart-sprite.png") -19px -710px;
+    cursor: pointer;
+  }
+
+  .searchContainer .expanded {
+    background: url("../../assets/images/smart-sprite.png") -54px -710px;
+    cursor: pointer;
+  }
+  .disabledIcon {
+    opacity: 0.6;
+    cursor: not-allowed !important;
+  }
+  //copy to clipboard
+  #snackbar {
+    color: #0b0c0b;
+    padding: 5px 10px;
+    background-color: #72ea4c;
+    font-size: 11px;
+    font-style: italic;
+    border-radius: 4px;
+    visibility: hidden;
+  }
+  .formBtnSmall{
+    margin: 8px  !important;
+    font-size: 10px !important;
+    height: 22px !important;
+    margin-left: 0px !important;
+    font-weight: normal;
+    padding: 5px;
+    cursor: pointer;
+  }
+  .runningLogArea {
+    position: absolute;
+    right: -100%;
+  }
+  #snackbar.show {
+    visibility: visible;
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  }
+ 

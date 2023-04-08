@@ -1,0 +1,54 @@
+<nc:rpc xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <nc:edit-config>
+    <nc:target>
+      <nc:running/>
+    </nc:target>
+    <nc:default-operation>none</nc:default-operation>
+    <nc:config>
+      <gnbau:managed-element xmlns:gnbau="http://www.samsung.com/global/business/5GvRAN/ns/gnb-au">
+        <gnbau:gnb-du-function>
+          <gnbau:gutran-du-cell>
+            
+          </gnbau:gutran-du-cell>
+          <gnbau:gutran-du-qci>
+            <gnbau:qci>8</gnbau:qci>
+            <gnbau:logical-channel-config nc:operation="merge">
+              <gnbau:prioritised-bitrate>prioritised-bit-rate-infinity</gnbau:prioritised-bitrate>
+            </gnbau:logical-channel-config>
+          </gnbau:gutran-du-qci>
+          <gnbau:rlc-functions>
+            <gnbau:drb-rlc-info-func nc:operation="merge">
+              <gnbau:config-type>A6G</gnbau:config-type>
+              <gnbau:qci>132</gnbau:qci>
+              <gnbau:gnb-timer-poll-retransmit>t-poll-retransmit-ms20</gnbau:gnb-timer-poll-retransmit>
+              <gnbau:gnb-poll-pdu>p128</gnbau:gnb-poll-pdu>
+              <gnbau:gnb-poll-byte>kB125</gnbau:gnb-poll-byte>
+              <gnbau:gnb-t-reassembly>ms15</gnbau:gnb-t-reassembly>
+              <gnbau:gnb-max-retransmission-threshold>t32</gnbau:gnb-max-retransmission-threshold>
+              <gnbau:gnb-timer-status-prohibit>ms10</gnbau:gnb-timer-status-prohibit>
+              <gnbau:ue-timer-poll-retransmit>t-poll-retransmit-ms20</gnbau:ue-timer-poll-retransmit>
+              <gnbau:ue-poll-pdu>p128</gnbau:ue-poll-pdu>
+              <gnbau:ue-poll-byte>kB125</gnbau:ue-poll-byte>
+              <gnbau:ue-t-reassembly>ms10</gnbau:ue-t-reassembly>
+              <gnbau:ue-max-retransmission-threshold>t32</gnbau:ue-max-retransmission-threshold>
+              <gnbau:ue-timer-status-prohibit>ms10</gnbau:ue-timer-status-prohibit>
+              <gnbau:sn-field-length-ul-um>sizeum12</gnbau:sn-field-length-ul-um>
+              <gnbau:sn-field-length-ul-am>sizeam18</gnbau:sn-field-length-ul-am>
+              <gnbau:sn-field-length-dl-um>sizeum12</gnbau:sn-field-length-dl-um>
+              <gnbau:sn-field-length-dl-am>sizeam18</gnbau:sn-field-length-dl-am>
+            </gnbau:drb-rlc-info-func>
+          </gnbau:rlc-functions>
+        </gnbau:gnb-du-function>
+        <gnbau:common-management>
+          <gnbau:csl-configuration>
+            <gnbau:csl-tce-server nc:operation="merge">
+              <gnbau:csl-tce-server-ip-address>2001:4888:0A4F:22a2:0422:02B0:0000:143</gnbau:csl-tce-server-ip-address>
+              <gnbau:csl-tce-server-port>49152</gnbau:csl-tce-server-port>
+              <gnbau:csl-tce-option>normal-and-abnormal-and-intra-ho-call</gnbau:csl-tce-option>
+            </gnbau:csl-tce-server>
+          </gnbau:csl-configuration>
+        </gnbau:common-management>
+      </gnbau:managed-element>
+    </nc:config>
+  </nc:edit-config>
+</nc:rpc>

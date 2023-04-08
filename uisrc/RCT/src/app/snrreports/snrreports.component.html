@@ -1,0 +1,540 @@
+<div class="page-wrapper">
+        <rct-model *ngIf="showModelMessage" [message]="modelData"></rct-model>
+        <rct-loader *ngIf="showLoader"></rct-loader>
+        <h1 class="mainHead">REPORT</h1>
+        <div id="formWrapper" class="formWrapperMargin bluePrintFormWrapper" style="padding: 10px 10px 10px 20px;border: 1px solid #eceef5 !important;">
+            <form class="form-horizontal" id="bluePrintForm" #bluePrintForm>
+                <div class="row">
+                    <div class="col-3" *ngIf="currentUser == 'Super Administrator'">
+                        <div class="form-group">
+                            <label for="templateName" class="asterisk_input">CUSTOMER NAME</label>
+                            <select class="form-control" name="customerName" id="customerName" [(ngModel)]="selCustName" (change)="onChangeOfCName(selCustName)">
+                                <option value="">--Select--</option>
+                                <option *ngFor="let key of cList" [ngValue]="key">{{key.customerName}}</option>
+                            </select>
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName" class="asterisk_input">DURATION</label>
+                            <select class="form-control" name="selectDuration" id="selectDuration" [(ngModel)]=selectDuration (change)="onDateChange(selectDuration)">
+                                <option value="Daily" selected>Daily</option>
+                                <option value="Weekly">Weekly</option>
+                                <option value="Periodic">Periodic</option>
+                            </select>
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                    <div class="col-3" *ngIf="selectDuration == 'Periodic'">
+                        <label for="templateName">DATE RANGE</label>
+                        <div class="form-group" style="display: inline-block;">
+                            <input class="form-control" style="width: 75px !important;word-break: break-word;margin-right: 8px;" id="fromDate" name="fromDt"
+                                [(ngModel)]="fromDt" [owlDateTimeTrigger]="dt" [owlDateTime]="dt" [max]="max" placeholder="FROM">
+                            <owl-date-time [pickerType]="'calendar'" #dt></owl-date-time>
+                        </div>
+                        <div class="form-group" style="display: inline-block;">
+                            <input class="form-control" style="width: 75px !important;word-break: break-word;" id="toDate" name="toDate" [min]="fromDt"
+                                [owlDateTimeTrigger]="dt1" [(ngModel)]="toDt" [owlDateTime]="dt1" placeholder="TO">
+                            <div class="error-message-block"></div>
+                            <owl-date-time [pickerType]="'calendar'" #dt1></owl-date-time>
+                        </div>
+                    </div>
+                    <div class="col-3" *ngIf="selectDuration == 'Daily'">
+                        <label for="templateName">CURRENT DATE</label>
+                        <div class="form-group" style="display: inline-block;">
+                            <input class="form-control" style="word-break: break-word;margin-right: 8px;" id="selectedDate" name="selectedDate" [(ngModel)]="selectedDate"
+                                [owlDateTimeTrigger]="dt" [owlDateTime]="dt" [max]="max" placeholder="Select a date">
+                            <owl-date-time [pickerType]="'calendar'" #dt></owl-date-time>
+                        </div>
+                    </div>
+                    <!-- <div class="col-2">
+                        <label></label>
+                        <button name="save" class="formBtn myriadproBold validateForm" id="goButton" (click)="snrGoClick($event,selCustName.id,selectDuration,fromDt,toDt,selectedDate)"
+                            accesskey="g">GO</button>
+                    </div> -->
+                </div>
+            </form>
+        </div>
+        <div class="row" style="background-color: #fff;margin:0px;border: 1px solid #eceef5 !important;">
+            <div class="col-6 table-responsive{-sm|-md|-lg|-xl}">
+                <div style="background-color: #fff; padding:5px;">
+                    <span *ngIf=" selCustName.id==2 ">
+                        <h1 style="margin: 0 auto;text-align: center;font-size: 18px; ">VERIZON 4G : ES RANCOM C&I UPDATE</h1>
+                    </span>
+                    <span *ngIf="selCustName.id==4 ">
+                        <h1 style="margin: 0 auto;text-align: center;font-size: 18px; ">SPRINT MIMO : ES RANCOM C&I UPDATE</h1>
+                    </span>
+                </div>
+                <h1 *ngIf="selectDuration=='Daily' && (selCustName.id==2 || selCustName.id==4 ) " style="margin: 20px 0px 0px
+                    10px !important;color:#0e193b;font-size: 14px;">OVERALL DATA</h1>
+                <table class="table " *ngIf="selectDuration=='Daily' && (selCustName.id==2 || selCustName.id==4 ) ">
+                    <thead>
+                        <tr>
+                            <th style="border-left: transparent;"></th>
+                            <th >Sites Migrated</th>
+                            <th >Total Site</th>
+                            <th style="border-right: transparent;">% Completion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let key of overAllData.objSiteList; ">
+                            <td style="border-left: transparent;">{{key.marketName}}</td>
+                            <td>{{key.migrtedSiteCount}}</td>
+                            <td>{{key.totalCount}}</td>
+                            <td style="border-right: transparent;">{{key.percenatgeOfMigrated}}</td>
+                        </tr>
+                        <tr id="staticTrTd">
+                            <td style="background-color: #5160ac !important; color: #fff !important; font-weight: bold !important;border-left: transparent !important;">{{overAllData.name}}</td>
+                            <td style="background-color: #5160ac !important; color: #fff !important; font-weight: bold !important;">{{overAllData.migrtedSiteCount}}</td>
+                            <td style="background-color: #5160ac !important; color: #fff !important; font-weight: bold !important;">{{overAllData.totalCount}}</td>
+                            <td style="background-color: #5160ac !important; color: #fff !important; font-weight: bold !important;border-right: transparent !important;">{{overAllData.percenatgeOfMigrated}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+    
+                <h1 *ngIf="selCustName.id==2 && selectDuration=='Daily' " style="margin: 35px 0px 0px 10px !important;color:#0e193b;font-size:
+                    14px; ">{{selectedDate|date}}</h1>
+                <table class="table" *ngIf="selCustName.id==2 && selectDuration=='Daily' ">
+                    <thead>
+                        <tr>
+                            <th style="border-left: transparent;"></th>
+                            <th style="border-right: transparent;">Sites Migrated</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let key of currentWeekData.objSiteList; ">
+                            <td style="border-left: transparent;">{{key.marketName}}</td>
+                            <td style="border-right: transparent;">{{key.migrtedSiteCount}}</td>
+                        </tr>
+                        <tr>
+                            <td style="border-left: transparent !important;background-color: #5160ac !important; color: #fff !important; font-weight: bold !important;">{{currentWeekData.name}}</td>
+                            <td style="border-right: transparent !important;background-color: #5160ac !important; color: #fff !important; font-weight: bold !important;">{{currentWeekData.migrtedSiteCount}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+    
+                <h1 *ngIf="selCustName.id==4 && selectDuration=='Daily' " style="margin: 35px 0px 0px 10px !important;color:#0e193b;font-size:
+                    14px; ">{{selectedDate|date}} DATA</h1>
+                <table class="table " *ngIf="selCustName.id==4 && selectDuration=='Daily' ">
+                    <thead>
+                        <tr>
+                            <th style="border-left: transparent;"></th>
+                            <th style="border-right: transparent;">Sites Migrated</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="border-left: transparent;">Total C&I site attempted</td>
+                            <td style="border-right: transparent;">{{currentWeekData.attempted}}</td>
+                        </tr>
+                        <tr>
+                            <td style="border-left: transparent;">Total C&I completed</td>
+                            <td style="border-right: transparent;">{{currentWeekData.migratedCount}}</td>
+                        </tr>
+                        <tr>
+                            <td style="border-left: transparent;">Total In Progress</td>
+                            <td style="border-right: transparent;">{{currentWeekData.inProgress}}</td>
+                        </tr>
+                        <tr>
+                            <td style="border-left: transparent;">Total Cancelled</td>
+                            <td style="border-right: transparent;">{{currentWeekData.cancelled}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+    
+                <h1 *ngIf="notForSprint && selectDuration=='Daily' " style="margin: 35px 0px 0px 10px !important;color:#0e193b;font-size:
+                    14px;">LSM STATS</h1>
+                <table class="table " *ngIf="notForSprint && selectDuration=='Daily' ">
+                    <thead>
+                        <tr>
+                            <th style="border-left: transparent;"></th>
+                            <th style="border-right: transparent;">Sites Migrated</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="border-left: transparent;">Done on LSM this week</td>
+                            <td style="border-right: transparent;">{{vlsmandLsmDetails.lsmMigCurrentWeek}}</td>
+                        </tr>
+                        <tr>
+                            <td style="border-left: transparent;">LSM rollback this week</td>
+                            <td style="border-right: transparent;">{{vlsmandLsmDetails.lsmRollBackCurrentWeek}}</td>
+                        </tr>
+                        <tr>
+                            <td style="border-left: transparent !important;background-color: #5160ac !important; color: #fff !important; font-weight: bold !important;">Total site on LSM</td>
+                            <td style="border-right: transparent !important;background-color: #5160ac !important; color: #fff !important; font-weight: bold !important;">{{vlsmandLsmDetails.totSiteLsm}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+    
+                <h1 *ngIf="notForSprint && selectDuration=='Daily' " style="margin: 35px 0px 0px 10px !important;color:#0e193b;font-size:
+                    14px;">LSM STATS</h1>
+                <table class="table " *ngIf="notForSprint && selectDuration=='Daily' ">
+                    <thead>
+                        <tr>
+                            <th style="border-left: transparent;"></th>
+                            <th style="border-right: transparent;">Sites Migrated</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="border-left: transparent;">Done on LSM this week</td>
+                            <td style="border-right: transparent;">{{vlsmandLsmDetails.lsmMigCurrentWeek}}</td>
+                        </tr>
+                        <tr>
+                            <td style="border-left: transparent;">LSM rollback this week</td>
+                            <td style="border-right: transparent;">{{vlsmandLsmDetails.lsmRollBackCurrentWeek}}</td>
+                        </tr>
+                        <tr>
+                            <td style="border-left: transparent !important;background-color: #5160ac !important; color: #fff !important; font-weight: bold !important;">Total site on LSM</td>
+                            <td style="border-right: transparent !important;background-color: #5160ac !important; color: #fff !important; font-weight: bold !important;">{{vlsmandLsmDetails.totSiteLsm}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+    
+                <h1 *ngIf="notForSprint && selectDuration=='Daily' " style="margin: 35px 0px 0px 10px !important;color:#0e193b;font-size:
+                    14px;">VLSM STATS</h1>
+                <table class="table " *ngIf="notForSprint && selectDuration=='Daily' ">
+                    <thead>
+                        <tr>
+                            <th style="border-left: transparent;"></th>
+                            <th style="border-right: transparent;">Sites Migrated</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="border-left: transparent;">Done on vLSM this week</td>
+                            <td style="border-right: transparent;">{{vlsmandLsmDetails.vlsmMigCurrentWeek}}</td>
+                        </tr>
+                        <tr>
+                            <td style="border-left: transparent;">vLSM rollback this week</td>
+                            <td style="border-right: transparent;">{{vlsmandLsmDetails.vlsmRollBackCurrentWeek}}</td>
+                        </tr>
+                        <tr>
+                            <td style="border-left: transparent !important;background-color: #5160ac !important; color: #fff !important; font-weight: bold !important;">Total site on vLSM</td>
+                            <td style="border-right: transparent !important;background-color: #5160ac !important; color: #fff !important; font-weight: bold !important;">{{vlsmandLsmDetails.totSiteVlsm}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+    
+                <table class="table " *ngIf="selCustName.id==2 && selectDuration=='Daily'" style="margin-top: 20px;">
+                    <thead>
+                        <tr>
+                            <th  style="background-color: #0e193c;color: #fff;font-weight: bold;width: 62.7%;">REHOME COUNT</th>
+                            <th  style="background-color: #0e193c;color: #fff;font-weight: bold;">{{tableData.totCIReportDetails.rehomeCount}}</th>
+                        </tr>
+                    </thead>
+                </table>
+    
+    
+                <h1 *ngIf="selCustName.id==2 && (selectDuration=='Weekly' || selectDuration=='Periodic' ) " style="margin:
+                    35px 0px 0px 10px !important;color:#0e193b;font-size: 14px;">OVERALL DATA</h1>
+                <table class="table " *ngIf="selCustName.id==2 && (selectDuration=='Weekly' || selectDuration=='Periodic' ) ">
+                    <thead>
+                        <tr>
+                            <th style="border-left: transparent;"></th>
+                            <th >Sites Migrated</th>
+                            <th >Total Site</th>
+                            <th style="border-right: transparent;">% Completion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let key of overAllData.objSiteList; ">
+                            <td style="border-left: transparent;">{{key.marketName}}</td>
+                            <td>{{key.migrtedSiteCount}}</td>
+                            <td>{{key.totalCount}}</td>
+                            <td style="border-right: transparent;">{{key.percenatgeOfMigrated}}</td>
+                        </tr>
+                        <tr>
+                            <td style="border-left: transparent !important;background-color: #5160ac !important; color: #fff !important; font-weight: bold !important;">{{overAllData.name}}</td>
+                            <td style="background-color: #5160ac !important; color: #fff !important; font-weight: bold !important;">{{overAllData.migrtedSiteCount}}</td>
+                            <td style="background-color: #5160ac !important; color: #fff !important; font-weight: bold !important;">{{overAllData.totalCount}}</td>
+                            <td style="border-right: transparent !important;background-color: #5160ac !important; color: #fff !important; font-weight: bold !important;">{{overAllData.percenatgeOfMigrated}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+    
+                <h1 *ngIf="selectDuration=='Weekly' " style="margin: 35px 0px 0px 10px !important;color:#0e193b;font-size: 14px;">LAST 7 DAYS DATA</h1>
+                <h1 *ngIf="selectDuration=='Periodic' " style="margin: 35px 0px 0px 10px !important;color:#0e193b;font-size:
+                    14px; ">{{fromDt|date}} - {{toDt|date}} DATA</h1>
+    
+                <table class="table " *ngIf="selCustName.id==2 && (selectDuration=='Weekly' || selectDuration=='Periodic' ) ">
+                    <thead>
+                        <tr>
+                            <th style="border-left: transparent;"></th>
+                            <th style="border-right: transparent;">Sites Migrated</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let key of currentWeekData.objSiteList; ">
+                            <td style="border-left: transparent;">{{key.marketName}}</td>
+                            <td style="border-right: transparent;">{{key.migrtedSiteCount}}</td>
+                        </tr>
+                        <tr>
+                            <td style="border-left: transparent !important;background-color: #5160ac !important; color: #fff !important; font-weight: bold !important;">{{currentWeekData.name}}</td>
+                            <td style="border-right: transparent !important;background-color: #5160ac !important; color: #fff !important; font-weight: bold !important;">{{currentWeekData.migrtedSiteCount}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+    
+                <h1 *ngIf="selCustName.id==2 && (selectDuration=='Weekly' || selectDuration=='Periodic' ) " style="margin:
+                    35px 0px 0px 10px !important;color:#0e193b;font-size: 14px;">
+                    TOTAL SITES vLSM MIGRATIONS</h1>
+                <table class="table " *ngIf="selCustName.id==2 && (selectDuration=='Weekly' || selectDuration=='Periodic' ) ">
+                    <thead>
+                        <tr>
+                            <th style="border-left: transparent;"></th>
+                            <th style="border-right: transparent;">Sites Migrated</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let key of weekPeriodicDataVlsm; ">
+                            <td style="border-left: transparent;">{{key.marketName}}</td>
+                            <td style="border-right: transparent;">{{key.totalCount}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+    
+                <h1 *ngIf="selCustName.id==2 && (selectDuration=='Weekly' || selectDuration=='Periodic' ) " style="margin:
+                    35px 0px 0px 10px !important;color:#0e193b;font-size: 14px;">TOTAL SITES CARRIER ADDs</h1>
+                <table class="table " *ngIf="selCustName.id==2 && (selectDuration=='Weekly' || selectDuration=='Periodic' ) ">
+                    <thead>
+                        <tr>
+                            <th style="border-left: transparent;"></th>
+                            <th style="border-right: transparent;">Sites Migrated</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let key of wpTotCarrierData; ">
+                            <td style="border-left: transparent;">{{key.marketName}}</td>
+                            <td style="border-right: transparent;">{{key.totalCount}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+    
+    
+                <h1 *ngIf="selCustName.id==2 && (selectDuration=='Weekly' || selectDuration=='Periodic' ) " style="margin:
+                    35px 0px 0px 10px !important;color:#0e193b;font-size: 14px;">TOTAL SITES CONVERSIONS (Open CPRI to OPEN RAN)</h1>
+                <table class="table " *ngIf="selCustName.id==2 && (selectDuration=='Weekly' || selectDuration=='Periodic' ) ">
+                    <thead>
+                        <tr>
+                            <th style="border-left: transparent;"></th>
+                            <th style="border-right: transparent;">Sites Migrated</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let key of wpConversionData; ">
+                            <td style="border-left: transparent;">{{key.marketName}}</td>
+                            <td style="border-right: transparent;">{{key.totalCount}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+    
+                <div style="background-color: #fff; padding:5px;">
+                        <h1 *ngIf="selCustName.id==2 && (selectDuration=='Weekly' || selectDuration=='Periodic' ) " style="margin: 0 auto;text-align: center;font-size: 18px;">SUMMARY</h1>                    
+                </div>            
+                <h1 *ngIf="selCustName.id==2 && (selectDuration=='Weekly' || selectDuration=='Periodic' ) " style="margin:
+                    35px 0px 0px 10px !important;color:#0e193b;font-size: 14px;">OVERALL DATA</h1>
+                <table class="table " *ngIf="selCustName.id==2 && (selectDuration=='Weekly' || selectDuration=='Periodic' ) ">
+                    <thead>
+                        <tr>
+                            <th style="border-left: transparent;"></th>
+                            <th style="border-right: transparent;">Sites</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let key of overAllData.objSiteList; ">
+                            <td style="border-left: transparent;">{{key.marketName}}</td>
+                            <td style="border-right: transparent;">{{key.migrtedSiteCount}}</td>
+                        </tr>
+                        <tr>
+                            <td style="border-left: transparent !important;background-color: #5160ac !important; color: #fff !important; font-weight: bold !important;">{{overAllData.name}}</td>
+                            <td style="border-right: transparent !important;background-color: #5160ac !important; color: #fff !important; font-weight: bold !important;">{{overAllData.migrtedSiteCount}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+    
+                <h1 *ngIf="selCustName.id==2 && (selectDuration=='Weekly' || selectDuration=='Periodic' ) " style="margin:
+                    35px 0px 0px 10px !important;color:#0e193b;font-size: 14px;">DETAILED MIGRATION, LAST WEEK </h1>
+                <table class="table " *ngIf="selCustName.id==2 && (selectDuration=='Weekly' || selectDuration=='Periodic' ) ">
+                    <thead>
+                        <tr>
+                            <th style="border-left: transparent;"></th>
+                            <th style="border-right: transparent;">Sites</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let key of currentWeekData.objSiteList; ">
+                            <td style="border-left: transparent;">{{key.marketName}}</td>
+                            <td style="border-right: transparent;">{{key.migrtedSiteCount}}</td>
+                        </tr>
+                        <tr>
+                            <td style="border-left: transparent !important;background-color: #5160ac !important; color: #fff !important; font-weight: bold !important;">{{currentWeekData.name}}</td>
+                            <td style="border-right: transparent !important;background-color: #5160ac !important; color: #fff !important; font-weight: bold !important;">{{currentWeekData.migrtedSiteCount}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+    
+                <h1 *ngIf="selCustName.id==2 && (selectDuration=='Weekly' || selectDuration=='Periodic' ) " style="margin:
+                    35px 0px 0px 10px !important;color:#0e193b;font-size: 14px;">TOTAL SITES CARRIER ADDs</h1>
+                <table class="table " *ngIf="selCustName.id==2 && (selectDuration=='Weekly' || selectDuration=='Periodic' ) ">
+                    <thead>
+                        <tr>
+                            <th style="border-left: transparent;"></th>
+                            <th style="border-right: transparent;">Sites</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let key of wpTotCarrierData; ">
+                            <td style="border-left: transparent;">{{key.marketName}}</td>
+                            <td style="border-right: transparent;">{{key.totalCount}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+    
+                <h1 *ngIf="selCustName.id==2 && (selectDuration=='Weekly' || selectDuration=='Periodic' ) " style="margin:
+                    35px 0px 0px 10px !important;color:#0e193b;font-size: 14px;">TOTAL SITES CONVERSIONS</h1>
+                <table class="table " *ngIf="selCustName.id==2 && (selectDuration=='Weekly' || selectDuration=='Periodic' ) ">
+                    <thead>
+                        <tr>
+                            <th style="border-left: transparent;"></th>
+                            <th style="border-right: transparent;">Sites</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let key of wpTotCarrierData; ">
+                            <td style="border-left: transparent;">{{key.marketName}}</td>
+                            <td style="border-right: transparent;">{{key.totalCount}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+    
+                <h1 *ngIf="selCustName.id==2 && (selectDuration=='Weekly' || selectDuration=='Periodic' ) " style="margin:
+                    35px 0px 0px 10px !important;color:#0e193b;font-size: 14px;">TOTAL SITES vLSM</h1>
+    
+                <table class="table " *ngIf="selCustName.id==2 && (selectDuration=='Weekly' || selectDuration=='Periodic' ) ">
+                    <thead>
+                        <tr>
+                            <th style="border-left: transparent;"></th>
+                            <th style="border-right: transparent;">Sites</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let key of weekPeriodicDataVlsm; ">
+                            <td style="border-left: transparent;">{{key.marketName}}</td>
+                            <td style="border-right: transparent;">{{key.totalCount}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+    
+    
+                <h1 *ngIf="selCustName.id==4 && (selectDuration=='Weekly' || selectDuration=='Periodic' ) " style="margin:
+                    35px 0px 0px 10px !important;color:#0e193b;font-size: 14px; ">M-MIMO FIT</h1>
+                <table class="table " *ngIf="selCustName.id==4 && (selectDuration=='Weekly' || selectDuration=='Periodic' ) ">
+                    <thead>
+                        <tr>
+                            <th style="border-left: transparent;"></th>
+                            <th style="border-right: transparent;">Sites</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="border-left: transparent;">Total Sites</td>
+                            <td style="border-right: transparent;">{{fitData.totalCount}}</td>
+                        </tr>
+                        <tr>
+                            <td style="border-left: transparent;">Total Migrated</td>
+                            <td style="border-right: transparent;">{{fitData.migrtedSiteCount}}</td>
+                        </tr>
+                        <tr>
+                            <td style="border-left: transparent;">% Complete</td>
+                            <td style="border-right: transparent;">{{fitData.percenatgeOfMigrated}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+    
+                <h1 *ngIf="selCustName.id==4 && (selectDuration=='Weekly' || selectDuration=='Periodic' ) " style="margin:
+                    35px 0px 0px 10px !important;color:#0e193b;font-size: 14px; ">M-MIMO Commercial</h1>
+                <table class="table " *ngIf="selCustName.id==4 && (selectDuration=='Weekly' || selectDuration=='Periodic' ) ">
+                    <thead>
+                        <tr>
+                            <th style="border-left: transparent;"></th>
+                            <th style="border-right: transparent;">Sites</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="border-left: transparent;">Total Sites</td>
+                            <td style="border-right: transparent;">{{commericialData.totalCount}}</td>
+                        </tr>
+                        <tr>
+                            <td style="border-left: transparent;">Total Migrated</td>
+                            <td style="border-right: transparent;">{{commericialData.migrtedSiteCount}}</td>
+                        </tr>
+                        <tr>
+                            <td style="border-left: transparent;">% Complete</td>
+                            <td style="border-right: transparent;">{{commericialData.percenatgeOfMigrated}}</td>
+                        </tr>
+                        <tr>
+                            <td style="border-left: transparent;">Remaining</td>
+                            <td style="border-right: transparent;">{{commericialData.remaining}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+    
+                <h1 *ngIf="selCustName.id==4 && (selectDuration=='Weekly' || selectDuration=='Periodic' ) " style="margin:
+                    0 auto;text-align: center;color:#5160ac;font-size:18px;">OVERALL DATA</h1>
+                <table class="table " *ngIf="selCustName.id==4 && (selectDuration=='Weekly' || selectDuration=='Periodic' ) ">
+                    <thead>
+                        <tr>
+                            <th style="border-left: transparent;"></th>
+                            <th style="border-right: transparent;">Sites</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="border-left: transparent;">Total Sites</td>
+                            <td style="border-right: transparent;">{{sprintOverAllData.totalCount}}</td>
+                        </tr>
+                        <tr>
+                            <td style="border-left: transparent;">Total Migrated</td>
+                            <td style="border-right: transparent;">{{sprintOverAllData.migrtedSiteCount}}</td>
+                        </tr>
+                        <tr>
+                            <td style="border-left: transparent;">% Complete</td>
+                            <td style="border-right: transparent;">{{sprintOverAllData.percenatgeOfMigrated}}</td>
+                        </tr>
+                        <tr>
+                            <td style="border-left: transparent;">Remaining</td>
+                            <td style="border-right: transparent;">{{sprintOverAllData.remaining}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+    
+                <h1 *ngIf="selCustName.id==4 && (selectDuration=='Weekly' || selectDuration=='Periodic' ) " style="margin:
+                    35px 0px 0px 10px !important;color:#0e193b;font-size: 14px; ">LAST WEEK DATA</h1>
+                <table class="table " *ngIf="selCustName.id==4 && (selectDuration=='Weekly' || selectDuration=='Periodic' ) ">
+                    <thead>
+                        <tr>
+                            <th style="border-left: transparent;"></th>
+                            <th style="border-right: transparent;">Sites</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="border-left: transparent;">Migration</td>
+                            <td style="border-right: transparent;">{{sprintWeekData.migrtedSiteCount}}</td>
+                        </tr>
+                        <tr>
+                            <td style="border-left: transparent;">Cancellation</td>
+                            <td style="border-right: transparent;">{{sprintWeekData.cancelation}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-6 ">
+                <!-- <p>Graphs</p> -->
+            </div>
+        </div>
+    </div>

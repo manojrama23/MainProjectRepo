@@ -1,0 +1,187 @@
+<div class="page-wrapper">
+	<rct-loader *ngIf="showLoader"></rct-loader>
+	<h1 class="mainHead">AUDIT TRAIL</h1>
+	<ng-template #confirmModalDelete let-c="close" let-d="dismiss">
+      <div class="sucessContentWrapper">
+                <div class="confirmIcon"></div>
+                <div class="confirmContent deletePopup">
+                    <p>
+                        <b>Are You Sure, </b>
+                    <!-- </p>
+                    <br>
+                    <p> -->You want to <b>Delete</b>
+                    </p>
+                </div>
+            </div>
+      <div class="deletePopupBtn modal-footer textAlignCenter">
+        <button type="button" class="formBtn btn btn-secondary modal_button_yes" (click)="d('dismiss click')" id="deleteConfirmation" >YES</button>
+        <button type="button" class="formBtn btn btn-secondary modal_button_no" (click)="c('Close click')" id="modal_button_no" >NO</button>
+      </div>
+    </ng-template>
+    <div id="formWrapper" class="formWrapperMargin">
+        <form class="form-horizontal" #searchForm>
+            <div class="row">
+                <div class="col-2">
+                    <div class="form-group">
+                        <label for="templateName">EVENT NAME</label>
+                        <select class="form-control form-control-small-1" name="eventName" id="eventName" #eventName (change)="getEventSubName(eventName.value)">
+                            <option value="">--Select--</option>
+                            <option *ngFor="let key of eventNameList" id="{{key}}" value="{{key}}">{{key}}</option>
+                        </select>
+                        <div class="error-message-block"></div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="form-group">
+                        <label for="templateName">EVENT SUB NAME</label>
+                        <select class="form-control form-control-small-1" name="eventSubName" id="eventSubName" #eventSubName (change)="getActionName(eventName.value, eventSubName.value)">
+                            <option value="">--Select--</option>
+                            <option *ngFor="let key of getEventSubNameList" id="{{key}}" value="{{key}}">{{key}}</option>
+                        </select>
+                        <div class="error-message-block"></div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="form-group">
+                        <label for="templateName">ACTION</label>
+                        <select class="form-control form-control-small-1" name="action" id="action" #action (change)="getUserName(eventName.value, eventSubName.value, action.value)">
+                            <option value="">--Select--</option>
+                            <option *ngFor="let key of getActionNameList" id="{{key}}" value="{{key}}">{{key}}</option>
+                        </select>
+                        <div class="error-message-block"></div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="form-group">
+                        <label for="templateName">USER NAME</label>
+                        <select class="form-control form-control-small-1" name="userName" id="userName" #userName>
+                            <option value="">--Select--</option>
+                            <option *ngFor="let key of getUserNameList" id="{{key}}" value="{{key}}">{{key}}</option>
+                        </select>
+                        <div class="error-message-block"></div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="form-group calenderForm calenderForm1">
+                        <label for="templateName">FROM DATE</label>
+                        <input class="form-control form-control-small-1" id="fromDate" name="fromDt" [(ngModel)]="fromDt" [owlDateTimeTrigger]="dt" [owlDateTime]="dt" [max]="max">
+                        <owl-date-time [pickerType]="'calendar'" #dt></owl-date-time>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="form-group calenderForm calenderForm1">
+                        <label for="templateName">TO DATE</label>
+                        <input class="form-control form-control-small-1" id="toDate" [min]="fromDt" [max]="max" [owlDateTimeTrigger]="dt1" [owlDateTime]="dt1">                        
+                        <div class="error-message-block"></div>
+					    <owl-date-time [pickerType]="'calendar'" #dt1></owl-date-time>
+                    </div>
+                                        
+                </div>
+                
+            </div>
+            <div class="textAlignCenter">
+                <button name="save" class="formBtn myriadproBold validateForm" id="searchButton" (click)="viewAuditTrailDetails($event)" accesskey="s">SEARCH</button>
+                <button type="button" id="cancelButton" name="CANCEL" class="formBtnCncl formBtn myriadproBold formBtn" (click)="clearSearchFrom()" accesskey="c">CLEAR</button>             
+            </div>
+
+        </form>
+    </div>
+	<rct-nodata *ngIf="noDataVisibility" [subTitle]="'Please click on <u><b>View</b></u> to see the Audit details'"></rct-nodata>
+	<div id="dataWrapper" *ngIf="tableShowHide">
+		<div id="tableWrapper">
+			<div class="scrollHead">
+				<table class="table" id="SystemManagerDetails">
+					<thead>
+						<tr>
+							<th>
+								<div (click)="changeSorting('eventName', $event, 0)" class="sorting form-control-small-2">EVENT NAME</div>
+							</th>
+							<th>
+								<div (click)="changeSorting('eventSubName', $event, 1)" class="sorting form-control-small-2">EVENT SUB NAME</div>
+							</th>
+							<th>
+								<div (click)="changeSorting('actionPerformed', $event, 2)" class="sorting form-control-small-2">ACTION PERFORMED</div>
+							</th>
+							<th>
+								<div (click)="changeSorting('userName', $event, 3)" class="sorting form-control-small-2">USER NAME</div>
+                            </th>
+                            <th>
+								<div (click)="changeSorting('dateTime', $event, 4)" class="sorting form-control-small-2">TIMESTAMP</div>
+							</th>
+					    	<th>
+								<div (click)="changeSorting('eventDescription', $event, 5)" class="sorting form-control-small-2">REMARKS</div>
+                            </th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+			<div class="scrollBody">
+				<table class="table" id="systemMgrData" >
+					<tbody id="rowCount">
+						<ng-container *ngFor="let key of tableData['auditTrailDetails']; let index = index">
+							<tr id="row_{{index}}" class="row_id_{{key.ID}}">
+								<td class="form-control-small-2" data-toggle="tooltip" data-placement="right" data-container="body">{{key.eventName}}</td>
+								<td class="form-control-small-2" data-toggle="tooltip" data-placement="right" data-container="body">{{key.eventSubName}}</td>
+								<td class="form-control-small-2" data-toggle="tooltip" data-placement="right" data-container="body">{{key.actionPerformed}}</td>
+								<td class="form-control-small-2" data-toggle="tooltip" data-placement="right" data-container="body">{{key.userName}}</td>
+								<td class="form-control-small-2" data-toggle="tooltip" data-placement="right" data-container="body">{{key.dateTime}}</td>
+								<td class="form-control-small-2" data-toggle="tooltip" data-placement="right" data-container="body">
+                                    <span class="eventColText">{{key.eventDescription}}</span>
+                                </td>
+							</tr>
+						</ng-container>
+					</tbody>
+				</table>
+			</div>
+			<div id="paginationWrapper">
+                <div *ngIf="pageRenge.length" class="page" style="margin-left:20px;">
+                    <div class="floatLeft" style="width: 75px;padding-top: 6px">Show</div>
+                    <select [disabled]="paginationDisabbled" [(ngModel)]="pageSize" (change)="onChangeTableRowLength($event)" style="margin-top: 4px; margin-right: 6px;margin-left: -39px;" class="form-control-pagination floatLeft" aria-controls="TableRowLength" size="1" name="TableRowLength" id="TableRowLength">
+                        <option selected="selected" value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                    <div class="floatLeft" style="width: 75px;padding-top: 6px">Entries</div>
+                    <div class="floatRight page" style="padding-top: 3px;margin-right:20px;">
+                        <ul *ngIf="pageRenge.length" class="pagination floatRight">
+                            <li id="firstPage" [ngClass]="{disabled:(currentPage === 1 || paginationDisabbled)}" class="page-item">
+                                <a class="page-link" (click)="setPage(1)">FIRST</a>
+                            </li>
+                            <li id="previousPage" [ngClass]="{disabled:(currentPage === 1 || paginationDisabbled)}" class="page-item">
+                                <a class="page-link" (click)="setPage(pager.currentPage - 1)">PREV</a>
+                            </li>
+                            <li *ngFor="let n of pager.pages" [ngClass]="{active:currentPage === n, disabled:paginationDisabbled}" class="page-item">
+                                <a class="page-link" (click)="setPage(n)" id='{{n+1}}'>{{n}}</a>
+                            </li>
+                            <li id="nextPage" [ngClass]="{disabled:(currentPage === totalPages || paginationDisabbled)}" class="page-item">
+                                <a class="page-link" (click)="setPage(pager.currentPage + 1)">NEXT</a>
+                            </li>
+                            <li id="lastPage" [ngClass]="{disabled:(currentPage === totalPages || paginationDisabbled)}" class="page-item">
+                                <a class="page-link" (click)="setPage(pager.totalPages)">LAST</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+             </div>
+		</div>
+	</div>
+	<ng-template #sessionExpiredModal let-c="close" let-d="dismiss">
+		<div class="failureIcon"></div>
+			<p id="sessionPopup">Session Expired</p>
+		<div class="modelDismiss" (click)="closeAndLogout()"></div>
+	</ng-template>
+
+	<ng-template #successModal let-c="close" let-d="dismiss">
+  		<div class="successIcon"></div>
+  		<p id="sessionPopup">{{message}}</p>
+  		
+  		<div class="modelDismiss" (click)="closeModel()"></div>
+	</ng-template>	
+	<!-- <div id="formWrapper" class="formWrapperMargin bluePrintFormWrapper">
+		
+	</div> -->
+
+	<rct-model *ngIf="showModelMessage" [message]="modelData"></rct-model> 
+
+</div>

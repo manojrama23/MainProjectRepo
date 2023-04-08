@@ -1,0 +1,21 @@
+<nc:rpc xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <nc:edit-config>
+    <nc:target>
+      <nc:running></nc:running>
+    </nc:target>
+    <nc:default-operation>none</nc:default-operation>
+    <nc:config>
+      <gnbcp:managed-element xmlns:gnbcp="http://www.samsung.com/global/business/5GvRAN/ns/gnb-cu-cp">
+        <gnbcp:common-management>
+          <gnbcp:csl-configuration>
+            <gnbcp:csl-tce-server nc:operation="merge">
+              <gnbcp:csl-tce-server-ip-address>2001:4888:a12:3161:106:216:0:0210</gnbcp:csl-tce-server-ip-address>
+              <gnbcp:csl-tce-server-port>50021</gnbcp:csl-tce-server-port>
+              <gnbcp:csl-tce-option>normal-and-abnormal-and-intra-ho-call</gnbcp:csl-tce-option>
+            </gnbcp:csl-tce-server>
+          </gnbcp:csl-configuration>
+        </gnbcp:common-management>
+      </gnbcp:managed-element>
+    </nc:config>
+  </nc:edit-config>
+</nc:rpc>

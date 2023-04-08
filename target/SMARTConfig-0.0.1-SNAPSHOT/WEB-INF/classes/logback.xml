@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<property name="LOG_PATH" value="/home/user/logs" />
+	
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>
+            	%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+	
+
+	<appender name="SAVE-TO-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    	<!-- <file>${LOG_PATH}/femto.log</file> -->
+    	<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+        	<Pattern>
+            	%d{yyyy-MM-dd HH:mm:ss} - %msg%n
+        	</Pattern>
+    	</encoder>
+
+    	
+    	
+    	<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+      		<fileNamePattern>
+        		${LOG_PATH}/smart_%d{dd-MM-yyyy}_%i.log
+      		</fileNamePattern>
+      		<maxFileSize>10MB</maxFileSize>
+      		<maxHistory>10</maxHistory>
+      		<totalSizeCap>200MB</totalSizeCap>
+		</rollingPolicy>
+		<!-- As you can see it contains the maxFileSize, maxHistory and totalSizeCap providing it control over the size of individual files as well as the collection of files. Therefore the above example will keep 10 days worth of history split into files of 10MB and when the total size of all files reaches 200MB the oldest files will be removed. -->
+
+	</appender>
+
+	<root level="error">
+    	<appender-ref ref="SAVE-TO-FILE" />
+    	<appender-ref ref="STDOUT" />
+	</root>
+
+</configuration>

@@ -1,0 +1,57 @@
+package com.smart.rct.postmigration.repository;
+
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.smart.rct.postmigration.entity.AuditCriticalParamsIndex1Entity;
+import com.smart.rct.postmigration.entity.AuditCriticalParamsIndex2Entity;
+import com.smart.rct.postmigration.entity.AuditCriticalParamsIndex3Entity;
+import com.smart.rct.postmigration.entity.AuditCriticalParamsIndex4Entity;
+import com.smart.rct.postmigration.entity.AuditCriticalParamsIndex5Entity;
+import com.smart.rct.postmigration.entity.AuditCriticalParamsIndex6Entity;
+import com.smart.rct.postmigration.entity.AuditCriticalParamsSummaryEntity;
+import com.smart.rct.postmigration.models.AuditCriticalParamsSummaryModel;
+
+public interface AuditCriticalParamsRepository {
+	
+	AuditCriticalParamsSummaryEntity createAuditCriticalParamsSummaryEntity(AuditCriticalParamsSummaryEntity auditCriticalParamsSummaryEntity);
+	AuditCriticalParamsIndex1Entity createAuditCriticalParamsIndex1Entity(AuditCriticalParamsIndex1Entity auditCriticalParamsIndex1Entity);
+	AuditCriticalParamsIndex2Entity createAuditCriticalParamsIndex2Entity(AuditCriticalParamsIndex2Entity auditCriticalParamsIndex2Entity);
+	AuditCriticalParamsIndex3Entity createAuditCriticalParamsIndex3Entity(AuditCriticalParamsIndex3Entity auditCriticalParamsIndex3Entity);
+	AuditCriticalParamsIndex4Entity createAuditCriticalParamsIndex4Entity(AuditCriticalParamsIndex4Entity auditCriticalParamsIndex4Entity);
+	AuditCriticalParamsIndex5Entity createAuditCriticalParamsIndex5Entity(AuditCriticalParamsIndex5Entity auditCriticalParamsIndex5Entity);
+	AuditCriticalParamsIndex6Entity createAuditCriticalParamsIndex6Entity(AuditCriticalParamsIndex6Entity auditCriticalParamsIndex6Entity);
+	void storeAuditCriticalParams(AuditCriticalParamsSummaryEntity auditCriticalParamsEntity,
+			List<LinkedHashMap<String, String>> tabelData, StringBuilder auditIssueList);
+
+	List<AuditCriticalParamsSummaryEntity> getAuditCriticalParamsSummaryEntityById(Integer runTestId);
+	List<AuditCriticalParamsSummaryEntity> getAuditCriticalParamsSummaryEntityList();
+	Map<String, Object>  getAuditCriticalParamsSummaryEntityList(int page, int count, String fromDate, String toDate);
+	
+	List<AuditCriticalParamsIndex1Entity> getAuditCriticalParamsIndex1Entity();
+	List<AuditCriticalParamsIndex2Entity> getAuditCriticalParamsIndex2Entity();
+	List<AuditCriticalParamsIndex3Entity> getAuditCriticalParamsIndex3Entity();
+	List<AuditCriticalParamsIndex4Entity> getAuditCriticalParamsIndex4Entity();
+	List<AuditCriticalParamsIndex5Entity> getAuditCriticalParamsIndex5Entity();
+	List<AuditCriticalParamsIndex6Entity> getAuditCriticalParamsIndex6Entity();
+	AuditCriticalParamsSummaryEntity updateAuditCriticalParamsSummaryEntity(
+			AuditCriticalParamsSummaryEntity auditCriticalParamsSummaryEntity);
+	
+	Map<String, Object> getAuditCriticalParamsSearchSummaryEntityList(
+			AuditCriticalParamsSummaryModel auditSummaryModel, int page, int count);
+	boolean deleteAuditCriticalSummaryEntityByRunTestId(Integer id);
+	List<AuditCriticalParamsIndex1Entity> getAuditCriticalParamsIndex1EntityById(Integer IndexId);
+	List<AuditCriticalParamsIndex2Entity> getAuditCriticalParamsIndex2EntityById(Integer IndexId);
+	List<AuditCriticalParamsIndex3Entity> getAuditCriticalParamsIndex3EntityById(Integer IndexId);
+	List<AuditCriticalParamsIndex4Entity> getAuditCriticalParamsIndex4EntityById(Integer IndexId);
+	List<AuditCriticalParamsIndex5Entity> getAuditCriticalParamsIndex5EntityById(Integer IndexId);
+	List<AuditCriticalParamsIndex6Entity> getAuditCriticalParamsIndex6EntityById(Integer IndexId);
+	boolean deleteAuditCriticalIndex1EntityByRunTestId(Integer id);
+	boolean deleteAuditCriticalIndex2EntityByRunTestId(Integer id);
+	boolean deleteAuditCriticalIndex3EntityByRunTestId(Integer id);
+	boolean deleteAuditCriticalIndex4EntityByRunTestId(Integer id);
+	boolean deleteAuditCriticalIndex5EntityByRunTestId(Integer id);
+	boolean deleteAuditCriticalIndex6EntityByRunTestId(Integer id);
+
+}

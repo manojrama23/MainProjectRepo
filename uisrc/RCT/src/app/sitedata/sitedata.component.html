@@ -1,0 +1,1769 @@
+<div class="page-wrapper">
+    <rct-model *ngIf="showModelMessage" [message]="modelData"></rct-model>
+    <rct-loader *ngIf="showLoader"></rct-loader>
+    <h1 class="mainHead">SITE DATA</h1>
+
+    <ul class="nav nav-pills" role="tablist">
+        <li class="nav-item">
+            <div (click)="packDataTabBind()" accesskey="n" name="packData" class="divalign float-sm-right float-md-right float-lg-right float-xl-right"
+                #packDataTab>PACK</div>
+        </li>
+        <li class="nav-item">
+            <div (click)="searchTabBind()" accesskey="h" name="search" class=" divalign float-sm-right float-md-right float-lg-right float-xl-right"
+                #searchTab>SEARCH</div>
+        </li>
+    </ul>
+
+    <ng-template #confirmModal let-c="close" let-d="dismiss">
+        <div class="sucessContentWrapper">
+            <div class="confirmIcon"></div>
+            <div class="confirmContent deletePopup">
+                <p>
+                    <b>Are You Sure, </b>
+                <!-- </p>
+                <br>
+                <p> -->You want to
+                    <b>Delete</b>
+                </p>
+            </div>
+        </div>
+        <div class="deletePopupBtn modal-footer textAlignCenter">
+            <button type="button" class="formBtn btn btn-secondary modal_button_yes myriadproBold formBtn" (click)="d('dismiss click')" id="deleteConfirmation">YES</button>
+            <button type="button" class="formBtn btn btn-secondary modal_button_no myriadproBold formBtn" (click)="c('Close click')" id="modal_button_no">NO</button>
+        </div>
+    </ng-template>
+
+    <div id="tabContentWrapper" class="flightSearchFormWrapper" *ngIf="searchBlock">
+        <form class="form-horizontal" #searchForm>
+            <div class="row">
+                <div class="col-3">
+                    <div class="form-group ">
+                        <label for="templateName">SELECT DATE RANGE</label>
+                        <input class="form-control form-control-small dateRangeAlign" [ngClass]="{'error-border':errMessage}" id="searchStartDate"
+                            name="searchStartDate" [(ngModel)]="sStartDate" [max]="sEndDate ? sEndDate : max" placeholder="FROM DATE" [owlDateTimeTrigger]="dt"
+                            [owlDateTime]="dt" [max]="max">
+                        <owl-date-time [pickerType]="'calendar'" #dt></owl-date-time>
+                        <input class="form-control form-control-small dateRangeAlign" [ngClass]="{'error-border':errMessage}" id="searchEndDate"
+                            name="searchEndDate" [(ngModel)]="sEndDate" [min]="sStartDate" [max]="max" [owlDateTimeTrigger]="dt1"
+                            placeholder="TO DATE" [owlDateTime]="dt1">
+                        <owl-date-time [pickerType]="'calendar'" #dt1></owl-date-time>
+                        <!-- <div class="error-message-block" *ngIf="errMessage">Please Select Date Range</div> -->
+                    </div>
+                </div>
+                <!-- <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName">CIQ LIST</label>
+                        <select class="form-control" name="searchCiqName" id="searchCiqName" #searchCiqName [(ngModel)]="selectedCiq">
+                            <option value="">--Select--</option>
+                            <option *ngFor="let key of searchCiqList" value="{{key}}">{{key}}</option>
+                        </select>
+                        <div class="error-message-block"></div>
+                    </div>
+                </div> -->
+                <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName">CIQ LIST</label>
+                            <input class="form-control" autocomplete="off" id="searchCiqName" name="searchCiqName"
+                                 type="text" value="" />
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName"> {{programName=="VZN-5G-MM" ? "GNB_AU_NAME" : programName =="VZN-5G-DSS" ? "vDU NAME": "NE NAME"}}</label>
+                        <input class="form-control" autocomplete="off" id="searchNeName" name="searchNeName" type="text" value="" maxlength="30"
+                        />
+                        <div class="error-message-block"></div>
+                    </div>
+                </div>
+                <div class="col-3 ">
+                    <div class="form-group">
+                        <label for="templateName">FILE NAME</label>
+                        <input class="form-control" autocomplete="off" id="searchFileName" name="searchFileName" type="text" value="" maxlength="100"
+                        />
+                        <div class="error-message-block"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="textAlignCenter">
+                <button name="save" class="formBtn myriadproBold validateForm airlinecnfgSearch" id="searchButton" (click)="searchSiteData($event)"
+                    accesskey="s">SEARCH</button>
+                <button type="button" id="cancelButton" name="CANCEL" class="formBtnCncl formBtn myriadproBold formBtn" (click)="clearSearchFrom()" accesskey="c">CLEAR</button>
+            </div>
+        </form>
+    </div>
+
+    <div *ngIf="createNewForm">
+        <div id="formWrapper" class="formWrapperMargin bluePrintFormWrapper">
+            <form class="form-horizontal" id="bluePrintForm" #packForm>
+                <div class="row">
+                    <div class="col-3">
+                        <div class="form-group ">
+                            <label for="templateName" class="asterisk_input">SELECT DATE RANGE</label>
+                            <input class="form-control form-control-small dateRangeAlign" [ngClass]="{'error-border':errMessage}" id="fromDate" name="fromDate"
+                                [(ngModel)]="fromDate" placeholder="FROM DATE" [owlDateTimeTrigger]="dt" [owlDateTime]="dt" [max]="max"
+                                (dateTimeChange)="onChangeDate()">
+                            <owl-date-time [pickerType]="'calendar'" #dt></owl-date-time>
+                            <input class="form-control form-control-small dateRangeAlign" [ngClass]="{'error-border':errMessage}" id="toDate" name="toDate"
+                                [(ngModel)]="toDate" [min]="fromDate" [max]="max" [owlDateTimeTrigger]="dt1" placeholder="TO DATE"
+                                [owlDateTime]="dt1" (dateTimeChange)="onChangeDate()">
+                            <owl-date-time [pickerType]="'calendar'" #dt1></owl-date-time>
+                            <div class="error-message-block" *ngIf="errMessage">Please Select Date Range</div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName" class="asterisk_input">CIQ LIST</label>
+                            <!-- <select class="form-control" name="ciqName" id="ciqName" #ciqName (change)="getENBData()" [(ngModel)]="selectedCiq">
+                                <option value="">--Select--</option>
+                                <option *ngFor="let key of getSiteDataList" [ngValue]="key">{{key.ciqFileName}}</option>
+                            </select> -->
+                            <div class="">
+                                <ngx-select-dropdown [config]="ciqConfig" id="ciqName" [options]="getSiteDataList" [(ngModel)]="selectedCiq" name="ciqName"
+                                    (change)="getENBData(true)"></ngx-select-dropdown>                    
+                            <div class="error-message-block"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName" class="asterisk_input">NE NAME</label>
+                            <select class="form-control" name="enb" id="enb" [(ngModel)]="selectedEnb">
+                                <option value="">--Select--</option>
+                                <option *ngFor="let key of getEndList" [ngValue]="key">{{key.eNBName}}</option>
+                            </select>
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div> -->
+
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName" class="asterisk_input">{{programName=="VZN-5G-MM" ? "SITE NAME" : programName =="VZN-5G-DSS" ? "vDU NAME": "NE NAME"}}</label>
+                            <!-- <ng-multiselect-dropdown class="form-control" id="enb" [placeholder]="'--Select--'" [data]="getEndList" [(ngModel)]="selectedEnb"
+                                [settings]="dropdownSettings" name="enb">
+                            </ng-multiselect-dropdown> -->
+                            <div class="row" name="useCase" id="useCase" style="margin-left: 0;float: left;">
+                                <ng-select  *ngIf="programName!='VZN-5G-MM'" [multiple]="false" [virtualScroll]="true" [(ngModel)]="selectedEnb" name="nes" id="nes" class="" placeholder="--Select--">
+                                    <ng-option *ngFor="let key of getEndList" [value]="key" [disabled]="false">{{key.eNBName}}</ng-option>
+                                </ng-select>
+                                <ng-select *ngIf="programName=='VZN-5G-MM'" [multiple]="false"  [virtualScroll]="true" [closeOnSelect]="true" [(ngModel)]="selectedEnb" name="nes"
+                                    id="nes" class="" placeholder="--Select--" (change)="onChangesites($event)" >
+
+                                    <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                        <div class="ng-value" *ngFor="let item of items | slice:0:1">
+                                            <span class="ng-value-label a">{{item.key}}</span>
+                                            <!-- <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">x</span> -->
+                                        </div>
+                                        <div class="ng-value" *ngIf="items.length > 1"> 
+                                            <span class="ng-value-label">+{{items.length - 1}} more...</span>
+                                        </div>
+                                    </ng-template>
+                                    <ng-option *ngFor="let key of getNESiteList | keyvalue" [value]="key" [disabled]="false">{{key.key}}</ng-option>
+                                </ng-select>
+
+                                <div class="error-message-block"></div>
+                                <button (click)="getNeList(getNeListModal)" *ngIf="programName=='VZN-5G-MM'" [disabled]="nenamebutton"class="viewContent chkConnLogBtn"style="margin: 6px 2 0 0px;margin-left:2px" placement="bottom"
+                                    container="body" ngbTooltip="If selected,get all ne names"></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName" class="widthReg">REMARKS</label>
+                            <textarea rows="4" cols="50" class="customTextArea remarksTextArea" name="remarks" id="remarks" [(ngModel)]="remarks"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="textAlignCenter">                    
+                    <button name="save" class="formBtn myriadproBold validateForm" id="packButton" (click)="packSiteData($event,selectedCiq,selectedEnb)"
+                        accesskey="s">PACK</button>
+                    <button name="save" class="formBtn myriadproBold validateForm" id="packButton" (click)="siteCompletionReport($event, siteCompReportModal)"
+                        accesskey="s">REPORT</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!--Data Table-->
+    <div id="dataWrapper" *ngIf="tableShowHide" style="margin-top: -18px;">
+        <br>
+        <div id="tableWrapper">
+            <div class="scrollHead">
+                <table class="table" id="siteDataTable">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div (click)="changeSorting('ciqFileName', $event, 0)" class="sorting form-control-max">CIQ NAME</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('neName', $event, 1)" class="sorting form-control-small-2">{{programName=="VZN-5G-MM" ? "GNB_AU_NAME" : programName =="VZN-5G-DSS" ? "vDU NAME": "NE NAME"}}</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('fileName', $event, 2)" class="sorting form-control-max">FILE NAME</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('ovUpdateStatus', $event, 3)" class="sorting form-control-middle-1">OV UPDATE STATUS</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('packedBy', $event, 4)" class="sorting form-control-small-1">USER</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('packedDate', $event, 5)" class="sorting form-control-small-2">DATE</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('remarks', $event, 6)" class="sorting form-control-max">REMARKS</div>
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="scrollBody">
+                <table class="table">
+                    <tbody id="rowCount">
+                        <ng-container *ngFor="let key of tableData['siteDataModels']; let index = index">
+                            <tr id="row_{{index}}" class="row_id_{{key.id}}">
+                                <td class="form-control-max" data-toggle="tooltip" data-placement="right" data-container="body">{{key.ciqFileName}}</td>
+                                <td class="form-control-small-2" data-toggle="tooltip" data-placement="right" data-container="body">{{key.neName}}</td>
+                                <td class="form-control-max" data-toggle="tooltip" data-placement="right" data-container="body">
+                                    <a style="cursor: pointer;text-decoration: underline;" (click)="downLoadFile(key)">{{key.fileName}}</a>
+                                </td>
+                                <td class="form-control-middle-1" data-toggle="tooltip" data-placement="right" data-container="body">
+                                    <div class="row">
+                                        <div class="col-10 useCaseField">{{key.ovSiteReportStatus}}</div>
+                                        <div *ngIf="(key.ovSiteReportStatus && key.ovSiteReportStatus != 'N/A') && (userGroupDetails == 'Super Administrator' || userGroupDetails == 'Administrator')" class="col-2" [ngClass]="key.ovSiteReportStatus && key.ovSiteReportStatus.indexOf('Failure') >= 0 ? 'infoRowBigError' : 'infoRowBigPass'" (click)="viewOVFailureMessagae(ovFailureErrorModal, key)" 
+                                            placement="bottom" style="color:#3c3c3c;cursor: pointer;padding-left: 5px;" container="body" ngbTooltip="More Information"></div>
+                                    </div>
+                                </td>
+                                <td class="form-control-small-1" data-toggle="tooltip" data-placement="right" data-container="body">{{key.packedBy}}</td>
+                                <td class="form-control-small-2" data-toggle="tooltip" data-placement="right" data-container="body">{{key.packedDate}}</td>
+                                <td class="form-control-max" data-toggle="tooltip" data-placement="right" data-container="body">
+                                    <span class="displayNone" class="eventColText">{{key.remarks}}</span>
+                                    <div #fixedCol class="form-control-fixed iconsWrapper tableRowAction" id="fixedCol" ng-style="iconsWrapperPosition">
+                                        <div *ngIf="!key.ovSiteReportStatus || (key.ovSiteReportStatus.toLowerCase() != 'success' && key.ovSiteReportStatus.toLowerCase() != 'failure')" (click)="uploadToOV(key)" class="uploadIconWhite" placement="bottom" container="body" ngbTooltip="Upload Site Report to OV"></div>
+                                        <div *ngIf="key.reportType == 'SITE'" (click)="viewSiteReport(siteCompReportModal, key)" class="viewRowScriptDetails_light" placement="bottom"
+                                                container="body" ngbTooltip="View Site Report"></div>
+                                        <div (click)="mailFile($event, mailPopUp, key, index)" class="mailIcon" placement="bottom" container="body" ngbTooltip="Mail"></div>
+                                        <div (click)="editRow($event, key, index)" class="editRow" placement="bottom" container="body" ngbTooltip="Edit"></div>
+                                        <div (click)="deleteRow($event,confirmModal, key)" class="deleteRow" placement="bottom" container="body" ngbTooltip="Delete"></div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr *ngIf="checkFormEnable(index)" id="editedRow{{index}}">
+                                <td colspan="5" class="formEditRow">
+                                    <div id="formWrapper" [ngStyle]="{'width': formWidth, 'margin-left': scrollLeft}">
+                                        <form class="form-horizontal" id="bluePrintForm">
+                                            <div class="row">
+                                                <div class="col-3 ">
+                                                    <div class="form-group">
+                                                        <label for="templateName">CIQ LIST</label>
+                                                        <input class="form-control" autocomplete="off" id="ciqFileName" name="ciqFileName" type="text" value="" disabled/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3 ">
+                                                    <div class="form-group">
+                                                        <label for="templateName">{{programName=="VZN-5G-MM" ? "GNB_AU_NAME" : programName =="VZN-5G-DSS" ? "vDU NAME": "NE NAME"}}</label>
+                                                        <input class="form-control" autocomplete="off" id="neName" name="neName" type="text" value="" disabled/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3 ">
+                                                    <div class="form-group">
+                                                        <label for="templateName">FILE NAME</label>
+                                                        <input class="form-control" autocomplete="off" id="fileName" name="fileName" type="text" value="" disabled/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3 ">
+                                                    <div class="form-group">
+                                                        <label for="templateName">DATE</label>
+                                                        <input class="form-control" autocomplete="off" id="packedDate" name="packedDate" type="text" value="" disabled/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="widthReg">REMARKS</label>
+                                                        <textarea rows="4" cols="50" class="customTextArea remarksTextArea" name="remarks" id="remarks" [(ngModel)]="remarks"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="textAlignCenter" id="saveRow">
+                                                <button name="update" class="formBtn myriadproBold validateForm" id="updateButton" (click)="updateFileRuleDetails($event,key)"
+                                                    accesskey="u">UPDATE</button>
+                                                <button type="button" name="CANCEL" class="formBtnCncl formBtn myriadproBold formBtn" id="editCancelButton" (click)="cancelEditRow(index,key.id)"
+                                                    accesskey="c">CANCEL</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div id="paginationWrapper">
+            <div *ngIf="pageRenge.length" class="floatLeft page" style="padding-top: 0px;margin-left:20px;">
+                <div class="floatLeft" style="width: 75px;padding-top: 6px">Show</div>
+                <select [disabled]="paginationDisabbled" [(ngModel)]="pageSize" (change)="onChangeTableRowLength($event)" style="margin-top: 4px; margin-right: 6px;margin-left: -39px;"
+                    class="form-control-pagination floatLeft" aria-controls="TableRowLength" size="1" name="TableRowLength" id="TableRowLength">
+                    <option selected="selected" value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+                <div class="floatLeft" style="width: 75px;padding-top: 6px">Entries</div>
+            </div>
+            <div class="floatRight page" style="padding-top: 3px;margin-right:20px;">
+                <ul *ngIf="pageRenge.length" class="pagination floatRight">
+                    <li id="firstPage" [ngClass]="{disabled:(currentPage === 1 || paginationDisabbled)}" class="page-item">
+                        <a class="page-link" (click)="setPage(1)">FIRST</a>
+                    </li>
+                    <li id="previousPage" [ngClass]="{disabled:(currentPage === 1 || paginationDisabbled)}" class="page-item">
+                        <a class="page-link" (click)="setPage(pager.currentPage - 1)">PREV</a>
+                    </li>
+                    <li *ngFor="let n of pager.pages" [ngClass]="{active:currentPage === n, disabled:paginationDisabbled}" class="page-item">
+                        <a class="page-link" (click)="setPage(n)" id='{{n+1}}'>{{n}}</a>
+                    </li>
+                    <li id="nextPage" [ngClass]="{disabled:(currentPage === totalPages || paginationDisabbled)}" class="page-item">
+                        <a class="page-link" (click)="setPage(pager.currentPage + 1)">NEXT</a>
+                    </li>
+                    <li id="lastPage" [ngClass]="{disabled:(currentPage === totalPages || paginationDisabbled)}" class="page-item">
+                        <a class="page-link" (click)="setPage(pager.totalPages)">LAST</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+    <rct-nodata *ngIf="showNoDataFound" [subTitle]=""></rct-nodata>
+    <rct-nodata *ngIf="noDataVisibility" [subTitle]=""></rct-nodata>
+    <!-- [subTitle]="'Please click on <u><b>PACK</b></u> to add new data'" -->
+    <!--Live Data Details Model-->
+
+    <ng-template #sessionExpiredModal let-c="close" let-d="dismiss">
+        <div class="failureIcon"></div>
+        <p id="sessionPopup">Session Expired</p>
+        <div class="modelDismiss" (click)="closeAndLogout()"></div>
+    </ng-template>
+    <ng-template #successModal let-c="close" let-d="dismiss">
+        <div class="successIcon"></div>
+        <p id="sessionPopup">{{message}}</p>
+        <div class="modelDismiss" (click)="closeModel()"></div>
+    </ng-template>
+
+    <ng-template #mailPopUp let-c="close" let-d="dismiss" ng-style="background-color:#fff;">
+        <div class="sucessContentWrapper">
+            <div class="emailHead">
+                <h4 class="emailField modal-title">SEND MAIL</h4>
+            </div>
+            <div style="margin: 5px;padding: 20px;">
+                <div class="row">
+                    <div class="col-1"></div>
+                    <div class="col-2" style="padding-top: 4px !important;">
+                        <label class="asterisk_input" style="color: #5160ac;">EMAIL ID:</label>
+                    </div>
+                    <div class="col-6"style="padding: 0px 0px 0px 0px !important;">
+                        <input type="email" name="emailaddress" class="form-control" style="width: inherit !important;" [(ngModel)]="emailId" required />
+                    </div>
+                    <div class="col-2" style="padding-left: 0px !important;">
+                        <button type="button" class="formBtn myriadproBold"(click)="d('dismiss click')" id="mailConfirmation">SEND</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer textAlignCenter">            
+            <button type="button" class="formBtnCncl formBtn myriadproBold" (click)="c('Close click')" id="mailConfirmation">CANCEL</button>
+        </div>
+    </ng-template>
+
+    <ng-template #getNeListModal let-c="close" let-modal>
+        <div class="modal-header">
+         
+            <div class="dispHeader">
+                <h4>NE NAMES BASED ON SITE NAME</h4>
+            </div>
+    
+        </div>
+        <div class="modelBody">
+            <div id="viewFile" style="padding: 100px;">
+                <div class="row" style="margin-top: -85px;">
+                
+                      <div class="col-6">      
+                        <label>NE NAME</label>
+                        <ng-multiselect-dropdown id="location" class="form-control" name="location"
+                        [placeholder]="'--Select--'" [data]="dropdownListNE" [(ngModel)]="selectedItemsNE"
+                        [settings]="dropdownSettingsNEs" >
+                         </ng-multiselect-dropdown>  
+                      </div>
+                      <div class="col-6">
+                          <label>Selected NE Names</label>
+                          <div  *ngIf="selectedItemsNE?.length" class="card">
+                                <li *ngFor="let item of selectedItemsNE">{{ item.item_text }} </li>
+                            </div>
+                      </div>
+                 </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="modalAction">
+                <button type="button" class="formBtnCncl btn btn-light" (click)="closeModelSiteNEs()">CLOSE</button>
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template #siteCompReportModal let-c="close" let-modal>
+        <form id="formWrapper" name="form" class="formWrapperMargin resultScriptOutput" (ngSubmit)="siteReportForm.form.valid && downloadReport($event)" #siteReportForm="ngForm" novalidate>
+        <div class="modal-header">
+            <div class="dispHeader">
+                <h4 style="text-align: center;">SITE {{reportData.siteReportStatus | uppercase}} REPORT - {{siteReportNE.title}}</h4>
+            </div>
+        </div>
+        <div class="modelBody">
+            <div id="reportModalView">
+                <!-- <form (ngSubmit)="onSubmit()" #heroForm="ngForm"></form> -->
+                <!-- <form name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate></form> -->
+                <!-- <form id="formWrapper" name="form" class="formWrapperMargin resultScriptOutput" (ngSubmit)="siteReportForm.form.valid && downloadReport($event)" #siteReportForm="ngForm" novalidate> --> <!-- (ngSubmit)="downloadReport($event)" #siteReportForm="ngForm" -->
+                    <fieldset class="the-fieldset" >
+                        <legend class="the-legend" style="text-decoration: underline;">General Information</legend>
+                        <div class="row col-12">
+                            <div class="col-4" *ngIf="showField('GeneralInfo',programName,'reportDate')">
+                                <div class="form-group">
+                                    <label for="templateName" class="asterisk_input">REPORT DATE</label>
+                                    <input class="form-control form-control-small dateRangeAlign" [ngClass]="{'error-border':errMessage}" id="reportDate"
+                                        name="reportDate" [(ngModel)]="reportData.reportDate" placeholder="REPORT DATE" [owlDateTimeTrigger]="dt" [owlDateTime]="dt" #reportDate="ngModel" required>
+                                    <owl-date-time [pickerType]="'calendar'" #dt></owl-date-time>
+                                    <div *ngIf="siteReportForm.submitted && reportDate.invalid" class="error-message-block" style="clear: both;">
+                                        Report Date is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4" *ngIf="showField('GeneralInfo',programName,'siteName')">
+                                <div class="form-group">
+                                    <label for="templateName">SITE NAME</label>
+                                    <input class="form-control" autocomplete="off" id="neNameReport" name="neNameReport" type="text" #neNameReport="ngModel" [(ngModel)]="reportData.neName" required/><!-- [value]="siteReportNE.title" disabled -->
+                                    <div *ngIf="siteReportForm.submitted && neNameReport.invalid" class="error-message-block">
+                                        {{programName=="VZN-5G-MM" ? "GNB_AU_ID" : programName =="VZN-5G-DSS" || programName =="VZN-5G-CBAND" || programName =="VZN-4G-FSU" ? "vDU ID": "NE ID"}} is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4" *ngIf="showField('GeneralInfo',programName,'neName')">
+                                <div class="form-group">
+                                    <label for="templateName">{{programName =="VZN-5G-DSS" || programName =="VZN-5G-CBAND" || programName =="VZN-4G-FSU" ? "vDU NAME": "NE NAME"}}</label>
+                                    <input class="form-control" autocomplete="off" id="neNameReport" name="neNameReport" type="text" #neNameReport="ngModel" [(ngModel)]="reportData.neName" required/><!-- [value]="siteReportNE.title" -->
+                                    <div *ngIf="siteReportForm.submitted && neNameReport.invalid" class="error-message-block">
+                                        {{programName=="VZN-5G-MM" ? "GNB_AU_ID" : programName =="VZN-5G-DSS" || programName =="VZN-5G-CBAND" || programName =="VZN-4G-FSU" ? "vDU ID": "NE ID"}} is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4" *ngIf="showField('GeneralInfo',programName,'neId')">
+                                <div class="form-group">
+                                    <label for="templateName" class="asterisk_input">{{programName=="VZN-5G-MM" ? "GNB_AU_ID" : programName =="VZN-5G-DSS" || programName =="VZN-5G-CBAND" || programName =="VZN-4G-FSU" ? "vDU ID": "NE ID"}}</label>
+                                    <input class="form-control" autocomplete="off" id="neIdReport" name="neIdReport" type="text" #neIdReport="ngModel" [(ngModel)]="reportData.neId" required/><!-- [value]="siteReportNE.ids" -->
+                                    <div *ngIf="siteReportForm.submitted && neIdReport.invalid" class="error-message-block">
+                                        {{programName=="VZN-5G-MM" ? "GNB_AU_ID" : programName =="VZN-5G-DSS" || programName =="VZN-5G-CBAND" || programName =="VZN-4G-FSU" ? "vDU ID": "NE ID"}} is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4" *ngIf="showField('GeneralInfo',programName,'eNodeBName')">
+                                <div class="form-group">
+                                    <label for="eNodeBNameReport" class="asterisk_input">ENODEB NAME</label>
+                                    <input class="form-control" autocomplete="off" id="eNodeBNameReport" name="eNodeBNameReport" type="text" [(ngModel)]="reportData.eNodeBName" #eNodeBNameReport="ngModel" required/>
+                                    <div *ngIf="siteReportForm.submitted && eNodeBNameReport.invalid" class="error-message-block">
+                                        Enodeb Name is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4" *ngIf="showField('GeneralInfo',programName,'siteReportStatus')">
+                                <div class="form-group">
+                                    <label for="templateName" class="asterisk_input">SRCT REPORT STATUS</label>
+                                    <select class="form-control" id="siteReportStatus" name="siteReportStatus" [(ngModel)]="reportData.siteReportStatus" #siteReportStatus="ngModel" required><!-- [disabled]="userGroupDetails != 'Super Administrator' && userGroupDetails != 'Administrator'" -->
+                                        <option value="">--Select--</option>
+                                        <option *ngFor="let item of reportFormOptions['reportStatus']" id="{{item}}" [ngValue]="item">{{item}}</option>
+                                    </select>
+                                    <div *ngIf="siteReportForm.submitted && siteReportStatus.invalid" class="error-message-block">
+                                        SRCT report status is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4" *ngIf="showField('GeneralInfo',programName,'project')">
+                                <div class="form-group">
+                                    <label for="templateName" class="asterisk_input">PROJECT</label>
+                                    <select class="form-control" id="projectReport" name="projectReport" [(ngModel)]="reportData.project" #projectReport="ngModel" required>
+                                        <option value="">--Select--</option>
+                                        <option *ngFor="let item of reportFormOptions['projects']" id="{{item}}">{{item}}</option>
+                                    </select>
+                                    <div *ngIf="siteReportForm.submitted && projectReport.invalid" class="error-message-block">
+                                        Project is required
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-4" *ngIf="showField('GeneralInfo',programName,'eNodeBSW')">
+                                <div class="form-group">
+                                    <label for="templateName" class="asterisk_input">ENODEB SW</label>
+                                    <!-- <select class="form-control" id="eNodeBSWReport" name="eNodeBSWReport" [(ngModel)]="reportData.eNodeBSW" #eNodeBSWReport="ngModel" required>
+                                        <option value="">--Select--</option>
+                                        <option *ngFor="let item of reportFormOptions['eNodeBSW']" id="{{item}}">{{item}}</option>
+                                    </select> -->
+                                    <input class="form-control" autocomplete="off" id="eNodeBSWReport" name="eNodeBSWReport" type="text" [(ngModel)]="reportData.eNodeBSW" #eNodeBSWReport="ngModel" required/>
+                                    <div *ngIf="siteReportForm.submitted && eNodeBSWReport.invalid" class="error-message-block">
+                                        Enodeb SW is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4" *ngIf="showField('GeneralInfo',programName,'fsuSW')">
+                                <div class="form-group">
+                                    <label for="templateName" class="asterisk_input">FSU SW</label>
+                                    <!-- <select class="form-control" id="fsuSWReport" name="fsuSWReport" [(ngModel)]="reportData.fsuSW" #fsuSWReport="ngModel" required>
+                                        <option value="">--Select--</option>
+                                        <option *ngFor="let item of reportFormOptions['fsuSW']" id="{{item}}">{{item}}</option>
+                                    </select> -->
+                                    <input class="form-control" autocomplete="off" id="fsuSWReport" name="fsuSWReport" type="text" [(ngModel)]="reportData.fsuSW" #fsuSWReport="ngModel" required/>
+                                    <div *ngIf="siteReportForm.submitted && fsuSWReport.invalid" class="error-message-block">
+                                        FSU SW is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4" *ngIf="showField('GeneralInfo',programName,'vDUSW')">
+                                <div class="form-group">
+                                    <label for="templateName" class="asterisk_input">VDU SW</label>
+                                    <!-- <select class="form-control" id="vDUSWReport" name="vDUSWReport" [(ngModel)]="reportData.vDUSW" #vDUSWReport="ngModel" required>
+                                        <option value="">--Select--</option>
+                                        <option *ngFor="let item of reportFormOptions['vDUSW']" id="{{item}}">{{item}}</option>
+                                    </select> -->
+                                    <input class="form-control" autocomplete="off" id="vDUSWReport" name="vDUSWReport" type="text" [(ngModel)]="reportData.vDUSW" #vDUSWReport="ngModel" required/>
+                                    <div *ngIf="siteReportForm.submitted && vDUSWReport.invalid" class="error-message-block">
+                                        VDU SW is required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-4" *ngIf="showField('GeneralInfo',programName,'softWareRelease')">
+                                <div class="form-group">
+                                    <label for="templateName" class="asterisk_input">SOFTWARE RELEASE</label>
+                                    <!-- <select class="form-control" id="swReleaseReport" name="swReleaseReport" [(ngModel)]="reportData.softWareRelease" #swReleaseReport="ngModel" required>
+                                        <option value="">--Select--</option>
+                                        <option *ngFor="let item of reportFormOptions['swRelease']" id="{{item}}">{{item}}</option>
+                                    </select> -->
+                                    <input class="form-control" autocomplete="off" id="swReleaseReport" name="swReleaseReport" type="text" [(ngModel)]="reportData.softWareRelease" #swReleaseReport="ngModel" required/>
+                                    <div *ngIf="siteReportForm.submitted && swReleaseReport.invalid" class="error-message-block">
+                                        Software release is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4" *ngIf="showField('GeneralInfo',programName,'market')">
+                                <div class="form-group">
+                                    <label for="templateName" class="asterisk_input">REGION</label>
+                                    <select class="form-control" id="marketReport" name="marketReport" [(ngModel)]="reportData.market" #marketReport="ngModel" required>
+                                        <option value="">--Select--</option>
+                                        <option *ngFor="let item of reportFormOptions['region']" id="{{item}}">{{item}}</option>
+                                    </select>
+                                    <div *ngIf="siteReportForm.submitted && marketReport.invalid" class="error-message-block">
+                                        Region is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4" *ngIf="showField('GeneralInfo',programName,'integrationType')">
+                                <div class="form-group">
+                                    <label for="templateName" class="asterisk_input">INTEGRATION TYPE</label>
+                                    <select class="form-control" id="integTypeReport" name="integTypeReport" [(ngModel)]="reportData.integrationType" #integTypeReport="ngModel" required>
+                                        <option value="">--Select--</option>
+                                        <option *ngFor="let item of reportFormOptions['integType']" id="{{item}}">{{item}}</option>
+                                    </select>
+                                    <div *ngIf="siteReportForm.submitted && integTypeReport.invalid" class="error-message-block">
+                                        Integration type is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4" *ngIf="showField('GeneralInfo',programName,'fuzeProjId')">
+                                <div class="form-group">
+                                    <label for="templateName" class="asterisk_input">FUZE PROJECT ID</label>
+                                    <input class="form-control" autocomplete="off" id="fuzeProjId" name="fuzeProjId" type="text" [(ngModel)]="reportData.fuzeProjId" #fuzeProjId="ngModel" required disabled/>
+                                    <div *ngIf="siteReportForm.submitted && fuzeProjId.invalid" class="error-message-block">
+                                        Fuze Id is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="templateName" class="asterisk_input">USER</label>
+                                    <input class="form-control" autocomplete="off" id="userName" name="userName" type="text" [(ngModel)]="reportData.userName" #userName="ngModel" required disabled/>
+                                    <div *ngIf="siteReportForm.submitted && userName.invalid" class="error-message-block">
+                                        User is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4" *ngIf="showField('GeneralInfo',programName,'vendorType')">
+                                <div class="form-group">
+                                    <label for="templateName" class="asterisk_input">VENDOR TYPE</label>
+                                    <!-- <input class="form-control" autocomplete="off" id="userName" name="userName" type="text" [(ngModel)]="reportData.userName" #userName="ngModel" required disabled/> -->
+                                    <select class="form-control" id="vendorTypeReport" name="vendorTypeReport" [(ngModel)]="reportData.vendorType" #vendorTypeReport="ngModel" required>
+                                        <option value="">--Select--</option>
+                                        <option *ngFor="let item of reportFormOptions['vendorType']" id="{{item}}">{{item}}</option>
+                                    </select>
+                                    <div *ngIf="siteReportForm.submitted && vendorTypeReport.invalid" class="error-message-block">
+                                        Vendor type is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="templateName"></label>
+                                    <label class="col-11 reportChkBxLabel" style="display: inline-block;">
+                                        <input type="checkbox" class="thcheckbox" style="vertical-align: middle;display: inline-block;" [(ngModel)]="reportData.isCancellationReport" name="canReportCheck">
+                                        Is cancellation Report?
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="templateName"></label>
+                                    <label class="col-11 reportChkBxLabel" style="display: inline-block;">
+                                        <input type="checkbox" class="thcheckbox" style="vertical-align: middle;display: inline-block;" [(ngModel)]="reportData.resAuditIssueCheck" name="resAuditIssueCheck">
+                                        Is all post audit issues resolved?
+                                    </label>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="the-fieldset siteMigFields">
+                        <legend class="the-legend" style="text-decoration: underline;">Site Migration Information</legend>
+                        <div class="row" *ngIf="networkType == '4G' && programName != 'VZN-4G-FSU'"> <!-- *ngIf="networkType == '4G'" -->
+                            <div class="col-4" *ngIf="showField('SiteMigInfo',programName,'lteCommComp')">
+                                <div class="form-group">
+                                    <label for="templateName" class="asterisk_input">LTE Commissioning Complete (16300.02)</label>
+                                    <select class="form-control" id="lteCommComp" name="lteCommComp" [(ngModel)]="reportData.lteCommComp" #lteCommComp="ngModel" required>
+                                        <option value="">--Select--</option>
+                                        <option *ngFor="let item of reportFormOptions['status']" id="{{item}}">{{item}}</option>
+                                    </select>
+                                    <div *ngIf="siteReportForm.submitted && lteCommComp.invalid" class="error-message-block">
+                                        LTE Commissioning is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4" *ngIf="showField('SiteMigInfo',programName,'lteOpsATP')">
+                                <div class="form-group">
+                                    <label for="templateName" class="asterisk_input">LTE Ops ATP Passing (16400.02)</label>
+                                    <select class="form-control" id="lteOpsATP" name="lteOpsATP" [(ngModel)]="reportData.lteOpsATP" #lteOpsATP="ngModel" required>
+                                        <option value="">--Select--</option>
+                                        <option *ngFor="let item of reportFormOptions['status']" id="{{item}}">{{item}}</option>
+                                    </select>
+                                    <div *ngIf="siteReportForm.submitted && lteOpsATP.invalid" class="error-message-block">
+                                        LTE Ops is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4" *ngIf="showField('SiteMigInfo',programName,'lteCBRSCommComp')">
+                                <div class="form-group">
+                                    <label for="templateName" class="asterisk_input">CBRS Commissioning Complete (16300.03)</label>
+                                    <select class="form-control" id="lteCBRSCommComp" name="lteCBRSCommComp" [(ngModel)]="reportData.lteCBRSCommComp" #lteCBRSCommComp="ngModel" required>
+                                        <option value="">--Select--</option>
+                                        <option *ngFor="let item of reportFormOptions['status']" id="{{item}}">{{item}}</option>
+                                    </select>
+                                    <div *ngIf="siteReportForm.submitted && lteCBRSCommComp.invalid" class="error-message-block">
+                                        CBRS Commissioning is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4" *ngIf="showField('SiteMigInfo',programName,'lteCBRSOpsAtp')">
+                                <div class="form-group">
+                                    <label for="templateName" class="asterisk_input">CBRS Ops ATP Passing (16400.03)</label>
+                                    <select class="form-control" id="lteCBRSOpsAtp" name="lteCBRSOpsAtp" [(ngModel)]="reportData.lteCBRSOpsAtp" #lteCBRSOpsAtp="ngModel" required>
+                                        <option value="">--Select--</option>
+                                        <option *ngFor="let item of reportFormOptions['status']" id="{{item}}">{{item}}</option>
+                                    </select>
+                                    <div *ngIf="siteReportForm.submitted && lteCBRSOpsAtp.invalid" class="error-message-block">
+                                        CBRS Ops is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4" *ngIf="showField('SiteMigInfo',programName,'lteLAACommComp')">
+                                <div class="form-group">
+                                    <label for="templateName" class="asterisk_input">LAA Commissioning Complete (16300.04)</label>
+                                    <select class="form-control" id="lteLAACommComp" name="lteLAACommComp" [(ngModel)]="reportData.lteLAACommComp" #lteLAACommComp="ngModel" required>
+                                        <option value="">--Select--</option>
+                                        <option *ngFor="let item of reportFormOptions['status']" id="{{item}}">{{item}}</option>
+                                    </select>
+                                    <div *ngIf="siteReportForm.submitted && lteLAACommComp.invalid" class="error-message-block">
+                                        LAA Commissioning is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4" *ngIf="showField('SiteMigInfo',programName,'lteLAAOpsATP')">
+                                <div class="form-group">
+                                    <label for="templateName" class="asterisk_input">LAA Ops ATP Passing (16400.04)</label>
+                                    <select class="form-control" id="lteLAAOpsATP" name="lteLAAOpsATP" [(ngModel)]="reportData.lteLAAOpsATP" #lteLAAOpsATP="ngModel" required>
+                                        <option value="">--Select--</option>
+                                        <option *ngFor="let item of reportFormOptions['status']" id="{{item}}">{{item}}</option>
+                                    </select>
+                                    <div *ngIf="siteReportForm.submitted && lteLAAOpsATP.invalid" class="error-message-block">
+                                        LAA Ops is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4" *ngIf="showField('SiteMigInfo',programName,'fsuIntegBypass')">
+                                <label for="templateName" class="asterisk_input">FSU Integrated in Bypass Mode (16240.02)</label>
+                                <select class="form-control" id="fsuIntegBypass" name="fsuIntegBypass" [(ngModel)]="reportData.fsuIntegBypass" #fsuIntegBypass="ngModel" required>
+                                    <option value="">--Select--</option>
+                                    <option *ngFor="let item of reportFormOptions['status']" id="{{item}}">{{item}}</option>
+                                </select>
+                                <div *ngIf="siteReportForm.submitted && fsuIntegBypass.invalid" class="error-message-block">
+                                    FSU integration in Bypass is required
+                                </div>
+                            </div>
+                            <div class="col-4" *ngIf="showField('SiteMigInfo',programName,'tcReleased')">
+                                <div class="form-group">
+                                    <label for="templateName" class="asterisk_input">TC/GC Released</label>
+                                    <select class="form-control" id="tcReleased" name="tcReleased" [(ngModel)]="reportData.tcReleased"
+                                        #tcReleased="ngModel" required>
+                                        <option value="">--Select--</option>
+                                        <option *ngFor="let item of reportFormOptions['issueResolvedList']" id="{{item}}">{{item}}</option>
+                                    </select>
+                                    <div *ngIf="siteReportForm.submitted && tcReleased.invalid" class="error-message-block">
+                                        TC/GC Released is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4" *ngIf="showField('SiteMigInfo',programName,'finalIntegStatus')">
+                                <div class="form-group">
+                                    <label for="templateName" class="asterisk_input">Final Integration Status</label>
+                                    <select class="form-control" id="finalIntegStatus" name="finalIntegStatus" [(ngModel)]="reportData.finalIntegStatus" #finalIntegStatus="ngModel" required>
+                                        <option value="">--Select--</option>
+                                        <option *ngFor="let item of reportFormOptions['status']" id="{{item}}">{{item}}</option>
+                                    </select>
+                                    <div *ngIf="siteReportForm.submitted && finalIntegStatus.invalid" class="error-message-block">
+                                        Final Integration Status is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4" *ngIf="showField('SiteMigInfo',programName,'ovTicketNum')">
+                                <div class="form-group">
+                                    <label for="templateName" class="asterisk_input">OV Ticket Numbers</label>
+                                    <input class="form-control" autocomplete="off" id="ovTicketNum" name="ovTicketNum" type="text" [(ngModel)]="reportData.ovTicketNum" #ovTicketNum="ngModel" required/>
+                                    <div *ngIf="siteReportForm.submitted && ovTicketNum.invalid" class="error-message-block">
+                                        OV Ticket Numbers is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4" *ngIf="showField('SiteMigInfo',programName,'typeOfEffortReport')">
+                                <div class="form-group">
+                                    <label for="templateName" class="asterisk_input">Type Of Effort</label>
+                                    <select class="form-control" id="typeOfEffortReport" name="typeOfEffortReport" [(ngModel)]="reportData.typeOfEffort" #typeOfEffortReport="ngModel" required>
+                                        <option value="">--Select--</option>
+                                        <option *ngFor="let item of reportFormOptions['typeOfEffort']" id="{{item}}">{{item}}</option>
+                                    </select>
+                                    <div *ngIf="siteReportForm.submitted && typeOfEffortReport.invalid" class="error-message-block">
+                                        Type Of Effort is required
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="row col-8" *ngIf="networkType == '5G' || programName == 'VZN-4G-FSU'"> <!-- *ngIf="programName == 'VZN-5G-MM'" -->
+                                <div class="col-6 form-group" *ngIf="showField('SiteMigInfo',programName,'mmCommComp')">
+                                    <label for="templateName" class="asterisk_input">mmW Commissioning Complete (16300.01)</label>
+                                    <select class="form-control" id="mmCommComp" name="mmCommComp" [(ngModel)]="reportData.mmCommComp" #mmCommComp="ngModel" required>
+                                        <option value="">--Select--</option>
+                                        <option *ngFor="let item of reportFormOptions['status']" id="{{item}}">{{item}}</option>
+                                    </select>
+                                    <div *ngIf="siteReportForm.submitted && mmCommComp.invalid" class="error-message-block">
+                                        mmW Commissioning is required
+                                    </div>
+                                </div>
+                                <div class="col-6 form-group" *ngIf="showField('SiteMigInfo',programName,'mmOpsATP')">
+                                    <label for="templateName" class="asterisk_input">mmW Ops ATP Passing (16400.01)</label>
+                                    <select class="form-control" id="mmOpsATP" name="mmOpsATP" [(ngModel)]="reportData.mmOpsATP" #mmOpsATP="ngModel" required>
+                                        <option value="">--Select--</option>
+                                        <option *ngFor="let item of reportFormOptions['status']" id="{{item}}">{{item}}</option>
+                                    </select>
+                                    <div *ngIf="siteReportForm.submitted && mmOpsATP.invalid" class="error-message-block">
+                                        mmW Ops ATP is required
+                                    </div>
+                                </div>
+                                <div class="col-6 form-group" *ngIf="showField('SiteMigInfo',programName,'dssCommComp')">
+                                    <label for="templateName" class="asterisk_input">DSS Commissioning Complete (16300.05)</label>
+                                    <select class="form-control" id="dssCommComp" name="dssCommComp" [(ngModel)]="reportData.dssCommComp" #dssCommComp="ngModel" required>
+                                        <option value="">--Select--</option>
+                                        <option *ngFor="let item of reportFormOptions['status']" id="{{item}}">{{item}}</option>
+                                    </select>
+                                    <div *ngIf="siteReportForm.submitted && dssCommComp.invalid" class="error-message-block">
+                                        DSS Commissioning is required
+                                    </div>
+                                </div>
+                                <div class="col-6 form-group" *ngIf="showField('SiteMigInfo',programName,'dssOpsATP')">
+                                    <label for="templateName" class="asterisk_input">DSS Ops ATP Passing (16400.05)</label>
+                                    <select class="form-control" id="dssOpsATP" name="dssOpsATP" [(ngModel)]="reportData.dssOpsATP" #dssOpsATP="ngModel" required>
+                                        <option value="">--Select--</option>
+                                        <option *ngFor="let item of reportFormOptions['status']" id="{{item}}">{{item}}</option>
+                                    </select>
+                                    <div *ngIf="siteReportForm.submitted && dssOpsATP.invalid" class="error-message-block">
+                                        DSS Ops ATP is required
+                                    </div>
+                                </div>
+                                <div class="col-6 form-group" *ngIf="showField('SiteMigInfo',programName,'fsuIntegBypass')">
+                                    <label for="templateName" class="asterisk_input">FSU Integrated in Bypass Mode (16240.02)</label>
+                                    <select class="form-control" id="fsuIntegBypass" name="fsuIntegBypass" [(ngModel)]="reportData.fsuIntegBypass" #fsuIntegBypass="ngModel" required>
+                                        <option value="">--Select--</option>
+                                        <option *ngFor="let item of reportFormOptions['status']" id="{{item}}">{{item}}</option>
+                                    </select>
+                                    <div *ngIf="siteReportForm.submitted && fsuIntegBypass.invalid" class="error-message-block">
+                                        FSU integration in Bypass is required
+                                    </div>
+                                </div>
+                                <div class="col-6 form-group" *ngIf="showField('SiteMigInfo',programName,'fsuIntegMultiplex')">
+                                    <label for="templateName" class="asterisk_input">FSU Integrated in Multiplex Mode (16240.03)</label>
+                                    <select class="form-control" id="fsuIntegMultiplex" name="fsuIntegMultiplex" [(ngModel)]="reportData.fsuIntegMultiplex" #fsuIntegMultiplex="ngModel" required>
+                                        <option value="">--Select--</option>
+                                        <option *ngFor="let item of reportFormOptions['status']" id="{{item}}">{{item}}</option>
+                                    </select>
+                                    <div *ngIf="siteReportForm.submitted && fsuIntegMultiplex.invalid" class="error-message-block">
+                                        FSU integration in Multiplex is required
+                                    </div>
+                                </div>
+                                <div class="col-6 form-group" *ngIf="showField('SiteMigInfo',programName,'tcReleased')">
+                                    <label for="templateName" class="asterisk_input">TC/GC Released</label>
+                                    <select class="form-control" id="tcReleased" name="tcReleased" [(ngModel)]="reportData.tcReleased"
+                                        #tcReleased="ngModel" required>
+                                        <option value="">--Select--</option>
+                                        <option *ngFor="let item of reportFormOptions['issueResolvedList']" id="{{item}}">{{item}}</option>
+                                    </select>
+                                    <div *ngIf="siteReportForm.submitted && tcReleased.invalid" class="error-message-block">
+                                        TC/GC Released is required
+                                    </div>
+                                </div>
+                                <div class="col-6 form-group" *ngIf="showField('SiteMigInfo',programName,'finalIntegStatus')">
+                                    <label for="templateName" class="asterisk_input">Final Integration Status</label>
+                                    <select class="form-control" id="finalIntegStatus" name="finalIntegStatus" [(ngModel)]="reportData.finalIntegStatus" #finalIntegStatus="ngModel" required>
+                                        <option value="">--Select--</option>
+                                        <option *ngFor="let item of reportFormOptions['status']" id="{{item}}">{{item}}</option>
+                                    </select>
+                                    <div *ngIf="siteReportForm.submitted && finalIntegStatus.invalid" class="error-message-block">
+                                        Final Integration Status is required
+                                    </div>
+                                </div>
+
+                                <div class="col-6 form-group" *ngIf="showField('SiteMigInfo',programName,'currCBANDIntegStatus')">
+                                    <label for="templateName" class="asterisk_input">Current Integration Status</label>
+                                    <select class="form-control" id="currCBANDIntegStatusReport" name="currCBANDIntegStatusReport" [(ngModel)]="reportData.currCBANDIntegStatus" #currCBANDIntegStatusReport="ngModel" required>
+                                        <option value="">--Select--</option>
+                                        <option *ngFor="let item of reportFormOptions['status']" id="{{item}}">{{item}}</option>
+                                    </select>
+                                    <div *ngIf="siteReportForm.submitted && currCBANDIntegStatusReport.invalid" class="error-message-block">
+                                        Current Integration Status is required
+                                    </div>
+                                </div>
+                                <!-- <div class="form-group" *ngIf="showField('SiteMigInfo',programName,'finalCBANDIntegStatus')">
+                                    <label for="templateName" class="asterisk_input">Final Integration Status</label>
+                                    <select class="form-control" id="finalCBANDIntegStatusReport" name="finalCBANDIntegStatusReport" [(ngModel)]="reportData.finalCBANDIntegStatus" #finalCBANDIntegStatusReport="ngModel" required>
+                                        <option value="">--Select--</option>
+                                        <option *ngFor="let item of reportFormOptions['status']" id="{{item}}">{{item}}</option>
+                                    </select>
+                                    <div *ngIf="siteReportForm.submitted && finalCBANDIntegStatusReport.invalid" class="error-message-block">
+                                        Final Integration Status is required
+                                    </div>
+                                </div> -->
+                                <div class="col-6 form-group" *ngIf="showField('SiteMigInfo',programName,'ovTicketNum')">
+                                    <label for="templateName" class="asterisk_input">OV Ticket Numbers</label>
+                                    <input class="form-control" autocomplete="off" id="ovTicketNum" name="ovTicketNum" type="text"
+                                        [(ngModel)]="reportData.ovTicketNum" #ovTicketNum="ngModel" required />
+                                    <div *ngIf="siteReportForm.submitted && ovTicketNum.invalid" class="error-message-block">
+                                        OV Ticket Numbers is required
+                                    </div>
+                                </div>
+                                <div class="col-6 form-group" *ngIf="showField('SiteMigInfo',programName,'typeOfEffortReport')">
+                                    <label for="templateName" class="asterisk_input">Type Of Effort</label>
+                                    <select class="form-control" id="typeOfEffortReport" name="typeOfEffortReport" [(ngModel)]="reportData.typeOfEffort" #typeOfEffortReport="ngModel" required>
+                                        <option value="">--Select--</option>
+                                        <option *ngFor="let item of reportFormOptions['typeOfEffort']" id="{{item}}">{{item}}</option>
+                                    </select>
+                                    <div *ngIf="siteReportForm.submitted && typeOfEffortReport.invalid" class="error-message-block">
+                                        Type Of Effort is required
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="column col-4 chkBxBtnGroup" *ngIf="programName == 'VZN-4G-USM-LIVE'">
+                                <label for="templateName" style="text-align: center;">Carriers</label>
+                                <div class="row" style="margin: 0;">
+                                    <div class="column col-6" style="border: 1px solid #cccccc;">
+                                        <label for="templateName">Like For Like</label>
+                                        <div class="col-12 reportChkBx">
+                                            <label class="col-11 reportChkBxLabel" style="display: inline-block;">
+                                                <input type="checkbox" class="thcheckbox" style="vertical-align: middle;display: inline-block;" [(ngModel)]="carriersFlag['700']['likeforlikeCheckBox']" name="rfcheck_LL_700">
+                                                700
+                                            </label>
+                                            <label class="col-11 reportChkBxLabel" style="display: inline-block;">
+                                                <input type="checkbox" class="thcheckbox" style="vertical-align: middle;display: inline-block;" [(ngModel)]="carriersFlag['AWS']['likeforlikeCheckBox']" name="rfcheck_LL_AW">
+                                                AWS
+                                            </label>
+                                            <label class="col-11 reportChkBxLabel" style="display: inline-block;">
+                                                <input type="checkbox" class="thcheckbox" style="vertical-align: middle;display: inline-block;" [(ngModel)]="carriersFlag['PCS']['likeforlikeCheckBox']" name="rfcheck_LL_PCS">
+                                                PCS
+                                            </label>
+                                            <label class="col-11 reportChkBxLabel" style="display: inline-block;">
+                                                <input type="checkbox" class="thcheckbox" style="vertical-align: middle;display: inline-block;" [(ngModel)]="carriersFlag['AWS3']['likeforlikeCheckBox']" name="rfcheck_LL_AWS">
+                                                AWS3
+                                            </label>
+                                            <label class="col-11 reportChkBxLabel" style="display: inline-block;">
+                                                <input type="checkbox" class="thcheckbox" style="vertical-align: middle;display: inline-block;" [(ngModel)]="carriersFlag['850']['likeforlikeCheckBox']" name="rfcheck_LL_850">
+                                                850
+                                            </label>
+                                            <label class="col-11 reportChkBxLabel" style="display: inline-block;">
+                                                <input type="checkbox" class="thcheckbox" style="vertical-align: middle;display: inline-block;" [(ngModel)]="carriersFlag['CBRS']['likeforlikeCheckBox']" name="rfcheck_LL_CBRS">
+                                                CBRS
+                                            </label>
+                                            <label class="col-11 reportChkBxLabel" style="display: inline-block;">
+                                                <input type="checkbox" class="thcheckbox" style="vertical-align: middle;display: inline-block;" [(ngModel)]="carriersFlag['LAA']['likeforlikeCheckBox']" name="rfcheck_LL_LAA">
+                                                LAA
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="column col-6" style="border: 1px solid #cccccc; border-left: none;">
+                                        <div class="col-12 reportChkBx">
+                                            <label for="templateName">Incremental</label>
+                                            <label class="col-11 reportChkBxLabel" style="display: inline-block;">
+                                                <input type="checkbox" class="thcheckbox" style="vertical-align: middle;display: inline-block;" [(ngModel)]="carriersFlag['700']['incrementalCheckBox']" name="rfcheck_INC_700">
+                                                700
+                                            </label>
+                                            <label class="col-11 reportChkBxLabel" style="display: inline-block;">
+                                                <input type="checkbox" class="thcheckbox" style="vertical-align: middle;display: inline-block;" [(ngModel)]="carriersFlag['AWS']['incrementalCheckBox']" name="rfcheck_INC_AW">
+                                                AWS
+                                            </label>
+                                            <label class="col-11 reportChkBxLabel" style="display: inline-block;">
+                                                <input type="checkbox" class="thcheckbox" style="vertical-align: middle;display: inline-block;" [(ngModel)]="carriersFlag['PCS']['incrementalCheckBox']" name="rfcheck_INC_PCS">
+                                                PCS
+                                            </label>
+                                            <label class="col-11 reportChkBxLabel" style="display: inline-block;">
+                                                <input type="checkbox" class="thcheckbox" style="vertical-align: middle;display: inline-block;" [(ngModel)]="carriersFlag['AWS3']['incrementalCheckBox']" name="rfcheck_INC_AWS">
+                                                AWS3
+                                            </label>
+                                            <label class="col-11 reportChkBxLabel" style="display: inline-block;">
+                                                <input type="checkbox" class="thcheckbox" style="vertical-align: middle;display: inline-block;" [(ngModel)]="carriersFlag['850']['incrementalCheckBox']" name="rfcheck_INC_850">
+                                                850
+                                            </label>
+                                            <label class="col-11 reportChkBxLabel" style="display: inline-block;">
+                                                <input type="checkbox" class="thcheckbox" style="vertical-align: middle;display: inline-block;" [(ngModel)]="carriersFlag['CBRS']['incrementalCheckBox']" name="rfcheck_INC_CBRS">
+                                                CBRS
+                                            </label>
+                                            <label class="col-11 reportChkBxLabel" style="display: inline-block;">
+                                                <input type="checkbox" class="thcheckbox" style="vertical-align: middle;display: inline-block;" [(ngModel)]="carriersFlag['LAA']['incrementalCheckBox']" name="rfcheck_INC_LAA">
+                                                LAA
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                
+                            </div>
+                            
+                            <!-- <div class="column col-4 chkBxBtnGroup">
+                                <label for="templateName"></label>
+                                <div class="col-12 reportChkBx" *ngIf="showField('ReportCheckBox',programName,'alarmFree')">
+                                    <label class="col-11 reportChkBxLabel" style="display: inline-block;">
+                                        <input type="checkbox" class="col-1 thcheckbox" style="vertical-align: middle;display: inline-block;" [(ngModel)]="rfScriptFlag['alarmFree']" name="rfcheck_alarmFree">
+                                        Alarm Free
+                                    </label>
+                                </div>
+                                <div class="col-12 reportChkBx" *ngIf="showField('ReportCheckBox',programName,'auCellsReqperMarket')">
+                                    <label class="col-11 reportChkBxLabel" style="display: inline-block;">
+                                        <input type="checkbox" class="col-1 thcheckbox" style="vertical-align: middle;display: inline-block;" [(ngModel)]="rfScriptFlag['auCellsReqperMarket']" name="rfcheck_auCellsReqperMarket">
+                                        AU/Cells in state requested per Mkt
+                                    </label>
+                                </div>
+                                <div class="col-12 reportChkBx" *ngIf="showField('ReportCheckBox',programName,'twampPingTestRepAttached')">
+                                    <label class="col-11 reportChkBxLabel" style="display: inline-block;">
+                                        <input type="checkbox" class="col-1 thcheckbox" style="vertical-align: middle;display: inline-block;" [(ngModel)]="rfScriptFlag['twampPingTestRepAttached']" name="rfcheck_twampPingTestRepAttached">
+                                        TWAMP Ping test report attached
+                                    </label>
+                                </div>
+                                <div class="col-12 reportChkBx" *ngIf="showField('ReportCheckBox',programName,'basicSanityTestAllPass')">
+                                    <label class="col-11 reportChkBxLabel" style="display: inline-block;">
+                                        <input type="checkbox" class="col-1 thcheckbox" style="vertical-align: middle;display: inline-block;" [(ngModel)]="rfScriptFlag['basicSanityTestAllPass']" name="rfcheck_basicSanityTestAllPass">
+                                        Basic Sanity Test All Pass</label>
+                                </div>
+                                <div class="col-12 reportChkBx" *ngIf="showField('ReportCheckBox',programName,'rfAtpStarted')">
+                                    <label class="col-11 reportChkBxLabel" style="display: inline-block;">
+                                        <input type="checkbox" class="col-1 thcheckbox" style="vertical-align: middle;display: inline-block;" [(ngModel)]="rfScriptFlag['rfAtpStarted']" name="rfcheck_rfAtpStarted">
+                                        RF ATP started
+                                    </label>
+                                </div>
+                                <div class="col-12 reportChkBx" *ngIf="showField('ReportCheckBox',programName,'cellAdminStateIsPerCiq')">
+                                    <label class="col-11 reportChkBxLabel" style="display: inline-block;">
+                                        <input type="checkbox" class="col-1 thcheckbox" style="vertical-align: middle;display: inline-block;" [(ngModel)]="rfScriptFlag['cellAdminStateIsPerCiq']" name="rfcheck_cellAdminStateIsPerCiq">
+                                        Cells Admin state is per CIQ
+                                    </label>
+                                </div>
+                                <div class="col-12 reportChkBx" *ngIf="showField('ReportCheckBox',programName,'checkRSSI')">
+                                    <label class="col-11 reportChkBxLabel" style="display: inline-block;">
+                                        <input type="checkbox" class="col-1 thcheckbox" style="vertical-align: middle;display: inline-block;" [(ngModel)]="rfScriptFlag['checkRSSI']" name="rfcheck_checkRSSI">
+                                         RSSI Alarm Checked
+                                    </label>
+                                </div>
+                                <div class="col-12 reportChkBx" *ngIf="showField('ReportCheckBox',programName,'checkRSSIImbl')">
+                                    <label class="col-11 reportChkBxLabel" style="display: inline-block;">
+                                        <input type="checkbox" class="col-1 thcheckbox" style="vertical-align: middle;display: inline-block;" [(ngModel)]="rfScriptFlag['checkRSSIImbl']" name="rfcheck_checkRSSIImbl">
+                                         RSSI Imbalance Checked
+                                    </label>
+                                </div>
+                                <div class="col-12 reportChkBx" *ngIf="showField('ReportCheckBox',programName,'checkVSWR')">
+                                    <label class="col-11 reportChkBxLabel" style="display: inline-block;">
+                                        <input type="checkbox" class="col-1 thcheckbox" style="vertical-align: middle;display: inline-block;" [(ngModel)]="rfScriptFlag['checkVSWR']" name="rfcheck_checkVSWR">
+                                        VSWR Checked
+                                    </label>
+                                </div>
+                                <div class="col-12 reportChkBx" *ngIf="showField('ReportCheckBox',programName,'checkFIBER')">
+                                    <label class="col-11 reportChkBxLabel" style="display: inline-block;">
+                                        <input type="checkbox" class="col-1 thcheckbox" style="vertical-align: middle;display: inline-block;" [(ngModel)]="rfScriptFlag['checkFIBER']" name="rfcheck_checkFIBER">
+                                        Fiber Checked
+                                    </label>
+                                </div>
+                                <div class="col-12 reportChkBx" *ngIf="showField('ReportCheckBox',programName,'preMigrationHealth')">
+                                    <label class="col-11 reportChkBxLabel" style="display: inline-block;">
+                                        <input type="checkbox" class="col-1 thcheckbox" style="vertical-align: middle;display: inline-block;" [(ngModel)]="rfScriptFlag['preMigrationHealth']" name="rfcheck_preMigrationHealth">
+                                        Pre Migration Health Check File Reviewed
+                                    </label>
+                                </div>
+                                <div class="col-12 reportChkBx" *ngIf="showField('ReportCheckBox',programName,'preExistingAlarm')">
+                                    <label class="col-11 reportChkBxLabel" style="display: inline-block;">
+                                        <input type="checkbox" class="col-1 thcheckbox" style="vertical-align: middle;display: inline-block;" [(ngModel)]="rfScriptFlag['preExistingAlarm']" name="rfcheck_preExistingAlarm">
+                                        Any Pre Existing Alarms
+                                    </label>
+                                </div>
+                                <div class="col-12 reportChkBx" *ngIf="showField('ReportCheckBox',programName,'retRecived')">
+                                    <label class="col-11 reportChkBxLabel" style="display: inline-block;">
+                                        <input type="checkbox" class="col-1 thcheckbox" style="vertical-align: middle;display: inline-block;" [(ngModel)]="rfScriptFlag['retRecived']" name="rfcheck_retRecived">
+                                        RET form Received
+                                    </label>
+                                </div>
+                                <div class="col-12 reportChkBx" *ngIf="showField('ReportCheckBox',programName,'onsiteConfirm')">
+                                    <label class="col-11 reportChkBxLabel" style="display: inline-block;">
+                                        <input type="checkbox" class="col-1 thcheckbox" style="vertical-align: middle;display: inline-block;" [(ngModel)]="rfScriptFlag['onsiteConfirm']" name="rfcheck_onsiteConfirm">
+                                        Confirm if AISG OnSite
+                                    </label>
+                                </div>
+                                <div class="col-12 reportChkBx" *ngIf="showField('ReportCheckBox',programName,'checkSFP')">
+                                    <label class="col-11 reportChkBxLabel" style="display: inline-block;">
+                                        <input type="checkbox" class="col-1 thcheckbox" style="vertical-align: middle;display: inline-block;" [(ngModel)]="rfScriptFlag['checkSFP']" name="rfcheck_checkSFP">
+                                        SFP Checked
+                                    </label>
+                                </div>
+                                <div class="col-12 reportChkBx" *ngIf="showField('ReportCheckBox',programName,'atpAllPass')">
+                                    <label class="col-11 reportChkBxLabel" style="display: inline-block;">
+                                        <input type="checkbox" class="col-1 thcheckbox" style="vertical-align: middle;display: inline-block;" [(ngModel)]="rfScriptFlag['atpAllPass']" name="rfcheck_atpAllPass">
+                                        ATP all pass
+                                    </label>
+                                </div>
+                                <div class="col-12 reportChkBx" *ngIf="showField('ReportCheckBox',programName,'allRetsScanned')">
+                                    <label class="col-11 reportChkBxLabel" style="display: inline-block;">
+                                        <input type="checkbox" class="col-1 thcheckbox" style="vertical-align: middle;display: inline-block;" [(ngModel)]="rfScriptFlag['allRetsScanned']" name="rfcheck_allRetsScanned">
+                                        All RETs scanned
+                                    </label>
+                                </div>
+                                <div class="col-12 reportChkBx" *ngIf="showField('ReportCheckBox',programName,'fsuBypass')">
+                                    <label class="col-11 reportChkBxLabel" style="display: inline-block;">
+                                        <input type="checkbox" class="col-1 thcheckbox" style="vertical-align: middle;display: inline-block;" [(ngModel)]="rfScriptFlag['fsuBypass']" name="rfcheck_fsuBypass">
+                                        FSU Bypass
+                                    </label>
+                                </div>
+                                <div class="col-12 reportChkBx" *ngIf="showField('ReportCheckBox',programName,'allRetsLabeled')">
+                                    <label class="col-11 reportChkBxLabel" style="display: inline-block;">
+                                        <input type="checkbox" class="col-1 thcheckbox" style="vertical-align: middle;display: inline-block;" [(ngModel)]="rfScriptFlag['allRetsLabeled']" name="rfcheck_allRetsLabeled">
+                                        All RETs labeled (Accounting for every carrier)
+                                    </label>
+                                </div>
+
+                                <div class="col-12 reportChkBx" *ngIf="showField('ReportCheckBox',programName,'preChkPass')">
+                                    <label class="col-11 reportChkBxLabel" style="display: inline-block;">
+                                        <input type="checkbox" class="col-1 thcheckbox" style="vertical-align: middle;display: inline-block;" [(ngModel)]="rfScriptFlag['preChkPass']" name="rfcheck_preChkPass">
+                                        Pre Checks All Pass
+                                    </label>
+                                </div>
+                                <div class="col-12 reportChkBx" *ngIf="showField('ReportCheckBox',programName,'postChkPass')">
+                                    <label class="col-11 reportChkBxLabel" style="display: inline-block;">
+                                        <input type="checkbox" class="col-1 thcheckbox" style="vertical-align: middle;display: inline-block;" [(ngModel)]="rfScriptFlag['postChkPass']" name="rfcheck_postChkPass">
+                                        Post Checks All Pass
+                                    </label>
+                                </div>
+                                <div class="col-12 reportChkBx" *ngIf="showField('ReportCheckBox',programName,'crossAnchor')">
+                                    <label class="col-11 reportChkBxLabel" style="display: inline-block;">
+                                        <input type="checkbox" class="col-1 thcheckbox" style="vertical-align: middle;display: inline-block;" [(ngModel)]="rfScriptFlag['crossAnchor']" name="rfcheck_crossAnchor">
+                                        Cross Anchor
+                                    </label>
+                                </div>
+                                <div class="col-12 reportChkBx" *ngIf="showField('ReportCheckBox',programName,'concFSUInteg')">
+                                    <label class="col-11 reportChkBxLabel" style="display: inline-block;">
+                                        <input type="checkbox" class="col-1 thcheckbox" style="vertical-align: middle;display: inline-block;" [(ngModel)]="rfScriptFlag['concFSUInteg']" name="rfcheck_concFSUInteg">
+                                        Concurent FSU Integration
+                                    </label>
+                                </div>
+                                <div class="col-12 reportChkBx" *ngIf="showField('ReportCheckBox',programName,'vDUInstCorrect')">
+                                    <label class="col-11 reportChkBxLabel" style="display: inline-block;">
+                                        <input type="checkbox" class="col-1 thcheckbox" style="vertical-align: middle;display: inline-block;" [(ngModel)]="rfScriptFlag['vDUInstCorrect']" name="rfcheck_vDUInstCorrect">
+                                        vDU Instantiation Correct
+                                    </label>
+                                </div>
+                                <div class="col-12 reportChkBx" *ngIf="showField('ReportCheckBox',programName,'vDUDay2Complete')">
+                                    <label class="col-11 reportChkBxLabel" style="display: inline-block;">
+                                        <input type="checkbox" class="col-1 thcheckbox" style="vertical-align: middle;display: inline-block;" [(ngModel)]="rfScriptFlag['vDUDay2Complete']" name="rfcheck_vDUDay2Complete">
+                                        vDU Day 2 Complete
+                                    </label>
+                                </div>
+                                
+                                <div class="col-12 reportChkBx" *ngIf="showField('ReportCheckBox',programName,'followUpRequired')">
+                                    <label class="col-11 reportChkBxLabel" style="display: inline-block;">
+                                        <input type="checkbox" class="col-1 thcheckbox" style="vertical-align: middle;display: inline-block;" [(ngModel)]="rfScriptFlag['followUpRequired']" name="rfcheck_followUpRequired">
+                                        Follow-up Required
+                                    </label>
+                                </div>
+                            </div> -->
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="templateName" class="">REMARKS</label>
+                                    <textarea rows="4" cols="50" class="remarksTextArea" name="remarks" id="remarks" [(ngModel)]="reportData.remarks"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="the-fieldset timelineFields" *ngIf="!reportData.isCancellationReport">
+                        <legend class="the-legend" style="text-decoration: underline;">Critical Check Information</legend>
+                        <!-- <ng-container *ngTemplateOutlet="criticalCheckInfoTemplate"></ng-container> -->
+                        <div id="tableWrapper" class="scriptDetails criticalCheckDetails" style="margin-right: 25px;">
+                            <div class="scrollHead">
+                                <table class="table">
+                                    <thead>
+                                        <tr class="row" style="margin-left: 0;">
+                                            <th class="col-6">
+                                                <div>CHECKS REQUIRED</div>
+                                            </th>
+                                            <th class="col-3">
+                                                <div>CHECKS PERFORMED</div>
+                                            </th>
+                                            <th class="col-3">
+                                                <div>COMMENT</div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                            <div class="scriptTableBody">
+                                <table class="table">
+                                    <tbody id="rowCount" class="scriptData">
+                                        <ng-container *ngFor="let checkList of criticalCheckInfoList; let index = index">
+                                            <tr id="scriptDetailsRow" class="row row_id_{{index}}" style="margin-left: 0;">
+                                                <td class="col-6" data-toggle="tooltip" data-placement="right" data-container="body">
+                                                    <div class="td_form">
+                                                        <span>{{checkList.title}}</span>
+                                                    </div>
+                                                </td>
+                                                <td class="col-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                                                    <div class="td_form">
+                                                        <select class="form-control" id="checkPerformed_{{index}}" name="checkPerformed_{{index}}" [(ngModel)]="checkList.checkPerformed"
+                                                            #checkPerformed="ngModel" required>
+                                                            <option *ngFor="let option of checkList['options']" value="{{option}}">{{option}}</option>
+                                                        </select>
+                                                        <div *ngIf="siteReportForm.submitted && checkPerformed.invalid" class="error-message-block">
+                                                            Check Performed is required
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="col-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                                                    <input class="form-control fullWidthExSeq" autocomplete="off" id="criticalCheckRemarks_{{index}}" name="criticalCheckRemarks_{{index}}"
+                                                        type="text" [placeholder]="checkList.desc ? checkList.desc : 'State the reason'" [(ngModel)]="checkList.remarks" #remarks="ngModel" [minlength]="checkList.mandatory?.indexOf(checkPerformed.value) >= 0 ? 10 : null" [required]="checkList.mandatory?.indexOf(checkPerformed.value) >= 0"/>
+                                                    <div *ngIf="siteReportForm.submitted && remarks.invalid && remarks.value.length == 0" class="error-message-block">
+                                                        Remarks is required
+                                                    </div>
+                                                    <div *ngIf="remarks.invalid && remarks.value && remarks.value.length < 10" class="error-message-block">
+                                                        Explain using more than 10 characters
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </ng-container>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="the-fieldset timelineFields" *ngIf="!reportData.isCancellationReport">
+                        <legend class="the-legend" style="text-decoration: underline;">Timeline Information</legend>
+                        <!-- <div class="row addRowBtn">
+                            <button name="save" class="formBtnSmall myriadproBold validateForm" (click)="addTimelineRow()" accesskey="s" style="width: 100px;">ADD TIMELINE</button>
+                        </div> -->
+                        <div>
+                            <!-- <ng-container *ngTemplateOutlet="timelineTemplate"></ng-container> -->
+                            <div id="tableWrapper" class="scriptDetails timelineDetails" style="margin-right: 25px;">
+                                <div class="scrollHead">
+                                    <table class="table">
+                                        <thead>
+                                            <tr class="row" style="margin-left: 0;">
+                                                <th class="col-3">
+                                                    <div>TIMELINE</div>
+                                                </th>
+                                                <th class="col-3">
+                                                    <div>SITE DATE</div>
+                                                </th>
+                                                <th class="col-3">
+                                                    <div>SITE TIME</div>
+                                                </th>
+                                                <th class="col-3">
+                                                    <div>COMMENT</div>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="scriptTableBody">
+                                    <!-- <form id="scriptRowForm" #timelineForm="ngForm"> -->
+                                        <table class="table">
+                                            <tbody id="rowCount" class="scriptData">
+                                                <ng-container *ngFor="let key of timelineList; let index = index">
+                                                    <tr id="scriptDetailsRow" class="row row_id_{{index}}" style="margin-left: 0;">
+                                                        <td class="col-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                                                            <div class="td_form">
+                                                                <!-- <input *ngIf="key.inTimelineEditMode" class="form-control fullWidthExSeq" autocomplete="off" id="cmdSequence_{{index}}" name="cmdSequence_{{index}}"
+                                                                    type="text" [value]="key" [(ngModel)]="timelineIssuesList.timelines[index].timeLine"
+                                                                /> -->
+                                                                <span>{{key.timeLine}}</span>
+                                                            </div>
+                                                        </td>
+                                                        <td class="col-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                                                            <div class="td_form">
+                                                                <!-- <input *ngIf="key.inTimelineEditMode" class="form-control fullWidthExSeq" autocomplete="off" id="cmdSequence_{{index}}" name="cmdSequence_{{index}}"
+                                                                    type="text" [value]="key.siteDate" [(ngModel)]="key.siteDate"
+                                                                /> -->
+                                                                <!-- <input [ngModel]="key.siteDate | date:'MM-dd-yyyy'" (ngModelChange)="siteDateChange($event, index)" type="date" name="siteDate"/> -->
+                                                                <!-- <input class="form-control form-control-small dateRangeAlign" name="siteDate" [(ngModel)]="key.siteDate" [ngValue]="key.siteDate | date:'MM-dd-yyyy'" placeholder="" [owlDateTimeTrigger]="dt2"> -->
+                                                                <input class="form-control form-control-small dateRangeAlign" name="siteDate_{{index}}" [(ngModel)]="key.siteDate"
+                                                                    placeholder="" [owlDateTimeTrigger]="dt2" [owlDateTime]="dt2" #siteDate="ngModel" required>
+                                                                <owl-date-time [pickerType]="'calendar'" #dt2></owl-date-time>
+                                                                <!-- <span *ngIf="!key.inTimelineEditMode">{{key.siteDate | date: 'MM-dd-yyyy'}}</span> -->
+                                                                <div *ngIf="siteReportForm.submitted && siteDate.invalid" class="error-message-block" style="clear: both;">
+                                                                    Site Date is required
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td class="col-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                                                            <div class="td_form">
+                                                                <!-- <input class="form-control fullWidthExSeq" autocomplete="off" id="siteTime_{{index}}" name="siteTime_{{index}}"
+                                                                    type="text" [value]="key.siteTime" [(ngModel)]="key.siteTime" #siteTime="ngModel" required/> -->
+                                                                <div class="timeInfo">
+                                                                    <input class="form-control fullWidthExSeq" name="siteTime_{{index}}" [(ngModel)]="key.siteTime"
+                                                                        placeholder="" [owlDateTimeTrigger]="dt3" [owlDateTime]="dt3" [disabled]="key.siteTimeNA" #siteTime="ngModel" required>
+                                                                    <label class="reportChkBxLabel" style="display: inline-block;">
+                                                                        <input type="checkbox" class="col-1 thcheckbox" style="vertical-align: middle;display: inline-block;" name="check_siteTimeNA_{{index}}" [(ngModel)]="key.siteTimeNA" (change)="key.siteTime=''">
+                                                                        NA
+                                                                    </label>
+                                                                </div>
+                                                                <owl-date-time [pickerType]="'timer'" [hour12Timer] = "'false'" name="dt3" #dt3></owl-date-time>
+                                                                <div *ngIf="siteReportForm.submitted && siteTime.invalid" class="error-message-block">
+                                                                    Site Time is required
+                                                                </div>
+                                                            </div>
+                                                            <!-- <span class="floatLeft" *ngIf="key.inTimelineEditMode"></span> -->
+                                                        </td>
+                                                        <td class="col-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                                                            <input class="form-control fullWidthExSeq" autocomplete="off" id="remarks_{{index}}" name="remarks_{{index}}"
+                                                                type="text" [value]="key.remarks" [(ngModel)]="key.remarks" />
+                                                            <div class="error-message-block"></div>
+                                                        </td>
+                                                    </tr>
+                                                </ng-container>
+                                                <ng-container *ngFor="let key of troubleshootTimelineList; let index = index">
+                                                    <tr id="scriptDetailsRow" class="row row_id_{{index}}" style="margin-left: 0;">
+                                                        <td class="col-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                                                            <div class="td_form">
+                                                                <span>{{key.timeLine}}</span>
+                                                            </div>
+                                                        </td>
+                                                        <td class="col-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                                                            <div class="td_form">
+                                                                <input class="form-control form-control-small dateRangeAlign" name="siteDate_{{index}}" [(ngModel)]="key.siteDate"
+                                                                    placeholder="" [owlDateTimeTrigger]="dt2" [owlDateTime]="dt2" #siteDate="ngModel" required>
+                                                                <owl-date-time [pickerType]="'calendar'" #dt2></owl-date-time>
+                                                                <div *ngIf="siteReportForm.submitted && siteDate.invalid" class="error-message-block" style="clear: both;">
+                                                                    Site Date is required
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td class="col-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                                                            <div class="td_form">
+                                                                <!-- <input class="form-control fullWidthExSeq" name="siteTime_{{index}}" [(ngModel)]="key.siteTime"
+                                                                    placeholder="" [owlDateTimeTrigger]="dt3" [owlDateTime]="dt3" #siteTime="ngModel" required>
+                                                                <owl-date-time [pickerType]="'timer'" name="dt3" #dt3></owl-date-time>
+                                                                <input class="form-control form-control-small dateRangeAlign" name="siteTimeHr_{{index}}" type="time"
+                                                                    [(ngModel)]="key.siteTimeHr" #siteTimeHr="ngModel" required> -->
+
+                                                                <div class="timeInfo">
+                                                                    <label style="width: auto;margin-top: 5px;">HRS</label>
+                                                                    <input class="form-control form-control-small dateRangeAlign" name="siteTimeHr_{{index}}" type="number"
+                                                                        [(ngModel)]="key.siteTimeHr" style="width: 50px !important;margin-left: 8px;" [min]="0" [max]="23"
+                                                                        (change)="resetToValidValue(key.siteTimeHr, index, 'Hr')"
+                                                                        #siteTimeHr="ngModel" required pattern="^\d{0,59}">
+                                                                    <label style="width: auto;margin-top: 5px;">MINS</label>
+                                                                    <input class="form-control form-control-small dateRangeAlign" name="siteTimeMin_{{index}}" type="number"
+                                                                        [(ngModel)]="key.siteTimeMin" style="width: 50px !important;margin-left: 8px;" [min]="0" [max]="59"
+                                                                        (change)="resetToValidValue(key.siteTimeMin, index, 'Min')"
+                                                                        #siteTimeMin="ngModel" required>
+                                                                </div>
+                                                                <div *ngIf="siteReportForm.submitted && (siteTimeHr.invalid || siteTimeMin.invalid)" class="error-message-block">
+                                                                    Site Time is required
+                                                                </div>
+                                                                <div *ngIf="siteTimeHr.value > 23 || siteTimeMin.value > 59" class="error-message-block">
+                                                                    Hour and Minute should be valid
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td class="col-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                                                            <input class="form-control fullWidthExSeq" autocomplete="off" id="remarksTrbl_{{index}}" name="remarksTrbl_{{index}}"
+                                                                type="text" [value]="key.remarks" [(ngModel)]="key.remarks" />
+                                                            <div class="error-message-block"></div>
+                                                        </td>
+                                                    </tr>
+                                                </ng-container>
+                                            </tbody>
+                                        </table>
+                                    <!-- </form> -->
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="the-fieldset issueFields">
+                        <legend class="the-legend" style="text-decoration: underline;">Other Issues Information</legend>
+                        <div class="row addRowBtn">
+                            <button name="save" type="button" class="formBtnSmall myriadproBold validateForm" [ngClass]="isIssueListEditing()" [disabled]="isIssueListEditing() == 'buttonDisabled'" 
+                                (click)="addIssueRow()" accesskey="s" style="width: 100px;">ADD ISSUE</button><!--  [ngClass]="isDisabledClass()" [disabled]="isDisabledClass() == 'buttonDisabled'" -->
+                        </div>
+                        <div>
+                            <ng-container *ngTemplateOutlet="issuesTemplate"></ng-container>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="the-fieldset issueFields" *ngIf="!reportData.isCancellationReport">
+                        <legend class="the-legend" style="text-decoration: underline;">Post Audit Issues Information</legend>
+                        <div>
+                            <ng-container *ngTemplateOutlet="postAuditIssuesTemplate"></ng-container>
+                        </div>
+                    </fieldset>
+
+                    <!-- <fieldset class="the-fieldset issueFields">
+                        <legend class="the-legend" style="text-decoration: underline;">Email Information</legend>
+                        <div>
+                            <ng-container *ngTemplateOutlet="EmailTemplate"></ng-container>
+                        </div>
+                    </fieldset> -->
+                    
+                <!-- </form> -->
+            </div>
+        </div>
+        <div class="modal-footer" style="flex-direction:column;justify-content: center;">
+            <div class="error-message-block" *ngIf="getAddedIssues().length == 0">At least one issue should be added</div>
+            <div class="error-message-block" *ngIf="isIssueListEditing() && getAddedIssues().length > 0">Please save all issues</div>
+            <div class="modalAction">
+                <button type="submit" class="formBtn myriadproBold" [ngClass]="isIssueListEditing()" [disabled]="isIssueListEditing() == 'buttonDisabled'">DOWNLOAD</button><!-- (click)="siteReportForm.form.valid && downloadReport($event)" -->
+                <button type="button" class="formBtn myriadproBold" (click)="getScriptOutput($event)">EMAIL</button>
+                <button type="button" class="formBtnCncl formBtn myriadproBold" (click)="closeModelSiteCompReport()">CLOSE</button>
+            </div>
+        </div>
+        </form>
+    </ng-template>
+
+    <ng-template #timelineTemplate>
+        <div id="tableWrapper" class="scriptDetails timelineDetails" style="margin-right: 25px;">
+            <div class="scrollHead">
+                <table class="table">
+                    <thead>
+                        <tr class="row" style="margin-left: 0;">
+                            <th class="col-3">
+                                <div>TIMELINE</div>
+                            </th>
+                            <th class="col-3">
+                                <div>SITE DATE</div>
+                            </th>
+                            <th class="col-3">
+                                <div>SITE TIME</div>
+                            </th>
+                            <th class="col-3">
+                                <div>COMMENT</div>
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="scriptTableBody">
+                <form id="scriptRowForm" #timelineForm="ngForm">
+                    <table class="table">
+                        <tbody id="rowCount" class="scriptData">
+                            <ng-container *ngFor="let key of timelineList; let index = index">
+                                <tr id="scriptDetailsRow" class="row row_id_{{index}}" style="margin-left: 0;">
+                                    <td class="col-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <div class="td_form">
+                                            <!-- <input *ngIf="key.inTimelineEditMode" class="form-control fullWidthExSeq" autocomplete="off" id="cmdSequence_{{index}}" name="cmdSequence_{{index}}"
+                                                type="text" [value]="key" [(ngModel)]="timelineIssuesList.timelines[index].timeLine"
+                                            /> -->
+                                            <span>{{key.timeLine}}</span>
+                                        </div>
+                                    </td>
+                                    <td class="col-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <div class="td_form">
+                                            <!-- <input *ngIf="key.inTimelineEditMode" class="form-control fullWidthExSeq" autocomplete="off" id="cmdSequence_{{index}}" name="cmdSequence_{{index}}"
+                                                type="text" [value]="key.siteDate" [(ngModel)]="key.siteDate"
+                                            /> -->
+                                            <!-- <input [ngModel]="key.siteDate | date:'MM-dd-yyyy'" (ngModelChange)="siteDateChange($event, index)" type="date" name="siteDate"/> -->
+                                            <!-- <input class="form-control form-control-small dateRangeAlign" name="siteDate" [(ngModel)]="key.siteDate" [ngValue]="key.siteDate | date:'MM-dd-yyyy'" placeholder="" [owlDateTimeTrigger]="dt2"> -->
+                                            <input class="form-control form-control-small dateRangeAlign" name="siteDate_{{index}}" [(ngModel)]="key.siteDate"
+                                                placeholder="" [owlDateTimeTrigger]="dt2" [owlDateTime]="dt2">
+                                            <owl-date-time [pickerType]="'calendar'" #dt2></owl-date-time>
+                                            <!-- <span *ngIf="!key.inTimelineEditMode">{{key.siteDate | date: 'MM-dd-yyyy'}}</span> -->
+                                            
+                                        </div>
+                                    </td>
+                                    <td class="col-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <div class="td_form">
+                                            <input class="form-control fullWidthExSeq" autocomplete="off" id="siteTime_{{index}}" name="siteTime_{{index}}"
+                                                type="text" [value]="key.siteTime" [(ngModel)]="key.siteTime" #siteTime="ngModel" required/>
+                                            <div *ngIf="timelineForm.submitted && siteTime.invalid" class="error-message-block">
+                                                Site Time is required
+                                            </div>
+                                        </div>
+                                        <!-- <span class="floatLeft" *ngIf="key.inTimelineEditMode"></span> -->
+                                    </td>
+                                    <td class="col-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <input class="form-control fullWidthExSeq" autocomplete="off" id="remarks_{{index}}" name="remarks_{{index}}"
+                                            type="text" [value]="key.remarks" [(ngModel)]="key.remarks" />
+                                        <div class="error-message-block"></div>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                            <!-- <ng-container *ngFor="let key of timelineIssuesList.timelines; let index = index">
+                                <tr id="scriptDetailsRow" class="row row_id_{{index}}" style="margin-left: 0;">
+                                    <td class="col-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <div class="td_form">
+                                            <select class="form-control" *ngIf="key.inTimelineEditMode" name="cmdRules_{{index}}" id="cmdRules_{{index}}" [(ngModel)]="key.timeLine">
+                                                <option value="">--Select--</option>
+                                                <option *ngFor="let item of reportFormOptions['timelineList']" id="{{item}}">{{item}}</option>
+                                            </select>
+                                            <div class="error-message-block"></div>
+                                            <span *ngIf="!key.inTimelineEditMode">{{key.timeLine}}</span>
+                                        </div>
+                                        <span class="floatLeft" *ngIf="key.inTimelineEditMode"></span>
+                                    </td>
+                                    <td class="col-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <div class="td_form">
+                                            <input *ngIf="key.inTimelineEditMode" class="form-control fullWidthExSeq" autocomplete="off" id="cmdSequence_{{index}}" name="cmdSequence_{{index}}"
+                                                type="text" [value]="key.siteDate" [(ngModel)]="key.siteDate"
+                                            />
+
+                                            <input *ngIf="key.inTimelineEditMode" class="form-control form-control-small dateRangeAlign" [ngClass]="{'error-border':errMessage}"
+                                                name="siteDate" [(ngModel)]="key.siteDate" [value]="key.siteDate | date: 'MM-dd-yyyy'" placeholder="" [owlDateTimeTrigger]="dt2" [owlDateTime]="dt2">
+                                            <owl-date-time [pickerType]="'calendar'" #dt2></owl-date-time>
+                                            <span *ngIf="!key.inTimelineEditMode">{{key.siteDate | date: 'MM-dd-yyyy'}}</span>
+                                            
+                                            <div class="error-message-block"></div>
+                                            <span *ngIf="!key.inTimelineEditMode">{{key.siteDate}}</span>
+                                        </div>
+                                        <span class="floatLeft" *ngIf="key.inTimelineEditMode"></span>
+                                    </td>
+                                    <td class="col-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <div class="td_form">
+                                            <input *ngIf="key.inTimelineEditMode" class="form-control fullWidthExSeq" autocomplete="off" id="cmdRemarks_{{index}}" name="cmdRemarks_{{index}}"
+                                            type="text" [value]="key.siteTime" [(ngModel)]="key.siteTime" />
+                                            <div class="error-message-block"></div>
+                                            <span class="eventColText" *ngIf="!key.inTimelineEditMode">{{key.siteTime}}</span>
+                                        </div>
+                                        <span class="floatLeft" *ngIf="key.inTimelineEditMode"></span>
+                                    </td>
+                                    <td class="col-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <span class="eventColText" *ngIf="!key.inTimelineEditMode">{{key.remarks}}</span>
+                                        <div class="form-control-fixed iconsWrapper tableRowAction" id="fixedCol" ng-style="iconsWrapperPosition" *ngIf="key.role != 'Super Administrator'">
+                                            <div *ngIf="!key.inTimelineEditMode" (click)="editSectionRow($event, key, index,'timeline')" class="editRow" placement="bottom" container="body"
+                                                ngbTooltip="Edit"></div>
+                                            <div *ngIf="!key.inTimelineEditMode" (click)="deleteSectionRow(confirmModal, key.userName, index,'timeline')" class="deleteRow" placement="bottom"
+                                                container="body" ngbTooltip="Delete"></div>
+                                            <div *ngIf="key.inTimelineEditMode" (click)="saveTimelineRow($event, key, index)" class="saveRow validateForm" placement="bottom"
+                                                container="body" ngbTooltip="Save"></div>
+                                            <div *ngIf="key.inTimelineEditMode" (click)="cancelTimelineRow(key, index)" class="cancelRow" placement="bottom" container="body"
+                                                ngbTooltip="Cancel"></div>
+                                        </div>
+                                        <input *ngIf="key.inTimelineEditMode" class="form-control fullWidthExSeq" autocomplete="off" id="cmdRemarks_{{index}}" name="cmdRemarks_{{index}}"
+                                            type="text" [value]="key.remarks" [(ngModel)]="key.remarks" />
+                                            
+                                        <input *ngIf="key.inTimelineEditMode" class="form-control form-control-small dateRangeAlign" [ngClass]="{'error-border':errMessage}"
+                                            name="siteTime" [(ngModel)]="key.siteTime" [value]="key.siteDate | date: 'HH:mm'" placeholder="" [owlDateTimeTrigger]="dt1" [owlDateTime]="dt1">
+                                        <owl-date-time [pickerType]="'timer'" #dt1></owl-date-time>
+                                        <span class="eventColText" *ngIf="!key.inTimelineEditMode">{{key.siteTime | date: 'HH:mm'}}</span>
+                                            
+                                        <div class="error-message-block"></div>
+                                    </td>
+                                </tr>
+                            </ng-container> -->
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </ng-template>
+    <ng-template #issuesTemplate>
+        <div id="tableWrapper" class="scriptDetails" style="margin-right: 25px;">
+            <div class="scrollHead">
+                <table class="table">
+                    <thead>
+                        <tr class="row" style="margin-left: 0;">
+                            <th class="col-2">
+                                <div>CATEGORY</div>
+                            </th>
+                            <th class="col-2">
+                                <div>ISSUE</div>
+                            </th>
+                            <th class="col-2">
+                                <div>TECHNOLOGY</div>
+                            </th>
+                            <th class="col-2">
+                                <div>ATTRIBUTE TO</div>
+                            </th>
+                            <th class="col-2">
+                                <div>RESOLVED</div>
+                            </th>
+                            <th class="col-2">
+                                <div>NEXT STEP</div>
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="scriptTableBody">
+                <form id="scriptRowForm" #scriptRowForm="ngForm" novalidate>
+                    <table class="table">
+                        <tbody id="rowCount" class="scriptData">
+                            <ng-container *ngFor="let key of timelineIssuesList.issues; let index = index">
+                                
+                                <tr id="scriptDetailsRow" class="row row_id_{{index}}" style="margin-left: 0;">
+                                    <td class="col-2" data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <div class="td_form">
+                                            <select class="form-control formControlMini" *ngIf="key.inIssueEditMode" id="issueCategory_{{index}}" name="issueCategory_{{index}}" [(ngModel)]="key.category" #category="ngModel" (change)="issuecategoryChange(index)" required><!-- [compareWith]="compareIssueCategoryFn" -->
+                                                <option value="">--Select--</option>
+                                                <option *ngFor="let item of issuesCategory" id="{{item}}" [ngValue]="item">{{item}}</option>
+                                            </select>
+                                            <div class="error-message-block"></div>
+                                            <span *ngIf="!key.inIssueEditMode">{{key.category}}</span>
+                                        </div>
+                                        <span class="floatLeft" *ngIf="key.inIssueEditMode"></span>
+                                    </td>
+                                    <td class="col-2" data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <div class="td_form">
+                                            <select class="form-control formControlMini" *ngIf="key.inIssueEditMode" name="issue_{{index}}" id="issue_{{index}}" [(ngModel)]="key.issue">
+                                                <option value="">--Select--</option>
+                                                <option *ngFor="let item of reportFormOptions['issueCategory'][key.category]" id="{{item}}">{{item}}</option>
+                                            </select>
+                                            <div class="error-message-block"></div>
+                                            <span class="eventColText" *ngIf="!key.inIssueEditMode">{{key.issue}}</span>
+                                        </div>
+                                        <span class="floatLeft" *ngIf="key.inIssueEditMode"></span>
+                                    </td>
+                                    <td class="col-2" data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <div class="td_form">
+                                            <select class="form-control formControlMini" *ngIf="key.inIssueEditMode" name="issueTech_{{index}}" id="issueTech_{{index}}" [(ngModel)]="key.technology">
+                                                <option value="">--Select--</option>
+                                                <option *ngFor="let item of issueTechnologyList" id="{{item}}">{{item}}</option>
+                                            </select>
+                                            <div class="error-message-block"></div>
+                                            <span class="eventColText" *ngIf="!key.inIssueEditMode">{{key.technology}}</span>
+                                        </div>
+                                        <span class="floatLeft" *ngIf="key.inIssueEditMode"></span>
+                                    </td>
+                                    <td class="col-2" data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <div class="td_form">
+                                            <select class="form-control formControlMini" *ngIf="key.inIssueEditMode" name="issueAttribute_{{index}}" id="issueAttribute_{{index}}" [(ngModel)]="key.attribute">
+                                                <option value="">--Select--</option>
+                                                <option *ngFor="let item of issueAttributeToList" id="{{item}}" [ngValue]="item">{{item}}</option>
+                                            </select>
+                                            <div class="error-message-block"></div>
+                                            <span *ngIf="!key.inIssueEditMode">{{key.attribute}}</span>
+                                        </div>
+                                        <span class="floatLeft" *ngIf="key.inIssueEditMode"></span>
+                                    </td>
+                                    <td class="col-2" data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <div class="td_form">
+                                            <select class="form-control formControlMini" *ngIf="key.inIssueEditMode" name="issueResolved_{{index}}" id="issueResolved_{{index}}" [(ngModel)]="key.resolved">
+                                                <option value="">--Select--</option>
+                                                <option *ngFor="let item of issueResolvedList" id="{{item}}" [ngValue]="item">{{item}}</option>
+                                            </select>
+                                            <div class="error-message-block"></div>
+                                            <span *ngIf="!key.inIssueEditMode">{{key.resolved}}</span>
+                                        </div>
+                                        <span class="floatLeft" *ngIf="key.inIssueEditMode"></span>
+                                    </td>
+                                    <td class="col-2" data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <span class="eventColText" *ngIf="!key.inIssueEditMode">{{key.remarks}}</span>
+                                        <div class="form-control-fixed iconsWrapper tableRowAction" id="fixedCol" ng-style="iconsWrapperPosition" *ngIf="key.role != 'Super Administrator'">
+                                            <div *ngIf="!key.inIssueEditMode" (click)="editSectionRow($event, key, index,'issues')" class="editRow" placement="bottom" container="body"
+                                                ngbTooltip="Edit"></div>
+                                            <div *ngIf="!key.inIssueEditMode" (click)="deleteSectionRow(confirmModal, key.userName, index,'issues')" class="deleteRow" placement="bottom"
+                                                container="body" ngbTooltip="Delete"></div>
+                                            <div *ngIf="key.inIssueEditMode" type="submit" (click)="saveIssueRow($event, key, index)" class="saveRow validateForm" placement="bottom"
+                                                container="body" ngbTooltip="Save"></div>
+                                            <div *ngIf="key.inIssueEditMode" (click)="cancelIssueRow(key, index)" class="cancelRow" placement="bottom" container="body"
+                                                ngbTooltip="Cancel"></div>
+                                        </div>
+                                        <!-- <select class="form-control" *ngIf="key.inIssueEditMode" name="cmdRules_{{index}}" id="cmdRules_{{index}}" [(ngModel)]="key.remarks">
+                                            <option value="">--Select--</option>
+                                            <option *ngFor="let item of reportFormOptions['issueCategory'][key.category]" id="{{item}}">{{item}}</option>
+                                        </select> -->
+                                        <input *ngIf="key.inIssueEditMode" class="form-control formControlMini fullWidthExSeq" autocomplete="off" id="cmdRemarks_{{index}}" name="cmdRemarks_{{index}}"
+                                            type="text" [value]="key.remarks" [(ngModel)]="key.remarks" />
+                                        <div class="error-message-block"></div>
+                                    </td>
+                                <!-- </form> -->
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template #postAuditIssuesTemplate>
+        <div id="tableWrapper" class="scriptDetails" style="margin-right: 25px;">
+            <div class="scrollHead">
+                <table class="table">
+                    <thead>
+                        <tr class="row" style="margin-left: 0;">
+                            <!-- <th class="col-1">
+                                <div>TEST NAME</div>
+                            </th> -->
+                            <th class="col-1">
+                                <div>TEST</div>
+                            </th>
+                            <th class="col-2">
+                                <div>YANG COMMAND</div>
+                            </th>
+                            <th class="col-3">
+                                <div>AUDIT ISSUES</div>
+                            </th>
+                            <th class="col-2">
+                                <div>EXPECTED RESULT</div>
+                            </th>
+                            <th class="col-3">
+                                <div>ACTION ITEM</div>
+                            </th>
+                            <th class="col-1">
+                                <div>ERROR CODE</div>
+                            </th>
+                            <!-- <th class="col-1">
+                                <div>REMARKS</div>
+                            </th> -->
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="scriptTableBody">
+                <form id="scriptRowForm">
+                    <table class="table">
+                        <tbody id="rowCount" class="scriptData">
+                            <ng-container *ngFor="let key of postAuditIssues; let index = index">
+                                <tr id="scriptDetailsRow" class="postAuditIssue row row_id_{{index}}" style="margin-left: 0;">
+                                    <!-- <td class="col-1" data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <span class="floatLeft">{{key.testName}}</span>
+                                    </td> -->
+                                    <td class="col-1" data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <span class="floatLeft breakWord">{{key.test}}</span>
+                                    </td>
+                                    <td class="col-2" data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <span class="floatLeft breakWord">{{key.yangCommand}}</span>
+                                    </td>
+                                    <td class="col-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <span class="eventColText breakWord">{{key.auditIssue}}</span>
+                                    </td>
+                                    <td class="col-2" data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <span class="eventColText breakWord">{{key.expectedResult}}</span>
+                                    </td>
+                                    <td class="col-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <span class="eventColText breakWord">{{key.actionItem}}</span>
+                                    </td>
+                                    <!-- <td class="col-1" data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <span class="eventColText breakWord">{{key.errorCode}}</span>
+                                    </td> -->
+                                    <td class="col-1" data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <span class="floatLeft breakWord">{{key.errorCode}}</span>
+                                        <!-- <div *ngFor="let fail of key.failure | keyvalue">
+                                            <span class="eventColText">{{fail.key}} - </span>
+                                            <span class="eventColText">{{fail.value}}</span>
+                                        </div> -->
+                                        <!-- <div class="form-control-fixed iconsWrapper tableRowAction" id="fixedCol" ng-style="iconsWrapperPosition" *ngIf="key.role != 'Super Administrator'">
+                                            <div *ngIf="!key.inIssueEditMode" (click)="editSectionRow($event, key, index,'issues')" class="editRow" placement="bottom" container="body"
+                                                ngbTooltip="Edit"></div>
+                                            <div *ngIf="!key.inIssueEditMode" (click)="deleteSectionRow(confirmModal, key.userName, index,'issues')" class="deleteRow" placement="bottom"
+                                                container="body" ngbTooltip="Delete"></div>
+                                            <div *ngIf="key.inIssueEditMode" (click)="saveIssueRow($event, key, index)" class="saveRow validateForm" placement="bottom"
+                                                container="body" ngbTooltip="Save"></div>
+                                            <div *ngIf="key.inIssueEditMode" (click)="cancelIssueRow(key, index)" class="cancelRow" placement="bottom" container="body"
+                                                ngbTooltip="Cancel"></div>
+                                        </div> -->
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template #EmailTemplate>
+        <div class="emailContainer">
+            <div class="emailInput">
+                <input class="" autocomplete="off" id="cmdRemarks_{{index}}" name="cmdRemarks_{{index}}"
+                    type="text" />
+                <button name="save" class="formBtnSmall myriadproBold validateForm" (click)="addIssueRow()" accesskey="s" style="width: 100px;">ADD</button>
+            </div>
+            <div class="emailList">
+                <ng-container *ngFor="let email of siteReportConfiguredEmails; let index = index">
+                    <div class="row">
+                        <div>{{email}}</div>
+                        <button>Remove</button>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </ng-template>
+    <ng-template #ovFailureErrorModal let-c="close" let-modal>
+        <div class="modal-header">
+            <div class="dispHeader">
+                <h4>OV UPDATE STATUS</h4>
+            </div>
+        </div>
+        <div class="modelBody" style="padding: 0px 25px">
+            <fieldset class="scheduler-border">
+                <legend class="scheduler-border">Milestone</legend>
+                <div class="scrollBody mileStoneResult">
+                    <div *ngFor="let mileStone of milestoneResult; let i = index">
+                        <div class="mileStoneRows">
+                            <div class="mileStoneName"><span>{{i+1}}.</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>{{mileStone.name}}</span></div>
+                            <i *ngIf="mileStone.status === 'fail'" (click)="ovRetry()" class="mileStoneRetryIcon" ngbTooltip="Retry" placement="top" container="body"></i>
+                            <i [ngbTooltip]="mileStone.status === 'pass' ? 'Success' : 'Failed'" [class]="mileStone.status === 'pass' ? 'mileStoneRetrySuccess' : 'mileStoneRetryFail'" placement="top" container="body"></i>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset class="scheduler-border">
+                <legend class="scheduler-border">History</legend>
+                <div class="scrollBody mileStoneResult">
+                    <pre>{{historyResult}}</pre>
+                </div>
+            </fieldset>
+            <div id="viewFile" class="errorMsgBlock" *ngIf="milestoneResult.length == 0 && historyResult.length == 0">
+                <rct-nodata [subTitle]=""></rct-nodata>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="modalAction">
+                <button type="button" class="formBtnCncl btn btn-light" (click)="ovRetry()">RETRY</button>
+                <button type="button" class="formBtnCncl btn btn-light" (click)="closeModelFailureMsg()">CLOSE</button>
+            </div>
+        </div>
+        <rct-loader class="innerLoader" *ngIf="showInnerLoader"></rct-loader>
+    </ng-template>
+</div>

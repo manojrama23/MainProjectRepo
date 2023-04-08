@@ -1,0 +1,316 @@
+<div class="page-wrapper">
+    <rct-loader *ngIf="showLoader"></rct-loader>
+    <h1 class="mainHead">DASHBOARD</h1>
+
+    <rct-nodata *ngIf="noDataVisibility" [subTitle]="'Please click on <u><b>CREATE NEW</b></u> to add users'"></rct-nodata>
+
+    <ng-template #sessionExpiredModal let-c="close" let-d="dismiss">
+        <div class="failureIcon"></div>
+        <p id="sessionPopup">Session Expired</p>
+        <div class="modelDismiss" (click)="closeAndLogout()"></div>
+    </ng-template>
+
+    <ng-template #successModal let-c="close" let-d="dismiss">
+        <div class="successIcon"></div>
+        <p id="sessionPopup">{{message}}</p>
+
+        <div class="modelDismiss" (click)="closeModel()"></div>
+    </ng-template>
+
+    <!-- tabs -->
+    <div class="row">
+        <div class="col-10">
+            <ul class="nav nav-pills" role="tablist">
+                <li class="nav-item">
+                    <div (click)="candiTabBind()" accesskey="n" name="candi" class="divalign float-sm-right float-md-right float-lg-right float-xl-right"
+                        #candiTab>C&I DETAILS</div>
+                </li>
+                <li class="nav-item">
+                    <div (click)="healthTabBind()" accesskey="h" name="health" class=" divalign float-sm-right float-md-right float-lg-right float-xl-right"
+                        #healthTab>S-RCT HEALTH</div>
+                </li>
+            </ul>
+        </div>
+        <div class="col-2 mapViewBtnContainer">
+            <button name="save" class="formBtn myriadproBold validateForm airlinecnfgSearch" id="searchButton" (click)="showMapView(mapViewModal)"
+                accesskey="s">VIEW MAP</button>
+            <!-- <div class="borderBtn" (click)="showMapView(mapViewModal)">
+                <span class="mapIcon"></span>
+                VIEW MAP
+            </div> -->
+        </div>
+    </div>
+
+    <div id="chartformWrapper">
+
+        <div class="row borderBG" style="height: 50px;">
+            <div class="col-6" style="margin: auto;">
+                <img *ngFor="let icon of customerIcons;" src="{{icon.iconPath}}" style="max-width:100px;max-height:46px;margin-right: 5%;width:auto;height: auto;">
+            </div>
+            <!-- <div class="col-2"></div> -->
+            <div class="chartformWrapper1 bluePrintFormWrapper col-6" style="margin: auto;">
+                <div class="floatRight activeUsers" (click)="viewActiveUsers(activeUserModal)">
+                    ACTIVE USERS
+                    <span class="myriadproBold" style="font-size: 18px">{{activeUsersCount}}</span>
+                </div>
+                
+                <div class="floatRight customerSupported">CUSTOMER SUPPORTED
+                    <span class="myriadproBold" style="font-size: 18px">{{supportedCustomer}}</span>
+                </div>
+                <!-- <div class="floatRight">
+                  <div class="borderBtn" (click)="showMapView(mapViewModal)">
+                    <span class="mapIcon"></span>
+                    VIEW MAP
+                  </div>
+                </div> -->
+            </div>
+        </div>
+
+        <div id="chartformWrapper2" class="formWrapperMargin bluePrintFormWrapper" *ngIf="healthBlock">
+            <div class="row">
+                <div class="col-3 col-3-30 graphGap">
+                    <div class="col-12 borderBG alignCenter">
+                        <div id="chartBlockDisk" class="discLabels"><span>DISK</span> USAGE</div>
+                        <div class="labelsLegend">USED
+                            <span class="myriadproBold">{{usedDiskSpace}}</span> AVAILABLE
+                            <span class="myriadproBold">{{diskFreeSpace}}</span>
+                            <br> TOTAL
+                            <span class="myriadproBold">{{diskTotalSpace}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3 col-3-30 graphGap">
+                    <div class="col-12 borderBG alignCenter">
+                        <div id="chartBlockMemory" class="discLabels">
+                            <span>MEMORY</span> USAGE</div>
+                        <div class="labelsLegend">USED
+                            <span class="myriadproBold">{{usedMemory}}</span> AVAILABLE
+                            <span class="myriadproBold">{{freeMemory}}</span>
+                            <br> TOTAL
+                            <span class="myriadproBold">{{totalMemory}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-6-40">
+                    <!-- <div id="barChart">
+					<div class="discLabels"><span>NE's</span> COMMISSIONED</div>
+                </div> -->
+                    <div class="col-12 borderBG">
+                        <div class="discLabels">
+                            <span>CPU</span> USAGE</div>
+                        <pre style="padding: 20px 10px;height: 285px;text-overflow: auto;overflow: scroll;">{{scriptDataOutput}}</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div id="chartformWrapper2" class="formWrapperMargin bluePrintFormWrapper" *ngIf="candiBlock">
+            <div class="row">
+                <div class="col-6 graphGap">
+                    <!-- <div id="commissioningReport">
+                        <div class="discLabels"><span>OVERALL</span> COMMISSIONING REPORT</div>
+                    </div> -->
+                    <div class="borderBG">
+                        <div class="discLabels">
+                            <span>OVERALL</span> COMMISSIONING REPORT</div>
+                        <div class="custSelect" *ngIf="currentUser == 'Super Administrator'" style="visibility: hidden;">
+                            <!-- <label class="col-4" style="text-align: right;">SELECT CUSTOMER</label> -->
+                            <span>SELECT CUSTOMER : </span>
+                            <select class="form-control" name="selectedCust" id="selectedCust" [(ngModel)]="selectedCustIs" (change)="getCustGraph(selectedCustIs)">
+                                <option value={{customer.id}} *ngFor="let customer of dashBoardData.customerList">{{customer.customerName}}</option>
+                            </select>
+                        </div>
+                        <div id="barChart" class="col-11">
+
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="col-3 borderBG">
+                    <div id="chartBlockSchedule" class="discLabels">
+                        <span>COMMISSIONING</span> STATUS</div>
+                    <div class="row" style="margin-top: 15px;" *ngIf="currentUser == 'Super Administrator'"></div>
+                </div> -->
+                <div class="col-6">
+                    <div class="borderBG">
+                        <div class="discLabels">
+                            <span>PER MARKET </span>COMMISSIONING REPORT
+                        </div>
+                        <div class="custSelect" *ngIf="currentUser == 'Super Administrator'">
+                            <!-- <label class="col-4" style="text-align: right;">SELECT CUSTOMER</label> -->
+                            <span>SELECT CUSTOMER : </span>
+                            <select class="form-control" name="selectedCust" id="selectedCust" [(ngModel)]="selectedCustIs"
+                                (change)="getCustGraph(selectedCustIs)">
+                                <option value={{customer.id}} *ngFor="let customer of dashBoardData.customerList">{{customer.customerName}}</option>
+                            </select>
+                        </div>
+                        <div id="reasonsReport" class="col-11">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 	<div id="chartformWrapper" class="formWrapperMargin bluePrintFormWrapper" *ngIf="chartShowHide">
+		<div class="row">
+			<div class="col-3">
+				<div id="chartBlockDisk">
+					<div class="discLabels"><span>DISK</span> USAGE</div>
+				</div>
+				<div class="labelsLegend">USED <span class="myriadproBold">{{usedDiskSpace}}</span> AVAILABLE <span class="myriadproBold">{{diskFreeSpace}}</span>  TOTAL <span class="myriadproBold">{{diskTotalSpace}}</span></div>
+			</div>
+			<div class="col-3">
+				<div id="chartBlockMemory">
+					<div class="discLabels"><span>MEMORY</span> USAGE</div>
+				</div>
+				<div class="labelsLegend">USED <span class="myriadproBold">{{usedMemory}}</span> AVAILABLE <span class="myriadproBold">{{freeMemory}}</span> TOTAL <span class="myriadproBold">{{totalMemory}}</span></div>
+			</div>
+			<div class="col-6">
+				<div id="barChart">
+					<div class="discLabels"><span>NE's</span> COMMISSIONED</div>
+				</div>
+			</div> 
+		</div>
+	</div> -->
+
+
+
+
+        <rct-model *ngIf="showModelMessage" [message]="modelData"></rct-model>
+
+        <!-- Map View -->
+        <ng-template #mapViewModal let-c="close" let-modal>
+            <div class="modal-header">
+                <div class="dispHeader">
+                    <h4>MAP VIEW </h4>
+                    <button type="button" class="close" aria-label="Close" (click)="closeModelMapView()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            <div class="modelBody">
+        
+                <form id="formWrapper" class="formWrapperMargin">
+                    <div class="row">
+                        <div class="col-3">
+                            <label for="templateName">SELECT DATE RANGE</label>
+                            <div class="form-group" style="display: inline-block;">
+                                <input class="form-control readOnlyDate" style="width: 80px !important;word-break: break-word;margin-right: 8px;" id="fromDate" name="fromDt"
+                                    [(ngModel)]="fromDt" [owlDateTimeTrigger]="dt" [owlDateTime]="dt" [max]="toDate ? toDate : max" placeholder="FROM" (dateTimeChange)="onChangeDate()" readonly>
+                                <owl-date-time [pickerType]="'calendar'" #dt></owl-date-time>
+                            </div>
+                            <div class="form-group" style="display: inline-block;">
+                                <input class="form-control readOnlyDate" style="width: 80px !important;word-break: break-word;" id="toDate" name="toDate" [min]="fromDt" [max]="max"  [(ngModel)]="toDate" [owlDateTimeTrigger]="dt1"
+                                    [owlDateTime]="dt1" placeholder="TO" (dateTimeChange)="onChangeDate()" readonly>
+                                <div class="error-message-block"></div>
+                                <owl-date-time [pickerType]="'calendar'" #dt1></owl-date-time>
+                            </div>
+                            <div class="errMessageCls" *ngIf="errMessage">Please Select Date Range</div>
+                            <div class="errMessageCls" *ngIf="errMessageDate">Max. Date Range - {{maxSearchDateRange}} days</div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName">CUSTOMER</label>
+                                <select class="form-control" id="searchCustomer" #customer (change)="onChangeCustomer(customer.value)">
+                                    <option value="">All</option>
+                                    <option *ngFor="let key of searchCustomerList" value="{{key.id}}" id="{{key.id}}">{{key.customerName}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName">MARKET AREA</label>
+                                <select class="form-control" id="searchMarket">
+                                    <option value="">All</option>
+                                    <option *ngFor="let key of marketList" value="{{key}}" id="{{key.id}}">{{key}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-2" style="margin-top: 17px;">
+                            <button type="submit" class="formBtn myriadproBold" (click)="searchMapView($event)">SEARCH</button>
+                        </div>
+        
+                    </div>
+                </form>
+        
+                <div id="map" style="height: 450px;" leaflet 
+                    [leafletOptions]="options" 
+                    [leafletLayers]="layer" 
+                    (leafletMapReady)="onMapReady($event)">
+                </div>
+                <rct-loader class="innerLoader" *ngIf="showInnerLoader"></rct-loader>
+            </div>
+            <div class="modal-footer">
+                <div class="modalAction">
+                    <button type="button" class="formBtnCncl btn btn-light" (click)="closeModelMapView()">CLOSE</button>
+                </div>
+            </div>
+        </ng-template>
+
+        <ng-template #popContent>
+            <div class="userPopover">
+                <div class="activeUser" *ngFor="let user of activeUsersList; let index = index">
+                    <div class="title">{{user.userName}}</div>
+                    <div class="subTitle">{{user.emailId}}</div>
+                    <div class="subTitle">{{user.programName.join(",")}}</div>
+                </div>
+            </div>
+        </ng-template>
+
+        <ng-template #activeUserModal let-c="close" let-modal>
+            <div class="modal-header">
+                <div class="dispHeader">
+                    <h4>ACTIVE USERS</h4>
+                </div>
+            </div>
+            <div class="modelBody">
+                <div id="errorModalView">
+                        
+                    <div id="tableWrapper" class="checkListWrapper" >
+                        <div class="scrollHead">
+                            <table class="table" id="uploadDetails">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <div (click)="changeSorting('userName', $event, 0)" class="sorting form-control-small-1">USER NAME</div>
+                                        </th>
+                                        <th>
+                                            <div (click)="changeSorting('programName', $event, 4)" class="sorting form-control-small-1">PROGRAM NAME</div>
+                                        </th>
+                                        <th>
+                                            <div (click)="changeSorting('emailId', $event, 5)" class="sorting form-control-max">EMAIL</div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <div class="scrollBody">
+                            <table class="table" id="checkListTable">
+                                <tbody id="rowCount">
+                                    <tr id="row_id_{{key.id}}" class="checkListRow" *ngFor="let key of activeUsersList">
+                                        <td class="form-control-small-1" data-toggle="tooltip" data-placement="right" data-container="body">{{key.userName}}
+                                        </td>
+                                        <td class="form-control-small-1" data-toggle="tooltip" data-placement="right" data-container="body">{{key.programName}}
+                                        </td>
+                                        <td class="form-control-max" data-toggle="tooltip" data-placement="right" data-container="body">{{key.emailId}}</td>
+                                      </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div id="viewFile" class="errorMsgBlock" *ngIf="activeUsersList.length == 0">
+                    <rct-nodata [subTitle]=""></rct-nodata>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="modalAction">
+                    <button type="button" class="formBtnCncl btn btn-light" (click)="closeModelActiveUsers()">CLOSE</button>
+                </div>
+            </div>
+        </ng-template>
+
+    </div>

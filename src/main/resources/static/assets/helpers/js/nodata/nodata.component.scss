@@ -1,0 +1,47 @@
+#noData {
+    border: 1px solid #D6DADC;
+    background-color: #fff;
+    text-align: center;
+    padding: 20px 20px 100px 40px;
+    border-radius: 3px;
+    margin-bottom: 2px;
+    clear: both;
+    margin-top: 5px;
+}
+
+#noDataWrapperPopUp {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+#noData div {
+    color: #ccc;
+    font-size: 35px;
+    display: inline-block;
+    background: no-repeat;
+}
+
+.noDataTitle {
+    color: #ccc;
+    font-size: 35px;
+    display: inline-block;
+    background: no-repeat;
+    padding-top: 50px;
+}
+
+
+.nodataDescription {
+    font-size: 13px !important;
+}
+
+.nodataDescription span {
+    font-size: 14px !important;
+    font-weight: bold !important;
+}
+
+.nodataDescription b {
+    font-size: 14px;
+}

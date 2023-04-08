@@ -1,0 +1,96 @@
+@import 'src/variable';
+
+.genAddButton{position: absolute;
+    right: 12px;top: 40px;}
+    .newNoDataWrapper{    border: 1px solid #D6DADC;
+        background-color: #fff;
+        text-align: center;
+        padding: 20px 20px 50px 40px;
+        border-radius: 3px;
+        margin-bottom: 2px;
+        clear: both;
+        margin-top: 5px;}
+    .newNoDataWrapper p {color: #ccc;font-size: 30px;display: block;background: no-repeat;}
+    .disable{cursor: not-allowed;pointer-events: none;opacity: 0.5;}
+    .genSetttingTextarea {
+        border: 1px solid #ccc;
+        height: 100px;
+        width: 350px;
+    }
+    .imageDisplay{vertical-align: middle}
+    .table tbody tr:hover {
+        outline: 1px double #5161AC;
+        border: 1px solid #5161AC;
+        -webkit-backface-visibility: visible;
+    }
+
+
+
+
+
+  .switch {position: relative;display: block;vertical-align: top;width: 35px;height: 16px;padding: 3px;float: right; margin: 2px -20px 10px 0;background: none; background-image: none; border-radius: 18px;box-shadow: none;cursor: pointer;}
+  .switchED{position: relative;display: block;vertical-align: top;width: 35px;height: 16px;padding: 3px;margin: 0 10px 10px 0;background: none; background-image:none; border-radius: 18px;box-shadow: none;cursor: pointer;}
+  .switch-input {position: absolute;top: 0;left: 0;opacity: 0;}
+  .switch-label {position: relative;display: block;height: inherit;font-size: 12px;text-transform: uppercase;background: #F1523F;border-radius: inherit;box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12), inset 0 0 2px rgba(0, 0, 0, 0.15);}
+  .switch-label:before, .switch-label:after {position: absolute;top: 50%;margin-top: -.5em;line-height: 1;-webkit-transition: inherit;-moz-transition: inherit;-o-transition: inherit;transition: inherit;}
+  .switch-label:before {content: attr(data-off);right: 11px;color: white;text-shadow: 0 1px rgba(255, 255, 255, 0.5);}
+  .switch-label:after {content: attr(data-on);left: 11px;color: white;text-shadow: 0 1px rgba(0, 0, 0, 0.2);opacity: 0;}
+  .switch-input:checked ~ .switch-label {background: #5ADC40;box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15), inset 0 0 3px rgba(0, 0, 0, 0.2);}
+  .switch-input:checked ~ .switch-label:before {opacity: 0;}
+  .switch-input:checked ~ .switch-label:after {opacity: 1;}
+  .switch-handle {position: absolute;top: 5px;left: 6px;width: 11px;height: 11px;background: linear-gradient(to bottom, #FFFFFF 40%, #f0f0f0);background-image: -webkit-linear-gradient(top, #FFFFFF 40%, #f0f0f0);border-radius: 100%;box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);}
+  .switch-handle:before {content: "";position: absolute;top: 50%;left: 50%;margin: -6px 0 0 -6px;width: 12px;height: 12px;background: linear-gradient(to bottom, #eeeeee, #FFFFFF);background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF);border-radius: 6px;box-shadow: inset 0 1px rgba(0, 0, 0, 0.02);}
+  .switch-input:checked ~ .switch-handle {left: 18px;box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);}
+  .switchED-handle {position: absolute;top: 4px;left: 4px;width: 23px;height: 23px;background: linear-gradient(to bottom, #FFFFFF 40%, #f0f0f0);background-image: -webkit-linear-gradient(top, #FFFFFF 40%, #f0f0f0);border-radius: 100%;box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);}
+  .switchED-handle:before {content: "";position: absolute;top: 50%;left: 50%;margin: -6px 0 0 -6px;width: 12px;height: 12px;background: linear-gradient(to bottom, #eeeeee, #FFFFFF);background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF);border-radius: 6px;box-shadow: inset 0 1px rgba(0, 0, 0, 0.02);}
+  .switch-input:checked ~ .switchED-handle {left: 73px;box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);}
+  .switch-input:disabled~ .switch-label{background-color:#eee;cursor: not-allowed;}
+  .switch-input:disabled~ .switch-label:before{color:#555;}
+  .switch-input:disabled~ .switch-label:after{color:#555;}
+ 
+
+
+  .addBtnDisabled{margin-top: 5px;color:#9599a6;cursor:not-allowed;}
+  .editRowDisabled{background: url("../../../src/assets/images/smart-sprite.png") -185px -168px !important;cursor:not-allowed !important;}
+  .deleteRowDisabled{background: url("../../../src/assets/images/smart-sprite.png") -160px -168px;cursor:not-allowed !important;}
+
+  .migrationBlock {
+    border: 1px solid #cccccc;
+    height: 30px;
+    background-color: #fff;
+    padding-top: 5px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    margin-bottom: 10px;
+  }
+  .radio-inline{position: relative;margin-bottom: 0;font-weight: 400;vertical-align: middle;cursor: pointer;float: left;    margin-right: 15px;margin-left: 30px;}
+  .radio-inline input[type=radio]{position: absolute;margin-left: -20px;margin-top: 2px;}
+
+  .form-control {width: $form-control-width;}
+  .customTextArea {width: $form-control-width;}
+
+  #schedule, #scheduleTime ,#selectUseCase{
+    width: 225px !important;
+    // height: 25px !important;
+    display: flex;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    box-shadow: none;
+    word-break: break-word;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: .25rem;
+  }
+
+  .ng-select .ng-select-container #selectUseCase{
+    background-color: #fff;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    align-items: center;
+}
+  
+  textarea.jsoneditor-text{min-height:550px;}
+  :host ::ng-deep json-editor,
+  :host ::ng-deep json-editor .jsoneditor,
+  :host ::ng-deep json-editor > div,
+  :host ::ng-deep json-editor jsoneditor-outer {height: 300px;}

@@ -1,0 +1,15 @@
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="{{modelType}}"></div>
+  <div class="modal-body">
+      <p>{{manipulatedMessage}}</p>
+      <span class="modalInfoMsg">{{manipulatedInfo}}</span>
+  </div>
+  <div class="modelDismiss" (click)="closeModel()"></div>
+</ng-template>	
+
+<button id="openModal" (click)="open(content)" [hidden]="true" data-toggle="modal" data-target="#content">Open Modal</button>
+
+
+
+
+

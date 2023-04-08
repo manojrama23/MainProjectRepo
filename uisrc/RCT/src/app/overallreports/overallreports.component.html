@@ -1,0 +1,1557 @@
+<div class="page-wrapper">
+  <rct-loader *ngIf="showLoader"></rct-loader>
+  <h1 class="mainHead">OVERALL REPORTS</h1>
+  <div style="margin-top: -21px;">
+    <button name="export" class="import myriadproBold formBtn white-btn float-sm-right float-md-right float-lg-right float-xl-right"
+      accesskey="n" (click)="downloadFile()" style="cursor: default;" [ngClass]="{'buttonDisabled' :(selCustName != '2') && (selCustName != '4')}"
+      [disabled]="selCustName != '2' && selCustName != '4'">EXPORT</button>
+    <button name="import" class="import myriadproBold formBtn white-btn float-sm-right float-md-right float-lg-right float-xl-right"
+      accesskey="n" [ngClass]="{'buttonDisabled' :(selCustName != '2') && (selCustName != '4')}" [disabled]="selCustName != '2' && selCustName != '4'">IMPORT<input
+        *ngIf="selCustName == '2' || selCustName == '4'" type="file" class="filePost" #filePost name="filePost" id="filePost"
+        [multiple]="false" (change)="uploadStateTar($event)" accept=".xls, .xlsx" /></button>
+
+  </div>
+
+
+  <div id="searchBlock" style="margin-top: 32px; ">
+    <div id="formWrapper" class="formWrapperMargin bluePrintFormWrapper">
+      <div *ngIf="currentUser=='Super Administrator'">
+        <ng-container *ngTemplateOutlet="customerName"></ng-container>
+      </div>
+      <div *ngIf="custId==2">
+        <ng-container *ngTemplateOutlet="searchVerizon"></ng-container>
+      </div>
+      <div *ngIf="custId==4">
+        <ng-container *ngTemplateOutlet="searchSprint"></ng-container>
+      </div>
+    </div>
+    <div *ngIf="custId==2">
+      <ng-container *ngTemplateOutlet="verizonScheduling"></ng-container>
+    </div>
+    <div *ngIf="custId==4">
+      <ng-container *ngTemplateOutlet="sprintScheduling"></ng-container>
+    </div>
+  </div>
+
+  <!-- verizon table -->
+  <ng-template #verizonScheduling>
+    <div id="tableWrapper" *ngIf="tableShowHide">
+      <div class="scrollHead">
+        <table class="table" id="overallVerizonModelList">
+          <thead>
+            <tr>
+              <th>
+                <div (click)="changeSorting('totalLookup', $event, 0)" class="sorting form-control-small-3 ">TOTAL
+                  LOOKUP</div>
+              </th>
+
+              <th>
+                <div (click)="changeSorting('forecastStartDate', $event, 1)" class="sorting form-control-small-3 ">FORECAST
+                  START DATE</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('market', $event, 2)" class="sorting form-control-small-3">MARKET</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('enbName', $event, 3)" class="sorting form-control-small-3">NE NAME</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('enbId', $event, 4)" class="sorting form-control-small-3">NE ID</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('ranEngineer', $event, 5)" class="sorting form-control-small-3">RAN
+                  ENGINEER</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('growRequest', $event, 6)" class="sorting form-control-small-3">GROW
+                  REQUESTED</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('growCompleted', $event, 7)" class="sorting form-control-small-3">GROW
+                  COMPLETED</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('ciqPresent', $event, 8)" class="sorting form-control-small-3">CIQ PRESENT</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('status', $event, 9)" class="sorting form-control-small-3">STATUS</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('revisit', $event, 10)" class="sorting form-control-small-3">REVISIT</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('vlsm', $event, 11)" class="sorting form-control-small-3">VLSM</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('ciStartTime', $event, 12)" class="sorting form-control-small-3">START TIME</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('ciEndTime', $event, 13)" class="sorting form-control-small-3">END TIME</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('comments', $event, 14)" class="sorting form-control-small-3">COMMENTS</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('issue', $event, 15)" class="sorting form-control-small-3">ISSUE</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('ci', $event, 16)" class="sorting form-control-small-3">C&I</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('nonCi', $event, 17)" class="sorting form-control-small-3">NON C&I</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('ald', $event, 18)" class="sorting form-control-small-3">ALD</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('week', $event, 19)" class="sorting form-control-small-3">WEEK</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('month', $event, 20)" class="sorting form-control-small-3">MONTH</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('status2', $event, 21)" class="sorting form-control-small-3">STATUS2</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('quarter', $event, 22)" class="sorting form-control-small-3">QUARTER</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('year', $event, 23)" class="sorting form-control-small-3">YEAR</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('rule1', $event, 24)" class="sorting form-control-small-3">RULE_1</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('rule2', $event, 25)" class="sorting form-control-small-3">RULE_2</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('day', $event, 26)" class="sorting form-control-small-3">DAY</div>
+              </th>
+             
+            </tr>
+          </thead>
+        </table>
+      </div>
+
+      <div class="scrollBody">
+        <table class="table" id="verizonTableData">
+          <tbody id="rowCount">
+            <ng-container *ngFor="let key of verizonData; let index =index">
+              <tr id="row_id_{{key.id}}">
+                <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.totalLookup}}</span>
+                  <input type="text" class="form-control form-control-small-1" id="totalLookup_{{index}}" [(ngModel)]="key.totalLookup"
+                    *ngIf="editIndex === index" />
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+                <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.forecastStartDate}}</span>
+                  <div *ngIf="editIndex == index">
+                    <input class="form-control form-control-small-3" name="forecastStartDate_{{index}}" [(ngModel)]="key.forecastStartDate"
+                      [owlDateTimeTrigger]="forecastEditDate" [owlDateTime]="forecastEditDate"  (dateTimeChange)="onChangeDate(key)"/>
+                    <owl-date-time [pickerType]="'calendar'" #forecastEditDate></owl-date-time>
+                    <div class="error-message-block"></div>
+                  </div>
+                </td>
+                <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.market}}</span>
+                  <select class="form-control form-control-small-1" name="market" id="market_{{index}}" [(ngModel)]="key.market"
+                    *ngIf="editIndex === index">
+                    <option value="">--Select--</option>
+                    <option *ngFor="let key of createMarketList" value="{{key}}" id="{{key.id}}">{{key}}</option>
+
+                  </select>
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+                <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.enbName}}</span>
+                  <input type="text" class="form-control form-control-small-1 " id="enbName_{{index}}" [(ngModel)]="key.enbName"
+                    *ngIf="editIndex === index" />
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+                <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.enbId}}</span>
+                  <input type="text" class="form-control form-control-small-1" id="enbId_{{index}}" [(ngModel)]="key.enbId"
+                    *ngIf="editIndex === index" />
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+                <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.ranEngineer}}</span>
+                  <select class="form-control form-control-small-1" name="ranEngineer" id="ranEngineer_{{index}}"
+                    [(ngModel)]="key.ranEngineer" *ngIf="editIndex === index">
+                    <option value="">--Select--</option>
+                    <option *ngFor="let name of userList" value="{{name}}">{{name}}</option>
+                  </select>
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+                <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.growRequest}}</span>
+                  <select class="form-control form-control-small-1" name="growRequest" id="growRequest_{{index}}"
+                    [(ngModel)]="key.growRequest" *ngIf="editIndex === index">
+                    <option value="">--Select--</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                  </select>
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+                <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.growCompleted}}</span>
+                  <select class="form-control form-control-small-1" name="growCompleted" id="growCompleted_{{index}}"
+                    [(ngModel)]="key.growCompleted" [(ngModel)]="key.growCompleted" *ngIf="editIndex === index">
+                    <option value="">--Select--</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                  </select>
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+                <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.ciqPresent}}</span>
+                  <select class="form-control form-control-small-1" name="ciqPresent" id="ciqPresent_{{index}}"
+                    [(ngModel)]="key.ciqPresent" *ngIf="editIndex === index">
+                    <option value="">--Select--</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                  </select>
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+                <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.status}}</span>
+                  <select class="form-control form-control-small-1" name="status" id="status_{{index}}" [(ngModel)]="key.status"
+                    *ngIf="editIndex === index">
+                    <option value="">--Select--</option>
+                    <option value="Migrated">Migrated</option>
+                    <option value="Cancelled">Cancelled</option>
+                  </select>
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+                <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.revisit}}</span>
+                  <select class="form-control form-control-small-1" name="revisit" id="revisit_{{index}}" [(ngModel)]="key.revisit"
+                    *ngIf="editIndex === index">
+                    <option value="">--Select--</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                  </select>
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+                <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.vlsm}}</span>
+                  <select class="form-control form-control-small-1" name="vlsm" id="vlsm_{{index}}" [(ngModel)]="key.vlsm"
+                    *ngIf="editIndex === index">
+                    <option value="">--Select--</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                  </select>
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+
+                <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.ciStartTime}}</span>
+                  <input type="text" class="form-control  form-control-small-1" id="ciStartTime_{{index}}"
+                    [(ngModel)]="key.ciStartTime" name="ciStartTime_{{index}}" *ngIf="editIndex === index" />
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                  <!-- <div *ngIf="editIndex === index">
+                    <input class="form-control form-control-small-1" id="ciStartTime_{{index}}" name="ciStartTime_{{index}}"
+                      [(ngModel)]="key.ciStartTime" [owlDateTimeTrigger]="editCiStartTime" [owlDateTime]="editCiStartTime">
+                    <owl-date-time [pickerType]="'timer'" #editCiStartTime></owl-date-time>
+                  </div> -->
+                </td>
+                <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.ciEndTime}}</span>
+
+                  <input type="text" class="form-control  form-control-small-1" id="ciEndTime_{{index}}"
+                    [(ngModel)]="key.ciEndTime" name="ciEndTime_{{index}}" *ngIf="editIndex === index" />
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                  <!-- <div *ngIf="editIndex === index">
+                    <input class="form-control form-control-small-1" id="ciEndTime_{{index}}" name="ciEndTime_{{index}}"
+                      [(ngModel)]="key.ciEndTime" [owlDateTimeTrigger]="editCiEndTime" [owlDateTime]="editCiEndTime">
+                    <owl-date-time [pickerType]="'timer'" #editCiEndTime></owl-date-time>
+                  </div> -->
+                </td>
+
+
+
+                <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.comments}}</span>
+                  <input type="text" class="form-control form-control-small-1" id="comments_{{index}}" [(ngModel)]="key.comments"
+                    *ngIf="editIndex === index" />
+
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+
+
+                <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.issue}}</span>
+                  <input type="text" class="form-control form-control-small-1" id="issue_{{index}}" [(ngModel)]="key.issue"
+                    *ngIf="editIndex === index" />
+
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+                <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.ci}}</span>
+                  <select class="form-control form-control-small-1" name="ci" id="ci_{{index}}" [(ngModel)]="key.ci"
+                    *ngIf="editIndex === index">
+                    <option value="">--Select--</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                  </select>
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+                <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.nonCi}}</span>
+                  <select class="form-control form-control-small-1" name="nonCi" id="nonCi_{{index}}" [(ngModel)]="key.nonCi"
+                    *ngIf="editIndex === index">
+                    <option value="">--Select--</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                  </select>
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+                <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.ald}}</span>
+                  <select class="form-control form-control-small-1" name="ald" id="ald_{{index}}" [(ngModel)]="key.ald"
+                    *ngIf="editIndex === index">
+                    <option value="">--Select--</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                  </select>
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+                <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.week}}</span>
+                  <input type="text" class="form-control form-control-small-1" id="week_{{index}}" [(ngModel)]="key.week"
+                    *ngIf="editIndex === index" disabled />
+                  <div class="error-message-block"></div>
+
+
+                </td>
+                <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.month}}</span>
+                  <input type="text" class="form-control form-control-small-1" id="month_{{index}}" [(ngModel)]="key.month"
+                    *ngIf="editIndex === index" disabled/>
+                  <div class="error-message-block"></div>
+                </td>
+
+                <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.status2}}</span>
+                  <select class="form-control form-control-small-1" name="status2" id="status2_{{index}}" [(ngModel)]="key.status2"
+                    *ngIf="editIndex === index">
+                    <option value="">--Select--</option>
+                    <option value="Migrated">Migrated</option>
+                    <option value="Cancelled">Cancelled</option>
+                  </select>
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+
+
+
+                <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.quarter}}</span>
+                  <input type="text" class="form-control form-control-small-1" id="quarter_{{index}}" [(ngModel)]="key.quarter"
+                    *ngIf="editIndex === index" disabled/>
+                  <div class="error-message-block"></div>
+                </td>
+
+                <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.year}}</span>
+                  <input type="text" class="form-control form-control-small-1" id="year_{{index}}" [(ngModel)]="key.year"
+                    *ngIf="editIndex === index" disabled/>
+                  <div class="error-message-block"></div>
+                </td>
+
+                <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.rule1}}</span>
+                  <input type="text" class="form-control form-control-small-1" id="rule1_{{index}}" [(ngModel)]="key.rule1"
+                    *ngIf="editIndex === index" />
+                  <div class="error-message-block"></div>
+                </td>
+
+                <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.rule2}}</span>
+                  <input type="text" class="form-control form-control-small-1" id="rule2_{{index}}" [(ngModel)]="key.rule2"
+                    *ngIf="editIndex === index" />
+                  <div class="error-message-block"></div>
+                </td>
+
+
+      
+                <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.day}}</span>
+                  
+                  <div class="form-control-fixed iconsWrapper tableRowAction" id="fixedCol" ng-style="iconsWrapperPosition">
+                    <ng-template #save>Save</ng-template>
+                    <ng-template #cancel>Cancel</ng-template>
+                    <div (click)="addEodReportRow($event, key, index)" class="cloneRow" placement="bottom" container="body"
+                      [ngbTooltip]="(editIndex === index) ? 'Clone':'Clone'"></div>
+                    <div (click)="editNeVersionRow($event, key, index)" class="editRow" placement="bottom" container="body"
+                      [ngbTooltip]="(editIndex === index) ? save:'Edit'"></div>
+
+                    <div (click)="deleteNeVersionRow(confirmModalDelete, key.id, $event,index)" class="deleteRow"
+                      placement="bottom" container="body" [ngbTooltip]="(editIndex === index) ?cancel:'Delete'"></div>
+                  </div>
+
+                  <input type="text" class="form-control form-control-small-1" id="day_{{index}}" [(ngModel)]="key.day"
+                    *ngIf="editIndex === index" disabled/>
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+              </tr>
+            </ng-container>
+            <ng-container #neversionContainer></ng-container>
+
+          </tbody>
+        </table>
+      </div>
+
+
+
+
+      <div id="paginationWrapper">
+        <div *ngIf="pageRenge.length" class="page" style="margin-left:20px;">
+          <div class="floatLeft" style="width: 75px;padding-top: 6px">Show</div>
+          <select [disabled]="paginationDisabbled" [(ngModel)]="pageSize" (change)="onChangeTableRowLength($event)"
+            style="margin-top: 4px; margin-right: 6px;margin-left: -39px;" class="form-control-pagination floatLeft"
+            aria-controls="TableRowLength" size="1" name="TableRowLength" id="TableRowLength">
+            <option selected="selected" value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+          <div class="floatLeft" style="width: 75px;padding-top: 6px">Entries</div>
+          <div class="floatRight page" style="padding-top: 3px;margin-right:20px;">
+            <ul *ngIf="pageRenge.length" class="pagination floatRight">
+              <li id="firstPage" [ngClass]="{disabled:(currentPage === 1 || paginationDisabbled)}" class="page-item">
+                <a class="page-link" (click)="setPage(1)">FIRST</a>
+              </li>
+              <li id="previousPage" [ngClass]="{disabled:(currentPage === 1 || paginationDisabbled)}" class="page-item">
+                <a class="page-link" (click)="setPage(pager.currentPage - 1)">PREV</a>
+              </li>
+              <li *ngFor="let n of pager.pages" [ngClass]="{active:currentPage === n, disabled:paginationDisabbled}"
+                class="page-item">
+                <a class="page-link" (click)="setPage(n)" id='{{n+1}}'>{{n}}</a>
+              </li>
+              <li id="nextPage" [ngClass]="{disabled:(currentPage === totalPages || paginationDisabbled)}" class="page-item">
+                <a class="page-link" (click)="setPage(pager.currentPage + 1)">NEXT</a>
+              </li>
+              <li id="lastPage" [ngClass]="{disabled:(currentPage === totalPages || paginationDisabbled)}" class="page-item">
+                <a class="page-link" (click)="setPage(pager.totalPages)">LAST</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+  </ng-template>
+
+
+  <!-- sprint table -->
+  <ng-template #sprintScheduling>
+    <div id="tableWrapper" *ngIf="tableShowHide">
+      <div class="scrollHead">
+        <table class="table" id="overallSprintEntity">
+          <thead>
+            <tr>
+              <th>
+                <div (click)="changeSorting('scheduleDate', $event, 0)" class="sorting form-control-small-3">SCHEDULE DATE</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('startDate', $event, 0)" class="sorting form-control-small-3">START DATE</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('compDate', $event, 1)" class="sorting form-control-small-3">COMP DATE</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('region', $event, 2)" class="sorting form-control-small-3">REGION</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('market', $event, 3)" class="sorting form-control-small-3">MARKET</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('cascade', $event, 5)" class="sorting form-control-small-3">CASCADE</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('enbId', $event, 4)" class="sorting form-control-small-3">NE ID</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('type', $event, 6)" class="sorting form-control-small-3">TYPE</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('dtOrMw', $event, 6)" class="sorting form-control-small-3">DT or MW</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('putTool', $event, 25)" class="sorting form-control-small-3">PUT TOOL</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('currentSoftware', $event, 7)" class="sorting form-control-small-3">CURRENT
+                  SOFTWARE</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('scriptsRan', $event, 8)" class="sorting form-control-small-3">SCRIPTS RAN</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('scriptErrors', $event, 34)" class="sorting form-control-small-3">CIQ/SCRIPT ERROR</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('dspImplemented', $event, 9)" class="sorting form-control-small-3">DSP
+                  IMPLEMENTED</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('ciEngineerOne', $event, 10)" class="sorting form-control-small-3">C&I
+                  ENGINEER 1</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('ciStartTimeOne', $event, 11)" class="sorting form-control-small-3">C&I
+                  START TIME 1</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('ciEndTimeOne', $event, 12)" class="sorting form-control-small-3">C&I END
+                  TIME 1</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('feRegion', $event, 13)" class="sorting form-control-small-3">FE REGION</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('feOne', $event, 14)" class="sorting form-control-small-3">FE 1</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('feContactInfoOne', $event, 15)" class="sorting form-control-small-3">FE
+                  CONTACT INFO 1</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('feArrivalTimeOne', $event, 16)" class="sorting form-control-small-3">FE
+                  ARRIVAL TIME 1</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('ciEngineerTwo', $event, 17)" class="sorting form-control-small-3">C&I
+                  ENGINEER 2</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('ciStartTimeTwo', $event, 18)" class="sorting form-control-small-3">C&I
+                  START TIME 2</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('ciEndTimeTwo', $event, 19)" class="sorting form-control-small-3">C&I END
+                  TIME 2</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('feTwo', $event, 20)" class="sorting form-control-small-3">FE 2</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('feContactInfoTwo', $event, 21)" class="sorting form-control-small-3">FE
+                  CONTACT INFO 2</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('feArrivalTimeTwo', $event, 22)" class="sorting form-control-small-3">FE
+                  ARRIVAL TIME 2</div>
+              </th>
+              
+              <th>
+                <div (click)="changeSorting('ciEngineerThree', $event, 17)" class="sorting form-control-small-3">C&I ENGINEER 3</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('ciStartTimeThree', $event, 18)" class="sorting form-control-small-3">C&I START TIME 3</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('ciEndTimeThree', $event, 19)" class="sorting form-control-small-3">C&I END TIME 3</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('feThree', $event, 20)" class="sorting form-control-small-3">FE 3</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('feContactInfoThree', $event, 21)" class="sorting form-control-small-3">FE CONTACT INFO 3</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('feArrivalTimeThree', $event, 22)" class="sorting form-control-small-3">FE ARRIVAL TIME 3</div>
+              </th>
+
+
+              <th>
+                <div (click)="changeSorting('gc', $event, 23)" class="sorting form-control-small-3">GC</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('tcName', $event, 23)" class="sorting form-control-small-3">TC NAME</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('tcContactInfo', $event, 23)" class="sorting form-control-small-3">TC CONTACT INFO</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('gcArrivalTime', $event, 24)" class="sorting form-control-small-3">GC
+                  ARRIVAL TIME</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('circuitbreakerStart', $event, 26)" class="sorting form-control-small-3">CIRCUIT BREAKER START</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('circuitbreakerEnd', $event, 27)" class="sorting form-control-small-3">CIRCUIT BREAKER END</div>
+              </th>
+
+              <th>
+                <div (click)="changeSorting('alphaStartTime', $event, 28)" class="sorting form-control-small-3">ALPHA START TIME</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('alphaEndTime', $event, 29)" class="sorting form-control-small-3">ALPHA END TIME</div>
+              </th>
+
+              <th>
+                <div (click)="changeSorting('betaStartTime', $event, 30)" class="sorting form-control-small-3">BETA START TIME</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('betaEndTime', $event, 31)" class="sorting form-control-small-3">BETA END TIME</div>
+              </th>
+
+              <th>
+                <div (click)="changeSorting('gammaStartTime', $event, 32)" class="sorting form-control-small-3">GAMMA START TIME</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('gammaEndTime', $event, 33)" class="sorting form-control-small-3">GAMMA END TIME</div>
+              </th>
+
+              <th>
+                <div (click)="changeSorting('reasonCode', $event, 35)" class="sorting form-control-small-3">ISSUE REASON CODE</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('ciIssue', $event, 36)" class="sorting form-control-small-3">C&I ISSUE</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('nonCiIssue', $event, 37)" class="sorting form-control-small-3">NON C&I
+                  ISSUE</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('resolution', $event, 38)" class="sorting form-control-small-3">RESOLUTION</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('status', $event, 38)" class="sorting form-control-small-3">STATUS</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('nvtfNoHarm', $event, 39)" class="sorting form-control-small-3">NVTF/SAMS NO HARM</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('engineerOneNotes', $event, 39)" class="sorting form-control-small-3">ENGINEER 1 NOTES</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('engineerTwoNotes', $event, 40)" class="sorting form-control-small-3">ENGINEER 2 NOTES</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('engineerThreeNotes', $event, 40)" class="sorting form-control-small-3">ENGINEER 3 NOTES</div>
+              </th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+
+      <div class="scrollBody">
+        <table class="table" id="sprintTableData">
+          <tbody id="rowCount">
+            <ng-container *ngFor="let key of sprintData; let index =index">
+              <tr id="row_id_{{key.id}}">
+
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.scheduleDate}}</span>
+                  <div *ngIf="editIndex == index">
+                    <input class="form-control form-control-small-3" name="scheduleDate_{{index}}" [(ngModel)]="key.scheduleDate"
+                      [owlDateTimeTrigger]="scheduleEditDate" [owlDateTime]="scheduleEditDate" />
+                    <owl-date-time [pickerType]="'calendar'" #scheduleEditDate></owl-date-time>
+                    <div class="error-message-block"></div>
+                  </div>
+                </td>
+
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.startDate}}</span>
+                  <div *ngIf="editIndex == index">
+                    <input class="form-control form-control-small-3" name="startDate_{{index}}" [(ngModel)]="key.startDate" [owlDateTimeTrigger]="startEditDate"
+                      [owlDateTime]="startEditDate" />
+                    <owl-date-time [pickerType]="'calendar'" #startEditDate></owl-date-time>
+                    <div class="error-message-block"></div>
+                  </div>
+                </td>
+
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.compDate}}</span>
+                  <div *ngIf="editIndex == index">
+                    <input class="form-control form-control-small-3" name="compDate_{{index}}" [(ngModel)]="key.compDate"
+                      [owlDateTimeTrigger]="compEditDate" [owlDateTime]="compEditDate" />
+                    <owl-date-time [pickerType]="'calendar'" #compEditDate></owl-date-time>
+                    <div class="error-message-block"></div>
+                  </div>
+                </td>
+
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.region}}</span>
+                  <select class="form-control form-control-small-1" name="region" id="region_{{index}}" [(ngModel)]="key.region"
+                    *ngIf="editIndex === index">
+                    <option value="">--Select--</option>
+                    <option *ngFor="let key of createRegionList" value="{{key}}" id="{{key.id}}">{{key}}</option>
+
+                  </select>
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.market}}</span>
+                  <select class="form-control form-control-small-1" name="market" id="market_{{index}}" [(ngModel)]="key.market"
+                    *ngIf="editIndex === index">
+                    <option value="">--Select--</option>
+                    <option *ngFor="let key of createMarketList" value="{{key}}" id="{{key.id}}">{{key}}</option>
+
+                  </select>
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.cascade}}</span>
+                  <input type="text" class="form-control form-control-small-1" id="cascade_{{index}}" [(ngModel)]="key.cascade" *ngIf="editIndex === index"
+                  />
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.enbId}}</span>
+                  <input type="text" class="form-control form-control-small-1" id="enbId_{{index}}" [(ngModel)]="key.enbId"
+                    *ngIf="editIndex === index" />
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.type}}</span>
+                  <select class="form-control form-control-small-1" name="type" id="type_{{index}}" [(ngModel)]="key.type"
+                    *ngIf="editIndex === index">
+                    <option value="">--Select--</option>
+                    <option value="CLWR">CLWR</option>
+                    <option value="FDD">FDD</option>
+                    <option value="Hot Swap">Hot Swap</option>
+                    <option value="New Site Build">New Site Build</option>
+                    <option value="No">No</option>
+                    <option value="TDD/FDD">TDD/FDD</option>
+                    <option value="Troubleshoot">Troubleshoot</option>
+                  </select>
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.dtOrMw}}</span>
+                  <input type="text" class="form-control form-control-small-1" id="dtOrMw_{{index}}" [(ngModel)]="key.dtOrMw" *ngIf="editIndex === index"
+                  />
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.putTool}}</span>
+                  <select class="form-control form-control-small-1" name="putTool" id="putTool_{{index}}" [(ngModel)]="key.putTool" *ngIf="editIndex === index">
+                    <option value="">--Select--</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                  </select>
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.currentSoftware}}</span>
+                  <input type="text" class="form-control form-control-small-1" id="currentSoftware_{{index}}"
+                    [(ngModel)]="key.currentSoftware" *ngIf="editIndex === index" />
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.scriptsRan}}</span>
+                  <select class="form-control form-control-small-1" name="scriptsRan" id="scriptsRan_{{index}}"
+                    [(ngModel)]="key.scriptsRan" *ngIf="editIndex === index">
+                    <option value="">--Select--</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                  </select>
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.scriptErrors}}</span>
+                  <select class="form-control form-control-small-1" name="scriptErrors" id="scriptErrors_{{index}}" [(ngModel)]="key.scriptErrors"
+                    *ngIf="editIndex === index">
+                    <option value="">--Select--</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                  </select>
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.dspImplemented}}</span>
+                  <select class="form-control form-control-small-1" name="dspImplemented" id="dspImplemented_{{index}}"
+                    [(ngModel)]="key.dspImplemented" *ngIf="editIndex === index">
+                    <option value="">--Select--</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                  </select>
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.ciEngineerOne}}</span>
+                  <select class="form-control form-control-small-1" name="ciEngineerOne" id="ciEngineerOne_{{index}}"
+                    [(ngModel)]="key.ciEngineerOne" *ngIf="editIndex === index">
+                    <option value="">--Select--</option>
+                    <option *ngFor="let name of userList" value="{{name}}">{{name}}</option>
+                  </select>
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.ciStartTimeOne}}</span>
+                  <input type="text" class="form-control  form-control-small-1" id="ciStartTimeOne_{{index}}"
+                    [(ngModel)]="key.ciStartTimeOne" name="ciStartTimeOne_{{index}}" *ngIf="editIndex === index" />
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                  <!-- <div *ngIf="editIndex === index">
+                    <input class="form-control form-control-small-1" id="ciStartTimeOne_{{index}}" name="ciStartTimeOne_{{index}}"
+                      [(ngModel)]="key.ciStartTimeOne" [owlDateTimeTrigger]="editCiStartTimeOne" [owlDateTime]="editCiStartTimeOne">
+                    <owl-date-time [pickerType]="'timer'" #editCiStartTimeOne></owl-date-time>
+                  </div> -->
+                </td>
+
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.ciEndTimeOne}}</span>
+                  <input type="text" class="form-control  form-control-small-1" id="ciEndTimeOne_{{index}}"
+                    [(ngModel)]="key.ciEndTimeOne" name="ciEndTimeOne_{{index}}" *ngIf="editIndex === index" />
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                  <!-- <div *ngIf="editIndex === index">
+                    <input class="form-control form-control-small-1" id="ciEndTimeOne_{{index}}" name="ciEndTimeOne_{{index}}"
+                      [(ngModel)]="key.ciEndTimeOne" [owlDateTimeTrigger]="editCiEndTimeOne" [owlDateTime]="editCiEndTimeOne">
+                    <owl-date-time [pickerType]="'timer'" #editCiEndTimeOne></owl-date-time>
+                  </div> -->
+                </td>
+
+
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.feRegion}}</span>
+                  <select class="form-control form-control-small-1" name="feRegion" id="feRegion_{{index}}" [(ngModel)]="key.feRegion"
+                    *ngIf="editIndex === index">
+                    <option value="">--Select--</option>
+                    <option *ngFor="let key of createFeregionList" value="{{key}}" id="{{key.id}}">{{key}}</option>
+
+                  </select>
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+
+
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.feOne}}</span>
+                  <select class="form-control form-control-small-1" name="feOne" id="feOne_{{index}}" [(ngModel)]="key.feOne"
+                    *ngIf="editIndex === index">
+                    <option value="">--Select--</option>
+                    <option *ngFor="let name of userList" value="{{name}}">{{name}}</option>
+                  </select>
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.feContactInfoOne}}</span>
+                  <input type="text" class="form-control form-control-small-1" id="feContactInfoOne_{{index}}"
+                    [(ngModel)]="key.feContactInfoOne" *ngIf="editIndex === index" />
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.feArrivalTimeOne}}</span>
+
+                  <input type="text" class="form-control  form-control-small-1" id="feArrivalTimeOne_{{index}}"
+                    [(ngModel)]="key.feArrivalTimeOne" name="feArrivalTimeOne_{{index}}" *ngIf="editIndex === index" />
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                  <!-- <div *ngIf="editIndex === index">
+                    <input class="form-control form-control-small-1" id="feArrivalTimeOne_{{index}}" name="feArrivalTimeOne_{{index}}"
+                      [(ngModel)]="key.feArrivalTimeOne" [owlDateTimeTrigger]="editFeArrivalTimeOne" [owlDateTime]="editFeArrivalTimeOne">
+                    <owl-date-time [pickerType]="'timer'" #editFeArrivalTimeOne></owl-date-time>
+                  </div> -->
+                </td>
+
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.ciEngineerTwo}}</span>
+                  <select class="form-control form-control-small-1" name="ciEngineerTwo" id="ciEngineerTwo_{{index}}"
+                    [(ngModel)]="key.ciEngineerTwo" *ngIf="editIndex === index">
+                    <option value="">--Select--</option>
+                    <option *ngFor="let name of userList" value="{{name}}">{{name}}</option>
+                  </select>
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.ciStartTimeTwo}}</span>
+                  <input type="text" class="form-control  form-control-small-1" id="ciStartTimeTwo_{{index}}"
+                    [(ngModel)]="key.ciStartTimeTwo" name="ciStartTimeTwo_{{index}}" *ngIf="editIndex === index" />
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+
+                  <!-- <div *ngIf="editIndex === index">
+                    <input class="form-control form-control-small-1" id="ciStartTimeTwo_{{index}}" name="ciStartTimeTwo_{{index}}"
+                      [(ngModel)]="key.ciStartTimeTwo" [owlDateTimeTrigger]="editCiStartTimeTwo" [owlDateTime]="editCiStartTimeTwo">
+                    <owl-date-time [pickerType]="'timer'" #editCiStartTimeTwo></owl-date-time>
+                  </div> -->
+                </td>
+
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.ciEndTimeTwo}}</span>
+
+                  <input type="text" class="form-control  form-control-small-1" id="ciEndTimeTwo_{{index}}"
+                    [(ngModel)]="key.ciEndTimeTwo" name="ciEndTimeTwo_{{index}}" *ngIf="editIndex === index" />
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+
+                  <!-- <div *ngIf="editIndex === index">
+                    <input class="form-control form-control-small-1" id="ciEndTimeTwo_{{index}}" name="ciEndTimeTwo_{{index}}"
+                      [(ngModel)]="key.ciEndTimeTwo" [owlDateTimeTrigger]="editCiEndTimeTwo" [owlDateTime]="editCiEndTimeTwo">
+                    <owl-date-time [pickerType]="'timer'" #editCiEndTimeTwo></owl-date-time>
+                  </div> -->
+                </td>
+
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.feTwo}}</span>
+                  <select class="form-control form-control-small-1" name="feTwo" id="feTwo_{{index}}" [(ngModel)]="key.feTwo"
+                    *ngIf="editIndex === index">
+                    <option value="">--Select--</option>
+                    <option *ngFor="let name of userList" value="{{name}}">{{name}}</option>
+                  </select>
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+
+
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.feContactInfoTwo}}</span>
+                  <input type="text" class="form-control form-control-small-1" id="feContactInfoTwo{{index}}"
+                    [(ngModel)]="key.feContactInfoTwo" *ngIf="editIndex === index" />
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.feArrivalTimeTwo}}</span>
+                  <input type="text" class="form-control  form-control-small-1" id="feArrivalTimeTwo_{{index}}"
+                    [(ngModel)]="key.feArrivalTimeTwo" name="feArrivalTimeTwo_{{index}}" *ngIf="editIndex === index" />
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+
+                  <!-- <div *ngIf="editIndex === index">
+                    <input class="form-control form-control-small-1" id="feArrivalTimeTwo_{{index}}" name="feArrivalTimeTwo_{{index}}"
+                      [(ngModel)]="key.feArrivalTimeTwo" [owlDateTimeTrigger]="editFeArrivalTimeTwo" [owlDateTime]="editFeArrivalTimeTwo">
+                    <owl-date-time [pickerType]="'timer'" #editFeArrivalTimeTwo></owl-date-time>
+                  </div> -->
+                </td>
+
+                
+
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.ciEngineerThree}}</span>
+                  <select class="form-control form-control-small-1" name="ciEngineerThree" id="ciEngineerThree_{{index}}" [(ngModel)]="key.ciEngineerThree"
+                    *ngIf="editIndex === index">
+                    <option value="">--Select--</option>
+                    <option *ngFor="let name of userList" value="{{name}}">{{name}}</option>
+                  </select>
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+                
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.ciStartTimeThree}}</span>
+                  <input type="text" class="form-control  form-control-small-1" id="ciStartTimeThree_{{index}}" [(ngModel)]="key.ciStartTimeThree"
+                    name="ciStartTimeThree_{{index}}" *ngIf="editIndex === index" />
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+                
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.ciEndTimeThree}}</span>
+                
+                  <input type="text" class="form-control  form-control-small-1" id="ciEndTimeThree_{{index}}" [(ngModel)]="key.ciEndTimeThree"
+                    name="ciEndTimeThree_{{index}}" *ngIf="editIndex === index" />
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+                
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.feThree}}</span>
+                  <select class="form-control form-control-small-1" name="feThree" id="feThree_{{index}}" [(ngModel)]="key.feThree" *ngIf="editIndex === index">
+                    <option value="">--Select--</option>
+                    <option *ngFor="let name of userList" value="{{name}}">{{name}}</option>
+                  </select>
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+                
+                
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.feContactInfoThree}}</span>
+                  <input type="text" class="form-control form-control-small-1" id="feContactInfoThree{{index}}" [(ngModel)]="key.feContactInfoThree"
+                    *ngIf="editIndex === index" />
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+                
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.feArrivalTimeThree}}</span>
+                  <input type="text" class="form-control  form-control-small-1" id="feArrivalTimeThree_{{index}}" [(ngModel)]="key.feArrivalTimeThree"
+                    name="feArrivalTimeThree_{{index}}" *ngIf="editIndex === index" />
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.gc}}</span>
+                  <input type="text" class="form-control form-control-small-1" id="gc_{{index}}" [(ngModel)]="key.gc"
+                    *ngIf="editIndex === index" />
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+               
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.tcName}}</span>
+                  <input type="text" class="form-control form-control-small-1" id="tcName_{{index}}" [(ngModel)]="key.tcName" *ngIf="editIndex === index"
+                  />
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+                
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.tcContactInfo}}</span>
+                  <input type="text" class="form-control form-control-small-1" id="tcContactInfo_{{index}}" [(ngModel)]="key.tcContactInfo" *ngIf="editIndex === index"
+                  />
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.gcArrivalTime}}</span>
+                  <input type="text" class="form-control  form-control-small-1" id="gcArrivalTime_{{index}}"
+                    [(ngModel)]="key.gcArrivalTime" name="gcArrivalTime_{{index}}" *ngIf="editIndex === index" />
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+
+                  <!-- <div *ngIf="editIndex === index">
+                    <input class="form-control form-control-small-1" id="gcArrivalTime_{{index}}" name="gcArrivalTime_{{index}}"
+                      [(ngModel)]="key.gcArrivalTime" [owlDateTimeTrigger]="gcArrivalTime" [owlDateTime]="gcArrivalTime">
+                    <owl-date-time [pickerType]="'timer'" #gcArrivalTime></owl-date-time>
+                  </div> -->
+                </td>
+
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.circuitbreakerStart}}</span>
+
+                  <input type="text" class="form-control  form-control-small-1" id="circuitbreakerStart_{{index}}"
+                    [(ngModel)]="key.circuitbreakerStart" name="circuitbreakerStart_{{index}}" *ngIf="editIndex === index" />
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+
+                  <!-- <div *ngIf="editIndex === index">
+                    <input class="form-control form-control-small-1" id="circuitbreakerStart_{{index}}" name="circuitbreakerStart_{{index}}"
+                      [(ngModel)]="key.circuitbreakerStart" [owlDateTimeTrigger]="circuitbreakerStart" [owlDateTime]="circuitbreakerStart">
+                    <owl-date-time [pickerType]="'timer'" #circuitbreakerStart></owl-date-time>
+                  </div> -->
+                </td>
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.circuitbreakerEnd}}</span>
+                  <input type="text" class="form-control  form-control-small-1" id="circuitbreakerEnd_{{index}}"
+                    [(ngModel)]="key.circuitbreakerEnd" name="circuitbreakerEnd_{{index}}" *ngIf="editIndex === index" />
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+
+                  <!-- <div *ngIf="editIndex === index">
+                    <input class="form-control form-control-small-1" id="circuitbreakerEnd_{{index}}" name="circuitbreakerEnd_{{index}}"
+                      [(ngModel)]="key.circuitbreakerEnd" [owlDateTimeTrigger]="circuitbreakerEnd" [owlDateTime]="circuitbreakerEnd">
+                    <owl-date-time [pickerType]="'timer'" #circuitbreakerEnd></owl-date-time>
+                  </div> -->
+                </td>
+
+
+
+
+
+
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.alphaStartTime}}</span>
+
+                  <input type="text" class="form-control  form-control-small-1" id="alphaStartTime_{{index}}"
+                  [(ngModel)]="key.alphaStartTime" name="alphaStartTime_{{index}}" *ngIf="editIndex === index" />
+                <div class="error-message-block" *ngIf="editIndex === index"></div>
+
+                  <!-- <div *ngIf="editIndex === index">
+                    <input class="form-control form-control-small-1" id="alphaStartTime_{{index}}" name="alphaStartTime_{{index}}"
+                      [(ngModel)]="key.alphaStartTime" [owlDateTimeTrigger]="alphaStartTime" [owlDateTime]="alphaStartTime">
+                    <owl-date-time [pickerType]="'timer'" #alphaStartTime></owl-date-time>
+                  </div> -->
+                </td>
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.alphaEndTime}}</span>
+
+                  <input type="text" class="form-control  form-control-small-1" id="alphaEndTime_{{index}}"
+                  [(ngModel)]="key.alphaEndTime" name="alphaEndTime_{{index}}" *ngIf="editIndex === index" />
+                <div class="error-message-block" *ngIf="editIndex === index"></div>
+
+                  <!-- <div *ngIf="editIndex === index">
+                    <input class="form-control form-control-small-1" id="alphaEndTime_{{index}}" name="alphaEndTime_{{index}}"
+                      [(ngModel)]="key.alphaEndTime" [owlDateTimeTrigger]="alphaEndTime" [owlDateTime]="alphaEndTime">
+                    <owl-date-time [pickerType]="'timer'" #alphaEndTime></owl-date-time>
+                  </div> -->
+                </td>
+
+
+
+
+
+
+
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.betaStartTime}}</span>
+
+                  <input type="text" class="form-control  form-control-small-1" id="betaStartTime_{{index}}"
+                  [(ngModel)]="key.betaStartTime" name="betaStartTime_{{index}}" *ngIf="editIndex === index" />
+                <div class="error-message-block" *ngIf="editIndex === index"></div>
+
+                 <!--  <div *ngIf="editIndex === index">
+                    <input class="form-control form-control-small-1" id="betaStartTime_{{index}}" name="betaStartTime_{{index}}"
+                      [(ngModel)]="key.betaStartTime" [owlDateTimeTrigger]="betaStartTime" [owlDateTime]="betaStartTime">
+                    <owl-date-time [pickerType]="'timer'" #betaStartTime></owl-date-time>
+                  </div> -->
+                </td>
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.betaEndTime}}</span>
+
+                  <input type="text" class="form-control  form-control-small-1" id="betaEndTime_{{index}}"
+                  [(ngModel)]="key.betaEndTime" name="betaEndTime_{{index}}" *ngIf="editIndex === index" />
+                <div class="error-message-block" *ngIf="editIndex === index"></div>
+
+                  <!-- <div *ngIf="editIndex === index">
+                    <input class="form-control form-control-small-1" id="betaEndTime_{{index}}" name="betaEndTime_{{index}}"
+                      [(ngModel)]="key.betaEndTime" [owlDateTimeTrigger]="betaEndTime" [owlDateTime]="betaEndTime">
+                    <owl-date-time [pickerType]="'timer'" #betaEndTime></owl-date-time>
+                  </div> -->
+                </td>
+
+
+
+
+
+
+
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.gammaStartTime}}</span>
+
+                  <input type="text" class="form-control  form-control-small-1" id="gammaStartTime_{{index}}"
+                  [(ngModel)]="key.gammaStartTime" name="betaEngammaStartTime_dTime_{{index}}" *ngIf="editIndex === index" />
+                <div class="error-message-block" *ngIf="editIndex === index"></div>
+
+                  <!-- <div *ngIf="editIndex === index">
+                    <input class="form-control form-control-small-1" id="gammaStartTime_{{index}}" name="gammaStartTime_{{index}}"
+                      [(ngModel)]="key.gammaStartTime" [owlDateTimeTrigger]="gammaStartTime" [owlDateTime]="gammaStartTime">
+                    <owl-date-time [pickerType]="'timer'" #gammaStartTime></owl-date-time>
+                  </div> -->
+                </td>
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.gammaEndTime}}</span>
+
+                  <input type="text" class="form-control  form-control-small-1" id="gammaEndTime_{{index}}"
+                  [(ngModel)]="key.gammaEndTime" name="gammaEndTime_{{index}}" *ngIf="editIndex === index" />
+                <div class="error-message-block" *ngIf="editIndex === index"></div>
+
+                <!--   <div *ngIf="editIndex === index">
+                    <input class="form-control form-control-small-1" id="gammaEndTime_{{index}}" name="gammaEndTime_{{index}}"
+                      [(ngModel)]="key.gammaEndTime" [owlDateTimeTrigger]="gammaEndTime" [owlDateTime]="gammaEndTime">
+                    <owl-date-time [pickerType]="'timer'" #gammaEndTime></owl-date-time>
+                  </div> -->
+                </td>
+
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.reasonCode}}</span>
+                  <input type="text" class="form-control form-control-small-1" id="reasonCode_{{index}}"
+                    [(ngModel)]="key.reasonCode" *ngIf="editIndex === index" />
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.ciIssue}}</span>
+                  <select class="form-control form-control-small-1" name="ciIssue" id="ciIssue_{{index}}" [(ngModel)]="key.ciIssue"
+                    *ngIf="editIndex === index">
+                    <option value="">--Select--</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                  </select>
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+
+
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.nonCiIssue}}</span>
+                  <select class="form-control form-control-small-1" name="nonCiIssue" id="nonCiIssue_{{index}}"
+                    [(ngModel)]="key.nonCiIssue" *ngIf="editIndex === index">
+                    <option value="">--Select--</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                  </select>
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.resolution}}</span>
+                  <input type="text" class="form-control form-control-small-1" id="resolution_{{index}}" [(ngModel)]="key.resolution"
+                    *ngIf="editIndex === index" />
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.status}}</span>
+                  <select class="form-control form-control-small-1" name="status" id="status_{{index}}" [(ngModel)]="key.status"
+                    *ngIf="editIndex === index">
+                    <option value="">--Select--</option>
+                    <option value="Migrated">Migrated</option>
+                    <option value="Incomplete">Incomplete</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Cancelled">Cancelled</option>
+                  </select>
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.nvtfNoHarm}}</span>
+                  <input type="text" class="form-control form-control-small-1" id="nvtfNoHarm_{{index}}" [(ngModel)]="key.nvtfNoHarm"
+                    *ngIf="editIndex === index" />
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+                
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.engineerOneNotes}}</span>
+                  <input type="text" class="form-control form-control-small-1" id="engineerOneNotes_{{index}}" [(ngModel)]="key.engineerOneNotes"
+                    *ngIf="editIndex === index" />
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.engineerTwoNotes}}</span>
+                  <input type="text" class="form-control form-control-small-1" id="engineerTwoNotes_{{index}}" [(ngModel)]="key.engineerTwoNotes"
+                    *ngIf="editIndex === index" />
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+
+                <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText" *ngIf="editIndex != index">{{key.engineerThreeNotes}}</span>
+                 
+                  <div class="form-control-fixed iconsWrapper tableRowAction" id="fixedCol" ng-style="iconsWrapperPosition">
+                    <ng-template #save>Save</ng-template>
+                    <ng-template #cancel>Cancel</ng-template>
+                    <div (click)="addEodReportRow($event, key, index)" class="cloneRow" placement="bottom" container="body"
+                      [ngbTooltip]="(editIndex === index) ? 'Clone':'Clone'"></div>
+                    <div (click)="editNeVersionRow($event, key, index)" class="editRow" placement="bottom" container="body"
+                      [ngbTooltip]="(editIndex === index) ? save:'Edit'"></div>
+                    <div (click)="deleteNeVersionRow(confirmModalDelete, key.id, $event,index)" class="deleteRow"
+                      placement="bottom" container="body" [ngbTooltip]="(editIndex === index) ?cancel:'Delete'"></div>
+                  </div>
+
+                  <input type="text" class="form-control form-control-small-1" id="engineerThreeNotes_{{index}}" [(ngModel)]="key.engineerThreeNotes"
+                    *ngIf="editIndex === index" />
+                  <div class="error-message-block" *ngIf="editIndex === index"></div>
+                </td>
+              </tr>
+            </ng-container>
+            <ng-container #neversionContainer></ng-container>
+
+          </tbody>
+        </table>
+      </div>
+
+
+
+      <div id="paginationWrapper">
+        <div *ngIf="pageRenge.length" class="page" style="margin-left:20px;">
+          <div class="floatLeft" style="width: 75px;padding-top: 6px">Show</div>
+          <select [disabled]="paginationDisabbled" [(ngModel)]="pageSize" (change)="onChangeTableRowLength($event)"
+            style="margin-top: 4px; margin-right: 6px;margin-left: -39px;" class="form-control-pagination floatLeft"
+            aria-controls="TableRowLength" size="1" name="TableRowLength" id="TableRowLength">
+            <option selected="selected" value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+          <div class="floatLeft" style="width: 75px;padding-top: 6px">Entries</div>
+          <div class="floatRight page" style="padding-top: 3px;margin-right:20px;">
+            <ul *ngIf="pageRenge.length" class="pagination floatRight">
+              <li id="firstPage" [ngClass]="{disabled:(currentPage === 1 || paginationDisabbled)}" class="page-item">
+                <a class="page-link" (click)="setPage(1)">FIRST</a>
+              </li>
+              <li id="previousPage" [ngClass]="{disabled:(currentPage === 1 || paginationDisabbled)}" class="page-item">
+                <a class="page-link" (click)="setPage(pager.currentPage - 1)">PREV</a>
+              </li>
+              <li *ngFor="let n of pager.pages" [ngClass]="{active:currentPage === n, disabled:paginationDisabbled}"
+                class="page-item">
+                <a class="page-link" (click)="setPage(n)" id='{{n+1}}'>{{n}}</a>
+              </li>
+              <li id="nextPage" [ngClass]="{disabled:(currentPage === totalPages || paginationDisabbled)}" class="page-item">
+                <a class="page-link" (click)="setPage(pager.currentPage + 1)">NEXT</a>
+              </li>
+              <li id="lastPage" [ngClass]="{disabled:(currentPage === totalPages || paginationDisabbled)}" class="page-item">
+                <a class="page-link" (click)="setPage(pager.totalPages)">LAST</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+  </ng-template>
+
+
+  <ng-template #customerName id="customerName">
+    <div class="">
+      <div class="form-group">
+        <label for="templateName" class="asterisk_input">CUSTOMER NAME</label>
+        <select class="form-control" name="customerName" id="customerName" [(ngModel)]=selCustName (change)="custNameChange(selCustName)">
+          <option value="">--Select--</option>
+          <option *ngFor="let key of custList" value="{{key.id}}">{{key.customerName}}</option>
+
+
+        </select>
+        <div class="error-message-block"></div>
+      </div>
+    </div>
+  </ng-template>
+
+  <rct-nodata *ngIf="noDataVisibility" [subTitle]=""></rct-nodata>
+
+  <ng-template #searchSprint id="searchSprint">
+    <div *ngIf="currentUser=='Super Administrator'" style="border-bottom: 1px solid #ccc; margin-bottom: 20px; margin-top: 20px;"></div>
+
+    <form class="form-horizontal" id="bluePrintForm" #bluePrintForm>
+      <div class="row">
+        <div class="col-3">
+          <div class="form-group ">
+            <label for="templateName">SELECT START DATE RANGE</label>
+            <input class="form-control form-control-small dateRangeAlign" id="searchStartStartDate" name="searchStartStartDate"
+              [(ngModel)]="searchStartStartDate" placeholder="FROM DATE" [owlDateTimeTrigger]="dtSt" [owlDateTime]="dtSt"
+              [max]="max">
+            <owl-date-time [pickerType]="'calendar'" #dtSt></owl-date-time>
+            <input class="form-control form-control-small dateRangeAlign" id="searchStartEndDate" name="searchStartEndDate"
+              [(ngModel)]="searchStartEndDate" [min]="searchStartStartDate" [max]="max" [owlDateTimeTrigger]="dtSt1"
+              placeholder="TO DATE" [owlDateTime]="dtSt1">
+            <owl-date-time [pickerType]="'calendar'" #dtSt1></owl-date-time>
+            <div class="message" *ngIf="errMessage">Please Select Date Range</div>
+          </div>
+        </div>
+
+        <div class="col-3">
+          <div class="form-group ">
+            <label for="templateName">SELECT COMP DATE RANGE</label>
+            <input class="form-control form-control-small dateRangeAlign" id="searchCompStartDate" name="searchCompStartDate"
+              [(ngModel)]="searchCompStartDate" placeholder="FROM DATE" [owlDateTimeTrigger]="dtEd" [owlDateTime]="dtEd"
+              [max]="max">
+            <owl-date-time [pickerType]="'calendar'" #dtEd></owl-date-time>
+            <input class="form-control form-control-small dateRangeAlign" id="searchCompEndDate" name="searchCompEndDate"
+              [(ngModel)]="searchCompEndDate" [min]="searchCompStartDate" [max]="max" [owlDateTimeTrigger]="dtEd1"
+              placeholder="TO DATE" [owlDateTime]="dtEd1">
+            <owl-date-time [pickerType]="'calendar'" #dtEd1></owl-date-time>
+            <div class="message" *ngIf="errMessage">Please Select Date Range</div>
+          </div>
+        </div>
+
+
+        <div class="col-3">
+          <div class="form-group">
+            <label for="templateName" class="">REGION</label>
+            <input class="form-control" autocomplete="off" id="searchRegion" name="searchRegion" type="text"
+              #searchRegion value="" maxlength="100" />
+            <!-- <select class="form-control" name="searchRegion" id="searchRegion" #searchRegion>
+              <option value="">--Select--</option>
+              <option *ngFor="let key of regionList" value="{{key}}" id="{{key.id}}">{{key}}</option>
+            </select> -->
+            <div class="error-message-block"></div>
+          </div>
+        </div>
+
+
+        <div class="col-3">
+          <div class="form-group">
+            <label for="templateName asterisk_input" class="">MARKET</label>
+            <input class="form-control" autocomplete="off" id="searchMarket" name="searchMarket" type="text"
+              #searchMarket value="" maxlength="100" />
+            <!-- <select class="form-control" name="searchMarket" id="searchMarket" #searchMarket>
+              <option value="">--Select--</option>
+              <option *ngFor="let key of marketList" value="{{key}}" id="{{key.id}}">{{key}}</option>
+            </select> -->
+            <div class="error-message-block"></div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3 ">
+          <div class="form-group">
+            <label for="templateName">CASCADE</label>
+            <input class="form-control" autocomplete="off" id="searchCascade" name="searchCascade" type="text"
+              #searchCascade value="" maxlength="100" />
+            <div class="error-message-block"></div>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="form-group">
+            <label for="templateName" class="">NE ID</label>
+            <input class="form-control" autocomplete="off" id="searchEnbId" #searchEnbId name="searchEnbId" type="text"
+              value="" maxlength="100" />
+            <!-- <select class="form-control" name="searchEnbId" id="searchEnbId" #searchEnbId>
+              <option value="">--Select--</option>
+              <option *ngFor="let key of enbIdList" value="{{key}}" id="{{key.id}}">{{key}}</option>
+            </select> -->
+            <div class="error-message-block"></div>
+          </div>
+        </div>
+        <!-- <div class="col-3">
+          <div class="form-group">
+            <label for="templateName">OVERALL TYPE</label>
+            <select class="form-control" name="searchOverallType" id="searchOverallType" #searchOverallType>
+              <option value="">--Select--</option>
+              <option value="Backhaul">Backhaul</option>
+              <option value="Commercial">Commercial</option>
+              <option value="Fit">Fit</option>
+              <option value="Revisit">Revisit</option>
+              <option value="Rework">Rework</option>
+            </select>
+            <div class="error-message-block"></div>
+          </div>
+        </div> -->
+        <div class="col-3">
+          <div class="form-group">
+            <label for="templateName">EOD TYPE</label>
+            <input class="form-control" autocomplete="off" id="searchEodType" #searchEodType name="searchEodType" type="text"
+              value="" maxlength="100" />
+            <!-- <select class="form-control" name="searchEodType" id="searchEodType" #searchEodType>
+              <option value="">--Select--</option>
+              <option value="CLWR">CLWR</option>
+              <option value="FDD">FDD</option>
+              <option value="Hot Swap">Hot Swap</option>
+              <option value="New Site Build">New Site Build</option>
+              <option value="No">No</option>
+              <option value="TDD/FDD">TDD/FDD</option>
+              <option value="Troubleshoot">Troubleshoot</option>
+            </select> -->
+            <div class="error-message-block"></div>
+          </div>
+        </div>
+      </div>
+      <div class="textAlignCenter">
+        <button name="save" class="formBtn myriadproBold validateForm airlinecnfgSearch" id="searchButton" (click)="searchOverallReportDetails($event)"
+          accesskey="s">SEARCH</button>
+        <button type="button" id="cancelButton" name="CANCEL" class="formBtnCncl formBtn myriadproBold formBtn" (click)="clearSearchFrom()" accesskey="c">CLEAR</button>
+      </div>
+    </form>
+
+  </ng-template>
+
+  <ng-template #searchVerizon id="searchVerizon">
+    <div *ngIf="currentUser=='Super Administrator'" style="border-bottom: 1px solid #ccc; margin-bottom: 20px; margin-top: 20px;"></div>
+
+    <form class="form-horizontal" id="bluePrintForm" #bluePrintForm>
+      <div class="row">
+        <div class="col-3">
+          <div class="form-group ">
+            <label for="templateName">SELECT FORECAST DATE RANGE</label>
+            <input class="form-control form-control-small dateRangeAlign" id="searchForecastStartDate" name="searchForecastStartDate"
+              [(ngModel)]="searchForecastStartDate" placeholder="FROM DATE" [owlDateTimeTrigger]="dt" [owlDateTime]="dt"
+              [max]="max">
+            <owl-date-time [pickerType]="'calendar'" #dt></owl-date-time>
+            <input class="form-control form-control-small dateRangeAlign" id="searchForecastEndDate" name="searchForecastEndDate"
+              [(ngModel)]="searchForecastEndDate" [min]="searchForecastStartDate" [max]="max" [owlDateTimeTrigger]="dt1"
+              placeholder="TO DATE" [owlDateTime]="dt1">
+            <owl-date-time [pickerType]="'calendar'" #dt1></owl-date-time>
+            <div class="message" *ngIf="errMessage">Please Select Date Range</div>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="form-group">
+            <label for="templateName" class="">MARKET</label>
+            <input class="form-control" autocomplete="off" id="searchMarket" name="searchMarket" #searchMarket type="text"
+              value="" maxlength="100" />
+            <!-- <select class="form-control" name="searchMarket" id="searchMarket" #searchMarket>
+              <option value="">--Select--</option>
+              <option *ngFor="let key of marketList" value="{{key}}" id="{{key.id}}">{{key}}</option>
+            </select> -->
+            <div class="error-message-block"></div>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="form-group">
+            <label for="templateName" class="">NE ID</label>
+            <input class="form-control" autocomplete="off" id="searchEnbId" name="searchEnbId" #searchEnbId type="text"
+              value="" maxlength="100" />
+            <!-- <select class="form-control" name="searchEnbId" id="searchEnbId" #searchEnbId>
+              <option value="">--Select--</option>
+              <option *ngFor="let key of enbIdList" value="{{key}}" id="{{key.id}}">{{key}}</option>
+            </select> -->
+            <div class="error-message-block"></div>
+          </div>
+        </div>
+
+        <div class="col-3">
+          <div class="form-group">
+            <label for="templateName" class="">NE NAME</label>
+            <input class="form-control" autocomplete="off" id="searchEnbName" name="searchEnbName" #searchEnbName type="text"
+              value="" maxlength="100" />
+            <!-- <select class="form-control" name="searchEnbName" id="searchEnbName" #searchEnbName>
+              <option value="">--Select--</option>
+              <option *ngFor="let key of enbNameList" value="{{key}}" id="{{key.id}}">{{key}}</option>
+            </select> -->
+            <div class="error-message-block"></div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <!-- <div class="col-3 ">
+          <div class="form-group">
+            <label for="templateName">CARRIERS</label>
+            <input class="form-control" autocomplete="off" id="searchCarriers" name="searchCarriers" type="text" value=""
+              maxlength="100" />
+            <div class="error-message-block"></div>
+          </div>
+        </div> -->
+        <div class="col-3">
+          <div class="form-group">
+            <label for="templateName">STATUS</label>
+            <input class="form-control" autocomplete="off" id="searchStatus" name="searchStatus" #searchStatus type="text"
+              value="" maxlength="100" />
+            <!-- <select class="form-control" name="searchStatus" id="searchStatus" #searchStatus>
+              <option value="">--Select--</option>
+              <option value="Cancelled">Cancelled</option>
+              <option value="Carrier Add">Carrier Add</option>
+              <option value="Conversion">Conversion</option>
+              <option value="Migrated">Migrated</option>
+              <option value="Revisit">REVISIT</option>
+              <option value="Rolled Back">Rolled Back</option>
+              <option value="Troubleshoot">Troubleshoot</option>
+            </select> -->
+            <div class="error-message-block"></div>
+          </div>
+        </div>
+      </div>
+      <div class="textAlignCenter">
+        <button name="save" class="formBtn myriadproBold validateForm airlinecnfgSearch" id="searchButton" (click)="searchOverallReportDetails($event)"
+          accesskey="s">SEARCH</button>
+        <button type="button" id="cancelButton" name="CANCEL" class="formBtnCncl formBtn myriadproBold formBtn" (click)="clearSearchFrom()" accesskey="c">CLEAR</button>
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template #sessionExpiredModal let-c="close" let-d="dismiss">
+    <div class="failureIcon"></div>
+    <p id="sessionPopup">Session Expired</p>
+    <div class="modelDismiss" (click)="closeAndLogout()"></div>
+  </ng-template>
+
+  <ng-template #successModal let-c="close" let-d="dismiss">
+    <div class="successIcon"></div>
+    <p id="sessionPopup">{{message}}</p>
+
+    <div class="modelDismiss" (click)="closeModel()"></div>
+  </ng-template>
+  <!-- <div id="formWrapper" class="formWrapperMargin bluePrintFormWrapper">
+      
+    </div> -->
+
+  <rct-model *ngIf="showModelMessage" [message]="modelData"></rct-model>
+
+
+  <ng-template #confirmModalDelete let-c="close" let-d="dismiss">
+    <div class="sucessContentWrapper">
+      <div class="confirmIcon"></div>
+      <div class="confirmContent deletePopup">
+        <p>
+          <b>Are You Sure, </b>
+        <!-- </p>
+        <br>
+        <p> -->You want to <b>Delete</b>
+        </p>
+      </div>
+    </div>
+    <div class="deletePopupBtn modal-footer textAlignCenter">
+      <button type="button" class="formBtn btn btn-secondary modal_button_yes" (click)="d('dismiss click')" id="deleteConfirmation">Yes</button>
+      <button type="button" class="formBtn btn btn-secondary modal_button_no" (click)="c('Close click')" id="modal_button_no">No</button>
+    </div>
+  </ng-template>
+
+
+</div>

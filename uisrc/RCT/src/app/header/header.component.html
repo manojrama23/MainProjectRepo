@@ -1,0 +1,212 @@
+<header>
+    <div style="background : #0f193c;height: 46px; box-shadow: 0px 2px 5px grey;">
+    <rct-model *ngIf="showModelMessage" [message]="modelData"></rct-model>
+
+    <nav class="navbar navbar-toggleable-md navbar-inverse">
+        <button class="navbar-toggler navbar-toggler-left" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon floatLeft"></span>
+        </button>
+        <a id="logoWrapper" placement="bottom" (click)="routeToLandingPage()">
+            <div class="navbar-brand floatLeft" id="htooltip" placement="bottom">S-RCT
+                    <div>
+                <span class="htooltiptext" style ="width: 41px;"  id="htooltip">Home</span>
+                    </div>
+            </div>
+            <!-- <div id="applicationVersion" class="floatLeft subHeaderStyle">
+                <span class="ng-binding">C&I</span>
+            </div> -->
+            <div id="applicationVersion" class="floatLeft versionStyle">
+                <span class="ng-binding">{{ rctSnapShot | uppercase }}</span>
+            </div>
+        </a>
+          <!--   <a id="logoWrapper" placement="bottom" (click)="routeToLandingPage()" [ngClass] = "highlightMainMenu('home','home')">
+                <div class="navbar-brand floatLeft" ngbTooltip="Home" placement="bottom">S.M.A.R.T</div>
+                <div id="applicationVersion" class="floatLeft versionStyle">
+                    <span class="ng-binding">{{ rctSnapShot | uppercase }}</span>
+                </div>
+            </a> -->
+            <!-- <a *ngIf="(userGroupDetails != 'Administrator') && userGroupDetails != 'Super Administrator'" id="logoWrapper" placement="bottom"  routerLink = "dashboard" [ngClass] = "highlightMainMenu('dashboard','dashboard')">
+                <div class="navbar-brand floatLeft">S.M.A.R.T</div>
+                <div id="applicationVersion" class="floatLeft versionStyle">
+                    <span class="ng-binding">{{ rctSnapShot | uppercase }}</span>
+                </div>
+            </a> -->
+        <div class="floatLeft mainMenu"><span>
+
+      </span></div>
+
+        <div id="mainMenu" class="pull-left">
+            <ul class="nav navbar-nav" id="mainMenuBlock" style="margin-left: 20px;">
+                <!-- <li *ngIf="mainMenuCredentials.dash" [ngClass]="highlightMainMenu('dashboard','dash')"><a routerLink="dashboard">DASHBOARD</a></li>
+                
+                <li *ngIf="mainMenuCredentials.configuration" [ngClass]="highlightMainMenu('usermanagement','configuration')"><a routerLink="usermanagement">CONFIGURATIONS</a></li>
+                
+                <li *ngIf="mainMenuCredentials.premigration" [ngClass]="highlightMainMenu('ciqupload','premigration')"><a routerLink="ciqupload">PRE MIGRATION</a></li>
+                
+                <li *ngIf="mainMenuCredentials.migration" [ngClass]="highlightMainMenu('runtest','migration')"><a routerLink="runtest">MIGRATION</a></li> -->
+                
+                <!-- <li *ngIf="mainMenuCredentials.postmigration" [ngClass]="highlightMainMenu('usermanagement','postmigration')"><a routerLink="usermanagement">POST MIGRATION</a></li> -->
+
+
+                <!-- New Menu -->
+
+                
+                <li *ngIf="mainMenuCredentials.configuration" [ngClass]="highlightMainMenu('usermanagement','configuration')"><a routerLink="usermanagement">CONFIGURATIONS</a></li>
+
+                <li *ngIf="mainMenuCredentials.migration" [ngClass]="highlightMainMenu('uploadScript','rules')"><a routerLink="uploadScript">RULES</a></li>
+                
+                <li *ngIf="mainMenuCredentials.premigration" [ngClass]="highlightMainMenu('ciqupload','premigration')"><a routerLink="ciqupload">PRE MIGRATION</a></li>
+                
+                <li *ngIf="mainMenuCredentials.migration" [ngClass]="highlightMainMenu('runtest','migration')"><a routerLink="runtest">MIGRATION</a></li>
+
+                <li *ngIf="mainMenuCredentials.postmigration" [ngClass]="highlightMainMenu('ranatp','postmigration')"><a routerLink="audit">POST MIGRATION</a></li><!-- {{networkType == '5G' || programName == 'VZN-4G-FSU' ? 'audit' : 'ranatp'}} -->
+
+                <!-- <li *ngIf="mainMenuCredentials.sandr" [ngClass]="highlightMainMenu('scheduling','sandr')"><a routerLink="scheduling">S & R</a></li> -->
+
+                <!-- <li *ngIf="mainMenuCredentials.migration" [ngClass]="highlightMainMenu('runtest','scheduler')"><a routerLink="runtest">SCHEDULER</a></li>
+
+                <li *ngIf="mainMenuCredentials.migration" [ngClass]="highlightMainMenu('runtest','reports')"><a routerLink="runtest">S & R</a></li> -->
+
+                <li *ngIf="mainMenuCredentials.postmigration" [ngClass]="highlightMainMenu('workflowmgmt','workflowmgmt')"><a routerLink="workflowmgmt">WORKFLOW MANAGEMENT</a></li>
+            
+                 <li *ngIf="mainMenuCredentials.postmigration" [ngClass]="highlightMainMenu('report','report')"><a routerLink="report">S & R</a></li> 
+
+               <!-- <li *ngIf="mainMenuCredentials.sandr" [ngClass]="highlightMainMenu('scheduling','sandr')"><a routerLink="overallreports">S & R</a></li>--> 
+            </ul>
+        </div>
+    </nav>
+    </div>
+    <nav id="subMenuBlock">
+	<div class="row">        
+	    <ul class="nav navbar-nav" id="subMenu" style="margin-left: 221px;">
+            <li class="subMenu" routerLinkActive="active" *ngFor="let key of subMenuItems"><a *ngIf="key.required" routerLink="{{key.link}}">{{key.displayText}}</a></li><!-- *ngIf="key.requiredIn5G || (networkType != '5G' && programName != 'VZN-4G-FSU')" -->
+        </ul>
+        <!-- <select *ngIf="showProgramList" class="programDropDown" (change)="reloadPage()" [(ngModel)]="sharedService.selectedProgram" [compareWith]="compareFn">
+            <option *ngFor="let key of sharedService.programSubscription" [ngValue]="key">{{key.programName}}</option>
+        </select>
+        <span>DUO Connected : {{duoSessionConnected}}</span> -->
+        <div class="programDropDownContainer">
+            <div *ngIf="showDuoConnectionStatus" [ngClass]="{'connected':duoSessionConnected, 'disconnected':!duoSessionConnected}" class="duoConnectStatus"  [ngbTooltip]="(duoSessionConnected && neIdsConnected && neIdsConnected.length > 0) ? list : ''" [autoClose]="true" container="body" placement="bottom"></div>
+            <select *ngIf="showProgramList" class="programDropDown" (change)="reloadPage()" [(ngModel)]="sharedService.selectedProgram" [compareWith]="compareFn">
+                <option *ngFor="let key of sharedService.programSubscription" [ngValue]="key">{{key.programName}}</option>
+            </select>
+        </div>
+    </div>
+    </nav><!--  -->
+    <ng-template #list>
+        <div class="d-flex flex-column">
+            <ul>
+                <li *ngFor="let id of neIdsConnected">
+                    <span>{{id}}</span>
+                </li>
+            </ul>
+        </div>
+    </ng-template>
+    <nav class="userMenu floatRight">
+        <ul>
+            <li>
+                <div class="userDetails onclick-menu" placement="bottom" tabindex="0">
+                    <div class="userIcon"></div>
+                </div>
+            </li>
+            <li style="margin-left: -15px;margin-right:-40px">
+                <div class="userDetails onclick-menu" placement="bottom" tabindex="0">
+                    <span class="userName ng-binding">{{userNameDetails}}</span>
+                    <br>
+                    <div class="userGroup ng-binding">{{ userGroupDetails }}</div>
+                </div>
+            </li>
+            <li style="margin-left: -15px;margin-right:-25px">
+                <div class="userDetails" placement="bottom" tabindex="0">
+                    <div class="helpIcon" id="tooltip" (click)="downloadHelp()">
+                        <span class="tooltiptext" style="width: 40px;margin-left: -35px;">Help</span>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="userDetails onclick-menu onclick-menu-change" placement="bottom" tabindex="0">
+                    <div class="settingIcon" id="tooltip">
+                        <span class="tooltiptext" style="width: 54px;margin-left: -50px;">Settings</span>
+                    </div>
+                    <ul class="onclick-menu-content">
+                        <li (click)="openChangePasswordModal(changepswd)"><a>Change Password</a></li>
+                        <!-- <li><a>About SMART</a></li> -->
+                        <li (click)="logout()" accesskey="l"><a>Log Out</a></li>
+                    </ul>
+                </div>
+            </li>
+
+        </ul>
+    </nav>
+</header>
+
+<ng-template #navigationConfirmModal let-c="close" let-d="dismiss">
+    <div class="sucessContentWrapper">
+        <div class="confirmIcon"></div>
+        <div class="confirmContent">
+            <p><b>Changing page will lead to data loss,</b></p>
+            <br>
+            <p>Do you want to <b>Continue</b></p>
+        </div>
+    </div>
+    <div class="modal-footer textAlignCenter">
+        <button type="button" class="formBtn btn btn-secondary modal_button_yes" (click)="dismissModal()" id="deleteConfirmation">YES</button>
+        <button type="button" class="formBtn  btn btn-secondary modal_button_no" (click)="c('Close click')" id="modal_button_no">NO</button>
+    </div>
+</ng-template>
+
+<!-- change password modal -->
+<ng-template #changepswd let-c="close" let-d="dismiss">
+    <div class="chngPswdHead modal-header">
+        <h4 class="chngPswd modal-title">CHANGE PASSWORD</h4>
+    </div>
+    <!-- <div class="modal-body"> 
+       (ngSubmit)="chngPwdForm.form.valid && changePassword(changepswd,$event)"-->
+    <div id="formWrapper" class="chngPswdBody changePswd">
+        <form id="changePasswordForm" class="form-horizontal ng-pristine ng-valid" #chngPwdForm="ngForm">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label for="templateName" class="asterisk_input">CURRENT PASSWORD</label>
+                        <input [(ngModel)]="chngPwd.password" type="password" class="form-control customPswd ng-pristine ng-valid" id="currentPswd" name="currentPswd" value="" required #currentPassword="ngModel">
+                        <div class="error-message-block"></div>
+                        <!-- <div *ngIf="chngPwdForm.submitted && !currentPassword.valid" class="help-block" style="color:red">Current Password is required</div> -->
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label for="templateName" class="asterisk_input">NEW PASSWORD</label>
+                        <input [(ngModel)]="chngPwd.newPassword" type="password" class="form-control customPswd ng-pristine ng-valid" id="newPswd" name="newPswd" value="" required #newPassword="ngModel">
+                        <div class="error-message-block"></div>
+                        <!-- <div *ngIf="chngPwdForm.submitted && !newPassword.valid" class="help-block" style="color:red">New Password is required</div> -->
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label for="templateName" class="asterisk_input">CONFIRM PASSWORD</label>
+                        <input [(ngModel)]="chngPwd.confirmPassword" type="password" class="form-control customPswd ng-pristine ng-valid" id="cnfrmPswd" name="cnfrmPswd" value="" required #confirmPassword="ngModel">
+                        <div class="error-message-block"></div>
+                        <!-- <div *ngIf="chngPwdForm.submitted && !confirmPassword.valid" class="" ss="help-block" style="color:red">Confirm Password is required</div>
+                    <div *ngIf="chngPwdForm.submitted && confirmPassword.valid && !(newPassword.value === confirmPassword.value)" class="" ss="help-block" style="color:red">Confirm Password should be same as New Password</div> -->
+                    </div>
+                </div>
+            </div>
+            <div class="textAlignCenter" id="saveRow">
+                <button type="submit" name="save" class=" formBtn myriadproBold validateForm" id="AddButton" (click)="changePassword(changepswd,$event)">SAVE</button>
+                <button type="button" name="CANCEL" class="formBtnCncl formBtn myriadproBold" (click)="c('Close click')">CANCEL</button>
+            </div>
+            <div class="alert-danger" role="alert" *ngIf="showValidationMessage">
+
+                <strong>{{chngPwdValidationMessage}}</strong>
+            </div>
+        </form>
+        <!-- </div> -->
+    </div>
+</ng-template>
+
+<ng-template #sessionExpiredModal let-c="close" let-d="dismiss">
+    <div class="failureIcon"></div>
+    <p id="sessionPopup">Session Expired</p>
+    <div class="modelDismiss" (click)="closeAndLogout()"></div>
+</ng-template>

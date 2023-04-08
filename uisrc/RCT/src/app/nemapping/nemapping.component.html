@@ -1,0 +1,314 @@
+<div class="page-wrapper">
+  <rct-loader *ngIf="showLoader"></rct-loader>
+  <h1 class="mainHead">NE MAPPING </h1>
+
+
+    <div id="formWrapper" class="formWrapperMargin bluePrintFormWrapper">
+      <form class="form-horizontal" id="bluePrintForm" #bluePrintForm>
+        <div class="row">
+          <div class="col-3">
+            <div class="form-group ">
+              <label for="templateName">SELECT DATE RANGE</label>
+              <input class="form-control form-control-small dateRangeAlign" id="searchStartDate" name="searchStartDate"
+                [(ngModel)]="searchStartDate" placeholder="FROM DATE" [owlDateTimeTrigger]="dt" [owlDateTime]="dt"
+                [max]="searchEndDate ? searchEndDate : max">
+              <owl-date-time [pickerType]="'calendar'" #dt></owl-date-time>
+              <input class="form-control form-control-small dateRangeAlign" id="searchEndDate" name="searchEndDate"
+                [(ngModel)]="searchEndDate" [min]="searchStartDate" [max]="max" [owlDateTimeTrigger]="dt1" placeholder="TO DATE"
+                [owlDateTime]="dt1">
+              <owl-date-time [pickerType]="'calendar'" #dt1></owl-date-time>
+              <!-- <div class="message" *ngIf="errMessage">Please Select Date Range</div> -->
+              <div class="error-message-block"></div>
+            </div>
+          </div>
+
+
+          <div class="col-3 ">
+            <div class="form-group">
+              <label for="templateName">{{programName == "VZN-5G-MM" ? "GNODEB_AU ID" : programName == "VZN-5G-DSS" ? "GNODEB_DU ID": "NE ID" }}</label>
+              <input class="form-control" autocomplete="off" id="searchEnodeB" name="searchEnodeB" type="text" value=""
+                maxlength="100" />
+              <div class="error-message-block"></div>
+            </div>
+          </div>
+          <div class="col-3"*ngIf="!(networkType=='5G')">
+            <div class="form-group">
+              <label for="templateName">NE CONFIG TYPE</label>
+              <select class="form-control" name="searchConfigType" id="searchConfigType" #searchConfigType [(ngModel)]=neConfigType>
+                <option value="">--Select--</option>
+                <option *ngFor="let key of neConfigTypeList" value="{{key}}">{{key}}</option>
+              </select>
+              <div class="error-message-block"></div>
+            </div>
+          </div>
+
+          <div class="col-3">
+            <label for="templateName"></label>
+            <button name="save" class="formBtn myriadproBold validateForm airlinecnfgSearch" id="searchButton" (click)="searchMappingDetails($event)"
+              accesskey="s">SEARCH</button>
+            <button type="button" id="cancelButton" name="CANCEL" class="formBtnCncl formBtn myriadproBold formBtn" (click)="clearSearchFrom()" accesskey="c">CLEAR</button>
+          </div>
+        </div>
+
+      </form>
+    </div>
+
+
+
+
+  <!-- Data Table -->
+  <div id="dataWrapper" *ngIf="tableShowHide" style="padding-top:0px;">
+    <div id="tableWrapper">
+      <div class="scrollHead">
+        <table class="table" id="neMappingDetails">
+          <thead>
+            <tr>
+              <th>
+                <div (click)="changeSorting('enbId', $event, 0)" class="sorting form-control-small">{{programName == "VZN-5G-MM" ? "GNODEB_AU ID" : programName == "VZN-5G-DSS" ? "GNODEB_DU ID": "NE ID" }}</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('neMarket', $event, 1)" class="sorting form-control-small">MARKET</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('neVersion', $event, 2)" class="sorting form-control-small">SM VERSION</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('neName', $event, 3)" class="sorting form-control-small">SM NAME</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('siteConfigType', $event, 4)" class="sorting form-control-small">NE CONFIG TYPE</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('enbSbIp', $event, 5)" class="sorting form-control-small">NE SB IP</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('enbSbVlan', $event, 6)" class="sorting form-control-small">NE SB VLAN</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('btsIp', $event, 7)" class="sorting form-control-small">BTS IP</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('enbOamIp', $event, 8)" class="sorting form-control-small">NE OAM IP	</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('enbVlanId', $event, 9)" class="sorting form-control-small">NE VLAN ID</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('btsId', $event, 10)" class="sorting form-control-small">BTS ID</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('bsmIp', $event, 11)" class="sorting form-control-small">BSM IP</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('ciqName', $event, 12)" class="sorting form-control-middle-1">CIQ NAME</div>
+              </th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="scrollBody">
+        <table class="table" id="genarateFileData">
+          <tbody id="rowCount">
+            <ng-container *ngFor="let key of tableData['neMappingDetails']; let index = index">
+              <tr id="row_id_{{key.id}}">
+                <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">{{(key.enbId) ? key.enbId : ""}} </td>
+                <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">{{!(key.networkConfigEntity) ? "" : key.networkConfigEntity.neMarket}}</td>
+                <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">{{!(key.networkConfigEntity)? "" : key.networkConfigEntity.neVersionEntity.neVersion}}</td>
+                <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">{{!(key.networkConfigEntity)? "" : key.networkConfigEntity.neName}}</td>
+                <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">{{!(key.siteConfigType)? "" : key.siteConfigType}}</td>
+                <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">{{!(key.enbSbIp)? "" : key.enbSbIp}}</td>
+                <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">{{!(key.enbSbVlan)? "" : key.enbSbVlan}}</td>
+                <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">{{!(key.btsIp)? "" : key.btsIp}}</td>
+                <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">{{!(key.enbOamIp)? "" : key.enbOamIp}}</td>
+                <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">{{!(key.enbVlanId)? "" : key.enbVlanId}}</td>
+                <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">{{!(key.btsId)? "" : key.btsId}}</td>
+                <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">{{!(key.bsmIp)? "" : key.bsmIp}}</td>
+                <td class="form-control-middle-1" data-toggle="tooltip" data-placement="right" data-container="body">
+                  <span class="eventColText">{{!(key.ciqName)? "" : key.ciqName}}</span>
+                  <div class="form-control-fixed iconsWrapper tableRowAction" id="fixedCol" ng-style="iconsWrapperPosition">
+                    <div (click)="editRow($event, key, index)" class="editRow" id="{{index}}" placement="bottom"
+                      container="body" ngbTooltip="Edit"></div>
+                  </div>
+                </td>
+              </tr>
+              <tr *ngIf="checkFormEnable(index)" id="editedRow{{index}}">
+                <td colspan="13" class="formEditRow">
+                  <div id="formWrapper" class="userManagementFormWrapper" [ngStyle]="{'width': formWidth, 'margin-left': scrollLeft}">
+                    <form class="form-horizontal">
+
+                      <div class="row">
+                        <input type="text" class="displayNone" id="id" name="id" value="" />
+                        <div class="col-3">
+                          <div class="form-group">
+                            <label for="templateName">{{networkType=="5G" ? "GNODEB_AU ID" : "NE ID"}}</label>
+                            <input disabled="disabled" type="text" class="form-control" id="enbId" name="enbId" value="" />
+                            <div class="error-message-block"></div>
+                          </div>
+                        </div>
+                        <div class="col-3">
+                          <div class="form-group">
+                            <label for="templateName" class="asterisk_input">MARKET</label>
+                            <select class="form-control" name="neMarket" id="neMarket" [(ngModel)]="selNeMarket"
+                              (change)="getNeVersion(selNeMarket)">
+                              <option value="">--Select--</option>
+                              <option *ngFor="let key of marketList" value="{{key}}" id="neMarket">{{key}}</option>
+                            </select>
+                            <div class="error-message-block"></div>
+                          </div>
+                        </div>
+                        <div class="col-3">
+                          <div class="form-group">
+                            <label for="templateName" class="asterisk_input">SM VERSION</label>
+                            <select class="form-control" name="neVersion" id="neVersion" [(ngModel)]="selNeVersion"
+                              (change)="getNeName(selNeVersion)">
+                              <option value="">--Select--</option>
+                              <option *ngFor="let key of neVersion" value="{{key}}" id="neVersion">{{key}}</option>
+                            </select>
+                            <div class="error-message-block"></div>
+                          </div>
+                        </div>
+                        <div class="col-3">
+                          <div class="form-group">
+                            <label for="templateName" class="asterisk_input">SM NAME</label>
+                            <select class="form-control" name="neName" id="neName" [compareWith]="compareFn" [(ngModel)]="selNeName">
+                              <option value="">--Select--</option>
+                              <option *ngFor="let key of neNameList" [ngValue]="key">{{key.neName}}</option>
+                            </select>
+                            <div class="error-message-block"></div>
+                          </div>
+                        </div>
+                        <div class="col-3">
+                          <div class="form-group">
+                            <label for="templateName" [ngClass]="{asterisk_input: this.networkType != '5G'}">NE CONFIG TYPE</label>
+                            <select class="form-control" name="siteConfigType" id="siteConfigType" [(ngModel)]="selsiteConfigType" [disabled]="networkType =='5G'"(change)="neConfigTypeChange()">
+                              <option value="">--Select--</option>
+                              <option *ngFor="let key of neConfigTypeList" value="{{key}}">{{key}}</option>
+                            </select>
+                            <div class="error-message-block"></div>
+                          </div>
+                        </div>
+                        <div class="col-3">
+                          <div class="form-group">
+                            <label for="templateName" [ngClass]="{asterisk_input: this.selsiteConfigType == 'FDD Only'}">NE SB IP</label>
+                            <input type="text" class="form-control" id="enbSbIp" name="enbSbIp" value="" [(ngModel)]="enbSbIp"  [disabled]="selsiteConfigType != 'FDD Only'"/>
+                            <div class="error-message-block"></div>
+                          </div>
+                        </div>
+                        <div class="col-3">
+                          <div class="form-group">
+                            <label for="templateName" [ngClass]="{asterisk_input: this.selsiteConfigType == 'FDD Only'}">NE SB VLAN</label>
+                            <input type="text" class="form-control" id="enbSbVlan" name="enbSbVlan" value="" [(ngModel)]="enbSbVlan"  [disabled]="selsiteConfigType != 'FDD Only'"/>
+                            <div class="error-message-block"></div>
+                          </div>
+                        </div>
+                        <div class="col-3">
+                          <div class="form-group">
+                            <label for="templateName" [ngClass]="{asterisk_input: this.selsiteConfigType == 'FDD Only'}">BTS IP</label>
+                            <input type="text" class="form-control" id="btsIp" name="btsIp" value="" [(ngModel)]="btsIp"  [disabled]="selsiteConfigType != 'FDD Only'"/>
+                            <div class="error-message-block"></div>
+                          </div>
+                        </div>
+                        <div class="col-3">
+                          <div class="form-group">
+                            <label for="templateName" [ngClass]="{asterisk_input: this.selsiteConfigType == 'FDD Only'}">NE OAM IP</label>
+                            <input type="text" class="form-control" id="enbOamIp" name="enbOamIp" value="" [(ngModel)]="enbOamIp"  [disabled]="selsiteConfigType != 'FDD Only'"/>
+                            <div class="error-message-block"></div>
+                          </div>
+                        </div>
+                        <div class="col-3">
+                          <div class="form-group">
+                            <label for="templateName" [ngClass]="{asterisk_input: this.selsiteConfigType == 'FDD Only'}">NE VLAN ID</label>
+                            <input type="text" class="form-control" id="enbVlanId" name="enbVlanId" value="" [(ngModel)]="enbVlanId"  [disabled]="selsiteConfigType != 'FDD Only'"/>
+                            <div class="error-message-block"></div>
+                          </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName" [ngClass]="{asterisk_input: this.selsiteConfigType == 'FDD Only' || this.selsiteConfigType == 'FDD+TDD Script' || this.selsiteConfigType == 'FDD+TDD Put' || this.selsiteConfigType == 'New Site'}">BTS ID</label>
+                                <input type="text" class="form-control" id="btsId" name="btsId" value="" [(ngModel)]="btsId" [disabled]="selsiteConfigType != 'FDD Only' && selsiteConfigType != 'FDD+TDD Script' && selsiteConfigType != 'FDD+TDD Put' && selsiteConfigType != 'New Site'"/>
+                                <div class="error-message-block"></div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName" [ngClass]="{asterisk_input: this.selsiteConfigType == 'FDD Only' || this.selsiteConfigType == 'FDD+TDD Script' || this.selsiteConfigType == 'FDD+TDD Put' || this.selsiteConfigType == 'New Site'}">BSM IP</label>
+                                <input type="text" class="form-control" id="bsmIp" name="bsmIp" value="" [(ngModel)]="bsmIp" [disabled]="selsiteConfigType != 'FDD Only' && selsiteConfigType != 'FDD+TDD Script' && selsiteConfigType != 'FDD+TDD Put' && selsiteConfigType != 'New Site'"/>
+                                <div class="error-message-block"></div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                          <div class="form-group">
+                              <label for="templateName" >CIQ NAME</label>
+                              <input type="text" class="form-control" id="ciqName" name="ciqName" value="" [(ngModel)]="ciqName" />
+                              <div class="error-message-block"></div>
+                          </div>
+                      </div>
+                      </div>
+
+                      <div class="textAlignCenter">
+                        <button name="update" class="formBtn myriadproBold validateForm" id="updateButton" type="submit"
+                          (click)="updateEditRow(index, key, $event)" accesskey="u">UPDATE</button>
+                        <button type="button" name="CANCEL" class="formBtnCncl formBtn myriadproBold" id="editCancelButton"
+                          (click)="cancelEditRow(index,key.id)" accesskey="c">CANCEL</button>
+                      </div>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+      <div id="paginationWrapper">
+        <div *ngIf="pageRenge.length" class="page" style="margin-left:20px;">
+          <div class="floatLeft" style="width: 75px;padding-top: 6px">Show</div>
+          <select [disabled]="paginationDisabbled" [(ngModel)]="pageSize" (change)="onChangeTableRowLength($event)"
+            style="margin-top: 4px; margin-right: 6px;margin-left: -39px;" class="form-control-pagination floatLeft"
+            aria-controls="TableRowLength" size="1" name="TableRowLength" id="TableRowLength">
+            <option selected="selected" value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+          <div class="floatLeft" style="width: 75px;padding-top: 6px">Entries</div>
+          <div class="floatRight page" style="padding-top: 3px;margin-right:20px;">
+            <ul *ngIf="pageRenge.length" class="pagination floatRight">
+              <li id="firstPage" [ngClass]="{disabled:(currentPage === 1 || paginationDisabbled)}" class="page-item">
+                <a class="page-link" (click)="setPage(1)">FIRST</a>
+              </li>
+              <li id="previousPage" [ngClass]="{disabled:(currentPage === 1 || paginationDisabbled)}" class="page-item">
+                <a class="page-link" (click)="setPage(pager.currentPage - 1)">PREV</a>
+              </li>
+              <li *ngFor="let n of pager.pages" [ngClass]="{active:currentPage === n, disabled:paginationDisabbled}"
+                class="page-item">
+                <a class="page-link" (click)="setPage(n)" id='{{n+1}}'>{{n}}</a>
+              </li>
+              <li id="nextPage" [ngClass]="{disabled:(currentPage === totalPages || paginationDisabbled)}" class="page-item">
+                <a class="page-link" (click)="setPage(pager.currentPage + 1)">NEXT</a>
+              </li>
+              <li id="lastPage" [ngClass]="{disabled:(currentPage === totalPages || paginationDisabbled)}" class="page-item">
+                <a class="page-link" (click)="setPage(pager.totalPages)">LAST</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <rct-nodata *ngIf="showNoDataFound" [subTitle]=""></rct-nodata>
+  <!--Live Data Details Model-->
+  <rct-model *ngIf="showModelMessage" [message]="modelData"></rct-model>
+
+  <ng-template #sessionExpiredModal let-c="close" let-d="dismiss">
+    <div class="failureIcon"></div>
+    <p id="sessionPopup">Session Expired</p>
+    <div class="modelDismiss" (click)="closeAndLogout()"></div>
+  </ng-template>
+
+</div>
+<ng-template #successModal let-c="close" let-d="dismiss">
+  <div class="successIcon"></div>
+  <p id="sessionPopup">{{message}}</p>
+  <div class="modelDismiss" (click)="closeModel()"></div>
+</ng-template>

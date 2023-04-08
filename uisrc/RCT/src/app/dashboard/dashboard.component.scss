@@ -1,0 +1,69 @@
+@import 'src/variable';
+
+#chartformWrapper {padding: 20px 20px 20px 20px;border-radius: 3px;margin-bottom: 2px;position: relative;background: rgb(243, 243, 243); border: 1px solid #d4d4d4 }
+#chartformWrapper1 {padding: 20px 20px 20px 20px;border-radius: 3px;margin-bottom: 2px;position: relative;background: white;}
+#chartBlockDisk {background-color: #fff;display:inline-block; /*padding: 10px;  border: 1px solid #d4d4d4 */}
+#chartBlockMemory {background-color: #fff;display:inline-block;/* padding: 2px; border: 1px solid #d4d4d4 */}
+#chartBlockSchedule {background-color: #fff;display:inline-block;/* padding: 2px; border: 1px solid #d4d4d4 */}
+#barChart, #reasonsReport {background-color: #fff; margin: auto;padding-bottom: 10px;/* padding: 2px; border: 1px solid #d4d4d4 */}
+.borderBG{background: #ffffff; border: 1px solid #eae8e8; margin:10px 0px;}
+#commissioningReport {background-color: #fff;}
+.discLabels{font-size: 16px;text-align: center;margin-top: 15px;}
+.memoryLabels{font-size: 16px;text-align: center;}
+.discLabels span{font-weight: bold;}
+.memoryLabels span{font-weight: bold;}
+.labelsLegend{text-align: center;background-color: #fff;}
+.labelsLegend span{padding: 0px 10px 10px 0px; color: #5156AC;}
+.activeUsers::before {content: "\2022"; color: #59de00; font-size: x-large; margin-right:5px;vertical-align:middle;font-size: 20px;}
+.customerSupported {margin-right: 20px;}
+.customerSupported::before {content: "\2022"; color: #59de00; font-size: x-large; margin-right:5px;vertical-align:middle;font-size: 20px;}
+.alignCenter {text-align: center;}
+.graphGap{padding-right: 0;}
+.col-3-30{flex: 0 0 30%;max-width: 30%;}
+.col-6-40{flex: 0 0 40%;max-width: 40%;}
+.custSelect{margin-top: 15px;text-align: center;}
+.custSelect #selectedCust{height: 28px !important;display: inline-block;margin-left: 10px;}
+.custSelect span{font-size: 11px;}
+.dispHeader h4 {display: inline-block;}
+
+.mapViewBtnContainer{
+    display: flex;
+    justify-content: flex-end;
+}
+.mapViewBtnContainer button {height: 24px !important;}
+.borderBtn {
+  /* width: 90px; */
+  height: 24px;
+  border: 1px solid #333;
+  border-radius: 4px;
+  margin-right: 10px;
+  padding: 0 5px 0 0;
+  cursor: pointer;
+  color: #ffffff;
+  font-size: 12px !important;
+  background: #5161AC !important;
+}
+.borderBtn .mapIcon {
+  width: 24px;
+  height: 17px;
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.errMessageCls{color:red;font-size:12px;display: inline-block;}
+
+.form-control {width: $form-control-width;}
+.customTextArea {width: $form-control-width;}
+
+
+.activeUsers {
+  color:#3c3c3c;
+  cursor: pointer;
+
+  &:hover {
+    color:#03637b;
+  }
+}
+// content: "•\2193"

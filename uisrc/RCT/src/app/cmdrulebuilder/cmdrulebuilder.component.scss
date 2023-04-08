@@ -1,0 +1,33 @@
+.migrationBlock{
+    border: 1px solid #cccccc;
+      height: 30px;    
+      background-color: #fff;
+      padding-top: 5px;
+      padding-right: 20px;
+      padding-bottom: 20px;
+      padding-left: 20px;
+      margin-bottom: 10px;
+  }
+  
+  .radio-inline{position: relative;margin-bottom: 0;font-weight: 400;vertical-align: middle;cursor: pointer;float: left;    margin-right: 15px;margin-left: 30px;}
+  .radio-inline input[type=radio]{position: absolute;margin-left: -20px;margin-top: 2px;}
+  #rootDetailsTab .scrollBody{overflow: hidden;}
+  #elementDetails .scrollBody{overflow: hidden;}
+  #scriptTableData tr:hover .tableRowAction {
+    display: block;
+  }
+.addRootBtn{position: relative;right: 13px;}
+tr.editXmlRow:hover .tableRowAction{display: none;}
+#scriptTableData tr:hover .tableRowAction{display: block;}
+
+.table > thead > tr > th {
+  padding-top: 7px;
+  line-height: 14px;
+}
+
+#elementDetails #scriptTableData .eventColVal {
+	max-width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}

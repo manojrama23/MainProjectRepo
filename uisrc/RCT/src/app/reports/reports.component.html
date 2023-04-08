@@ -1,0 +1,1189 @@
+<div class="page-wrapper">
+  <rct-loader *ngIf="showLoader"></rct-loader>
+  <h1 class="mainHead">S & R</h1>
+
+  <ul class="nav nav-pills" role="tablist">
+    
+    <li class="nav-item">
+      <div (click)="searchTabBind()" accesskey="n" name="search"
+        class="divalign float-sm-right float-md-right float-lg-right float-xl-right" #searchTab>OV DASHBOARD</div>
+    </li>
+    <li class="nav-item" style="display: none">
+      <div (click)="createNew($event)" accesskey="h" name="createNew"
+        class="divalign float-sm-right float-md-right float-lg-right float-xl-right" #createTab>DAILY REPORTS</div>
+    </li>
+      <li class="nav-item">
+        <div (click)="auditTabBind()" accesskey="a" name="audit"
+          class="divalign float-sm-right float-md-right float-lg-right float-xl-right" #auditTab>AUDIT REPORTS</div>
+      </li>
+      <li class="nav-item">
+        <div (click)="failureReportTabBind()" accesskey="a" name="failureReport"
+          class="divalign float-sm-right float-md-right float-lg-right float-xl-right" #failureReportTab>FAILURE REPORTS</div>
+      </li>
+  </ul>
+
+  <div *ngIf=createForm>
+
+    <div>
+      <button name="export"
+        class="import myriadproBold formBtn white-btn float-sm-right float-md-right float-lg-right float-xl-right"
+        accesskey="n" (click)="downloadFile()" style="cursor: default;margin-top: -30px;"
+        [ngClass]="{'buttonDisabled' :(selCustName != '2') && (selCustName != '4')}"
+        [disabled]="selCustName != '2' && selCustName != '4'">EXPORT</button>
+    </div>
+
+
+    <div id="searchBlock">
+      <div id="formWrapper" class="formWrapperMargin bluePrintFormWrapper">
+        <div *ngIf="currentUser=='Super Administrator'">
+          <ng-container *ngTemplateOutlet="customerName"></ng-container>
+        </div>
+        <div *ngIf="currentUser!='Super Administrator'">
+          <ng-container *ngTemplateOutlet="programName"></ng-container>
+        </div>
+        <div *ngIf="custId==2">
+          <ng-container *ngTemplateOutlet="searchVerizon"></ng-container>
+        </div>
+        <div *ngIf="custId==4">
+          <ng-container *ngTemplateOutlet="searchSprint"></ng-container>
+        </div>
+      </div>
+      <div *ngIf="custId==2">
+        <ng-container *ngTemplateOutlet="verizonFilter"></ng-container>
+        <ng-container *ngTemplateOutlet="verizonScheduling"></ng-container>
+      </div>
+      <div *ngIf="custId==4">
+        <ng-container *ngTemplateOutlet="sprintScheduling"></ng-container>
+      </div>
+    </div>
+
+    <ng-template #verizonFilter>
+      <div class="" *ngIf="filterShowHide">
+        <div class="form-group">
+          <label for="templateName">FILTER</label>
+          <ng-multiselect-dropdown id="location" class="form-control" name="location" [placeholder]="'--Select--'"
+            [data]="filter" (onSelect)="onItemSelect($event)" (onDeSelect)="onDeSelect($event)"
+            [(ngModel)]="selectedItems" [settings]="dropdownSettings">
+          </ng-multiselect-dropdown>
+          <div class="error-message-block"></div>
+        </div>
+      </div>
+    </ng-template>
+
+    <!-- verizon table -->
+    <ng-template #verizonScheduling>
+      <div id="tableWrapper" *ngIf="tableShowHide">
+        <div class="scrollHead">
+          <table class="table" id="overallVerizonModelList">
+            <thead>
+              <tr>
+                <ng-container *ngFor="let ciq of verizonData[0].reportsMap | objectKeyValues; let index = index">
+                  <th *ngIf="selectedItems.includes(ciq.value.headerName)">
+                    <div (click)="changeSorting('ci', $event, index )" class="sorting form-control-small-3">
+                      {{ciq.value.headerName}}</div>
+                  </th>
+                </ng-container>
+              </tr>
+            </thead>
+          </table>
+        </div>
+        <div class="scrollBody">
+          <table class="table" id="systemMgrData">
+            <tbody id="rowCount">
+              <tr id="row_id_{{key.id}}" *ngFor="let key of verizonData; let enodeIndex = index">
+
+                <ng-container *ngFor="let ciqData of key.reportsMap | objectKeyValues; let index = index">
+                  <td *ngIf="selectedItems.includes(ciqData.value.headerName)">
+                    <div class="form-control-small-3 " data-toggle="tooltip" data-placement="right"
+                      data-container="body">{{ciqData.value.headerValue}}</div>
+                  </td>
+                </ng-container>
+
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="paginationWrapper">
+          <div *ngIf="pageRenge.length" class="page" style="margin-left:20px;">
+            <div class="floatLeft" style="width: 75px;padding-top: 6px">Show</div>
+            <select [disabled]="paginationDisabbled" [(ngModel)]="pageSize" (change)="onChangeTableRowLength($event)"
+              style="margin-top: 4px; margin-right: 6px;margin-left: -39px;" class="form-control-pagination floatLeft"
+              aria-controls="TableRowLength" size="1" name="TableRowLength" id="TableRowLength">
+              <option selected="selected" value="10">10</option>
+              <option value="20">20</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+            <div class="floatLeft" style="width: 75px;padding-top: 6px">Entries</div>
+            <div class="floatRight page" style="padding-top: 3px;margin-right:20px;">
+              <ul *ngIf="pageRenge.length" class="pagination floatRight">
+                <li id="firstPage" [ngClass]="{disabled:(currentPage === 1 || paginationDisabbled)}" class="page-item">
+                  <a class="page-link" (click)="setPage(1)">FIRST</a>
+                </li>
+                <li id="previousPage" [ngClass]="{disabled:(currentPage === 1 || paginationDisabbled)}"
+                  class="page-item">
+                  <a class="page-link" (click)="setPage(pager.currentPage - 1)">PREV</a>
+                </li>
+                <li *ngFor="let n of pager.pages" [ngClass]="{active:currentPage === n, disabled:paginationDisabbled}"
+                  class="page-item">
+                  <a class="page-link" (click)="setPage(n)" id='{{n+1}}'>{{n}}</a>
+                </li>
+                <li id="nextPage" [ngClass]="{disabled:(currentPage === totalPages || paginationDisabbled)}"
+                  class="page-item">
+                  <a class="page-link" (click)="setPage(pager.currentPage + 1)">NEXT</a>
+                </li>
+                <li id="lastPage" [ngClass]="{disabled:(currentPage === totalPages || paginationDisabbled)}"
+                  class="page-item">
+                  <a class="page-link" (click)="setPage(pager.totalPages)">LAST</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+
+    <ng-template #customerName id="customerName">
+      <div class="row">
+        <div class="col-3">
+          <div class="form-group">
+            <label for="templateName" class="asterisk_input">CUSTOMER NAME</label>
+            <select class="form-control" name="customerName" id="customerName" [(ngModel)]=selCustName
+              (change)="custNameChange(selCustName,'reports')">
+              <option value="">--Select--</option>
+              <option *ngFor="let key of custList" value="{{key.id}}">{{key.customerName}}</option>
+            </select>
+            <div class="error-message-block"></div>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="form-group">
+            <label for="templateName" class="">PROGRAM NAME</label>
+            <select class="form-control" name="programName" id="programName" [(ngModel)]=selprogName
+              (change)="progNameChange(selprogName,'reports')">
+              <option value="">--Select--</option>
+              <option *ngFor="let key of progName" value="{{key.programName}}">{{key.programName}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+
+    <ng-template #programName id="programName">
+      <div class="">
+        <div class="form-group">
+          <label for="templateName" class="">PROGRAM NAME</label>
+          <select class="form-control" name="programName" id="programName" [(ngModel)]=selprogName
+            (change)="progNameChange(selprogName)">
+            <option value="">--Select--</option>
+            <option *ngFor="let key of progName" value="{{key.programName}}">{{key.programName}}</option>
+          </select>
+        </div>
+      </div>
+    </ng-template>
+
+    <rct-nodata *ngIf="noDataVisibility" [subTitle]=""></rct-nodata>
+
+
+    <ng-template #searchVerizon id="searchVerizon">
+      <div style="border-bottom: 1px solid #ccc; margin-bottom: 20px; margin-top: 20px;"></div>
+
+      <form class="form-horizontal" id="bluePrintForm" #bluePrintForm>
+        <div class="row">
+          <div class="col-3">
+            <div class="form-group ">
+              <label for="templateName">SELECT FORECAST DATE RANGE</label>
+              <input class="form-control form-control-small dateRangeAlign" id="searchForecastStartDate"
+                name="searchForecastStartDate" [(ngModel)]="searchForecastStartDate" placeholder="FROM DATE"
+                [owlDateTimeTrigger]="dt" [owlDateTime]="dt" [max]="max">
+              <owl-date-time [pickerType]="'calendar'" #dt></owl-date-time>
+              <input class="form-control form-control-small dateRangeAlign" id="searchForecastEndDate"
+                name="searchForecastEndDate" [(ngModel)]="searchForecastEndDate" [min]="searchForecastStartDate"
+                [max]="max" [owlDateTimeTrigger]="dt1" placeholder="TO DATE" [owlDateTime]="dt1">
+              <owl-date-time [pickerType]="'calendar'" #dt1></owl-date-time>
+              <div class="message" *ngIf="errMessage">Please Select Date Range</div>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="form-group">
+              <label for="templateName" class="">MARKET</label>
+              <input class="form-control" autocomplete="off" id="searchMarket" name="searchMarket" #searchMarket
+                type="text" value="" maxlength="100" />
+              <!-- <select class="form-control" name="searchMarket" id="searchMarket" #searchMarket>
+              <option value="">--Select--</option>
+              <option *ngFor="let key of marketList" value="{{key}}" id="{{key.id}}">{{key}}</option>
+            </select> -->
+              <div class="error-message-block"></div>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="form-group">
+              <label for="templateName" class="">NE ID</label>
+              <input class="form-control" autocomplete="off" id="searchEnbId" name="searchEnbId" #searchEnbId
+                type="text" value="" maxlength="100" />
+              <!-- <select class="form-control" name="searchEnbId" id="searchEnbId" #searchEnbId>
+              <option value="">--Select--</option>
+              <option *ngFor="let key of enbIdList" value="{{key}}" id="{{key.id}}">{{key}}</option>
+            </select> -->
+              <div class="error-message-block"></div>
+            </div>
+          </div>
+
+          <div class="col-3">
+            <div class="form-group">
+              <label for="templateName" class="">NE NAME</label>
+              <input class="form-control" autocomplete="off" id="searchEnbName" name="searchEnbName" #searchEnbName
+                type="text" value="" maxlength="100" />
+              <!-- <select class="form-control" name="searchEnbName" id="searchEnbName" #searchEnbName>
+              <option value="">--Select--</option>
+              <option *ngFor="let key of enbNameList" value="{{key}}" id="{{key.id}}">{{key}}</option>
+            </select> -->
+              <div class="error-message-block"></div>
+            </div>
+          </div>
+        </div>
+        <div class="textAlignCenter">
+          <button name="save" class="formBtn myriadproBold validateForm airlinecnfgSearch" id="searchButton"
+            (click)="searchOverallReportDetails($event)" accesskey="s">SEARCH</button>
+          <button type="button" id="cancelButton" name="CANCEL" class="formBtnCncl formBtn myriadproBold formBtn"
+            (click)="clearSearchFrom()" accesskey="c">CLEAR</button>
+        </div>
+      </form>
+    </ng-template>
+
+  </div>
+
+
+  
+  <div *ngIf=searchBlock>
+    <div class="row"> 
+     <div class="col-11">
+    <button name="export"
+        class="import myriadproBold formBtn white-btn float-sm-right float-md-right float-lg-right float-xl-right"
+        accesskey="n" (click)="ExportFile()" style="cursor: default;margin-top: -30px;" [ngClass]="">EXPORT</button>
+      </div>
+    <div class="col-1" > 
+    <button name="import"
+        class="import myriadproBold formBtn white-btn float-sm-right float-md-right float-lg-right float-xl-right"
+        accesskey="n" (click)="runSchedule()" style="cursor: default;margin-top: -30px;" [ngClass]="">EXECUTE</button>
+      </div>
+    </div> 
+
+    <div id="searchBlock">
+      <div id="formWrapper" class="formWrapperMargin bluePrintFormWrapper">
+        <div *ngIf="currentUser=='Super Administrator'">
+          <ng-container *ngTemplateOutlet="customerName"></ng-container>
+          <ng-container *ngTemplateOutlet="searchOV"></ng-container>
+        </div>
+        <div *ngIf="currentUser!='Super Administrator'">
+          <ng-container *ngTemplateOutlet="programName"></ng-container>
+          <ng-container *ngTemplateOutlet="searchOV"></ng-container>
+          <!-- <ng-container *ngTemplateOutlet="searchVerizon"></ng-container> -->
+        </div>
+    </div>
+  </div>
+    <ng-template #customerName id="customerName">
+      <div class="row">
+        <!-- <div class="col-3">
+          <div class="form-group">
+            <label for="templateName" class="asterisk_input">CUSTOMER NAME</label>
+            <select class="form-control" name="customerName" id="customerName" [(ngModel)]=selCustName
+              (change)="custNameChange(selCustName)">
+              <option value="">--Select--</option>
+              <option *ngFor="let key of custList" value="{{key.id}}">{{key.customerName}}</option>
+            </select>
+            <div class="error-message-block"></div>
+          </div>
+        </div> -->
+        <div class="col-3">
+          <div class="form-group">
+            <label for="templateName" class="">PROGRAM NAME</label>
+            <select class="form-control" name="programName" id="programName" [(ngModel)]="selprogName"
+              (change)="progNameChange(selprogName,'OV')">
+              <option value="">--Select--</option>
+              <option *ngFor="let key of progName" value="{{key.programName}}">{{key.programName}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="form-group">
+            <label for="templateName" class="">FETCH DATE</label>
+            <select class="form-control" name="fetchDays" id="fetchDays" [(ngModel)]="selfetchdays"
+            (change)="fetchDaysChange(selfetchdays)">
+              <option value="">--Select--</option>
+              <option *ngFor="let key of scheduleList" [disabled]="key.disabled" value="{{key.label}}">{{key.label}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+
+    <ng-template #programName id="programName">
+      <div class="row">
+      <div class="col-3">
+        <div class="form-group">
+          <label for="templateName" class="">PROGRAM NAME</label>
+          <select class="form-control" name="programName" id="programName" [(ngModel)]=selprogName
+            (change)="progNameChange(selprogName)">
+            <option value="">--Select--</option>
+            <option *ngFor="let key of progName" value="{{key.programName}}">{{key.programName}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="form-group">
+          <label for="templateName" class="">FETCH DATE</label>
+          <select class="form-control" name="fetchDays" id="fetchDays" [(ngModel)]="selfetchdays"
+            (change)="fetchDaysChange(selfetchdays)">
+              <option value="">--Select--</option>
+              <option *ngFor="let key of scheduleList" [disabled]="key.disabled" value="{{key.label}}">{{key.label}}</option>
+            </select>
+        </div>
+      </div>
+    </div>
+    </ng-template>
+    
+    <rct-nodata *ngIf="noDataVisibility" [subTitle]=""></rct-nodata>
+
+    <ng-template #searchOV id="searchVerizon">
+      <div style="border-bottom: 1px solid #ccc; margin-bottom: 20px; margin-top: 20px;"></div>
+
+      <!-- SEARCH CONTAINER -->
+        
+      <div class="searchContainer" *ngIf="tableData && tableData['ovScheduledDetails']">
+        <form class="form-horizontal" #searchFormOV>
+            <div class="row">
+              <!-- <ng-container *ngFor="let item of tableData['ovScheduledDetails'][0] | keyvalue">
+                <span>{{item}}</span>
+              </ng-container> -->
+
+              
+                <ng-container *ngFor="let ovData of searchColumnList; let index = index">
+                    <div *ngIf="index < 8 || searchExpand == true" class="col-3">
+                        <div class="form-group">
+                            <label for="templateName" class="">{{ovData.label | uppercase}}</label>
+                            <input *ngIf="ovData.key != 'integrationType'" class="form-control" autocomplete="off" name="searchField_{{index}}" type="text" [(ngModel)]="searchFormField[ovData.key]" 
+                              value="" maxlength="30" />
+                            <select *ngIf="ovData.key == 'integrationType'" class="form-control" name="migrationStrategy" id="migrationStrategy" [(ngModel)]="searchFormField[ovData.key]">
+                                <option value="Legacy IP">Legacy IP</option>
+                                <option value="Pseudo IP">Pseudo IP</option>
+                            </select>
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+
+            <div class="textAlignCenter">
+                <button name="save" class="formBtn myriadproBold validateForm" id="AddButton" (click)="searchOVDashboard($event)"
+                    accesskey="s">SEARCH</button>
+                <button type="button" id="cancelButton" name="CANCEL" class="formBtnCncl formBtn myriadproBold formBtn" (click)="clearSearchFrom()" accesskey="c">CLEAR</button>
+            </div>
+        </form>
+        <button class="searchExpandBtn" [ngClass]="{'expanded':searchExpand == true, 'notExpanded':searchExpand == false}" (click)="searchExpand = !searchExpand">
+        </button>
+        <!-- <button class="searchExpandBtn" class="expanded">
+            
+        </button> -->
+    </div>
+
+    <!-- SEARCH CONTAINER -->
+      
+    </ng-template>
+    <div id="dataWrapper" *ngIf="tableShowwHide && tableData && tableData['ovScheduledDetails']">
+      <div id="tableWrapper">
+        <div class="scrollHead">
+          <table class="table" id="ovScheduledDetails">
+            <thead>
+              <tr>
+                <!-- <th *ngFor="column of searchColumnList; let index = index">
+                  <div (click)="changeSortingg(column.key, $event, index)" class="sorting form-control-small-3">{{column.label}}</div>
+                </th> -->
+                <th>
+                  <div (click)="changeSortingg(programName, $event, 0)" class="sorting form-control-small-1">PROGRAM NAME</div>
+                </th>
+                <th>
+                  <div (click)="changeSortingg(siteName, $event, 1)" class="sorting form-control-small-1">SITE NAME</div>
+                </th>
+                <th>
+                  <div (click)="changeSortingg(neId, $event, 2)" class="sorting form-control-small-1">NE ID</div>
+                </th>
+                <th>
+                  <div class="sorting form-control-small-1">MIGRATION STRATEGY</div>
+                </th>
+                <th>
+                  <div (click)="changeSortingg('fetchDate', $event, 3)" class="sorting form-control-small-1">FETCH DATE</div>
+                </th>
+                <th>
+                  <div (click)="changeSortingg('fetchRemarks', $event, 4)" class="sorting form-control-small-3">FETCH STATUS</div>
+                </th>
+                <!-- <th>
+                  <div (click)="changeSortingg('ciqStatus', $event, 5)" class="sorting form-control-small-3">CIQ STATUS</div>
+                </th> -->
+                <th>
+                  <div (click)="changeSortingg('ciqGenerationDate', $event, 5)" class="sorting form-control-small-3">CIQ GENERATION DATE</div>
+                </th>
+                <th>
+                  <div (click)="changeSortingg('ciqName', $event, 6)" class="sorting form-control-small-3">CIQ NAME</div>
+                </th>
+                <th>
+                  <div (click)="changeSortingg('premigrationScheduledTime', $event, 7)" class="sorting form-control-small-3">PREMIG SCHEDULED DATE</div>
+                </th>
+                <th>
+                  <div (click)="changeSortingg('preMigGrowStatus', $event, 8)" class="sorting form-control-small-3">PREMIG-GROW GENERATION STATUS</div>
+                </th>
+                <th>
+                  <div (click)="changeSortingg('preMigGrowGenerationDate', $event, 9)" class="sorting form-control-max">PREMIG-GROW GENERATION DATE</div>
+                </th>
+                <th>
+                  <div (click)="changeSortingg('envStatus', $event, 10)" class="sorting form-control-small-1">PREMIG ENV - STATUS</div>
+                </th>
+                <th>
+                  <div (click)="changeSortingg('envFileName', $event, 11)" class="sorting form-control-small-3">ENV FILENAME</div>
+                </th>
+                <th>
+                  <div (click)="changeSortingg('envGenerationDate', $event, 12)" class="sorting form-control-small-3">PREMIG ENV GENERATION DATE</div>
+                </th>
+                <th>
+                  <div (click)="changeSortingg('envExportStatus', $event, 13)" class="sorting form-control-small-3">ENV EXPORT STATUS</div>
+                </th>
+                <th>
+                  <div (click)="changeSortingg('neGrowScheduledTime', $event, 14)" class="sorting form-control-small-3">NEGROW SCHEDULED DATE</div>
+                </th>
+                <th>
+                  <div (click)="changeSortingg('neGrowStatus', $event, 15)" class="sorting form-control-small-1">NE GROW STAUS</div>
+                </th>
+                <th>
+                  <div (click)="changeSortingg('migrationScheduledTime', $event, 16)" class="sorting form-control-small-3">MIGRATION START DATE</div>
+                </th>
+                <th>
+                  <div (click)="changeSortingg('migrationCompleteTime', $event, 17)" class="sorting form-control-small-3">MIGRATION COMPLETED DATE</div>
+                </th>
+                <th>
+                  <div (click)="changeSortingg('migrationScheduledTime', $event, 18)" class="sorting form-control-small-3">MIG SCHEDULED DATE</div>
+                </th>
+                <th>
+                  <div (click)="changeSortingg('migStatus', $event, 19)" class="sorting form-control-small-1">MIGRATION STATUS</div>
+                </th>
+                <th>
+                  <div (click)="changeSortingg('migrationScheduledTime', $event, 16)" class="sorting form-control-small-3">POST-MIGRATION START DATE</div>
+                </th>
+                <th>
+                  <div (click)="changeSortingg('migrationCompleteTime', $event, 17)" class="sorting form-control-small-3">POST-MIGRATION COMPLETED DATE</div>
+                </th>
+                <th>
+                  <div (click)="changeSortingg('migrationScheduledTime', $event, 18)" class="sorting form-control-small-3">POST-MIG SCHEDULED DATE</div>
+                </th>
+                <th>
+                  <div (click)="changeSortingg('migStatus', $event, 19)" class="sorting form-control-small-1">POST-MIGRATION STATUS</div>
+                </th>
+                
+                <th>
+                  <div (click)="changeSortingg('trackerId', $event, 20)" class="sorting form-control-small-1">OV TRACKER ID</div>
+                </th>
+                <!-- <th>
+                  <div (click)="changeSortingg('orderNumber', $event, 19)" class="sorting form-control-small-1">OV ORDER
+                    ID</div>
+                </th> -->
+                <th>
+                  <div (click)="changeSortingg('workPlanID', $event, 21)" class="sorting form-control-small-1">OV WORKPLAN ID</div>
+                </th>
+                <th>
+                  <div (click)="changeSortingg('remarks', $event, 22)" class="sorting form-control-small-1">REMARKS</div>
+                </th>
+                <!-- <th>
+                <div (click)="changeSorting('premigrationReScheduledTime', $event, 11)" class="sorting form-control-small">PREMIGRATION RESCHEDULING TIME</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('envFileExportReScheduledTime', $event, 11)" class="sorting form-control-small">ENV RESCHEDULING TIME</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('neGrowReScheduledTime', $event, 11)" class="sorting form-control-small">NEGROW RESCHEDULING TIME</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('bsmIp', $event, 11)" class="sorting form-control-small">MIGRATION RESCHEDULING TIME</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('postmigrationAuditReScheduledTime', $event, 11)" class="sorting form-control-small">POSTMIGRATION RESCHEDULING TIME</div>
+              </th>
+              <th>
+                <div (click)="changeSorting('ranAtpReScheduledTime', $event, 11)" class="sorting form-control-small">RANATP RESCHEDULING TIME</div>
+              </th> -->
+              </tr>
+            </thead>
+          </table>
+        </div>
+        <div class="scrollBody">
+          <table class="table" id="ScheduledDetails">
+            <tbody id="rowCount">
+              <ng-container *ngFor="let key of tableData['ovScheduledDetails']; let index = index">
+
+                <tr id="row_id_{{key.id}}">
+                  <!-- <td class="form-control-small-3" data-toggle="tooltip" data-placement="right" data-container="body">{{key.id}}</td> -->
+                  <td data-toggle="tooltip" data-placement="right" data-container="body">
+                    <div class="form-control-small-1">{{key.customerDetailsEntity.programName}}</div>
+                  </td>
+
+                  <td  data-toggle="tooltip" data-placement="right" data-container="body">
+                    <div class="form-control-small-1">{{key.siteName}}</div>
+                  </td>
+
+                  <td data-toggle="tooltip" data-placement="right" data-container="body">
+                    <div class="form-control-small-1">{{key.neId}}</div>
+                  </td>
+                  <td data-toggle="tooltip" data-placement="right" data-container="body">
+                    <div class="form-control-small-1">{{key.integrationType}}</div>
+                  </td>
+                  <td data-toggle="tooltip" data-placement="right" data-container="body">
+                    <div class="form-control-small-1">{{key.fetchDate}}</div>
+                  </td>
+
+                  <td data-toggle="tooltip" data-placement="right" data-container="body">
+                    <div class="form-control-small-3">
+                      <div class="row">
+                        <div class="col-10"  container="body" [ngbTooltip]= "key.fetchRemarks"  style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                          {{key.fetchRemarks}}</div>          
+                        <div *ngIf="key.fetchRemarks == 'COMPLETED'" class="infoRowBig col-2" container="body" ngbTooltip= "Show OV Interaction JSON" id="tooltip" placement="bottom" 
+                          style="cursor: pointer;" (click)="showOvInteractionJSON(envInfoModal, key.fetchDetailsJson,'FETCH')"></div>
+                    </div>
+                    </div>
+                  </td>
+                  <!-- <td data-toggle="tooltip" data-placement="right" data-container="body">
+                    <div class="form-control-small-3">{{key.ciqStatus}}</div>
+                  </td> -->
+
+                  <td data-toggle="tooltip" data-placement="right" data-container="body">
+                    <div class="form-control-small-3">
+                      <div class="row">
+                        <div class="col-10"  container="body"   style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                          {{key.ciqGenerationDate}}</div>          
+                        <div *ngIf="key.ciqGenerationDate && key.ciqUpdateJson" class="infoRowBig col-2" container="body" ngbTooltip= "Show OV Interaction JSON" id="tooltip" placement="bottom" 
+                          style="cursor: pointer;" (click)="showOvInteractionJSON(envInfoModal, key.ciqUpdateJson,'CIQ STATUS UPDATE')"></div>
+                    </div>
+                    </div>
+                  </td>
+                  <td data-toggle="tooltip" data-placement="right" data-container="body">
+                    <div class="form-control-small-3">
+                      <a style="cursor: pointer;text-decoration: underline;"
+                        (click)="downloadCiqFile(key.ciqName,key.ciqFilePath)">{{key.ciqName}}</a>
+                    </div>
+                  </td>
+                  <td data-toggle="tooltip" data-placement="right" data-container="body">
+                    <div class="form-control-small-3">{{key.premigrationScheduledTime}}</div>
+                  </td>
+                  <td data-toggle="tooltip" data-placement="right" data-container="body">
+                    <div class="form-control-small-3">
+                      <div class="row">
+                        <div class="col-10" container="body" style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                        {{key.preMigGrowStatus}}</div>
+                        <div *ngIf="key.preMigStatus == 'Failure'" class="infoRowError col-2" (click)="showFailureLog(envInfoModal, key,'PreMigration')" 
+                        placement="bottom" style="color:#3c3c3c;cursor: pointer;max-width: 17px;" container="body" ngbTooltip="Error Message"></div>
+                      </div>
+                    </div>
+                  </td>
+                  <td data-toggle="tooltip" data-placement="right" data-container="body">
+                    <div class="form-control-max">
+                      <div class="row">
+                        <div class="col-10" container="body" style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                          {{key.preMigGrowGenerationDate}}</div>
+                        <div *ngIf="key.preMigGrowGenerationDate && key.preMigGrowJson" class="infoRowBig col-2" container="body" ngbTooltip="Show OV Interaction JSON" id="tooltip"
+                          placement="bottom" style="cursor: pointer;" (click)="showOvInteractionJSON(envInfoModal, key.preMigGrowJson,'PRE-MIG GROW STATUS UPDATE')">
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td data-toggle="tooltip" data-placement="right" data-container="body">
+                    <div class="form-control-small-1">
+                      <div class="row">
+                        <div class="col-10" container="body" style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                        {{key.envStatus}}</div>
+                        <div *ngIf="key.preMigStatus == 'Failure'" class="infoRowError col-2" (click)="showFailureLog(envInfoModal, key,'PreMigration')" 
+                        placement="bottom" style="color:#3c3c3c;cursor: pointer;" container="body" ngbTooltip="Error Message"></div>
+                      </div>
+                    </div>
+                  </td>
+                  <td data-toggle="tooltip" data-placement="right" data-container="body">
+                    <div class="form-control-small-3">
+                      <div class="row">
+                        <div class="col-10" [ngbTooltip]= "key.envFileName" container="body"  (click)="downloadCiqFile(key.envFileName,key.envFilePath)" (click)="downloadCiqFile(key.envFileName,key.envFilePath)" style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                          <a style="cursor: pointer;text-decoration: underline;">{{key.envFileName}}</a> </div>
+                        <div *ngIf="key.envFileName && key.envUploadJson" class="infoRowBig col-2" container="body" ngbTooltip= "Show OV Interaction JSON" id="tooltip" placement="bottom" 
+                          style="cursor: pointer;" (click)="showOvInteractionJSON(envInfoModal, key.envUploadJson,'ENV FILE UPLOAD')"></div>
+                    </div>
+                    </div>
+                  </td>
+                  <td data-toggle="tooltip" data-placement="right" data-container="body">
+                    <div class="form-control-small-3">
+                      <div class="row">
+                        <div class="col-10" container="body" style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                          {{key.envGenerationDate}}</div>
+                        <div *ngIf="key.envGenerationDate && key.envStatusJson" class="infoRowBig col-2" container="body" ngbTooltip="Show OV Interaction JSON" id="tooltip"
+                          placement="bottom" style="cursor: pointer;" (click)="showOvInteractionJSON(envInfoModal, key.envStatusJson,'ENV STATUS UPDATE')">
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td data-toggle="tooltip" data-placement="right" data-container="body">
+                    <div class="form-control-small-3">{{key.envExportStatus}}</div>
+                  </td>
+                  <!-- <td data-toggle="tooltip" data-placement="right" data-container="body">
+                    <div class="form-control-small-3">
+                      <div class="row">
+                        <div class="col-10"  container="body"   style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                          {{key.envFileExportScheduledTime}}</div>          
+                        <div class="infoRowBig col-2" container="body" ngbTooltip= "Show OV Interaction JSON" id="tooltip" placement="bottom" 
+                          style="cursor: pointer;" (click)="showOvInteractionJSON(envInfoModal, key.envStatusJson)"></div>
+                    </div>
+                    </div>
+                  </td> -->
+                  <td data-toggle="tooltip" data-placement="right" data-container="body">
+                    <div class="form-control-small-3">{{key.neGrowScheduledTime}}</div>
+                  </td>
+                  <td data-toggle="tooltip" data-placement="right" data-container="body">
+                    <div class="form-control-small-1">
+                      <div class="row">
+                        <div class="col-10" container="body" style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                        {{key.neGrowStatus}}</div>
+                        <div *ngIf="key.neGrowStatus == 'Failure'" class="infoRowError col-2" (click)="showFailureLog(envInfoModal, key,'NEGrow')" 
+                        placement="bottom" style="color:#3c3c3c;cursor: pointer;" container="body" ngbTooltip="Error Message"></div>
+                      </div>
+                    </div>
+                  </td>
+                  <td data-toggle="tooltip" data-placement="right" data-container="body">
+                    <div class="form-control-small-3">
+                      <div class="row">
+                        <div class="col-10"  container="body"   style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                          {{key.migrationStartDate}}</div>          
+                        <div *ngIf="key.migrationStartDate && key.migStartJson" class="infoRowBig col-2" container="body" ngbTooltip= "Show OV Interaction JSON" id="tooltip" placement="bottom" 
+                          style="cursor: pointer;" (click)="showOvInteractionJSON(envInfoModal, key.migStartJson,'MIG START STATUS UPDATE')"></div>
+                    </div>
+                    </div>
+                  </td>
+                  <td data-toggle="tooltip" data-placement="right" data-container="body">
+                    <div class="form-control-small-3">
+                      <div class="row">
+                        <div class="col-10"  container="body"   style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                          {{key.migrationCompleteTime}}</div>          
+                        <div *ngIf="key.migrationCompleteTime && key.migCompJson" class="infoRowBig col-2" container="body" ngbTooltip= "Show OV Interaction JSON" id="tooltip" placement="bottom" 
+                          style="cursor: pointer;" (click)="showOvInteractionJSON(envInfoModal, key.migCompJson,'MIG COMPLETION STATUS UPDATE')"></div>
+                    </div>
+                    </div>
+                  </td>
+                  <td data-toggle="tooltip" data-placement="right" data-container="body">
+                    <div class="form-control-small-3">{{key.migrationScheduledTime}}</div>
+                  </td>
+                  <td data-toggle="tooltip" data-placement="right" data-container="body">
+                    <div class="form-control-small-1">
+                      <div class="row">
+                        <div class="col-10" container="body" style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                        {{key.migStatus}}</div>
+                        <div *ngIf="key.migStatus == 'Failure'" class="infoRowError col-2" (click)="showFailureLog(envInfoModal, key,'Migration')" 
+                        placement="bottom" style="color:#3c3c3c;cursor: pointer;" container="body" ngbTooltip="Error Message"></div>
+                      </div>
+                    </div>
+                  </td>
+                  <td data-toggle="tooltip" data-placement="right" data-container="body">
+                    <div class="form-control-small-3">
+                      <div class="row">
+                        <div class="col-10"  container="body"   style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                          {{key.postmigrationAuditStartDate}}</div>          
+                        <div *ngIf="key.migrationStartDate && key.migStartJson" class="infoRowBig col-2" container="body" ngbTooltip= "Show OV Interaction JSON" id="tooltip" placement="bottom" 
+                          style="cursor: pointer;" (click)="showOvInteractionJSON(envInfoModal, key.migStartJson,'MIG START STATUS UPDATE')"></div>
+                    </div>
+                    </div>
+                  </td>
+                  <td data-toggle="tooltip" data-placement="right" data-container="body">
+                    <div class="form-control-small-3">
+                      <div class="row">
+                        <div class="col-10"  container="body"   style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                          {{key.postmigrationAuditCompleteTime}}</div>          
+                        <div *ngIf="key.migrationCompleteTime && key.migCompJson" class="infoRowBig col-2" container="body" ngbTooltip= "Show OV Interaction JSON" id="tooltip" placement="bottom" 
+                          style="cursor: pointer;" (click)="showOvInteractionJSON(envInfoModal, key.migCompJson,'MIG COMPLETION STATUS UPDATE')"></div>
+                    </div>
+                    </div>
+                  </td>
+                  <td data-toggle="tooltip" data-placement="right" data-container="body">
+                    <div class="form-control-small-3">{{key.postmigrationAuditScheduledTime}}</div>
+                  </td>
+                  <td data-toggle="tooltip" data-placement="right" data-container="body">
+                    <div class="form-control-small-1">
+                      <div class="row">
+                        <div class="col-10" container="body" style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
+                        {{key.postMigAuditStatus}}</div>
+                        <div *ngIf="key.postMigAuditStatus == 'Failure'" class="infoRowError col-2" (click)="showFailureLog(envInfoModal, key,'PostMigration')" 
+                        placement="bottom" style="color:#3c3c3c;cursor: pointer;" container="body" ngbTooltip="Error Message"></div>
+                      </div>
+                    </div>
+                  </td>
+                  <!-- <td data-toggle="tooltip" data-placement="right" data-container="body">
+                    <div class="form-control-small-3">
+                      {{key.postmigrationAuditScheduledTime != 'OFF'? key.postmigrationAuditScheduledTime : ''}} (
+                      {{key.postMigAuditStatus || "Not Availavle"}} )</div>
+                  </td>
+                  <td data-toggle="tooltip" data-placement="right" data-container="body">
+                    <div class="form-control-small-3">{{key.ranAtpScheduledTime != 'OFF'? key.ranAtpScheduledTime : ''}}
+                      ( {{key.postMigRanAtpStatus || "Not Availavle"}} )</div>
+                  </td> -->
+                  <td data-toggle="tooltip" data-placement="right" data-container="body">
+                    <div class="form-control-small-1">{{key.trackerId}}</div>
+                  </td>
+                  <!-- <td data-toggle="tooltip" data-placement="right" data-container="body">
+                    <div class="form-control-small-1">{{key.orderNumber}}</div>
+                  </td> -->
+                  <td data-toggle="tooltip" data-placement="right" data-container="body">
+                    <div class="form-control-small-1">{{key.workPlanID}}</div>
+                  </td>
+                  <td data-toggle="tooltip" data-placement="right" data-container="body">
+                    <div class="form-control-small-1">{{key.remarks}}</div>
+                      <div class="form-control-fixed iconsWrapper tableRowAction" id="fixedCol" ng-style="iconsWrapperPosition">
+                        <div (click)="editRow($event, key, index)" class="editRow" id="{{index}}" placement="bottom" container="body" ngbTooltip="Edit"></div>
+                        <div (click)="deleteRow($event,confirmModalDelete, key.id)" class="deleteRow"
+                                            placement="bottom" container="body" ngbTooltip="Delete"></div>
+                    </div>
+                  </td>
+                  <!-- <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">{{key.premigrationReScheduledTime}}</td>
+                <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">{{key.envFileExportReScheduledTime}}</td>
+                <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">{{key.neGrowReScheduledTime}}</td>
+                <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">{{key.migrationReScheduledTime}}</td>
+                <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">{{key.ranAtpReScheduledTime}}</td> -->
+                </tr>
+                <tr *ngIf="checkFormEnable(index)" id="editedRow{{index}}">
+                  <td colspan="7" class="formEditRow">
+                      <div id="formWrapper" class="userManagementFormWrapper" [ngStyle]="{'width': formWidth, 'margin-left': scrollLeft}">
+                          <form class="form-horizontal">
+                              <div class="row">
+                                  <input type="text" class="displayNone" id="id" name="id" value="" />
+                                  <div class="col-4">
+                                      <div class="form-group">
+                                          <label for="templateName" class="asterisk_input">CIQ GENERATION DATE</label>
+                                          <input [disabled]="fetchRemarks!='COMPLETED'" type="text" class="form-control" id="ciqGenerationDate" name="ciqGenerationDate" value="" maxlength="30" />
+                                          <div class="error-message-block"></div>
+                                      </div>
+                                  </div>
+                                 
+                                  <div class="col-4">
+                                    <div class="form-group">
+                                        <label for="templateName" class="asterisk_input">GROW GENERATION DATE</label>
+                                      <input [disabled]="preMigGrowStatus != 'Completed'" type="text" class="form-control" id="preMigGrowGenerationDate" name="preMigGrowGenerationDate" value="" maxlength="30" />
+                                        <div class="error-message-block"></div>
+                                    </div>
+                                </div>
+
+                                  <div class="col-4">
+                                      <div class="form-group">
+                                          <label for="templateName" class="asterisk_input">ENV GENERATION DATE</label>
+                                          <input [disabled]="envStatus != 'Completed'" type="text" class="form-control" id="envGenerationDate" name="envGenerationDate" value="" maxlength="30" />
+                                          <div class="error-message-block"></div>
+                                      </div>
+                                  </div>
+                              </div>
+                            
+                              <div class="textAlignCenter">
+                                <button name="update" class="formBtn myriadproBold validateForm" id="updateButton" type="submit" (click)="updateEditRow(index, key, $event)"
+                                    accesskey="u">UPDATE</button>
+                                <button type="button" name="CANCEL" class="formBtnCncl formBtn myriadproBold" id="editCancelButton" (click)="cancelEditRow(index,key.id)"
+                                    accesskey="c">CANCEL</button>
+                            </div>
+                          </form>
+
+                      </div>
+                  </td>
+              </tr>
+              </ng-container>
+            </tbody>
+          </table>
+        </div>
+        <div id="paginationWrapper">
+          <div *ngIf="pageRenge.length" class="page" style="margin-left:20px;">
+            <div class="floatLeft" style="width: 75px;padding-top: 6px">Show</div>
+            <select [disabled]="paginationDisabbled" [(ngModel)]="pageSize" (change)="onChangeTableRowLength($event)"
+              style="margin-top: 4px; margin-right: 6px;margin-left: -39px;" class="form-control-pagination floatLeft"
+              aria-controls="TableRowLength" size="1" name="TableRowLength" id="TableRowLength">
+              <option selected="selected" value="10">10</option>
+              <option value="20">20</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+            <div class="floatLeft" style="width: 75px;padding-top: 6px">Entries</div>
+            <div class="floatRight page" style="padding-top: 3px;margin-right:20px;">
+              <ul *ngIf="pageRenge.length" class="pagination floatRight">
+                <li id="firstPage" [ngClass]="{disabled:(currentPage === 1 || paginationDisabbled)}" class="page-item">
+                  <a class="page-link" (click)="setPage(1)">FIRST</a>
+                </li>
+                <li id="previousPage" [ngClass]="{disabled:(currentPage === 1 || paginationDisabbled)}"
+                  class="page-item">
+                  <a class="page-link" (click)="setPage(pager.currentPage - 1)">PREV</a>
+                </li>
+                <li *ngFor="let n of pager.pages" [ngClass]="{active:currentPage === n, disabled:paginationDisabbled}"
+                  class="page-item">
+                  <a class="page-link" (click)="setPage(n)" id='{{n+1}}'>{{n}}</a>
+                </li>
+                <li id="nextPage" [ngClass]="{disabled:(currentPage === totalPages || paginationDisabbled)}"
+                  class="page-item">
+                  <a class="page-link" (click)="setPage(pager.currentPage + 1)">NEXT</a>
+                </li>
+                <li id="lastPage" [ngClass]="{disabled:(currentPage === totalPages || paginationDisabbled)}"
+                  class="page-item">
+                  <a class="page-link" (click)="setPage(pager.totalPages)">LAST</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+ 
+</div>
+  <div *ngIf="auditBlock">
+    <div id="auditBlock">
+    <div id="formWrapper" class="formWrapperMargin bluePrintFormWrapper">
+      <form class="form-horizontal" id="bluePrintForm" #bluePrintForm>
+        <form class="form-horizontal" #auditForm>
+          <div class="row">
+
+            <div class="col-3">
+              <label for="templateName">SELECT DATE RANGE</label>
+              <div class="form-group" style="display: inline-block;">
+                  <input class="form-control" style="width: 75px !important;word-break: break-word;margin-right: 8px;" id="fromDate" name="fromDt"
+                      [(ngModel)]="fromDt" [owlDateTimeTrigger]="dt" [owlDateTime]="dt" [max]="toDate ? toDate : max" placeholder="FROM">
+                  <owl-date-time [pickerType]="'calendar'" #dt></owl-date-time>
+              </div>
+              <div class="form-group" style="display: inline-block;">
+                  <input class="form-control" style="width: 75px !important;word-break: break-word;" id="toDate" name="toDate" [min]="fromDt" [max]="max"  [(ngModel)]="toDate" [owlDateTimeTrigger]="dt1"
+                      [owlDateTime]="dt1" placeholder="TO">
+                  <div class="error-message-block"></div>
+                  <owl-date-time [pickerType]="'calendar'" #dt1></owl-date-time>
+              </div>
+          </div>
+
+            <div class="col-3">
+              <div class="form-group">
+                <label for="templateName">NE ID</label>
+                <input class="form-control" autocomplete="off" id="searchNeId" name="searchNeId" type="text" value="" 
+                />
+                <div class="error-message-block"></div>
+              </div>
+            </div>
+
+            <div class="col-3">
+              <div class="form-group">
+                <label for="templateName">NE NAME</label>
+                <input class="form-control" autocomplete="off" id="searchNeName" name="searchNeName" type="text" value="" />
+                <div class="error-message-block"></div>
+              </div>
+            </div>
+
+            <div class="col-3">
+              <div class="form-group">
+                <label for="templateName">RUN ID</label>
+                <input class="form-control" [disabled]="vDartReportCheck" autocomplete="off" id="searchRunId" name="searchRunId" type="text"  value="" />
+                <div class="error-message-block"></div>
+              </div>
+            </div>
+
+            <div class="col-3">
+              <div class="form-group">
+              <label for="templateName" class="asterisk_input">PROGRAM NAME</label>
+                <select class="form-control" name="programName" id="programName" [(ngModel)]=selprogName>
+                  <option value="">--Select--</option>
+                  <option *ngFor="let key of progName" value="{{key.programName}}">{{key.programName}}</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-3">
+              <div class="form-group">
+                <label for="templateName">SITE NAME</label>
+                <input class="form-control" [disabled]="vDartReportCheck" autocomplete="off" id="searchSiteName" name="searchRunId" type="text" value="" />
+                <div class="error-message-block"></div>
+              </div>
+            </div>
+
+            <div class="col-3">
+              <div class="form-group">
+                <label for="templateName">STATUS</label>
+                <select class="form-control" [disabled]="vDartReportCheck" name="searchStatus" id="searchStatus">
+                  <option value="">--Select--</option>
+                  <option value="success">Success</option>
+                  <option value="failure">Failure</option>
+                </select>
+                <div class="error-message-block"></div>
+              </div>
+            </div>
+
+            <div class="col-3">
+              <div class="form-group">
+                <input type="checkbox" class="thcheckbox" style="margin-right: 3px;vertical-align: middle;"
+                    [(ngModel)]="vDartReportCheck" name="vDartReportCheck" >Download VDart Report
+              </div>
+            </div>
+
+          </div>
+          <div class="textAlignCenter">
+            <button name="save" class="formBtn myriadproBold validateForm airlinecnfgSearch" id="searchButton" (click)="searchAuditReport($event)"
+              accesskey="s">SEARCH</button>
+            <button type="button" id="cancelButton" name="CANCEL" class="formBtnCncl formBtn myriadproBold formBtn" (click)="clearAuditForm()"
+              accesskey="c">CLEAR</button>
+            <button name="bulkReport" class=" myriadproBold formBtn white-btn" id="bulkReport" (click)="downloadBulkReport()">BULK REPORT</button>
+            <button name="bulkReport" class=" myriadproBold formBtn white-btn" id="bulkReportVDart" (click)="downloadVDartReport($event)">VDART REPORT</button>
+
+          </div>
+        </form>
+      </form>
+    </div>
+  </div>
+  <rct-nodata *ngIf="noAuditReportsData" [subTitle]=""></rct-nodata>
+  <div id="dataWrapper" *ngIf="reportTableShowHide && reportTableData && reportTableData['auditReportDetails']">
+    <div id="tableWrapper">
+      <div class="scrollHead">
+        <table class="table" id="auditReportTable">
+          <thead>
+            <tr>
+              <th>
+                <div class="sorting form-control-small-1">TIMESTAMP</div>
+              </th>
+              <th>
+                <div class="sorting form-control-small-1">USER</div>
+              </th>
+              <th>
+                <div class="sorting form-control-small-1">PROGRAM NAME</div>
+              </th>
+              <th>
+                <div class="sorting form-control-small-1">NE ID</div>
+              </th>
+              <th>
+                <div class="sorting form-control-small-1">NE NAME</div>
+              </th>
+              <th>
+                <div class="sorting form-control-small-1">SITE NAME</div>
+              </th>
+              <th>
+                <div class="sorting form-control-small-1">STATUS</div>
+              </th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="scrollBody">
+        <table class="table" id="reportDetails">
+          <tbody id="rowCount">
+            <ng-container *ngFor="let key of reportTableData['auditReportDetails']; let index = index">
+
+              <tr id="row_id_{{key.id}}">
+                <td data-toggle="tooltip" data-placement="right" data-container="body">
+                  <div class="form-control-small-1">{{key.timeStamp}}</div>
+                </td>
+
+                <td  data-toggle="tooltip" data-placement="right" data-container="body">
+                  <div class="form-control-small-1">{{key.userName}}</div>
+                </td>
+
+                <td  data-toggle="tooltip" data-placement="right" data-container="body">
+                  <div class="form-control-small-1">{{key.programName}}</div>
+                </td>
+
+                <td data-toggle="tooltip" data-placement="right" data-container="body">
+                  <div class="form-control-small-1">{{key.neId}}</div>
+                </td>
+                
+                <td  data-toggle="tooltip" data-placement="right" data-container="body">
+                  <div class="form-control-small-1">{{key.neName}}</div>
+                </td>
+                
+                <td  data-toggle="tooltip" data-placement="right" data-container="body">
+                  <div class="form-control-small-1">{{key.siteName}}</div>
+                </td>
+
+                <td  data-toggle="tooltip" data-placement="right" data-container="body">
+                  <div class="form-control-small-1">{{key.status}}</div>
+                </td>
+
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+      <div id="paginationWrapper">
+        <div *ngIf="pageRenge.length" class="page" style="margin-left:20px;">
+          <div class="floatLeft" style="width: 75px;padding-top: 6px">Show</div>
+          <select [disabled]="paginationDisabbled" [(ngModel)]="pageSize" (change)="onChangePagination($event)"
+            style="margin-top: 4px; margin-right: 6px;margin-left: -39px;" class="form-control-pagination floatLeft"
+            aria-controls="TableRowLength" size="1" name="TableRowLength" id="TableRowLength">
+            <option selected="selected" value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+          <div class="floatLeft" style="width: 75px;padding-top: 6px">Entries</div>
+          <div class="floatRight page" style="padding-top: 3px;margin-right:20px;">
+            <ul *ngIf="pageRenge.length" class="pagination floatRight">
+              <li id="firstPage" [ngClass]="{disabled:(currentPage === 1 || paginationDisabbled)}" class="page-item">
+                <a class="page-link" (click)="setPage(1)">FIRST</a>
+              </li>
+              <li id="previousPage" [ngClass]="{disabled:(currentPage === 1 || paginationDisabbled)}"
+                class="page-item">
+                <a class="page-link" (click)="setPage(pager.currentPage - 1)">PREV</a>
+              </li>
+              <li *ngFor="let n of pager.pages" [ngClass]="{active:currentPage === n, disabled:paginationDisabbled}"
+                class="page-item">
+                <a class="page-link" (click)="setPage(n)" id='{{n+1}}'>{{n}}</a>
+              </li>
+              <li id="nextPage" [ngClass]="{disabled:(currentPage === totalPages || paginationDisabbled)}"
+                class="page-item">
+                <a class="page-link" (click)="setPage(pager.currentPage + 1)">NEXT</a>
+              </li>
+              <li id="lastPage" [ngClass]="{disabled:(currentPage === totalPages || paginationDisabbled)}"
+                class="page-item">
+                <a class="page-link" (click)="setPage(pager.totalPages)">LAST</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  </div>
+  <div *ngIf="failureReportBlock">
+    <div id="failureReportBlock">
+    <div id="formWrapper" class="formWrapperMargin bluePrintFormWrapper">
+      <form class="form-horizontal" id="bluePrintForm" #bluePrintForm>
+        <form class="form-horizontal" #failureReportForm>
+          <div class="row">
+            <div class="col-3">
+              <div class="form-group">
+                <label for="templateName" class="asterisk_input">PROGRAM NAME</label>
+                <ng-multiselect-dropdown id="programName" class="form-control" name="programName" [placeholder]="'--Select--'"
+                  [data]="programDropDownList" [(ngModel)]="selprogNameList" [settings]="dropdownSettings1">
+                </ng-multiselect-dropdown>
+              </div>
+            </div>
+            <div class="col-2">
+              <label for="templateName">SELECT DATE RANGE</label>
+              <div class="form-group" style="display: inline-block;">
+                  <input class="form-control" style="width: 75px !important;word-break: break-word;margin-right: 8px;" id="fromDates" name="fromDts"
+                      [(ngModel)]="fromDts" (click)="clearSelect()" [owlDateTimeTrigger]="dt" [owlDateTime]="dt" [max]="toDates ? toDates : max" placeholder="FROM">
+                  <owl-date-time [pickerType]="'calendar'" #dt></owl-date-time>
+              </div>
+              <div class="form-group" style="display: inline-block;">
+                  <input class="form-control" style="width: 75px !important;word-break: break-word;" id="toDates" name="toDates" [min]="fromDts" [max]="max"  [(ngModel)]="toDates" [owlDateTimeTrigger]="dt1"
+                      [owlDateTime]="dt1" (click)="clearSelect()" placeholder="TO">
+                  <div class="error-message-block"></div>
+                  <owl-date-time [pickerType]="'calendar'" #dt1></owl-date-time>
+              </div>
+          </div>
+          <div class="form-group" style="display: inline-block;position: relative;top: 25px; font-weight: bold;">
+            <span style="margin:20px 20px 0 -20px">OR</span>
+          </div>
+          <div class="col-3">
+            <div class="form-group" >
+              <label for="templateName">SELECT DAYS RANGE</label>
+              <select class="form-control" name="selectDays" id="selectDays" (change)="clearDate()" [(ngModel)]="selectedDays">
+                <option value="0">--Select--</option>
+                <option value="1">Past 1 days</option>
+                <option value="2">Past 2 days</option>
+                <option value="3">Past 3 days</option>
+                <option value="4">Past 4 days</option>
+                <option value="5">Past 5 days</option>
+                <option value="6">Past 6 days</option>
+                <option value="7">Past 7 days</option>
+                <option value="8">Past 8 days</option>
+                <option value="9">Past 9 days</option>
+                <option value="10">Past 10 days</option>
+              </select>
+              <div class="error-message-block"></div>
+            </div>
+          </div>
+
+            <div class="col-3">
+              <div class="form-group">
+                <label for="templateName">NE ID</label>
+                <input class="form-control" autocomplete="off" id="neId" name="neId" type="text" value="" 
+                />
+                <div class="error-message-block"></div>
+              </div>
+            </div>
+          </div>
+          <div class="textAlignCenter">
+              <button name="failureReport" class=" myriadproBold formBtn white-btn" id="failureReport" (click)="getFailureReport($event)">FAILURE REPORT</button>
+              <button type="button" id="cancelButton" name="CANCEL" class="formBtnCncl formBtn myriadproBold formBtn" (click)="clearFailureReportForm()"
+              accesskey="c">CLEAR</button>
+          </div>
+        </form>
+      </form>
+    </div>
+  </div>
+    <ng-template #sessionExpiredModal let-c="close" let-d="dismiss">
+      <div class="failureIcon"></div>
+      <p id="sessionPopup">Session Expired</p>
+      <div class="modelDismiss" (click)="closeAndLogout()"></div>
+    </ng-template>
+
+    <ng-template #successModal let-c="close" let-d="dismiss">
+      <div class="successIcon"></div>
+      <p id="sessionPopup">{{message}}</p>
+
+      <div class="modelDismiss" (click)="closeModel()"></div>
+    </ng-template>
+    <!-- <div id="formWrapper" class="formWrapperMargin bluePrintFormWrapper">
+      
+    </div> -->
+
+    <rct-model *ngIf="showModelMessage" [message]="modelData"></rct-model>
+
+
+    <ng-template #confirmModalDelete let-c="close" let-d="dismiss">
+      <div class="sucessContentWrapper">
+        <div class="confirmIcon"></div>
+        <div class="confirmContent deletePopup">
+          <p>
+            <b>Are You Sure, </b>
+            <!-- </p>
+        <br>
+        <p> -->You want to <b>Delete</b>
+          </p>
+        </div>
+      </div>
+      <div class="deletePopupBtn modal-footer textAlignCenter">
+        <button type="button" class="formBtn btn btn-secondary modal_button_yes" (click)="d('dismiss click')"
+          id="deleteConfirmation">Yes</button>
+        <button type="button" class="formBtn btn btn-secondary modal_button_no" (click)="c('Close click')"
+          id="modal_button_no">No</button>
+      </div>
+    </ng-template>
+
+    <!-- ENV Info modal -->
+    <ng-template #envInfoModal let-c="close" let-modal>
+      <div class="modal-header">
+          <!-- <span style="font-weight: bold; font-size: 16px;">{{rowData.runTestName | uppercase}}</span> -->
+          <div class="dispHeader">
+              <h4 *ngIf="jsonType !='ENV FILE UPLOAD' && jsonType !='FETCH' && jsonType!='Failure log'">OV {{jsonType}} JSON ( {{order_number}} )</h4>
+              <h4 *ngIf="jsonType=='ENV FILE UPLOAD' || jsonType =='FETCH'">OV {{jsonType}} JSON </h4>
+              <h4 *ngIf="jsonType=='Failure log'">FAILURE REASON</h4>
+            </div>
+
+          <!--  <button type="button" class="close" aria-label="Close" (click)="closeModelcheckConn()">
+              <span aria-hidden="true">&times;</span>
+          </button> -->
+      </div>
+      <div class="modelBody">
+          <div id="viewFile">
+              <pre>{{envModalData}}</pre>
+              <textarea id="logArea" class="runningLogArea">{{envModalData}}</textarea>
+          </div>
+      </div>
+      <div class="modal-footer">
+          <div class="modalAction">
+            <div style="margin-top: -10%;
+            margin-left: -430%;">
+            <button id="button" class="formBtnSmall" (click)="copyFunction()">Copy</button>
+            <span id="snackbar">Copied to clipboard.</span></div>
+            <div style="margin-top: -35px;"><button type="button" class="formBtnCncl btn btn-light" (click)="closeEnvInfoModal()">CLOSE</button>
+            </div>
+          </div>
+      </div>
+  </ng-template>
+
+
+  

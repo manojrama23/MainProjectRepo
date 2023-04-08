@@ -1,0 +1,290 @@
+@import 'src/variable';
+
+.dateRangeAlign{    float:left;
+    display: inline-block;
+    margin-right: 15px;}
+
+  #nes {width: 225px !important;
+        // height: 25px !important;
+        display: flex;
+        padding-top: 0px;
+        padding-bottom: 0px;
+        box-shadow: none;
+        word-break: break-word;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        border-radius: .25rem;}
+.multiselect-item-checkbox input[type=checkbox]{
+    display: none;
+}
+.multiselect-item-checkbox input[type=checkbox] + div:before{
+    display: none;
+}
+/* #mailConfirmation {text-shadow: none !important;
+    font-size: 12px !important;
+    padding-left: 22px;
+    padding-right: 22px;
+    text-transform: uppercase;
+    margin-left: 10px;
+    border-radius: 4px;
+    height: 35px;
+    border: none;
+    cursor: pointer;
+    background-color: #5160ac !important;
+    color: #fff !important;
+} */
+
+#ciqName {
+    width: 225px !important;
+    /* height: 25px !important; */
+    display: flex;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    box-shadow: none;
+    word-break: break-word;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: .25rem;
+}
+@media (min-width: 1200px) and (max-width: 1359px){
+    #nes, #ciqName {width: $form-control-width-xs;}
+}
+@media (min-width: 1360px) and (max-width: 1599px){
+    #nes, #ciqName {width: $form-control-width-sm;}
+}
+@media (min-width: 1600px) and (max-width: 1899px){
+    #nes, #ciqName {width: $form-control-width-md;}
+}
+@media (min-width: 1900px) {
+    #nes, #ciqName {width: $form-control-width-lg;}
+}
+
+/* #reportModalView .form-control {
+    width: 260px !important;
+}
+#reportModalView .reportChkBx {
+    padding: 5px;
+} */
+
+#scriptDetailsRow {
+    border: 1px solid transparent;
+    margin: 0;
+}
+#scriptDetailsRow .form-control {
+    width: 100% !important;
+}
+
+#scriptDetailsRow form, .scriptDetails tr {
+    margin: 0;
+}
+
+.chkConnLogBtn {
+    border: none !important;
+    cursor: pointer;
+    padding: 8px;
+    margin-right: 20px;
+}
+.viewContent {
+    height: 25px;
+    width: 24px;  
+    &:focus {
+        outline: none;
+    }
+}
+#location {
+    width: 225px !important;
+    height: 25px !important;
+    display: flex;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    box-shadow: none;
+    word-break: break-word;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: .25rem;
+}
+.card {
+    padding: 10px;
+}
+
+@media (min-height: 1025px){
+    #reportModalView {max-height: 720px;}
+}
+
+@media (min-height: 981px) and (max-height: 1024px){
+    #reportModalView {max-height: 700px;}
+}
+
+@media (min-height: 921px) and (max-height: 980px){
+    #reportModalView {max-height: 690px;}
+}
+
+@media (min-height: 900px) and (max-height: 920px){
+    #reportModalView {max-height: 680px;}
+}
+
+@media (min-height: 841px) and (max-height: 899px){
+    #reportModalView {max-height: 640px;}
+}
+
+@media (min-height: 767px) and (max-height: 840px){
+    #reportModalView {max-height: 610px;}
+}
+
+@media (max-height: 768px){
+    #reportModalView {max-height: 350px;}
+}
+
+#reportModalView {
+    overflow-x: hidden;
+    overflow-y: scroll;
+    .siteMigFields {
+        margin-top: 20px;
+        .remarksTextArea {
+            width: 260px !important;
+            height: 150px;
+            padding: 5px;
+        }
+    }
+    .timelineFields, .issueFields {
+        margin-top: 20px;
+    }
+    .form-control {
+        width: 260px !important;
+    }
+    .form-control.formControlMax {
+        width: 230px !important;
+    }
+    .form-control.formControlMini {
+        width: 150px !important;
+    }
+    .timelineDetails .form-control, .criticalCheckDetails .form-control {
+        width: 190px !important;
+    }
+    .addRowBtn {
+        display: flex;
+        justify-content: flex-end;
+        margin: 0 25px 0 0;
+    }
+    .reportChkBx {
+        padding: 0 0 10px;
+
+        .reportChkBxLabel {
+            padding-left: 0;
+            font-weight: normal;
+        }
+    }
+    .scriptDetails {
+        #scriptRowForm .scriptData > tr:hover > td > .tableRowAction {
+            display: block;
+        }
+        .tableRowAction {
+            .deleteRow {
+                background-position-y: -168px;
+            }
+        }
+    }
+}
+
+.dispHeader{display: flex;justify-content: center;color: #5161AC;margin-top: 10px;}
+
+.postAuditIssue span {
+    white-space: pre-line;
+}
+.postAuditIssue span.breakWord {
+    word-break: break-word;
+}
+
+.emailContainer {
+    display: flex;
+    flex-direction: column;
+
+    .emailInput {
+        input {
+            flex: 1;
+        }
+    }
+    .emailList {
+        flex: 1;
+
+    }
+}
+
+.timeInfo {
+    display: flex;
+    flex-direction: row;
+    
+    .reportChkBxLabel {
+        display: inline-block;
+        width: auto;
+        margin-left: 5px;
+        padding: 0 5px;
+    }
+    .thcheckbox {
+        vertical-align: middle;
+        display: inline-block;
+        width: auto;
+        margin-right: 2px;
+    }
+}
+#errorModalView {
+    overflow: auto;
+    max-height: 400px;
+  }
+  
+  .errorMsgBlock {
+    display: flex !important;
+    flex-direction: column;
+    overflow: auto;
+    display: block;
+    border: 1px solid #b8c0cc;
+    margin-top: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding: 10px;
+  }
+
+  .errorPre {
+    font-family: Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+    font-size: 12px;
+    background-color: #fafafa;
+    padding: 10px;
+  }
+  .mileStoneResult {
+    max-height: 100px;
+    min-height: 70px;
+    overflow: auto;
+    overflow-x: hidden;
+  }
+  fieldset.scheduler-border {
+    border: solid 1px #DDD !important;
+    padding: 0 10px 10px 10px;
+    border-bottom: none;
+  }
+  legend.scheduler-border {
+    width: auto !important;
+    border: none;
+    font-size: 20px;
+  }
+  .mileStoneRows {
+    font-size: 15px;
+    display: inline-flex;
+    padding: 5px;
+    border-bottom: 1px solid #DDD;
+    width: 100%;
+  }
+  .mileStoneName {
+    width: 100%;
+  }
+  .failedResult {
+    width: 15px;
+    height: 15px;
+    background-color: red;
+    border-radius: 25px;
+    margin-left:8px;
+    display: inline-block;
+  }
+  .successResult {
+    width: 15px;
+    height: 15px;
+    background-color: green;
+    border-radius: 25px;
+    display: inline-block;
+  }

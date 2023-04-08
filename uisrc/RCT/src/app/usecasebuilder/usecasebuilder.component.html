@@ -1,0 +1,922 @@
+<div class="page-wrapper">
+
+    <rct-loader *ngIf="showLoader"></rct-loader>
+    <h1 class="mainHead">USE CASE BUILDER</h1>
+    <div class="migrationBlock">
+        <form class="form-horizontal">
+            <div class="row">
+                <div class="col-7">
+                    <div class="form-group radio-inline">
+                        <input class="radio" type="radio" [(ngModel)]='migrationType' value="premigration" name="migrationBtn" (click)="onChangeLoad('premigration')">
+                        <label for="templateName">PRE MIGRATION</label>
+                    </div>
+                    <div class="form-group radio-inline">
+                        <input class="radio" type="radio" [(ngModel)]='migrationType' value="nestatus" name="migrationBtn" (click)="onChangeLoad('nestatus')">
+                        <label for="templateName">NE STATUS</label>
+                    </div>
+                    <div class="form-group radio-inline">
+                        <input class="radio" type="radio" [(ngModel)]='migrationType' value="preaudit" name="migrationBtn" (click)="onChangeLoad('preaudit')">
+                        <label for="templateName">PRE AUDIT</label>
+                    </div>
+                    
+                    <div class="form-group radio-inline">
+                        <input class="radio" type="radio" [(ngModel)]='migrationType' value="migration" name="migrationBtn" (click)="onChangeLoad('migration')">
+                        <label for="templateName">MIGRATION</label>
+                    </div>
+                    <div class="form-group radio-inline">
+                        <input class="radio" type="radio" [(ngModel)]='migrationType' value="postmigration" name="migrationBtn" (click)="onChangeLoad('postmigration')">
+                        <label for="templateName">POST MIGRATION</label>
+                    </div>
+                </div>
+                <div class="col-5" *ngIf="migrationType == 'postmigration'">
+                    <select class="form-control form-control-small form-group" name="subType" id="subType" [(ngModel)]="subType" (change)="onChangeType(subType)"
+                        style="height:20px !important;padding: 0;">
+                        <option value="AUDIT">AUDIT</option>
+                        <option value="RANATP">RAN ATP</option>
+                    </select>
+                </div>
+                <div class="col-5" *ngIf="migrationType == 'migration'">
+                    <!-- <select class="form-control form-control-small-1 form-group" name="subType" id="subType" [(ngModel)]="subType" (change)="onChangeType(subType)"
+                        style="height:20px !important">
+                        <option value="PRECHECK">PRE CHECK</option>
+                        <option value="COMMISSION">COMMISSION</option>
+                        <option value="POSTCHECK">POST CHECK</option>
+                    </select> -->
+                    <div class="form-group radio-inline">
+                        <input class="radio" type="radio" [(ngModel)]='subType' value="PRECHECK" name="precheck" disabled>
+                        <label for="templateName">COMMISSION</label>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <ul class="nav nav-pills" role="tablist">
+        <li class="nav-item">
+            <div (click)="searchTabBind()" accesskey="h" name="seatch" class=" divalign float-sm-right float-md-right float-lg-right float-xl-right"
+                #searchTab>SEARCH</div>
+        </li>
+        <li class="nav-item">
+            <div (click)="createNewTabBind()" accesskey="n" name="createnew" class="divalign float-sm-right float-md-right float-lg-right float-xl-right"
+                #createNewTab>CREATE NEW</div>
+        </li>
+    </ul>
+
+    <ng-template #confirmModal let-c="close" let-d="dismiss">
+        <div class="sucessContentWrapper">
+            <div class="confirmIcon"></div>
+            <div class="confirmContent deletePopup">
+                <p>
+                    <b>Are You Sure, </b>
+                <!-- </p>
+                <br>
+                <p> -->You want to
+                    <b>Delete</b>
+                </p>
+            </div>
+        </div>
+        <div class="deletePopupBtn modal-footer textAlignCenter">
+            <button type="button" class="formBtn btn btn-secondary modal_button_yes" (click)="d('dismiss click')" id="deleteConfirmation">YES</button>
+            <button type="button" class="formBtn btn btn-secondary modal_button_no" (click)="c('Close click')" id="modal_button_no">NO</button>
+        </div>
+    </ng-template>
+    <ng-template #ruleTemplate>
+        <div id="tableWrapper" class="scriptDetails" *ngIf="selectedTab == 'cmdRuleTab'">
+            <div class="scrollHead">
+                <table class="table">
+                    <thead>
+                        <tr class="row">
+                            <th class="col-4">
+                                <div>COMMAND RULE</div>
+                            </th>
+                            <th class="col-4">
+                                <div>COMMAND OCCURRENCE</div>
+                            </th>
+                            <th class="col-4">
+                                <div>REMARKS</div>
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="scriptTableBody">
+                <form id="scriptRowForm">
+                    <table class="table">
+                        <tbody id="rowCount" class="scriptData">
+                            <ng-container *ngFor="let key of ruleList.cmdRules; let index = index">
+                                <tr id="scriptDetailsRow" class="row row_id_{{index}}">
+                                    <td class="col-4" data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <div class="td_form">
+                                            <!-- <select class="form-control" *ngIf="key.incmdEditMode" name="cmdRules_{{index}}" id="cmdRules_{{index}}" [compareWith]="compareCmdRuleFn"
+                                                [(ngModel)]="key.cmdDetails">
+                                                <option value="">--Select--</option>
+                                                <option *ngFor="let name of cmdRuleList" id="{{name.cmdRuleBuilderId}}" [ngValue]="name">{{name.cmdName}}</option>
+                                            </select> -->
+                                            <ngx-select-dropdown *ngIf="key.incmdEditMode" [config]="cmdConfig" class="ruleSelect" id="cmdRules_{{index}}" [options]="cmdRuleList" [(ngModel)]="key.cmdDetails"
+                                            name="cmdRules_{{index}}" ></ngx-select-dropdown>
+                                            <div class="error-message-block"></div>
+                                            <span *ngIf="!key.incmdEditMode">{{key.cmdDetails.cmdName}}</span>
+                                        </div>
+                                        <span class="floatLeft asterisk_input" *ngIf="key.incmdEditMode"></span>
+                                    </td>
+                                    <td class="col-4" data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <div class="td_form">
+                                            <input *ngIf="key.incmdEditMode" class="form-control fullWidthExSeq" autocomplete="off" id="cmdSequence_{{index}}" name="cmdSequence_{{index}}"
+                                                type="text" [value]="key.cmdSequence" maxlength="3" [(ngModel)]="key.cmdSequence"
+                                            />
+                                            <div class="error-message-block"></div>
+                                            <span *ngIf="!key.incmdEditMode">{{key.cmdSequence}}</span>
+                                        </div>
+                                        <span class="floatLeft asterisk_input" *ngIf="key.incmdEditMode"></span>
+                                    </td>
+                                    <td class="col-4" data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <span class="eventColText" *ngIf="!key.incmdEditMode">{{key.cmdRemarks}}</span>
+                                        <div class="form-control-fixed iconsWrapper tableRowAction" id="fixedCol" ng-style="iconsWrapperPosition" *ngIf="key.role != 'Super Administrator'">
+                                            <div *ngIf="!key.incmdEditMode" (click)="editRules($event, key, index,'cmdRule')" class="editRow" placement="bottom" container="body"
+                                                ngbTooltip="Edit"></div>
+                                            <div *ngIf="!key.incmdEditMode" (click)="deleteRules(confirmModal, key.userName, index,'cmdRule')" class="deleteRow" placement="bottom"
+                                                container="body" ngbTooltip="Delete"></div>
+                                            <div *ngIf="key.incmdEditMode" (click)="saveCmdRuleRow($event, key, index)" class="saveRow validateForm" placement="bottom"
+                                                container="body" ngbTooltip="Save"></div>
+                                            <div *ngIf="key.incmdEditMode" (click)="cancelCmdRuleRow(key, index)" class="cancelRow" placement="bottom" container="body"
+                                                ngbTooltip="Cancel"></div>
+                                        </div>
+                                        <input *ngIf="key.incmdEditMode" class="form-control fullWidthExSeq" autocomplete="off" id="cmdRemarks_{{index}}" name="cmdRemarks_{{index}}"
+                                            type="text" [value]="key.cmdRemarks" [(ngModel)]="key.cmdRemarks" />
+                                        <div class="error-message-block"></div>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+        <div id="tableWrapper" class="scriptDetails" *ngIf="selectedTab == 'shellRuleTab'">
+                <div class="scrollHead">
+                    <table class="table">
+                        <thead>
+                            <tr class="row">
+                                <th class="col-4">
+                                    <div>SHELL RULE</div>
+                                </th>
+                                <th class="col-4">
+                                    <div>SHELL RULE OCCURRENCE</div>
+                                </th>
+                                <th class="col-4">
+                                    <div>REMARKS</div>
+                                </th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="scriptTableBody">
+                    <form id="scriptRowForm">
+                        <table class="table">
+                            <tbody id="rowCount" class="scriptData">
+                                <ng-container *ngFor="let key of ruleList.shellRules; let index = index">
+                                    <tr id="scriptDetailsRow" class="row row_id_{{index}}">
+                                        <td class="col-4" data-toggle="tooltip" data-placement="right" data-container="body">
+                                            <div class="td_form">
+                                                <ngx-select-dropdown *ngIf="key.inshellEditMode" [config]="shellConfig" class="ruleSelect" id="shellRules_{{index}}" [options]="shellRuleList" [(ngModel)]="key.shellDetails"
+                                                name="shellRules_{{index}}" ></ngx-select-dropdown>
+                                                <div class="error-message-block"></div>
+                                                <span *ngIf="!key.inshellEditMode">{{key.shellDetails.shellCmdName}}</span>
+                                            </div>
+                                            <span class="floatLeft asterisk_input" *ngIf="key.inshellEditMode"></span>
+                                        </td>
+                                        <td class="col-4" data-toggle="tooltip" data-placement="right" data-container="body">
+                                            <div class="td_form">
+                                                <input *ngIf="key.inshellEditMode" class="form-control fullWidthExSeq" autocomplete="off" id="shellRuleSequence_{{index}}"
+                                                    name="shellRuleSequence_{{index}}" type="text" [value]="key.shellRuleSequence"
+                                                    maxlength="3" [(ngModel)]="key.shellRuleSequence" />
+                                                <div class="error-message-block"></div>
+                                                <span *ngIf="!key.inshellEditMode">{{key.shellRuleSequence}}</span>
+                                            </div>
+                                            <span class="floatLeft asterisk_input" *ngIf="key.inshellEditMode"></span>
+                                        </td>
+                                        <td class="col-4" data-toggle="tooltip" data-placement="right" data-container="body">
+                                            <span class="eventColText" *ngIf="!key.inshellEditMode">{{key.shellRuleRemarks}}</span>
+                                            <div class="form-control-fixed iconsWrapper tableRowAction" id="fixedCol" ng-style="iconsWrapperPosition" *ngIf="key.role != 'Super Administrator'">
+                                                <div *ngIf="!key.inshellEditMode" (click)="editRules($event, key, index,'shellRule')" class="editRow" placement="bottom" container="body"
+                                                    ngbTooltip="Edit"></div>
+                                                <div *ngIf="!key.inshellEditMode" (click)="deleteRules(confirmModal, key.userName, index,'shellRule')" class="deleteRow" placement="bottom"
+                                                    container="body" ngbTooltip="Delete"></div>
+                                                <div *ngIf="key.inshellEditMode" (click)="saveShellRuleRow($event, key, index)" class="saveRow validateForm" placement="bottom"
+                                                    container="body" ngbTooltip="Save"></div>
+                                                <div *ngIf="key.inshellEditMode" (click)="cancelShellRuleRow(key, index)" class="cancelRow" placement="bottom" container="body"
+                                                    ngbTooltip="Cancel"></div>
+                                            </div>
+                                            <input *ngIf="key.inshellEditMode" class="form-control fullWidthExSeq" autocomplete="off" id="shellRuleRemarks_{{index}}" name="shellRuleRemarks_{{index}}"
+                                                type="text" [value]="key.shellRuleRemarks" [(ngModel)]="key.shellRuleRemarks" />
+                                            <div class="error-message-block"></div>
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+            </div>
+
+        <div id="tableWrapper" class="scriptDetails" *ngIf="selectedTab == 'xmlRuleTab'">
+            <div class="scrollHead">
+                <table class="table">
+                    <thead>
+                        <tr class="row">
+                            <th class="col-4">
+                                <div>XML RULE</div>
+                            </th>
+                            <th class="col-4">
+                                <div>XML RULE OCCURRENCE</div>
+                            </th>
+                            <th class="col-4">
+                                <div>REMARKS</div>
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="scriptTableBody">
+                <form id="scriptRowForm">
+                    <table class="table">
+                        <tbody id="rowCount" class="scriptData">
+                            <ng-container *ngFor="let key of ruleList.xmlRules; let index = index">
+                                <tr id="scriptDetailsRow" class="row row_id_{{index}}">
+                                    <td class="col-4" data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <div class="td_form">
+                                            <!-- <select class="form-control" *ngIf="key.inxmlEditMode" name="xmlRules_{{index}}" id="xmlRules_{{index}}" [compareWith]="compareXmlRuleFn"
+                                                [(ngModel)]="key.xmlDetails">
+                                                <option value="">--Select--</option>
+                                                <option *ngFor="let name of xmlRuleList" id="{{name.xmlRuleBuilderId}}" [ngValue]="name">{{name.xmlName}}</option>
+                                            </select> -->
+
+                                            <ngx-select-dropdown *ngIf="key.inxmlEditMode" [config]="xmlConfig" class="ruleSelect" id="xmlRules_{{index}}" [options]="xmlRuleList" [(ngModel)]="key.xmlDetails"
+                                            name="xmlRules_{{index}}" ></ngx-select-dropdown>
+                                            <div class="error-message-block"></div>
+                                            <span *ngIf="!key.inxmlEditMode">{{key.xmlDetails.xmlName}}</span>
+                                        </div>
+                                        <span class="floatLeft asterisk_input" *ngIf="key.inxmlEditMode"></span>
+                                    </td>
+                                    <td class="col-4" data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <div class="td_form">
+                                            <input *ngIf="key.inxmlEditMode" class="form-control fullWidthExSeq" autocomplete="off" id="xmlSequence_{{index}}" name="xmlSequence_{{index}}"
+                                                type="text" [value]="key.xmlSequence" maxlength="3" [(ngModel)]="key.xmlSequence"
+                                            />
+                                            <div class="error-message-block"></div>
+                                            <span *ngIf="!key.inxmlEditMode">{{key.xmlSequence}}</span>
+                                        </div>
+                                        <span class="floatLeft asterisk_input" *ngIf="key.inxmlEditMode"></span>
+                                    </td>
+                                    <td class="col-4" data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <span class="eventColText" *ngIf="!key.inxmlEditMode">{{key.xmlRemarks}}</span>
+                                        <div class="form-control-fixed iconsWrapper tableRowAction" id="fixedCol" ng-style="iconsWrapperPosition" *ngIf="key.role != 'Super Administrator'">
+                                            <div *ngIf="!key.inxmlEditMode" (click)="editRules($event, key, index,'xmlRule')" class="editRow" placement="bottom" container="body"
+                                                ngbTooltip="Edit"></div>
+                                            <div *ngIf="!key.inxmlEditMode" (click)="deleteRules(confirmModal, key.userName, index,'xmlRule')" class="deleteRow" placement="bottom"
+                                                container="body" ngbTooltip="Delete"></div>
+                                            <div *ngIf="key.inxmlEditMode" (click)="saveXmlRuleRow($event, key, index)" class="saveRow validateForm" placement="bottom"
+                                                container="body" ngbTooltip="Save"></div>
+                                            <div *ngIf="key.inxmlEditMode" (click)="cancelXmlRuleRow(key, index)" class="cancelRow" placement="bottom" container="body"
+                                                ngbTooltip="Cancel"></div>
+                                        </div>
+                                        <input *ngIf="key.inxmlEditMode" class="form-control fullWidthExSeq" autocomplete="off" id="xmlRemarks_{{index}}" name="xmlRemarks_{{index}}"
+                                            type="text" [value]="key.xmlRemarks" [(ngModel)]="key.xmlRemarks" />
+                                        <div class="error-message-block"></div>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+        
+        <!-- <div id="tableWrapper" class="scriptDetails" *ngIf="selectedTab == 'fileRuleTab'">
+            <div class="scrollHead">
+                <table class="table">
+                    <thead>
+                        <tr class="row">
+                            <th class="col-4">
+                                <div>FILE RULE</div>
+                            </th>
+                            <th class="col-4">
+                                <div>FILERULE OCCURRENCE</div>
+                            </th>
+                            <th class="col-4">
+                                <div>REMARKS</div>
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="scriptTableBody">
+                <form id="scriptRowForm">
+                    <table class="table">
+                        <tbody id="rowCount" class="scriptData">
+                            <ng-container *ngFor="let key of ruleList.fileRules; let index = index">
+                                <tr id="scriptDetailsRow" class="row row_id_{{index}}">
+                                    <td class="col-4" data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <div class="td_form">
+                                            <ngx-select-dropdown *ngIf="key.infileEditMode" [config]="fileConfig" class="ruleSelect" id="fileRules_{{index}}" [options]="fileRuleList" [(ngModel)]="key.fileDetails"
+                                            name="fileRules_{{index}}" ></ngx-select-dropdown>
+                                            <div class="error-message-block"></div>
+                                            <span *ngIf="!key.infileEditMode">{{key.fileDetails.fileRuleName}}</span>
+                                        </div>
+                                        <span class="floatLeft asterisk_input" *ngIf="key.infileEditMode"></span>
+                                    </td>
+                                    <td class="col-4" data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <div class="td_form">
+                                            <input *ngIf="key.infileEditMode" class="form-control fullWidthExSeq" autocomplete="off" id="fileRuleSequence_{{index}}"
+                                                name="fileRuleSequence_{{index}}" type="text" [value]="key.fileRuleSequence"
+                                                maxlength="3" [(ngModel)]="key.fileRuleSequence" />
+                                            <div class="error-message-block"></div>
+                                            <span *ngIf="!key.infileEditMode">{{key.fileRuleSequence}}</span>
+                                        </div>
+                                        <span class="floatLeft asterisk_input" *ngIf="key.infileEditMode"></span>
+                                    </td>
+                                    <td class="col-4" data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <span class="eventColText" *ngIf="!key.infileEditMode">{{key.fileRuleRemarks}}</span>
+                                        <div class="form-control-fixed iconsWrapper tableRowAction" id="fixedCol" ng-style="iconsWrapperPosition" *ngIf="key.role != 'Super Administrator'">
+                                            <div *ngIf="!key.infileEditMode" (click)="editRules($event, key, index,'fileRule')" class="editRow" placement="bottom" container="body"
+                                                ngbTooltip="Edit"></div>
+                                            <div *ngIf="!key.infileEditMode" (click)="deleteRules(confirmModal, key.userName, index,'fileRule')" class="deleteRow" placement="bottom"
+                                                container="body" ngbTooltip="Delete"></div>
+                                            <div *ngIf="key.infileEditMode" (click)="saveFileRuleRow($event, key, index)" class="saveRow validateForm" placement="bottom"
+                                                container="body" ngbTooltip="Save"></div>
+                                            <div *ngIf="key.infileEditMode" (click)="cancelFileRuleRow(key, index)" class="cancelRow" placement="bottom" container="body"
+                                                ngbTooltip="Cancel"></div>
+                                        </div>
+                                        <input *ngIf="key.infileEditMode" class="form-control fullWidthExSeq" autocomplete="off" id="fileRuleRemarks_{{index}}" name="fileRuleRemarks_{{index}}"
+                                            type="text" [value]="key.fileRuleRemarks" [(ngModel)]="key.fileRuleRemarks" />
+                                        <div class="error-message-block"></div>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div> -->
+    </ng-template>
+    <ng-template #scriptCreateFormTemplate>
+        <div id="formWrapper" *ngIf="scriptForm">
+            <form class="form-horizontal" *ngFor="let key of scriptLists; let index = index">
+                <div class="row">
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName" class="asterisk_input">SELECT SCRIPT</label>
+                            <!-- <select class="form-control" name="scriptDetails" id="scriptDetails" [(ngModel)]="key.script">
+                                <option value="">--Select--</option>
+                                <option *ngFor="let name of scriptData" id="{{name.scriptFileId}}" [ngValue]="name">{{name.scriptName}}</option>
+                            </select> -->
+                            
+                            <ngx-select-dropdown [config]="scriptConfig" id="scriptDetails" [options]="scriptData" [(ngModel)]="key.script"
+                            name="scriptDetails" ></ngx-select-dropdown>
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName">EXECUTION SEQUENCE</label>
+                            <input class="form-control" autocomplete="off" id="scriptSequence" name="scriptSequence" [(ngModel)]="key.scriptSequence"
+                                type="text" value="" maxlength="30" />
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName" class="">REMARKS</label>
+                            <textarea rows="4" cols="50" class="textArea" name="scriptRemarks" id="scriptRemarks" [(ngModel)]="key.scriptRemarks"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="addScriptBtn">
+                    <button name="save" class="formBtnSmall myriadproBold validateForm" (click)="addCmdRow()" accesskey="s" [ngClass]="isDisabledClass()"
+                        [disabled]="isDisabledClass() == 'buttonDisabled'" *ngIf="selectedTab == 'cmdRuleTab'">ADD</button>
+                </div>
+                <!-- <div class="addScriptBtn">
+                    <button name="save" class="formBtnSmall myriadproBold validateForm" (click)="addFileRow()" accesskey="s" [ngClass]="isDisabledClass1()"
+                        [disabled]="isDisabledClass1() == 'buttonDisabled'" *ngIf="selectedTab == 'fileRuleTab'">ADD</button>
+                </div> -->
+                <div class="addScriptBtn">
+                        <button name="save" class="formBtnSmall myriadproBold validateForm" (click)="addShellRow()" accesskey="s" [ngClass]="isDisabledClass3()"
+                            [disabled]="isDisabledClass3() == 'buttonDisabled'" *ngIf="selectedTab == 'shellRuleTab'">ADD</button>
+                    </div>
+                <div class="addScriptBtn">
+                    <button name="save" class="formBtnSmall myriadproBold validateForm" (click)="addXmlRow()" accesskey="s" [ngClass]="isDisabledClass2()"
+                        [disabled]="isDisabledClass2() == 'buttonDisabled'" *ngIf="selectedTab == 'xmlRuleTab'">ADD</button>
+                </div>
+                <div class="tablist">
+                    <ul class="nav nav-pills" role="tablist">
+                        <li class="nav-item">
+                            <div (click)="cmdRuleData()" accesskey="h" class=" divalign float-sm-right float-md-right float-lg-right float-xl-right"
+                                [ngClass]="[selectedTab == 'cmdRuleTab'? 'activeTab':'inactiveTab']">CLI</div>
+                        </li>
+                        <li class="nav-item">
+                                <div (click)="shellRuleData()" accesskey="n" class="divalign float-sm-right float-md-right float-lg-right float-xl-right"
+                                    [ngClass]="[selectedTab == 'shellRuleTab' ? 'activeTab':'inactiveTab']">SHELL</div>
+                            </li>
+                        <li class="nav-item">
+                            <div (click)="xmlRuleData()" accesskey="n" class="divalign float-sm-right float-md-right float-lg-right float-xl-right" [ngClass]="[selectedTab == 'xmlRuleTab' ? 'activeTab':'inactiveTab']">XML</div>
+                        </li>
+                       <!--  <li class="nav-item">
+                            <div (click)="fileRuleData()" accesskey="n" class="divalign float-sm-right float-md-right float-lg-right float-xl-right"
+                                [ngClass]="[selectedTab == 'fileRuleTab' ? 'activeTab':'inactiveTab']">FILE RULE</div>
+                        </li> -->
+                    </ul>
+                </div>
+
+                <ng-container *ngTemplateOutlet="ruleTemplate"></ng-container>
+                <div class="textAlignCenter">
+                    <button name="save" class="formBtnSmall myriadproBold validateForm airlinecnfgSearch" id="saveButton" (click)="saveScript($event,index,key)"
+                        accesskey="s">ADD</button>
+                    <button name="save" class="formBtnSmallCncl formBtnSmall myriadproBold validateForm airlinecnfgSearch" id="cancelButton" (click)="cancelScript($event)"
+                        [ngClass]="{'buttonDisabled' : scriptTableData.length == 0}" [disabled]="scriptTableData.length == 0"
+                        accesskey="s">CANCEL</button>
+                </div>
+
+            </form>
+        </div>
+    </ng-template>
+    <ng-template #scriptTableTemplate>
+        <div id="tableWrapper" style="margin:10px" class="useCaseScriptTable">
+            <div class="scrollHead">
+                <table class="table" id="scriptInfo">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="form-control-column-4">SCRIPT NAME</div>
+                            </th>
+                            <th>
+                                <div class="form-control-column-4">EXECUTION SEQUENCE</div>
+                            </th>
+                            <th>
+                                <div class="form-control-column-4">REMARKS</div>
+                            </th>
+
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="scrollBody">
+                <table class="table" id="scriptTableData">
+                    <tbody id="rowCount">
+                        <ng-container *ngFor="let key of scriptTableData; let index = index">
+                            <tr id="row_{{index}}" class="row_id_{{key.scriptId}}">
+                                <!-- id="row_id_{{key.id}}" -->
+                                <td data-toggle="tooltip" data-placement="right" data-container="body" class="form-control-column-4">
+                                        <span [ngClass]="{'scriptLink':!createNewForm}" class="scriptLink" (click)="(!createNewForm)? viewRowScript($event,scriptContent, key) : ''">{{key.script.scriptName}}</span>
+                                </td>
+                                <td data-toggle="tooltip" data-placement="right" data-container="body" class="form-control-column-4">{{key.scriptSequence}}
+
+                                </td>
+
+                                <td class="form-control-column-4" data-toggle="tooltip" data-placement="right" data-container="body">
+                                    <span class="displayNone" class="eventColText">{{key.scriptRemarks}}</span>
+                                    <div #fixedCol class="form-control-fixed iconsWrapper tableRowAction" id="fixedCol" ng-style="iconsWrapperPosition">
+                                        <div *ngIf="!createNewForm" (click)="downLoadFile(key.script.scriptName, key.filePath)" class="downloadGenScripts" placement="bottom" container="body" ngbTooltip="Download Script"></div>
+                                        <div (click)="editScriptRow($event, key, index)" class="editRow" placement="bottom" container="body" ngbTooltip="Edit"></div>
+                                        <div (click)="deleteScript($event,confirmModal,index, key.scriptId)" class="deleteRow" placement="bottom" container="body"
+                                            ngbTooltip="Delete"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- EDIT -->
+                            <tr *ngIf="checkScriptFormEnable(index)" id="editedRow{{index}}" class="editScriptUseCaseRow">
+                                <ng-container>
+                                    <td colspan="3" class="formEditRow">
+                                        <div id="formWrapper">
+                                            <form class="form-horizontal">
+                                                <div class="row">
+                                                    <div class="col-3">
+                                                        <div class="form-group">
+                                                            <label for="templateName" class="">SELECT SCRIPT</label>
+                                                           <!--  <select class="form-control" name="scriptDetails" id="scriptDetails" [compareWith]="compareScriptFn" [(ngModel)]="scriptDetails">
+                                                                <option value="">--Select--</option>
+                                                                <option *ngFor="let name of scriptData" id="{{name.scriptFileId}}" value="{{name.scriptName}}">{{name.scriptName}}</option>
+                                                            </select> -->
+
+                                                            <ngx-select-dropdown [config]="scriptConfig" id="scriptDetails" [options]="scriptData" [(ngModel)]="scriptDetails" name="scriptDetails"></ngx-select-dropdown>
+                                                            <div class="error-message-block"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <div class="form-group">
+                                                            <label for="templateName">EXECUTION SEQUENCE
+                                                            </label>
+                                                            <input class="form-control" autocomplete="off" id="scriptSequence" name="scriptSequence" type="text" value="" maxlength="30"
+                                                            />
+                                                            <div class="error-message-block"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <div class="form-group">
+                                                            <label for="templateName" class="">REMARKS</label>
+                                                            <textarea rows="4" cols="50" class="textArea" name="scriptRemarks" id="scriptRemarks"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="addScriptBtn">
+                                                    <button name="save" class="formBtnSmall myriadproBold validateForm" (click)="addCmdRow()" accesskey="s" [ngClass]="isDisabledClass()"
+                                                        [disabled]="isDisabledClass() == 'buttonDisabled'" *ngIf="selectedTab == 'cmdRuleTab'">ADD</button>
+                                                </div>
+                                                <!-- <div class="addScriptBtn">
+                                                    <button name="save" class="formBtnSmall myriadproBold validateForm" (click)="addFileRow()" accesskey="s" [ngClass]="isDisabledClass1()"
+                                                        [disabled]="isDisabledClass1() == 'buttonDisabled'" *ngIf="selectedTab == 'fileRuleTab'">ADD</button>
+                                                </div> -->
+                                                <div class="addScriptBtn">
+                                                    <button name="save" class="formBtnSmall myriadproBold validateForm" (click)="addShellRow()" accesskey="s" [ngClass]="isDisabledClass3()"
+                                                        [disabled]="isDisabledClass3() == 'buttonDisabled'" *ngIf="selectedTab == 'shellRuleTab'">ADD</button>
+                                                </div>
+                                                <div class="addScriptBtn">
+                                                    <button name="save" class="formBtnSmall myriadproBold validateForm" (click)="addXmlRow()" accesskey="s" [ngClass]="isDisabledClass2()"
+                                                        [disabled]="isDisabledClass2() == 'buttonDisabled'" *ngIf="selectedTab == 'xmlRuleTab'">ADD</button>
+                                                </div>
+                                                <div class="tablist">
+                                                    <ul class="nav nav-pills" role="tablist">
+                                                        <li class="nav-item">
+                                                            <div (click)="cmdRuleData()" accesskey="h" class="divalign float-sm-right float-md-right float-lg-right float-xl-right" [ngClass]="[selectedTab == 'cmdRuleTab'? 'activeTab':'inactiveTab']">CLI</div>
+                                                        </li>
+                                                        <li class="nav-item">
+                                                            <div (click)="shellRuleData()" accesskey="n" class="divalign float-sm-right float-md-right float-lg-right float-xl-right" [ngClass]="[selectedTab == 'shellRuleTab' ? 'activeTab':'inactiveTab']">SHELL</div>
+                                                        </li>
+                                                        <li class="nav-item">
+                                                            <div (click)="xmlRuleData()" accesskey="n" class="divalign float-sm-right float-md-right float-lg-right float-xl-right" [ngClass]="[selectedTab == 'xmlRuleTab' ? 'activeTab':'inactiveTab']">XML</div>
+                                                        </li>
+                                                        <!-- <li class="nav-item">
+                                                            <div (click)="fileRuleData()" accesskey="n" class="divalign float-sm-right float-md-right float-lg-right float-xl-right"
+                                                                [ngClass]="[selectedTab == 'fileRuleTab' ? 'activeTab':'inactiveTab']">FILE RULE
+                                                            </div>
+                                                        </li> -->
+                                                    </ul>
+                                                </div>
+                                                <ng-container *ngTemplateOutlet="ruleTemplate"></ng-container>
+                                                <div class="textAlignCenter">
+                                                    <button name="save" class="formBtnSmall myriadproBold validateForm airlinecnfgSearch" id="saveButton" [ngClass]="{'buttonDisabled':currCmdEditScript != null || currFileEditScript != null || currXmlEditScript != null || currShellEditScript != null}"
+                                                        [disabled]="currCmdEditScript != null || currFileEditScript != null || currXmlEditScript != null || currShellEditScript != null" 
+                                                        (click)="updateScript($event,index,key.scriptId)" accesskey="s">UPDATE</button>
+                                                    <button name="save" class="formBtnSmallCncl formBtnSmall myriadproBold validateForm airlinecnfgSearch" id="cancelButton" (click)="cancelEditScript(index,key.scriptId)"
+                                                        accesskey="s">CANCEL</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </ng-container>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </ng-template>
+
+    <div id="tabContentWrapper" class="flightSearchFormWrapper" *ngIf="searchBlock">
+        <form class="form-horizontal" #searchForm>
+            <div class="row">
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName">USE CASE NAME</label>
+                        <input class="form-control" autocomplete="off" id="searchUseCase" name="searchUseCase" type="text" value="" maxlength="30"
+                        />
+                        <div class="error-message-block"></div>
+                    </div>
+                </div>
+                <!-- <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName">SM VERSION</label>
+                        <select class="form-control" name="searchVersion" id="searchVersion" [(ngModel)]="selSearchVer" (change)="getLsmName(selSearchVer)">
+                            <option value="">--Select--</option>
+                            <option *ngFor="let version of lsmVersionDetails">{{version}}</option>
+                        </select>
+                        <div class="error-message-block"></div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName">SM NAME</label>
+                        <select class="form-control" name="searchSMName" id="searchSMName" [(ngModel)]="selSearchSMName">
+                            <option value="">--Select--</option>
+                            <option *ngFor="let name of lsmNameDetails">{{name}}</option>
+                        </select>
+                        <div class="error-message-block"></div>
+                    </div>
+                </div> -->
+
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName">SM VERSION</label>
+                        <input class="form-control" autocomplete="off" id="searchVersion" name="searchVersion" [(ngModel)]="selSearchVer" type="text"
+                            value="" />
+                        <div class="error-message-block"></div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName">SM NAME</label>
+                        <input class="form-control" autocomplete="off" id="searchSMName" name="searchSMName" [(ngModel)]="selSearchSMName" type="text"
+                            value="" />
+                        <div class="error-message-block"></div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group">
+                        <label for="templateName">CREATED BY</label>
+                        <input class="form-control" autocomplete="off" id="createdBy" name="createdBy" type="text" value="" maxlength="30" />
+                    </div>
+                </div>
+
+            </div>
+            <div class="textAlignCenter">
+                <button name="save" class="formBtn myriadproBold validateForm airlinecnfgSearch" id="searchButton" (click)="searchFileRules($event)"
+                    accesskey="s">SEARCH</button>
+                <button type="button" id="cancelButton" name="CANCEL" class="formBtnCncl formBtn myriadproBold formBtn" (click)="clearSearchFrom()" accesskey="c">CLEAR</button>
+            </div>
+
+        </form>
+    </div>
+
+    <!-- CREATE NEW -->
+    <div *ngIf="createNewForm">
+        <div id="formWrapper" class="formWrapperMargin bluePrintFormWrapper">
+            <form class="form-horizontal" #useCaseForm>
+                <div class="row">
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName" class="asterisk_input">USE CASE NAME</label>
+                            <input class="form-control" autocomplete="off" id="useCaseName" name="useCaseName" type="text" value="" maxlength="30" />
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName">SM VERSION</label>
+                            <select class="form-control" name="lsmVersion" id="lsmVersion" [(ngModel)]="selectedVersion" (change)="getLsmName(selectedVersion)">
+                                <option value="">--Select--</option>
+                                <option *ngFor="let version of lsmVersionDetails">{{version}}</option>
+                            </select>
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName">SM NAME</label>
+                            <select class="form-control" name="lsmName" id="lsmName" [(ngModel)]="selectedLsmName" (change)="getScriptList(selectedVersion,selectedLsmName)">
+                                <option value="">--Select--</option>
+                                <option *ngFor="let name of lsmNameDetails">{{name}}</option>
+                            </select>
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName" class="asterisk_input">USE CASE ORDER</label>
+                            <input class="form-control" autocomplete="off" id="executionSequence" name="executionSequence" type="text" value="" maxlength="30"
+                            />
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName" class="">REMARKS</label>
+                            <textarea rows="4" cols="50" class="customTextArea" name="remarks" id="remarks"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="addScript">
+                    <button name="save" class="formBtn myriadproBold" (click)="addScriptForm($event)" accesskey="s" [ngClass]="{'buttonDisabled':disableScriptBtn()}"
+                        [disabled]="disableScriptBtn()">ADD SCRIPT
+                    </button>
+                </div>
+
+                <ng-container *ngTemplateOutlet="scriptCreateFormTemplate"></ng-container>
+                <div *ngIf="scriptTable">
+                    <ng-container *ngTemplateOutlet="scriptTableTemplate"></ng-container>
+                </div>
+                <div class="textAlignCenter">
+                    <button name="save" class="formBtn myriadproBold validateForm airlinecnfgSearch" id="saveButton" (click)="createUseCase($event)"
+                        accesskey="s" [ngClass]="{buttonDisabled : scriptForm}" [disabled]="scriptForm">SAVE</button>
+                    <button name="save" class="formBtnCncl formBtn myriadproBold validateForm airlinecnfgSearch" id="cancelButton" (click)="cancelCreateNew($event)"
+                        accesskey="s">CANCEL</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!--Data Table-->
+    <div id="dataWrapper" *ngIf="tableShowHide" style="margin-top: -18px;">
+        <br>
+        <div id="tableWrapper" class="usecaseTable">
+            <div class="scrollHead">
+                <table class="table" id="melConfigDetails">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div (click)="changeSorting('useCaseName', $event, 0)" class="sorting form-control-max">USE CASE NAME</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('lsmVersion', $event, 1)" class="sorting form-control-max">SM VERSION</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('lsmName', $event, 2)" class="sorting form-control-max">SM NAME</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('executionSequence', $event, 3)" class="sorting form-control-max">USE CASE ORDER</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('createdBy', $event, 4)" class="sorting form-control-max">CREATED BY</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('timeStamp', $event, 5)" class="sorting form-control-max">TIMESTAMP</div>
+                            </th>
+                            <th>
+                                <div (click)="changeSorting('remarks', $event, 6)" class="sorting form-control-max">REMARKS</div>
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="scrollBody">
+                <table class="table" id="removalDetailsData">
+                    <tbody id="rowCount">
+                        <ng-container *ngFor="let key of tableData['useCaseDetails']; let index = index">
+                            <tr id="row_{{index}}" class="row_id_{{key.id}} usecaseRow">
+                                <!-- id="row_id_{{key.id}}" -->
+                                <td class="form-control-max" data-toggle="tooltip" data-placement="right" data-container="body">{{key.useCaseName}}</td>
+                                <td class="form-control-max" data-toggle="tooltip" data-placement="right" data-container="body">{{key.lsmVersion}}</td>
+                                <td class="form-control-max" data-toggle="tooltip" data-placement="right" data-container="body">{{key.lsmName}}</td>
+                                <td class="form-control-max" data-toggle="tooltip" data-placement="right" data-container="body">{{key.executionSequence}}</td>
+                                <td class="form-control-max" data-toggle="tooltip" data-placement="right" data-container="body">{{key.createdBy}}</td>
+                                <td class="form-control-max" data-toggle="tooltip" data-placement="right" data-container="body">{{key.timeStamp}}</td>
+                                <td class="form-control-max" data-toggle="tooltip" data-placement="right" data-container="body">
+                                    <span class="displayNone" class="eventColText">{{key.remarks}}</span>
+                                    <div #fixedCol class="form-control-fixed iconsWrapper tableRowAction" id="fixedCol" ng-style="iconsWrapperPosition" *ngIf="key.useCaseName != 'CommissionScriptUsecase' && key.useCaseName != 'RFxmlUsecase'">
+                                        <div (click)="editRow($event, key, index)" class="editRow" placement="bottom" container="body" ngbTooltip="Edit"></div>
+                                        <div (click)="deleteRow($event,confirmModal, key.id)" class="deleteRow" placement="bottom" container="body" ngbTooltip="Delete"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- EDIT -->
+                            <tr *ngIf="checkFormEnable(index)" id="editedRow{{index}}" class="editUseCaseRow">
+                                <td colspan="7" class="formEditRow">
+                                    <div id="formWrapper" class="useCaseWrapper" [ngStyle]="{'width': formWidth, 'margin-left': scrollLeft}">
+                                        <form class="form-horizontal">
+                                            <div class="row">
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="asterisk_input">USE CASE NAME
+                                                        </label>
+                                                        <input class="form-control" autocomplete="off" id="useCaseName" name="useCaseName" type="text" value="" maxlength="30" disabled
+                                                        />
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName">SM VERSION
+                                                        </label>
+                                                        <select class="form-control" name="lsmVersion" id="lsmVersion" [(ngModel)]="selectedVersion" (change)="getLsmName(selectedVersion)"
+                                                            [disabled]="key.useCount">
+                                                            <option value="">--Select--</option>
+                                                            <option *ngFor="let version of lsmVersionDetails">{{version}}</option>
+                                                        </select>
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName">SM NAME</label>
+                                                        <select class="form-control" name="lsmName" id="lsmName" [disabled]="key.useCount" [(ngModel)]="selectedLsmName" (change)="getScriptList(selectedVersion,selectedLsmName)">
+                                                            <option value="">--Select--</option>
+                                                            <option *ngFor="let name of lsmNameDetails">{{name}}</option>
+                                                        </select>
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="asterisk_input">USE CASE ORDER
+                                                        </label>
+                                                        <input class="form-control" autocomplete="off" id="executionSequence" name="executionSequence" type="text" value="" maxlength="30"
+                                                        />
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="">REMARKS</label>
+                                                        <textarea rows="4" cols="50" class="customTextArea" name="remarks" id="remarks"></textarea>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                            <div class="addScript">
+                                                <button name="save" id="addScriptButton" class="formBtn myriadproBold" (click)="addScriptForm($event)" accesskey="s" [ngClass]="{'buttonDisabled':disableScriptBtn()}"
+                                                    [disabled]="disableScriptBtn()">ADD SCRIPT
+                                                </button>
+                                            </div>
+
+                                            <ng-container *ngTemplateOutlet="scriptCreateFormTemplate"></ng-container>
+                                            <ng-container *ngTemplateOutlet="scriptTableTemplate"></ng-container>
+
+                                            <div class="textAlignCenter">
+                                                <button name="save" class="formBtn myriadproBold validateForm airlinecnfgSearch" id="saveButton" (click)="updateUseCaseDetails($event, key.id)"
+                                                    accesskey="s" [ngClass]="{'buttonDisabled':checkScriptFormEnable(index) || scriptForm}"
+                                                    [disabled]="checkScriptFormEnable(index) || scriptForm">UPDATE</button>
+                                                <button name="save" class="formBtnCncl formBtn myriadproBold validateForm airlinecnfgSearch" id="cancelButton" (click)="cancelEditRow($event, key.id)"
+                                                    accesskey="s">CANCEL</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div id="paginationWrapper">
+            <div *ngIf="pageRenge.length" class="floatLeft page" style="padding-top: 0px;margin-left:20px;">
+                <div class="floatLeft" style="width: 75px;padding-top: 6px">Show</div>
+                <select [disabled]="paginationDisabbled" [(ngModel)]="pageSize" (change)="onChangeTableRowLength($event)" style="margin-right: 6px;margin-left: -39px; margin-top: 4px;"
+                    class="form-control-pagination floatLeft" aria-controls="TableRowLength" size="1" name="TableRowLength" id="TableRowLength">
+                    <option selected="selected" value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+                <div class="floatLeft" style="width: 75px;padding-top: 6px">Entries</div>
+            </div>
+            <div class="floatRight page" style="padding-top: 3px;margin-right:20px;">
+                <ul *ngIf="pageRenge.length" class="pagination floatRight">
+                    <li id="firstPage" [ngClass]="{disabled:(currentPage === 1 || paginationDisabbled)}" class="page-item">
+                        <a class="page-link" (click)="setPage(1)">FIRST</a>
+                    </li>
+                    <li id="previousPage" [ngClass]="{disabled:(currentPage === 1 || paginationDisabbled)}" class="page-item">
+                        <a class="page-link" (click)="setPage(pager.currentPage - 1)">PREV</a>
+                    </li>
+                    <li *ngFor="let n of pager.pages" [ngClass]="{active:currentPage === n, disabled:paginationDisabbled}" class="page-item">
+                        <a class="page-link" (click)="setPage(n)" id='{{n+1}}'>{{n}}</a>
+                    </li>
+                    <li id="nextPage" [ngClass]="{disabled:(currentPage === totalPages || paginationDisabbled)}" class="page-item">
+                        <a class="page-link" (click)="setPage(pager.currentPage + 1)">NEXT</a>
+                    </li>
+                    <li id="lastPage" [ngClass]="{disabled:(currentPage === totalPages || paginationDisabbled)}" class="page-item">
+                        <a class="page-link" (click)="setPage(pager.totalPages)">LAST</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <rct-nodata *ngIf="showNoDataFound" [subTitle]=""></rct-nodata>
+    <!--Live Data Details Model-->
+    <rct-model *ngIf="showModelMessage" [message]="modelData"></rct-model>
+    <ng-template #sessionExpiredModal let-c="close" let-d="dismiss">
+        <div class="failureIcon"></div>
+        <p id="sessionPopup">Session Expired</p>
+        <div class="modelDismiss" (click)="closeAndLogout()"></div>
+    </ng-template>
+
+    <ng-template #successModal let-c="close" let-d="dismiss">
+        <div class="successIcon"></div>
+        <p id="sessionPopup">{{message}}</p>
+        <div class="modelDismiss" (click)="closeModel()"></div>
+    </ng-template>
+
+
+    <ng-template #scriptContent let-c="close" let-d="dismiss">
+            <!--  <div class="modal-header">
+                <h4 class="modal-title">{{viewFileName}}</h4>
+                <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div> -->
+            <div class="modal-header">
+                <div class="dispHeader">
+                    <h4>{{(viewFileName | uppercase).split(".",[1])}} </h4>
+                </div>
+    
+                <!--  <button type="button" class="close" aria-label="Close" (click)="closeModelRunningLog()">
+                    <span aria-hidden="true">&times;</span>
+                </button> -->
+            </div>
+            <div class="row" style="background-color: whitesmoke;padding:10px;margin: 0px 2px;">
+    
+                <textarea contenteditable="true" class="col-12" rows="25" [(ngModel)]="scriptData.scriptFileContent"></textarea>
+    
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" (click)="saveScriptPopup(c)">Save</button>
+                <button type="button" class="btn btn-light" (click)="c('Close click')">Close</button>
+            </div>
+        </ng-template>
+
+</div>

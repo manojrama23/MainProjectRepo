@@ -1,0 +1,16 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<div id="container">
+  <div *ngIf="showWarning" class="mainToast">
+    <div class="toastMsgContainer">
+      <span class="toastMsg">{{idleState}}</span>
+    </div>
+  </div>
+  <rct-header *ngIf="isLoginState"></rct-header>
+  <rct-model *ngIf="showModelMessage" [message]="modelData"></rct-model>
+  <section id="wrapper">
+    <div id="contentWrapper">
+      <router-outlet></router-outlet>
+    </div>
+  </section>
+  <rct-footer *ngIf="isLoginState"></rct-footer>
+</div>

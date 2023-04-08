@@ -1,0 +1,34 @@
+@import 'src/variable';
+
+.form-horizontal{background:#fff; margin-left: 7px;}
+ss-multiselect-dropdown .dropdown-menu{width:400px;}
+#programName {
+    width: 225px !important;
+    height: 25px !important;
+    display: flex;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    box-shadow: none;
+    word-break: break-word;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: .25rem;
+}
+
+@media (min-width: 1200px) and (max-width: 1359px){
+    #programName {width: $form-control-width-xs;}
+}
+@media (min-width: 1360px) and (max-width: 1599px){
+    #programName {width: $form-control-width-sm;}
+}
+@media (min-width: 1600px) and (max-width: 1899px){
+    #programName {width: $form-control-width-md;}
+}
+@media (min-width: 1900px) {
+    #programName {width: $form-control-width-lg;}
+}
+
+/*#location .dropdown{right: 10px}*/
+/*td.formEditRow {padding-left: 12px;}*/
+/*.table>tbody>tr>td{border:1px solid #efefef;}*/
+/*.table tbody tr:hover{ border:1px solid #07a7ba;}*/
+/*td.form-control-small-1 {width: 168px !important;max-width: 97px;}*/

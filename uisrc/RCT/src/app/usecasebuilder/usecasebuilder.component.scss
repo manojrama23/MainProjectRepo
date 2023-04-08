@@ -1,0 +1,160 @@
+@import 'src/variable';
+
+.scriptTableCol {
+  width: 25%;
+}
+
+.scriptTableColAct {
+  width: 12%;
+}
+
+.fullWidth {
+  width: 100% !important;
+}
+
+tr:hover .tableRowAction {
+  display: block;
+}
+
+.fullWidthExSeq {
+  width: 60% !important;
+}
+
+.addScriptBtn {
+  position: absolute;
+    top: 93px;
+    right: 25px;
+}
+.addScript{
+  text-align: right;
+  margin: 5px;
+}
+/* .textAlignCenter {
+  padding-top: 20px;
+} */
+.scriptDetails {
+    overflow: visible !important;
+}
+
+#scriptDetailsRow {
+  border: 1px solid transparent;
+  margin: 0;
+}
+#scriptDetailsRow .form-control {
+    width: 100% !important;
+}
+
+#scriptDetailsRow form, .scriptDetails tr {
+  margin: 0;
+}
+.scrollScriptHead {
+    position: relative;
+    overflow: hidden;
+    border: 0px;
+    width: 100%;
+    background-color: #727678;
+    height: 28px;
+    border-radius: 4px;
+}
+.scriptTableRowAction{display:none;}
+.scrollBody tr#scriptDetailsRow:hover .scriptTableRowAction{display:block;}
+.table thead tr:hover{
+    outline: none;
+    border: none;
+}
+#scriptTableBody .table {
+    min-height: 200px;
+}
+ng-multiselect-dropdown {
+    // width: 225px !important;
+    height: 25px !important;
+    display: flex;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    box-shadow: none;
+    word-break: break-word;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: .25rem;
+    background-color: #fff;
+}
+
+.infoRowBtn{
+    height: 25px;
+    width: 24px;
+    border: none !important;
+    cursor: pointer;
+}
+.infoDiv {
+    padding-right: 0;
+}
+hr {margin-top: 5px;margin-bottom: 0;}
+.migrationBlock{
+  border: 1px solid #cccccc;
+    height: 30px;    
+    background-color: #fff;
+    padding-top: 5px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    margin-bottom: 10px;
+}
+
+.radio-inline{position: relative;margin-bottom: 0;font-weight: 400;vertical-align: middle;cursor: pointer;float: left;    margin-right: 15px;margin-left: 30px;}
+.radio-inline input[type=radio]{position: absolute;margin-left: -20px;margin-top: 2px;}
+.textArea{border: 1px solid #ccc;
+height: 40px;
+width: 200px;
+border-radius: .25rem;}
+.useCaseScriptTable .scrollBody {overflow-x:hidden !important;}
+.td_form{width: 95%;float: left;}
+tr.editUseCaseRow:hover .tableRowAction, tr.editScriptUseCaseRow .tableRowAction{display: none;}
+#scriptTableData > tbody > tr:hover > td > .tableRowAction, .scriptData > tr:hover > td > .tableRowAction{display: block;}
+
+/* tr.editXmlRow:hover .tableRowAction{display: none;}
+#scriptTableData tr:hover .tableRowAction{display: block;} */
+
+#scriptDetails {
+  width: 225px !important;
+  /* height: 25px !important; */
+  display: flex;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  box-shadow: none;
+  word-break: break-word;
+  border: 1px solid rgba(0,0,0,.15);
+  border-radius: .25rem;
+}
+
+.ruleSelect{
+  display: flex;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  box-shadow: none;
+  word-break: break-word;
+  border: 1px solid rgba(0,0,0,.15);
+  border-radius: .25rem;
+}
+
+.scriptLink:hover {
+  color: #5161AC; 
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.dispHeader{display: flex;justify-content: center;color: #5161AC;margin-top: 10px;}
+.downloadGenScripts {
+    background-position-y: -245px;
+}
+
+@media (min-width: 1200px) and (max-width: 1359px){
+  #scriptDetails {width: $form-control-width-xs;}
+}
+@media (min-width: 1360px) and (max-width: 1599px){
+  #scriptDetails {width: $form-control-width-sm;}
+}
+@media (min-width: 1600px) and (max-width: 1899px){
+  #scriptDetails {width: $form-control-width-md;}
+}
+@media (min-width: 1900px) {
+  #scriptDetails {width: $form-control-width-lg;}
+}

@@ -1,0 +1,9 @@
+2019-10-12 16:18:15 -  Failed to load the property file: java.lang.NullPointerException
+	at java.util.Properties$LineReader.readLine(Properties.java:434)
+	at java.util.Properties.load0(Properties.java:353)
+	at java.util.Properties.load(Properties.java:341)
+	at com.smart.rct.util.LoadPropertyFiles.loadPropertiesFiles(LoadPropertyFiles.java:140)
+	at com.smart.rct.util.LoadPropertyFiles.getInstance(LoadPropertyFiles.java:97)
+	at Test.main(Test.java:27)
+
+2019-10-12 16:18:15 - /home/user/Swetha/trunk/Installer/SMARTConfig

@@ -1,0 +1,750 @@
+<div class="page-wrapper">
+    <rct-loader *ngIf="showLoader"></rct-loader>
+    <h1 class="mainHead">GENERAL CONFIGURATION</h1>
+    <ul class="nav nav-pills" role="tablist" style="margin-left: -20px;margin-bottom: 1px;">           
+        <li class="nav-item">
+            <div (click)="nwTypeDisp()" [ngClass]= "{'activeTab':selectedTab == 'nwtype','inactiveTab': selectedTab !='nwtype','disable':tabAccessRestrict == 'Commission Engineer' || tabAccessRestrict == 'Commission Manager'}" accesskey="n" name="createnew" class="divalign float-sm-right float-md-right float-lg-right float-xl-right" #nwTypeTab>N/W TYPE</div>
+        </li>
+        <li class="nav-item">
+            <div (click)="customeCtDisp()" [ngClass]= "{'activeTab':selectedTab == 'customerct','inactiveTab': selectedTab !='customerct','disable':tabAccessRestrict == 'Commission Engineer' || tabAccessRestrict == 'Commission Manager'}" accesskey="n" name="createnew" class="divalign float-sm-right float-md-right float-lg-right float-xl-right" #customeCtTab>CUSTOMER</div>
+        </li>
+        <li class="nav-item">
+                <div (click)="NeVersionDisp()" [ngClass]= "{'activeTab':selectedTab == 'neversion','inactiveTab': selectedTab !='neversion'}" accesskey="h" name="seatch" class=" divalign float-sm-right float-md-right float-lg-right float-xl-right" #settingTab>NE VERSION</div>
+        </li>
+        <li class="nav-item">
+            <div (click)="settingDisp()" [ngClass]= "{'activeTab':selectedTab == 'setting','inactiveTab': selectedTab !='setting'}" accesskey="h" name="seatch" class=" divalign float-sm-right float-md-right float-lg-right float-xl-right" #settingTab>GENERAL SETTINGS</div>
+        </li>
+        <div class="topButtonWrapper genAddButton" *ngIf="selectedTab == 'nwtype'">
+            <button (click)="addNetworkType($event)" name="createnew" class="createbtn myriadproBold formBtn white-btn float-sm-right float-md-right float-lg-right float-xl-right" accesskey="n">ADD</button>
+        </div>
+        <div class="topButtonWrapper genAddButton" *ngIf="selectedTab == 'neversion'">
+                <button (click)="addNeVersion($event)" name="createnew" class="createbtn myriadproBold formBtn white-btn float-sm-right float-md-right float-lg-right float-xl-right" accesskey="n">ADD</button>
+         </div>
+        <div class="topButtonWrapper genAddButton" *ngIf="selectedTab == 'customerct' && tabAccessRestrict != 'Administrator'">
+            <button (click)="createNew($event)" name="createnew" class="createbtn myriadproBold formBtn white-btn float-sm-right float-md-right float-lg-right float-xl-right" accesskey="n">CREATE NEW</button>
+        </div>
+    </ul>
+
+    
+    <ng-template #confirmModal let-c="close" let-d="dismiss">
+        <div class="sucessContentWrapper">
+            <div class="confirmIcon"></div>
+            <div class="confirmContent deletePopup">
+                <p>
+                    <b>Are You Sure, </b>
+                <!-- </p>
+                <br>
+                <p> -->You want to <b>Delete</b>
+                </p>
+            </div>
+        </div>
+        <div class="deletePopupBtn modal-footer textAlignCenter">
+            <button type="button" class="formBtn btn btn-secondary modal_button_yes" (click)="d('dismiss click')" id="deleteConfirmation">YES</button>
+            <button type="button" class="formBtn btn btn-secondary modal_button_no" (click)="c('Close click')" id="modal_button_no">NO</button>
+        </div>
+    </ng-template>
+    <ng-template #sessionExpiredModal let-c="close" let-d="dismiss">
+        <div class="failureIcon"></div>
+        <p id="sessionPopup">Session Expired</p>
+        <div class="modelDismiss" (click)="closeAndLogout()"></div>
+    </ng-template>
+
+    <ng-template #successModal let-c="close" let-d="dismiss">
+        <div class="successIcon"></div>
+        <p id="sessionPopup">{{message}}</p>
+
+        <div class="modelDismiss" (click)="closeModel()"></div>
+    </ng-template>
+    
+    <div id="dataWrapper">
+        <div class="migrationBlock" *ngIf="selectedTab == 'setting'">
+            <form class="form-horizontal">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group radio-inline">
+                            <input class="radio" type="radio" [(ngModel)]='migrationType' value="general" name="migrationBtn" (click)="onChangeLoad('general')">
+                            <label for="templateName">GENERAL</label>
+                        </div>
+                        <div class="form-group radio-inline">
+                            <input class="radio" type="radio" [(ngModel)]='migrationType' value="premigration" name="migrationBtn" (click)="onChangeLoad('premigration')">
+                            <label for="templateName">PRE MIGRATION</label>
+                        </div>
+                        <div class="form-group radio-inline">
+                            <input class="radio" type="radio" [(ngModel)]='migrationType' value="migration" name="migrationBtn" (click)="onChangeLoad('migration')">
+                            <label for="templateName">MIGRATION</label>
+                        </div>
+                        <div class="form-group radio-inline">
+                            <input class="radio" type="radio" [(ngModel)]='migrationType' value="postmigration" name="migrationBtn" (click)="onChangeLoad('postmigration')">
+                            <label for="templateName">POST MIGRATION</label>
+                        </div>
+                        <div class="form-group radio-inline">
+                            <input class="radio" type="radio" [(ngModel)]='migrationType' value="s&r" name="migrationBtn" (click)="onChangeLoad('s&r')">
+                            <label for="templateName">S & R</label>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div id="tableWrapper" class="general" *ngIf="settingBlock">
+            <div class="scrollHead">
+                <table class="table" id="removalDetails">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="form-control-small-3">TYPE</div>
+                            </th>
+                            <th>
+                                <div class="form-control-440">PARAMETER</div>
+                            </th>
+                            <th>
+                                <div class="form-control-440">VALUE</div>
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="scrollBody">
+                <table class="table" id="level3Details">
+                    <tbody id="rowCount">
+                        <ng-container *ngFor="let key of tableData['ConfigDetails']; let index = index"><!-- (((key.programDetailsEntity ? key.programDetailsEntity.programName.includes('4G-FSU'): false)&& (key.label == 'PREMIGRATION_SCHEDULE' || key.label == 'FETCH_SCHEDULE' || key.label == ' MAIL_CONFIGURATION')|| key.label == 'FETCH_FROM_RFDB' && key.label != 'SUPPORT_CA')  -->
+                            <tr id="row_id_{{index}}" *ngIf="(key.configType == 's&r' && 
+                            (((key.programDetailsEntity ? key.programDetailsEntity.programName.includes('4G-FSU'): false)&& (key.label != 'POST_MIGRATION_RANATP_SCHEDULE' && key.label != 'SUPPORT_CA'))
+                            ||((key.programDetailsEntity ? key.programDetailsEntity.programName.includes('5G-DSS'): false) && (key.label != 'POST_MIGRATION_RANATP_SCHEDULE' && key.label != 'SUPPORT_CA')) 
+                            ||((key.programDetailsEntity ? key.programDetailsEntity.programName.includes('5G-MM'): false) && (key.label != 'POST_MIGRATION_RANATP_SCHEDULE' && key.label != 'SUPPORT_CA')) 
+                            ||((key.programDetailsEntity ? key.programDetailsEntity.programName.includes('5G-CBAND'): false) && ( key.label != 'POST_MIGRATION_RANATP_SCHEDULE' && key.label != 'SUPPORT_CA')) 
+                            ||((key.programDetailsEntity ? key.programDetailsEntity.programName.includes('4G-USM-LIVE'): false))))
+                            ||key.configType == 'premigration' || key.configType =='migration' || key.configType == 'postmigration' || key.configType == 'general'">
+                                <td>
+                                    <div class="form-control-small-3">{{key.type}}</div>
+                                </td>
+                                <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                    <div class="form-control-440">{{key.programDetailsEntity ? key.programDetailsEntity.programName + ' ( ' + key.label + ' )': key.customerEntity ? key.customerEntity.customerName + ' ( ' + key.label + ' )' : key.label}}</div>
+                                </td>
+                                <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                    <div *ngIf = "key.label != 'OV PASSWORD'&& key.label != 'RFDB PASSWORD'" class="form-control-440 eventColText generalSettingValue">{{key.value}}</div>
+                                    <div *ngIf = "key.label == 'OV PASSWORD'||key.label == 'RFDB PASSWORD'" class="form-control-440 eventColText generalSettingValue">*********</div>
+                                    <div class="form-control-fixed iconsWrapper tableRowAction" id="fixedCol" ng-style="iconsWrapperPosition">
+                                        <div class="miscEditRow" (click)="editRow($event, key, index)" placement="bottom" container="body" ngbTooltip="Edit" id="editedRow"></div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- edit form -->
+
+                            <tr *ngIf="checkFormEnable(index)" id="editedRow{{index}}">
+                                <td colspan="3" class="formEditRow ">
+                                    <div id="formWrapper" class="userManagementFormWrapper" [ngStyle]="{'width': formWidth, 'margin-left': scrollLeft}">
+
+                                        <form class="form-horizontal" id="bluePrintForm" id="key.id">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <label for="templateName">PARAMETER</label>
+                                                        <div class="form-control-440">{{key.programDetailsEntity ? key.programDetailsEntity.programName + ' ( ' + key.label + ' )': key.customerEntity ? key.customerEntity.customerName + ' ( ' + key.label + ' )' : key.label}}</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <label for="templateName" class="asterisk_input">VALUE</label>
+                                                        <input type="text" class="form-control form-control-small-3" id="config" name="config" value="{{key.value}}" *ngIf="key.label == 'Session Time Out (in minutes)' || key.label == 'OV No. Of fetch Days' || key.label == 'History (in days)'">
+                                                        <input type="password" class="form-control form-control-small-3" id="config2" name="config2" value="{{key.value}}" *ngIf="key.label == 'OV PASSWORD'|| key.label=='RFDB PASSWORD'">
+                                                        <input type="text" class="form-control form-control-small-3" id="config3" name="config3" value="{{key.value}}" *ngIf="key.label == 'SCHEDULE TIME' || key.label == 'MAIL_CONFIGURATION'">
+                                                        <select class="form-control" name="configDrpDwn" id="configDrpDwn" *ngIf="key.label == 'Tool Deployment'" value="{{key.value}}">
+                                                            <option value="Lab">Lab</option>
+                                                            <option value="Live">Live</option>
+                                                        </select> 
+                                                        <select class="form-control" name="configSnrDrpDwn" id="configSnrDrpDwn" *ngIf="key.label == 'SCHEDULE FREQUENCY'" value="{{key.value}}">
+                                                            <option value="Daily">Daily</option>
+                                                            <option value="Weekly">Weekly</option>
+                                                            <option value="Monthly">Monthly</option>
+                                                        </select>      
+                                                        <select class="form-control" name="configDrpDwn" id="configDrpDwn" *ngIf="key.label == 'OV OVERALL INTERACTION'||key.label == 'OV AUTOMATION' || key.label == 'SCHEDULE ENABLE'" value="{{key.value}}">
+                                                            <option value="ON">ON</option>
+                                                            <option value="OFF">OFF</option>
+                                                        </select>
+                                                        
+                                                        <!-- <textarea rows="10" cols="100"  class="genSetttingTextarea" id="config1" name="config1" value="{{key.value}}" *ngIf="key.label != 'Tool Deployment' && key.label != 'OV No. Of fetch Days' && key.label != 'Session Time Out (in minutes)' && key.label != 'History (in days)' && key.label != 'OV PASSWORD' && key.label != 'OV OVERALL INTERACTION' && key.inputType != 'dropdown' && key.inputType != 'time' && key.label != 'DUO AUTHENTICATION' && key.label != 'CIQ TYPE' && key.label != 'FETCH_FROM_RFDB'"></textarea> -->
+                                                        <ng-select *ngIf="key.inputType == 'dropdown' && (key.label != 'MIGRATION_SCHEDULE' && key.label != ' POST_MIGRATION_AUDIT_SCHEDULE' && key.label != 'POST_MIGRATION_RANATP_SCHEDULE')" [multiple]="true" [closeOnSelect]="false" maxSelectedItems="2" [(ngModel)]="selectedSch" name="schedule" id="schedule" class="" placeholder="--Select--" appendTo="body" (change)="onChangeSchedule(selectedSch)">
+                                                            <ng-option *ngFor="let key of scheduleList" [value]="key.label" [disabled]="key.disabled">{{key.label}}</ng-option>
+                                                        </ng-select>
+                                                        <ng-select *ngIf="key.inputType == 'dropdown' && (key.label == 'MIGRATION_SCHEDULE' || key.label == ' POST_MIGRATION_AUDIT_SCHEDULE' || key.label == 'POST_MIGRATION_RANATP_SCHEDULE')" [multiple]="true" [closeOnSelect]="false" maxSelectedItems="1" [(ngModel)]="selectedSch" name="schedule" id="schedule" class="" placeholder="--Select--" appendTo="body" (change)="onChangeSchedule(selectedSch)">
+                                                            <ng-option *ngFor="let key of scheduleList" [value]="key.label" [disabled]="key.disabled">{{key.label}}</ng-option>
+                                                        </ng-select>
+                                                        <ng-select *ngIf="key.inputType == 'time'" [multiple]="true" [closeOnSelect]="false" maxSelectedItems="2" [(ngModel)]="selectedSchTime" name="scheduleTime" id="scheduleTime" class="" placeholder="--Select--" appendTo="body" (change)="onChangeScheduleTime(selectedSchTime)">
+                                                            <ng-option *ngFor="let key of timeList" [value]="key.label" [disabled]="key.disabled">{{key.label}}</ng-option>
+                                                        </ng-select>
+                                                        <select class="form-control" name="fetchConfigDrpDwn" id="fetchConfigDrpDwn" *ngIf="key.label == 'FETCH_DATE'" [(ngModel)]="selectedFetchTime">
+                                                            <option *ngFor="let data of scheduleList | slice:1" [value]="data.label">{{data.label}}</option>
+                                                        </select>
+                                                        <select class="form-control" name="duoConfigDrpDwn" id="duoConfigDrpDwn" *ngIf="key.label == 'DUO AUTHENTICATION' || key.label == 'FETCH_FROM_RFDB' || key.label == 'NE_GROW_AUTOMATION' || key.label == 'SUPPORT_CA'" value="{{key.value}}">
+                                                            <option value="OFF">OFF</option>
+                                                            <option value="ON">ON</option>
+                                                        </select>
+                                                        <ng-select *ngIf="key.label == 'MIGRATION_USECASES' || key.label == 'NE_GROW_USECASES' || key.label == 'POST_MIG_USECASES'" [multiple]="true" [closeOnSelect]="false"  [(ngModel)]="selectedUseCases" name="selectUseCase" id="selectUseCase" appendTo="body"  class="" placeholder="--Select--">
+                                                            <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                                                                <div class="ng-value" *ngIf="items.length > 0"> 
+                                                                    <span class="ng-value-label">{{items.length}} selected...</span>
+                                                                </div>
+                                                            </ng-template>
+                                                            <ng-option *ngFor="let key of dropdownList" [value]="key" >{{key}}</ng-option>
+                                                        </ng-select>
+                                                        <select class="form-control" name="key.label == 'CIQ TYPE'" id="ciqTypeDrpDwn" *ngIf="key.label == 'CIQ TYPE'" value="{{key.value}}">
+                                                            <option value="OLD">OLD</option>
+                                                            <option value="NEW">NEW</option>
+                                                        </select>
+                                                        
+                                                        <div *ngIf="key.label != 'Tool Deployment' && key.label != 'MIGRATION_USECASES' && key.label != 'NE_GROW_USECASES' && key.label != 'POST_MIG_USECASES' && key.label != 'FETCH_DATE' && key.label != 'Session Time Out (in minutes)' && key.label != 'History (in days)' && key.label != 'DUO AUTHENTICATION' && key.label != 'OV AUTOMATION' && key.label != 'SCHEDULE TIME' && key.label != 'CIQ TYPE' && key.label != 'OV No. Of fetch Days' && key.label != 'MAIL_CONFIGURATION' && key.label != 'FETCH_FROM_RFDB' && key.label != 'NE_GROW_AUTOMATION' && key.label != 'OV PASSWORD' && key.label != 'RFDB PASSWORD' && key.label != 'SCHEDULE ENABLE' && key.label != 'SCHEDULE FREQUENCY' && key.label != 'OV OVERALL INTERACTION' && key.inputType != 'dropdown' && key.inputType != 'time' && key.label != 'SUPPORT_CA' && !jsonData">
+                                                            <textarea  rows="10" cols="100"  class="genSetttingTextarea" id="config1" name="config1" value="{{key.value}}"></textarea>
+                                                        </div>
+                                                        <json-editor #editor *ngIf="jsonData" class="col-md-12" #editorExample style="min-height: 300px;" [options]="editorOptions" [data]="jsonData"></json-editor>
+                                                        
+                                                        <!-- <textarea rows="10" cols="100"  class="genSetttingTextarea" id="config1" name="config1" value="{{key.value}}" *ngIf="key.label != 'Tool Deployment' && key.label != 'Session Time Out (in minutes)' && key.label != 'History (in days)' && key.label != 'DUO AUTHENTICATION'"></textarea> -->
+                                                        <!--
+                                                        <div *ngIf="key.label == 'NE_GROW_SCHEDULE' || key.label == 'MIGRATION_SCHEDULE' || key.label == 'POST_MIGRATION_AUDIT_SCHEDULE'">
+                                                            <label for="templateName" class="asterisk_input">TIME</label>
+                                                            <input placeholder="Time:" [(ngModel)]="scheduledTime" name="schtime" [owlDateTimeTrigger]="dt2" [owlDateTime]="dt2">
+                                                            <owl-date-time [pickerType]="'timer'" name="dt2" #dt2></owl-date-time>
+                                                        </div>-->
+                                                        
+                                                        <div class="error-message-block"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="textAlignCenter" id="saveRow">
+                                                <button name="save" class="formBtn myriadproBold validateForm" id="AddButton" (click)="updateConfigCheckPoint($event,index,key)" accesskey="u">UPDATE</button>
+                                                <button type="button" name="CANCEL" class="formBtnCncl formBtn myriadproBold formBtn" id="editCancelButton" (click)="cancelEditRow($event,index,index)" accesskey="c">CANCEL</button>
+                                            </div>
+                                            <br>
+                                        </form>
+
+                                    </div>
+                                </td>
+                            </tr>
+
+                        </ng-container>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+    <form class="form-horizontal">
+    <div id="dataWrapper" *ngIf="nwtypeBlock">
+        <div id="tableWrapper" class="general">
+            <div class="scrollHead">
+                <table class="table" id="networkDetails">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div (click)="changeSorting('networkType', $event, 0, 'networkTypeDetails')" class="sorting form-control-column-2-small">NWTYPE</div>
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="scrollBody">
+                <table class="table" id="networkData">
+                    <tbody id="rowCount">
+                        <ng-container *ngFor="let key of networkData['networkTypeDetails']; let index =index">
+                            <tr id="row_id_{{key.id}}">
+                                <td class="form-control-column-2-small" data-toggle="tooltip" data-placement="right" data-container="body">
+                                    <span class="eventColText" *ngIf="editIndex != index">{{key.networkType}}</span>
+
+                                    <div class="form-control-fixed iconsWrapper tableRowAction" id="fixedCol" ng-style="iconsWrapperPosition">                                            
+                                        <ng-template  #save>Save</ng-template>
+                                        <ng-template  #cancel>Cancel</ng-template>
+                                        <div (click)="editNetTypeRow($event, key.id, index)" class="editRow" placement="bottom" container="body" [ngbTooltip]="(editIndex === index) ? save:'Edit'"></div>                                            
+                                        <div (click)="deleteRow(confirmModal, key.id, $event,index)" class="deleteRow" placement="bottom" container="body" [ngbTooltip]="(editIndex === index) ?cancel:'Delete'"></div>
+                                    </div>
+                                    <input type="text" class="form-control" id="netType_{{index}}" value={{key.networkType}} *ngIf="editIndex === index" />
+                                    <div class="error-message-block" *ngIf="editIndex === index"></div>
+                                </td>
+
+                            </tr>
+                        </ng-container>
+                        <ng-container #networkContainer></ng-container>                           
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</form>
+
+     <form class="form-horizontal">
+        <div id="dataWrapper" *ngIf="neversionBlock">
+            <div id="tableWrapper" class="general">
+                    <div class="scrollHead">
+                            <table class="table" id="neVersionDetails">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <div (click)="changeSorting('programName', $event, 0, 'neVersionDetails', 'programDetailsEntity')" class="sorting form-control-small-1">PROGRAM NAME</div>
+                                        </th>
+                                        <th>
+                                            <div (click)="changeSorting('neVersion', $event, 1, 'neVersionDetails')" class="sorting form-control-small-1">NE VERSION</div>
+                                        </th>
+                                        <th>
+                                            <div (click)="changeSorting('releaseVersion', $event, 2, 'neVersionDetails')" class="sorting form-control-small-1">RELEASE VERSION</div>
+                                        </th>
+                                        <th>
+                                            <div (click)="changeSorting('status', $event, 3, 'neVersionDetails')" class="sorting form-control-small-1">STATUS</div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                            </table>
+                     </div>
+                <div class="scrollBody">
+                    <table class="table" id="neversionData">
+                        <tbody id="rowCount">
+                            <ng-container *ngFor="let key of neversionData['neVersionDetails']; let index =index">
+                                <tr id="row_id_{{key.id}}">
+                                        <td class="form-control-small-1" data-toggle="tooltip" data-placement="right" data-container="body">
+                                                <span class="eventColText" *ngIf="editIndex != index">{{key.programDetailsEntity.programName}}</span>
+                                                
+                                                <select class="form-control" name="programName" id="programName_{{index}}" [compareWith]="compareFn" [(ngModel)]="programDetailsEntity" *ngIf="editIndex === index">
+                                                    <option value="">--Select--</option>
+                                                    <option *ngFor="let name of programNamesList" [ngValue]="name">{{name.programName}}</option>
+                                                </select>
+                                                <div class="error-message-block" *ngIf="editIndex === index"></div>
+                                        </td>
+                                        <td class="form-control-small-1" data-toggle="tooltip" data-placement="right" data-container="body">
+                                                <span class="eventColText" *ngIf="editIndex != index">{{key.neVersion}}</span>
+            
+                                                <input type="text" class="form-control netType" id="netType_{{index}}" value={{key.neVersion}} *ngIf="editIndex === index" />
+                                                <div class="error-message-block" *ngIf="editIndex === index"></div>    
+                                        </td>
+                                        <td class="form-control-small-1" data-toggle="tooltip" data-placement="right" data-container="body">
+                                                <span class="eventColText" *ngIf="editIndex != index">{{key.releaseVersion}}</span>
+            
+                                                <input type="text" class="form-control relVer" id="relVer_{{index}}" value={{key.releaseVersion}} *ngIf="editIndex === index" />
+                                                <div class="error-message-block" *ngIf="editIndex === index"></div>    
+                                        </td>
+                                        <td class="form-control-small-1" data-toggle="tooltip" data-placement="right" data-container="body">
+                                                <span class="eventColText" *ngIf="editIndex != index">{{key.status}}</span>
+            
+                                                <div class="form-control-fixed iconsWrapper tableRowAction" id="fixedCol" ng-style="iconsWrapperPosition">                                            
+                                                    <ng-template  #save>Save</ng-template>
+                                                    <ng-template  #cancel>Cancel</ng-template>
+                                                    <div (click)="editNeVersionRow($event, key, index)" class="editRow" placement="bottom" container="body" [ngbTooltip]="(editIndex === index) ? save:'Edit'"></div>                                            
+                                                    <div (click)="deleteNeVersionRow(confirmModal, key.id, $event,index)" class="deleteRow" placement="bottom" container="body" [ngbTooltip]="(editIndex === index) ?cancel:'Delete'"></div>
+                                                </div>
+                                                <select class="form-control status" id="status_{{index}}" value={{key.status}} *ngIf="editIndex === index" >                                                                                    
+                                                        <option value="Active">Active</option>
+                                                        <option value="InActive">InActive</option>
+                                                        <option value="StandBy">StandBy</option>
+                                                </select>
+                                                <div class="error-message-block" *ngIf="editIndex === index"></div>
+                                        </td>
+                                </tr>
+                            </ng-container>
+                            <ng-container #neversionContainer></ng-container>                           
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+    <div id="formWrapper" class="formWrapperMargin bluePrintFormWrapper" *ngIf="customerCtBlock">
+        <form class="form-horizontal">
+            <div *ngIf="createForm" class="row" id="createNewCustomer">
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="templateName" class="asterisk_input floatLeft" style="width: 25%;">CUSTOMER NAME</label>
+                        <input type="text" class="form-control" id="custName" name="custName" value=""/>
+                        <div class="error-message-block" style="margin-left: 25%;"></div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="templateName" class="asterisk_input floatLeft" style="width: 35%;">CUSTOMER SHORT NAME</label>
+                        <input type="text" class="form-control" id="custShortName" name="custShortName" value="" [(ngModel)]="custShortName"/>
+                        <div class="error-message-block" style="margin-left: 35%;"></div>
+                    </div>
+                </div>
+                <div class="col-12">    
+                    <div id="dataWrapper">
+                        <div id="tableWrapper" class="general">
+                            <div class="scrollHead">
+                                <table class="table" id="newCustomerTable">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                <div class="form-control-column-4">LOGO</div>
+                                            </th>
+                                            <th>
+                                                <div class="form-control-max1">NWTYPE</div>
+                                            </th>
+                                            <th>
+                                                <div class="form-control-max1">PROGRAM NAME</div>
+                                            </th>
+                                            <th>
+                                                <div class="form-control-max1">PROGRAM DESCRIPTION</div>
+                                            </th>
+                                            <th>
+                                                <div class="form-control-max1">STATUS</div>
+                                            </th>
+                                            <th>
+                                                <div class="form-control-max1 floatLeft">SOURCE PROGRAM</div>
+                                                <div class="createNewAddBtn">
+                                                    <button name="update" class="headerButton formBtn myriadproBold" id="addButton1" type="submit" (click)="addInlineRow( $event)" accesskey="u">ADD</button>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                            <div class="scrollBody">
+                                <table class="table" id="newCustomerData">
+                                    <tbody id="rowCount">
+                                        <ng-container>
+                                            <tr>
+                                                <td [attr.rowspan]="2" class="form-control-column-4">
+                                                    <div class="form-group floatLeft">
+                                                        <label for="templateName" class="asterisk_input">UPLOAD LOGO</label>
+                                                        <div>
+                                                            <input type="file" class="filePost" #imageInput name="imageInput" id="imageInput" (change)="onFileChange($event)" accept="image/*" />
+                                                            <div class="error-message-block"></div>
+                                                            <div class="iconsWrapper1">
+                                                                <div class="hint"></div>
+                                                                <div class="hintMessage">supports .png, .jpeg, .jpg, .bmp, .gif, .tif, .tiff format</div>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="inlineTableData">
+                                                    <table class="table inlineTable">
+                                                        <tbody>
+                                                            <ng-container *ngFor="let key of customerDetails; let index = index">
+                                                                <tr id="{{index}}">
+                                                                    <td class="form-control-max1" >
+                                                                        <div class="form-group">
+                                                                            <span class="asterisk_Select"></span>
+                                                                            <select class="form-control" id="networkType_{{index}}"  #type (change)="selectedNWType(type.value, index)">
+                                                                                <option value="">--Select--</option>
+                                                                                <option *ngFor="let key of networkTypeList" value="{{key.networkType}}" id={{key.id}}>{{key.networkType}}</option>
+                                                                            </select>                                                                               
+                                                                            <div class="error-message-block"></div>                                                                                
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class="form-control-max1" >
+                                                                        <span class="asterisk_Select"></span>                                                                          
+                                                                        <!-- <select class="form-control" id="lsmVersion_{{index}}">
+                                                                            <option value="">--Select--</option>
+                                                                            <option *ngFor="let key of key.lsmVersionList" value="{{key}}">{{key}}</option>
+                                                                        </select> -->
+                                                                        {{custShortName}}-{{type.value}}<input type="text" class="form-control" id="lsmVersion_{{index}}" name="custName" value ="" style="width: 160px !important;float: right;"/>
+                                                                        <div class="error-message-block" style="margin-top: 10px;margin-left: 30%"></div>
+                                                                    </td>
+                                                                    <td class="form-control-max1">
+                                                                        <textarea rows="4" cols="50" class="customTextArea" id="programDescription_{{index}}" name="custName1"  value=""></textarea>
+                                                                        <div class="error-message-block"></div>
+                                                                    </td>
+                                                                    <td class="form-control-max1">
+                                                                        <select class="form-control" id="status_{{index}}">                                                                                    
+                                                                            <option value="Active">Active</option>
+                                                                            <option value="InActive">InActive</option>
+                                                                        </select>
+                                                                        <div class="error-message-block"></div>
+                                                                    </td>
+                                                                    <td class="form-control-max1">
+                                                                        <div *ngIf = "index >0" class="form-control-fixed iconsWrapper tableRowAction" id="fixedCol" ng-style="iconsWrapperPosition">                                                                                   
+                                                                            <div (click)="removeRow(index)" class="deleteRow" placement="bottom" container="body" ngbTooltip="Delete"></div>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <select class="form-control" id="sourceProg_{{index}}">
+                                                                                <option value="">--Select--</option>
+                                                                                <option *ngFor="let prgName of allProgramNamesList" [ngValue]="prgName.programName" id={{prgName.id}}>{{prgName.programName}}</option>
+                                                                            </select>
+                                                                            <div class="error-message-block"></div>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </ng-container>
+                                                            
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+
+                                            </tr>
+                                        </ng-container>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="col-12" style="margin: 10px;">
+                    <div class="textAlignCenter">
+                        <button type="button" name="save" class="formBtn myriadproBold validateForm" id="saveButton" (click)="saveCustomer($event)" accesskey="s">SAVE</button>
+                        <button type="button" id="cancelButton" name="CANCEL" class="formBtnCncl formBtn myriadproBold formBtn" (click)="cancelCreateNew($event)" accesskey="c">CANCEL</button>
+                    </div>
+                </div>
+            </div>
+          
+            <div class="row">
+                <div class="col-12"> 
+                    <ngb-accordion #acc="ngbAccordion"  [activeIds]= this.activeIds (panelChange)="accordianWrapperOpen($event)" >                            
+                        <ngb-panel class="accordianWrapper" title="{{key.customerName}} - {{key.customerShortName}}" id="config-panel-{{i}}" *ngFor="let key of customerList; index as i">                                                                
+                            <ng-template ngbPanelTitle>   
+                                <span *ngIf="tabAccessRestrict != 'Administrator'" style="float:right;">
+
+                                    <div  class="deleteIcon" (click)="deleteCustomer(confirmModal,key.id)" ngbTooltip="Delete" placement="bottom"></div>
+                                    <span style="vertical-align: -3px; margin: 0px 7px 0px 0px;font-weight: normal; font-size: 12px">{{key.status}}</span>
+                                            <label class="switch" (click)="switchClicked($event, key,i)">
+                                                    <input class="switch-input" type="checkbox" id="useGenScript_{{i}}" [checked]="key.status == 'Active' ? true : false"/>
+                                                    <span class="switch-label" data-on="" data-off=""></span>
+                                            <!--     <span class="switch-label" data-on="ACTIVE" data-off="INACTIVE"></span>
+                                            -->      <span class="switch-handle"></span>
+                                            </label>
+
+                                </span>                                         
+
+                            </ng-template>
+                            <div class="df"></div>
+                            <ng-template ngbPanelContent>                                    
+                                <div id="dataWrapper">
+                                    <div id="tableWrapper" class="general" style="padding-top: 15px;">
+                                        <div class="scrollHead">
+                                            <table class="table" id="customerDetails">
+                                                <thead>
+                                                    <tr>
+                                                        <th>
+                                                            <div class="form-control-column-4">LOGO</div>
+                                                        </th>
+                                                        <th>
+                                                            <div class="form-control-max1">NWTYPE</div>
+                                                        </th>
+                                                        <th>
+                                                            <div class="form-control-max1">PROGRAM NAME</div>
+                                                        </th>
+                                                        <th>
+                                                            <div class="form-control-max1">PROGRAM DESCRIPTION</div>
+                                                        </th>
+                                                        <th>
+                                                            <div class="form-control-max1">STATUS</div>
+                                                        </th>
+                                                        <th>
+                                                            <div class="form-control-max1">SOURCE PROGRAM</div>                                                                
+                                                            <div class="inlineTableAdd">
+                                                                <div name="update" [ngClass]="{addRow:(key.status=='Active'),addBtnDisabled:(key.status=='InActive')}" id="addButton" (click)="(key.status=='Active') ? addInlineTableRow($event,key) : ''" ngbTooltip="" placement="left">ADD</div>
+                                                            </div>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+                                        </div>
+                                        <div class="scrollBody">
+                                            <table class="table" id="customerData">
+                                                <ng-container>
+                                                    <tbody id="rowCount">
+                                                        <tr class="imageRow" id="row_id_{{key.id}}">
+                                                            <td class="form-control-column-4 imageDisplay" [attr.rowspan]="key.customerDetails.length" data-toggle="tooltip" data-placement="right" data-container="body">
+                                                                <img src="{{key.iconPath}}" class="imageSize">
+                                                                <input  type="text" value="{{key.customerName}}" id="customerName" class="displayNone">                                                                                                                                  
+                                                                
+                                                                <div class="form-control-fixed iconsWrapper tableRowAction" id="fixedCol" *ngIf="tabAccessRestrict != 'Administrator'" ng-style="iconsWrapperPosition"> 
+                                                                        <input type="file" class="displayNone" #imageInput name="imageInput" id="imageInput" (change)="editImageSel($event,key)" accept="image/*" />                                                                           
+                                                                        <div *ngIf="editImageMode != key.id" (click)="(key.status=='Active') ? imageInput.click() : ''" [ngClass]="{editRow:(key.status=='Active'),editRowDisabled:(key.status=='InActive')}" placement="bottom" container="body" ngbTooltip="" ></div>                                                                       
+                                                                        <div *ngIf="editImageMode == key.id" (click)="saveImage($event,key,imageInput)" class="saveRow" placement="bottom" container="body" ngbTooltip="" ></div>   
+                                                                </div>
+                                                            </td>
+                                                            <td class="inlineTableData">
+                                                                <table class="table" id="customerDetailsTable">
+                                                                    <tbody>
+                                                                        <tr class="inlineRow" id="row_id_{{v.id}}" *ngFor="let v of key.customerDetails;let index=index">
+                                                                            <td class="form-control-max1">
+                                                                                <div [ngClass]="{disabledText:(key.status=='InActive')}" *ngIf="editCustIndex != v.id">{{v.networkTypeDetailsEntity.networkType}}</div>
+                                                                                <span *ngIf="editCustIndex === v.id" class="asterisk_Select"></span>
+                                                                                <select class="form-control" id="networkTypeEdit_{{index}}" [(ngModel)]="selectedNeType" name="selectedNeType" #type (change)="selectedNWType(type.value, index)" *ngIf="editCustIndex === v.id"  [compareWith]="compareFn"><!-- value={{v.networkTypeDetailsEntity.networkType}} -->
+                                                                                    <option value="">--Select--</option>
+                                                                                    <option *ngFor="let key of networkTypeList" id="{{key.id}}" [ngValue]="key">{{key.networkType}}</option>
+                                                                                </select>    
+                                                                                <div class="error-message-block" *ngIf="editCustIndex === v.id"></div>
+                                                                            </td>
+                                                                            <td class="form-control-max1">
+                                                                                <div [ngClass]="{disabledText:(key.status=='InActive')}" *ngIf="editCustIndex != v.id">{{v.programName}}</div>
+                                                                                <span *ngIf="editCustIndex === v.id" class="asterisk_Select"></span>
+                                                                                <!-- <select class="form-control" id="lsmVersionEdit_{{index}}" *ngIf="editCustIndex === v.id" value={{v.programName}}>
+                                                                                     <option value="">--Select--</option>
+                                                                                    <option *ngFor="let key of versionList" value="{{key}}">{{key}}</option>
+                                                                                </select> -->
+                                                                               <span *ngIf="editCustIndex === v.id" id="cshortNameAndNeType_{{index}}">{{cShortName}}-{{selectedNeType.networkType}}-</span>
+                                                                                <input type="text" class="form-control" id="lsmVersionEdit_{{index}}" name="custName1" *ngIf="editCustIndex === v.id" value={{pgmNameOnly}} style="width: 160px !important;float: right;" />  
+                                                                                <div class="error-message-block" *ngIf="editCustIndex === v.id" style="margin-left:30%;margin-top: 10px;"></div>                                                                                     
+                                                                            </td>
+
+                                                                            <td class="form-control-max1">
+                                                                                    <div [ngClass]="{disabledText:(key.status=='InActive')}" *ngIf="editCustIndex != v.id">{{v.programDescription}} </div>
+                                                                                    <span *ngIf="editCustIndex === v.id" class="asterisk_Select"></span>
+                                                                                    <textarea  rows="4" cols="50" class="customTextArea" id="programDescription_{{index}}" name="custName1" *ngIf="editCustIndex === v.id" value={{v.programDescription}}></textarea>
+                                                                                    <div class="error-message-block" *ngIf="editCustIndex === v.id" style="margin-top: 10px;"></div>                                                                                     
+                                                                                </td>
+                                                                            
+                                                                            <td class="form-control-max1">
+                                                                                <div [ngClass]="{disabledText:(key.status=='InActive')}" *ngIf="editCustIndex != v.id">{{v.status}} </div>
+                                                                                <span *ngIf="editCustIndex === v.id" class="asterisk_Select"></span>
+                                                                                <select class="form-control" id="statusEdit_{{index}}" *ngIf="editCustIndex === v.id" value={{v.status}}>
+                                                                                    <option value="Active">Active</option>
+                                                                                    <option value="InActive">InActive</option>
+                                                                                </select>
+                                                                                <div class="error-message-block" *ngIf="editCustIndex === v.id" style="margin-top: 10px;"></div>                                                                                     
+                                                                            </td>
+
+                                                                            <td class="form-control-max1" data-toggle="tooltip" data-placement="right" data-container="body">
+                                                                                <span [ngClass]="{disabledText:(key.status=='InActive')}" class="eventColText" >{{v.sourceprogramName}}</span>
+                                                                                <!-- <div class="form-control-max ">{{v.status}}</div> -->
+                                                                                <div class="form-control-fixed iconsWrapper tableRowAction" id="fixedCol" ng-style="iconsWrapperPosition">
+                                                                                    <ng-template  #save>Save</ng-template>
+                                                                                    <ng-template  #cancel>Cancel</ng-template>
+                                                                                    <div (click)="(key.status=='Active')? editCustomerRow($event, v, index, v.programName,key.status):''" [ngClass]="{editRow:(key.status=='Active'),editRowDisabled:(key.status=='InActive')}" placement="bottom" container="body" [ngbTooltip]="(editCustIndex === v.id) ? save: ((key.status=='Active')? 'Edit': '')"></div>
+                                                                                    <div (click)="(key.status=='Active')? deleteCustomerRow(confirmModal, v.id, $event,index) :''"  [ngClass]="{deleteRow:(key.status=='Active'),deleteRowDisabled:(key.status=='InActive')}" placement="bottom" container="body" [ngbTooltip]="(editCustIndex === v.id) ? cancel: ((key.status=='Active')? 'Delete': '')"></div>
+                                                                                </div>
+                                                                                <!-- <select class="form-control" id="statusEdit_{{index}}" *ngIf="editCustIndex === v.id" value={{v.sourceprogramName}}>
+                                                                                    <option value="Active">Active11</option>
+                                                                                    <option value="InActive">InActive11</option>
+                                                                                </select> -->
+                                                                                <div class="error-message-block" *ngIf="editCustIndex === v.id"></div>   
+                                                                            </td>
+                                                                        </tr>
+                                                                        <ng-container #container></ng-container>
+                                                                    </tbody>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </ng-container>
+
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </ng-template>
+                        </ngb-panel>
+
+                    </ngb-accordion>
+
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <rct-nodata *ngIf="noDataVisibility" [subTitle]="'Please click on <u><b>CREATE NEW</b></u> to add users'"></rct-nodata>
+    <div *ngIf="newNoDataWrapper" class="newNoDataWrapper">
+        <p>NO CONFIGURATIONS CREATED</p>
+        <p>PLEASE CONFIGURE: - N/W TYPE</p>
+        <p style="margin-left: 11em;">- CUSTOMERS</p>
+    </div>
+    
+    <ng-template #cloneAddInlineTableRow id="userManagementFormConfig">
+        <tr class="inlineRow" id="row_id_">
+            <td>
+                <select class="form-control" id="networkTypeEdit_{{newRowIndex}}" (change)="getVersion(type.value)" #type value="" [(ngModel)]="selectedNeType">
+                    <option value="">--Select--</option>
+                    <option *ngFor="let key of networkTypeList" value="{{key.networkType}}" id={{key.id}}>{{key.networkType}}</option>
+                </select>
+                <div class="error-message-block"></div>   
+            </td>
+            <td>
+                   
+               <!--  <select class="form-control" id="lsmVersionEdit_{{newRowIndex}}" value="">
+                    <option value="">--Select--</option>
+                    <option *ngFor="let key of versionList" value="{{key}}">{{key}}</option>
+                </select>  --> 
+                <span id="cshortNameAndNeType_{{newRowIndex}}">{{cShortName}}-{{selectedNeType}}-</span>
+                <input type="text" class="form-control" id="lsmVersionEdit_{{newRowIndex}}" value="" style="width: 160px !important;float: right;"/> 
+                <div class="error-message-block" style="margin-left:36%"></div>                                                                                
+            </td>
+        <td>    
+            <!-- <input type="text" class="form-control" id="programDesc_{{newRowIndex}}" value="" />  -->
+            <textarea rows="4" cols="50" class="customTextArea" id="programDescription_{{newRowIndex}}" name="custName1"  value=""></textarea>
+            <div class="error-message-block"></div>                                                                                
+        </td>
+        <td>    
+            <select class="form-control" id="statusEdit_{{newRowIndex}}" value="">
+                <option value="Active">Active</option>
+                <option value="InActive">InActive</option>
+            </select>
+            <div class="error-message-block"></div>                                                                                
+        </td>
+            <td class="form-control-max1" data-toggle="tooltip" data-placement="right" data-container="body">
+                <span class="eventColText"></span>
+                <div class="form-control-fixed iconsWrapper tableRowAction" id="fixedCol" ng-style="iconsWrapperPosition">
+                    <div (click)="editCustomerRow($event,'',newRowIndex, '')" class="saveRow validateForm" placement="bottom" container="body" ngbTooltip="Save"></div>
+                    <div (click)="cancelCustomerRow($event)" class="cancelRow" placement="bottom" container="body" ngbTooltip="Cancel"></div>
+                </div>
+                <select class="form-control" id="srcProgEdit_{{newRowIndex}}" value="">
+                    <option value="">--Select--</option>
+                    <option *ngFor="let prgName of allProgramNamesList" [ngValue]="prgName.programName" id={{prgName.id}}>{{prgName.programName}}</option>
+                </select>
+                <div class="error-message-block"></div>
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template #networkAddInlineRow>
+            <tr id="row_id_">
+            <td class="form-control-column-2-small" data-toggle="tooltip" data-placement="right" data-container="body">
+                <span class="eventColText"></span>
+
+                <div class="form-control-fixed iconsWrapper tableRowAction" id="fixedCol" ng-style="iconsWrapperPosition">
+                    <div (click)="editNetTypeRow($event,null,'new')" class="saveRow validateForm" placement="bottom" container="body" ngbTooltip="Save"></div>
+                    <div (click)="cancelNetworkRow($event,index)" class="cancelRow" placement="bottom" container="body" ngbTooltip="Cancel"></div>
+                </div>
+                <input type="text" id="netType_new" value="" class="form-control" />
+                <div class="error-message-block"></div>
+                </td>
+            </tr>
+    </ng-template>
+    <ng-template #neVersionAddInlineRow>
+       <!--  <ng-container *ngFor="let key of neversionData['neVersionDetails']; let index =index">  -->
+            <tr id="row_id_">
+                 <td class="form-control-column-2-small-1" data-toggle="tooltip" data-placement="right" data-container="body">
+<!--                         <span class="eventColText" *ngIf="editIndex != index">{{key.programDetailsEntity.programName}}</span>
+ -->
+                       <select class="form-control" name="programName" id="programName_new" [(ngModel)] ="programDetailsEntity">
+                               <option value="">--Select--</option>
+                               <option *ngFor="let name of programNamesList" [ngValue]="name">{{name.programName}}</option>
+                       </select>
+                       <div class="error-message-block" *ngIf="editIndex === 'new'"></div>  
+               </td>
+               <td class="form-control-column-2-small-1" data-toggle="tooltip" data-placement="right" data-container="body">
+<!--                     <span class="eventColText" *ngIf="editIndex != index">{{key.neVersion}}</span>
+ -->
+                    <input type="text" class="form-control netType" id="netType_new" value="" />
+                    <div class="error-message-block" *ngIf="editIndex === 'new'"></div>    
+                </td>
+                <td class="form-control-column-2-small-1" data-toggle="tooltip" data-placement="right" data-container="body">
+                
+                    <input type="text" class="form-control relVer" id="relVer_new" value="" />
+                    <div class="error-message-block" *ngIf="editIndex === 'new'"></div>
+                </td>
+            <td class="form-control-column-2-small-1" data-toggle="tooltip" data-placement="right" data-container="body">
+                <span class="eventColText"></span>
+                <div class="form-control-fixed iconsWrapper tableRowAction" id="fixedCol" ng-style="iconsWrapperPosition">
+                    <div (click)="editNeVersionRow($event,null,'new')" class="saveRow validateForm" placement="bottom" container="body" ngbTooltip="Save"></div>
+                    <div (click)="cancelNeVersionRow($event,index)" class="cancelRow" placement="bottom" container="body" ngbTooltip="Cancel"></div> 
+                   
+                </div>
+                <!-- <input type="text" id="netType_new" value="" class="form-control" /> -->
+                <select class="form-control status" id="status_new" value="" >                                                                                    
+                        <option value="Active">Active</option>
+                        <option value="InActive">InActive</option>
+                        <option value="StandBy">StandBy</option>
+                </select>
+                <div class="error-message-block" *ngIf="editIndex === 'new'"></div>
+            </td>
+        </tr>
+       <!--   </ng-container> -->
+    </ng-template>
+    <rct-model *ngIf="showModelMessage" [message]="modelData"></rct-model>
+
+</div>

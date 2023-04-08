@@ -1,0 +1,37 @@
+<nc:rpc xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <nc:edit-config>
+    <nc:target>
+      <nc:running></nc:running>
+    </nc:target>
+    <nc:default-operation>none</nc:default-operation>
+    <nc:config>
+      <mid:managed-element xmlns:mid="http://www.samsung.com/global/business/4GvRAN/ns/macro_indoor_dist">
+        <mid:enb-function>
+          <mid:call-trace>
+            <mid:csl-control-func nc:operation="merge">
+              <mid:delta-oos-threshold>1</mid:delta-oos-threshold>
+              <mid:mr-overwrite-enable>first-and-last-mr</mid:mr-overwrite-enable>
+              <mid:single-measure-report-control>off</mid:single-measure-report-control>
+              <mid:endc-csl-enable>on</mid:endc-csl-enable>
+              <mid:endc-csl-create-condition>all</mid:endc-csl-create-condition>
+            </mid:csl-control-func>
+            <mid:csl-info nc:operation="merge">
+              <mid:csl-ip-ver>ipv6</mid:csl-ip-ver>
+              <mid:buffering-time>2</mid:buffering-time>
+              <mid:udp-ack-control>no-retransmission</mid:udp-ack-control>
+              <mid:protocol-selection>1</mid:protocol-selection>
+              <mid:csl-report-control>on</mid:csl-report-control>
+              <mid:csl-encryption-mask-mode>0</mid:csl-encryption-mask-mode>
+              <mid:second-csl-ip-ver>ipv6</mid:second-csl-ip-ver>
+              <mid:second-csl-server-ipv6>2001:4888:a12:3161:106:216:0:0210</mid:second-csl-server-ipv6>
+              <mid:second-csl-port-num>50021</mid:second-csl-port-num>
+              <mid:second-buffering-time>2</mid:second-buffering-time>
+              <mid:second-udp-ack-control>no-retransmission</mid:second-udp-ack-control>
+              <mid:second-protocol-selection>1</mid:second-protocol-selection>
+            </mid:csl-info>
+          </mid:call-trace>
+        </mid:enb-function>
+      </mid:managed-element>
+    </nc:config>
+  </nc:edit-config>
+</nc:rpc>

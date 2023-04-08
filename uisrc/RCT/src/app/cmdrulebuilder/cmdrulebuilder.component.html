@@ -1,0 +1,1562 @@
+<div class="page-wrapper">
+    <rct-model *ngIf="showModelMessage" [message]="modelData"></rct-model>
+    <rct-loader *ngIf="showLoader"></rct-loader>
+    <h1 class="mainHead">COMMAND RULE BUILDER</h1>
+
+    <div class="migrationBlock">
+        <form class="form-horizontal">
+            <div class="row">
+                <div class="col-7">
+                    <div class="form-group radio-inline">
+                        <input class="radio" type="radio" [(ngModel)]='migrationType' value="premigration" name="migrationBtn" (click)="onChangeLoad('premigration')">
+                        <label for="templateName">PRE MIGRATION</label>
+                    </div>
+                    <div class="form-group radio-inline">
+                        <input class="radio" type="radio" [(ngModel)]='migrationType' value="nestatus" name="migrationBtn" (click)="onChangeLoad('nestatus')">
+                        <label for="templateName">NE STATUS</label>
+                    </div>
+                    <div class="form-group radio-inline">
+                        <input class="radio" type="radio" [(ngModel)]='migrationType' value="preaudit" name="migrationBtn" (click)="onChangeLoad('preaudit')">
+                        <label for="templateName">PRE AUDIT</label>
+                    </div>
+                    <div class="form-group radio-inline">
+                        <input class="radio" type="radio" [(ngModel)]='migrationType' value="migration" name="migrationBtn" (click)="onChangeLoad('migration')">
+                        <label for="templateName">MIGRATION</label>
+                    </div>
+                    <div class="form-group radio-inline">
+                        <input class="radio" type="radio" [(ngModel)]='migrationType' value="postmigration" name="migrationBtn" (click)="onChangeLoad('postmigration')">
+                        <label for="templateName">POST MIGRATION</label>
+                    </div>
+                </div>
+                <div class="col-2" *ngIf="migrationType == 'postmigration'">
+                    <select class="form-control form-control-small form-group" name="subType" id="subType" [(ngModel)]="subType" (change)="onChangeType(subType)"
+                        style="height:20px !important;padding: 0;">
+                        <option value="AUDIT">AUDIT</option>
+                        <option value="RANATP">RAN ATP</option>
+                    </select>
+                </div>
+                <div class="col-2" *ngIf="migrationType == 'migration'">
+                    <!-- <select class="form-control form-control-small-1 form-group" name="subType" id="subType" [(ngModel)]="subType" (change)="onChangeType(subType)"
+                        style="height:20px !important">
+                        <option value="PRECHECK">PRE CHECK</option>
+                        <option value="COMMISSION">COMMISSION</option>
+                        <option value="POSTCHECK">POST CHECK</option>
+                    </select> -->
+                    <div class="form-group radio-inline">
+                        <input class="radio" type="radio" [(ngModel)]='subType' value="PRECHECK" name="precheck" disabled>
+                        <label for="templateName">COMMISSION</label>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group radio-inline">
+                        <input class="radio" type="radio" [(ngModel)]='ciqShellOrXml' value="ciqShell" name="ciqShell" (click)="cliShellXmlRadioToggle('ciqShell')">
+                        <label for="templateName">CLI</label>
+                    </div>
+                    <div class="form-group radio-inline">
+                        <input class="radio" type="radio" [(ngModel)]='ciqShellOrXml' value="shell" name="shell" (click)="cliShellXmlRadioToggle('shell')">
+                        <label for="templateName">SHELL</label>
+                    </div>
+                    <div class="form-group radio-inline">
+                        <input class="radio" type="radio" [(ngModel)]='ciqShellOrXml' value="xml" name="xml" (click)="cliShellXmlRadioToggle('xml')">
+                        <label for="templateName">XML</label>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+
+    <ng-template #confirmModal let-c="close" let-d="dismiss">
+        <div class="sucessContentWrapper">
+            <div class="confirmIcon"></div>
+            <div class="confirmContent deletePopup">
+                <p>
+                    <b>Are You Sure, </b>
+                <!-- </p>
+                <br>
+                <p> -->You want to
+                    <b>Delete</b>
+                </p>
+            </div>
+        </div>
+        <div class="deletePopupBtn modal-footer textAlignCenter">
+            <button type="button" class="formBtn btn btn-secondary modal_button_yes" (click)="d('dismiss click')" id="deleteConfirmation">YES</button>
+            <button type="button" class="formBtn btn btn-secondary modal_button_no" (click)="c('Close click')" id="modal_button_no">NO</button>
+        </div>
+    </ng-template>
+
+    <div>
+        <ul class="nav nav-pills" role="tablist">
+            <li class="nav-item">
+                <div (click)="searchTabBind()" accesskey="h" name="search" class=" divalign float-sm-right float-md-right float-lg-right float-xl-right"
+                    #searchTab>SEARCH</div>
+            </li>
+            <li class="nav-item">
+                <div (click)="createNewTabBind()" accesskey="n" name="createnew" class="divalign float-sm-right float-md-right float-lg-right float-xl-right"
+                    #createNewTab>CREATE NEW</div>
+            </li>
+        </ul>
+        <div id="tabContentWrapper" *ngIf="searchBlock">
+            <form class="form-horizontal" #searchForm>
+                <div class="row">
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName">RULE NAME</label>
+                            <input class="form-control" autocomplete="off" placeholder="" id="searchRuleName" name="searchRuleName" type="text" value=""
+                                maxlength="30" />
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName">COMMAND NAME</label>
+                            <input class="form-control" autocomplete="off" placeholder="" id="searchCmdName" name="searchCmdName" type="text" value=""
+                            />
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName">OPERAND 1</label>
+                            <input class="form-control" autocomplete="off" placeholder="" id="searchOperand1" name="searchOperand1" type="text" value=""
+                            />
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName">OPERAND 2</label>
+                            <input class="form-control" autocomplete="off" placeholder="" id="searchOperand2" name="searchOperand2" type="text" value=""
+                            />
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName">PROMPT</label>
+                                <select class="form-control" name="searchPrompt" id="searchPrompt">
+                                    <option value="">--Select--</option>
+                                    <option *ngFor="let prompt of prompts">{{prompt}}</option>
+                                </select>
+                                <div class="error-message-block"></div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName">RULE STATUS</label>
+                                <select class="form-control" name="ruleStatus" id="ruleStatus">
+                                    <option value="">--Select--</option>
+                                    <option value="Pass">Pass</option>
+                                    <option value="Fail">Fail</option>
+                                    <option value="Warn">Warn</option>
+                                </select>
+                                <div class="error-message-block"></div>
+                            </div>
+                        </div>
+
+                </div>
+                <div class="textAlignCenter">
+                    <button name="save" class="formBtn myriadproBold validateForm " id="searchButton" (click)="searchCmdRules($event)" accesskey="s">SEARCH</button>
+                    <button type="button" id="cancelButton" name="CANCEL" class="formBtnCncl formBtn myriadproBold formBtn" (click)="clearSearchFrom()" accesskey="c">CLEAR</button>             
+                </div>
+            </form>
+        </div>
+
+        <div *ngIf="createNewForm">
+            <div id="formWrapper" class="formWrapperMargin bluePrintFormWrapper">
+                <form class="form-horizontal" id="bluePrintForm" #bluePrintForm>
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName" class="asterisk_input">RULE NAME</label>
+                                <input class="form-control" autocomplete="off" placeholder="" id="ruleName" name="ruleName" type="text" value="" maxlength="30"
+                                />
+                                <div class="error-message-block"></div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName" class="asterisk_input">COMMAND NAME</label>
+                                <input class="form-control" autocomplete="off" placeholder="" id="cmdName" name="cmdName" type="text" value="" />
+                                <div class="error-message-block"></div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName" class="asterisk_input">OPERAND 1 COLUMN NAMES</label>
+                                <input class="form-control" autocomplete="off" placeholder="" id="operand1ColumnNames" name="operand1ColumnNames" type="text"
+                                    value="" />
+                                <div class="error-message-block"></div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName" class="asterisk_input">OPERAND 1 VALUES</label>
+                                <input class="form-control" autocomplete="off" placeholder="" id="operand1Values" name="operand1Values" type="text" value="" />
+                                <div class="error-message-block"></div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName" class="asterisk_input">OPERAND 2 COLUMN NAMES</label>
+                                <input class="form-control" autocomplete="off" placeholder="" id="operand2ColumnNames" name="operand2ColumnNames" type="text"
+                                    value="" />
+                                <div class="error-message-block"></div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName" class="asterisk_input">OPERATOR</label>
+                                <select class="form-control" name="operator" id="operator">
+                                    <option value="">--Select--</option>
+                                    <option *ngFor="let key of cmdOperator" value="{{key}}">{{key}}</option>
+                                </select>
+                                <div class="error-message-block"></div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName" class="asterisk_input">OPERAND 2 VALUES</label>
+                                <input class="form-control" autocomplete="off" placeholder="" id="operand2Values" name="operand2Values" type="text" value="" />
+                                <div class="error-message-block"></div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName" class="asterisk_input">PROMPT</label>
+                                <select class="form-control" name="prompt" id="prompt" [(ngModel)]="selectedPrompt">
+                                    <option value="">--Select--</option>
+                                    <option *ngFor="let prompt of prompts">{{prompt}}</option>
+                                </select>
+                                <div class="error-message-block"></div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName" class="asterisk_input">LOOP TYPE</label>
+                                <select class="form-control" name="loopType" id="loopType">
+                                    <option value="All">All</option>
+                                    <option value="AtleastOne">AtleastOne</option>
+                                </select>
+                                <div class="error-message-block"></div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName" class="asterisk_input">STATUS</label>
+                                <select class="form-control" name="status" id="status">
+                                    <option value="">--Select--</option>
+                                    <option value="Pass">Pass</option>
+                                    <option value="Fail">Fail</option>
+                                    <option value="Warn">Warn</option>
+                                </select>
+                                <div class="error-message-block"></div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName">REMARKS</label>
+                                <textarea rows="4" cols="50" class="customTextArea" name="remarks" id="remarks"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="textAlignCenter">
+                        <!-- <label for="templateName"></label> -->
+                        <button name="save" class="formBtn myriadproBold validateForm" id="AddButton" (click)="createCmdRule($event)" accesskey="s">CREATE</button>
+                    </div>
+
+                    <!-- <div class="textAlignCenter" id="saveRow">
+                <button name="save" class="formBtn myriadproBold validateForm" id="AddButton" (click)="addMelConfigDetails($event)" accesskey="s">SAVE</button>
+            </div> -->
+                </form>
+            </div>
+        </div>
+
+        <!--Data Table-->
+        <div id="dataWrapper" *ngIf="tableShowHide" style="margin-top: -18px;">
+            <br>
+            <div id="tableWrapper">
+                <div class="scrollHead">
+                    <table class="table" id="melConfigDetails">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <div (click)="changeSorting('ruleName', $event, 0, 'ciq')" class="sorting form-control-small-1">RULE NAME</div>
+                                </th>
+                                <th>
+                                    <div (click)="changeSorting('cmdName', $event, 1, 'ciq')" class="sorting form-control-small-1">COMMAND</div>
+                                </th>
+                                <th>
+                                    <div (click)="changeSorting('operand1ColumnNames', $event, 2, 'ciq')" class="sorting form-control-middle">OPERAND 1 COLUMN NAMES</div>
+                                </th>
+                                <th>
+                                    <div (click)="changeSorting('operand1Values', $event, 3, 'ciq')" class="sorting form-control-small-1">OPERAND 1 VALUES</div>
+                                </th>
+                                <th>
+                                    <div (click)="changeSorting('operand2ColumnNames', $event, 4, 'ciq')" class="sorting form-control-middle">OPERAND 2 COLUMN NAMES</div>
+                                </th>
+                                <th>
+                                    <div (click)="changeSorting('operator', $event, 5, 'ciq')" class="sorting form-control-small-1">OPERATOR</div>
+                                </th>
+                                <th>
+                                    <div (click)="changeSorting('operand2Values', $event, 6, 'ciq')" class="sorting form-control-small-1">OPERAND 2 VALUES</div>
+                                </th>
+                                <th>
+                                    <div (click)="changeSorting('prompt', $event, 7, 'ciq')" class="sorting form-control-small-1">PROMPT</div>
+                                </th>
+                                <th>
+                                    <div (click)="changeSorting('loopType', $event, 8, 'ciq')" class="sorting form-control-small-1">LOOP TYPE</div>
+                                </th>
+                                <th>
+                                    <div (click)="changeSorting('status', $event, 9, 'ciq')" class="sorting form-control-small-1">RULE STATUS</div>
+                                </th>
+                                <th>
+                                    <div (click)="changeSorting('createdBy', $event, 10, 'ciq')" class="sorting form-control-small-1">CREATED BY</div>
+                                </th>
+                                <th>
+                                    <div (click)="changeSorting('timeStamp', $event, 11, 'ciq')" class="sorting form-control-small-1">TIME STAMP</div>
+                                </th>
+                                <th>
+                                    <div (click)="changeSorting('remarks', $event, 12, 'ciq')" class="sorting form-control-small-1">REMARKS</div>
+                                </th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="scrollBody">
+                    <table class="table" id="removalDetailsData">
+                        <tbody id="rowCount">
+                            <ng-container *ngFor="let key of tableData['cmdRuleBuilderData']; let index = index">
+                                <tr id="row_{{index}}" class="row_id_{{key.id}}">
+                                    <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <div class="form-control-small-1">{{key.ruleName}}</div>
+                                    </td>
+                                    <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <div class="form-control-small-1">{{key.cmdName}}</div>
+                                    </td>
+                                    <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <div class="form-control-middle">{{key.operand1ColumnNames}}</div>
+                                    </td>
+                                    <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <div class="form-control-small-1">{{key.operand1Values}}</div>
+                                    </td>
+                                    <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <div class="form-control-middle">{{key.operand2ColumnNames}}</div>
+                                    </td>
+                                    <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <div class="form-control-small-1">{{key.operator}}</div>
+                                    </td>
+                                    <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <div class="form-control-small-1">{{key.operand2Values}}</div>
+                                    </td>
+                                    <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <div class="form-control-small-1">{{key.prompt}}</div>
+                                    </td>
+                                    <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <div class="form-control-small-1">{{key.loopType}}</div>
+                                    </td>
+                                    <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <div class="form-control-small-1">{{key.status}}</div>
+                                    </td>
+                                    <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <div class="form-control-small-1">{{key.createdBy}}</div>
+                                    </td>
+                                    <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <div class="form-control-small-1">{{key.timeStamp}}</div>
+                                    </td>
+                                    <td class="form-control-small-1" data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <span class="displayNone" class="eventColText">{{key.remarks}}</span>
+                                        <div #fixedCol class="form-control-fixed iconsWrapper tableRowAction" id="fixedCol" ng-style="iconsWrapperPosition">
+                                            <div (click)="editRow($event, key, index)" class="editRow" placement="bottom" container="body" ngbTooltip="Edit"></div>
+                                            <div (click)="deleteRow($event,confirmModal, key.id)" class="deleteRow" placement="bottom" container="body" ngbTooltip="Delete"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr *ngIf="checkFormEnable(index)" id="editedRow{{index}}">
+                                    <td colspan="28" class="formEditRow ">
+                                        <div id="formWrapper" class="userManagementFormWrapper" [ngStyle]="{'width': formWidth, 'margin-left': scrollLeft}">
+                                            <form class="form-horizontal" id="bluePrintForm">
+                                                <div class="row">
+                                                    <div class="col-3">
+                                                        <div class="form-group">
+                                                            <label for="templateName" class="asterisk_input">RULE NAME</label>
+                                                            <input class="form-control" autocomplete="off" id="ruleName" name="ruleName" type="text" value="" maxlength="30" disabled/>
+                                                            <div class="error-message-block"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <div class="form-group">
+                                                            <label for="templateName" class="asterisk_input">COMMAND NAME</label>
+                                                            <input class="form-control" autocomplete="off" id="cmdName" name="cmdName" type="text" value="" [disabled]="key.useCount"
+                                                            />
+                                                            <div class="error-message-block"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <div class="form-group">
+                                                            <label for="templateName" class="asterisk_input">OPERAND 1 COLUMN NAMES</label>
+                                                            <input class="form-control" autocomplete="off" id="operand1ColumnNames" name="operand1ColumnNames" type="text" value="" [disabled]="key.useCount"
+                                                            />
+                                                            <div class="error-message-block"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <div class="form-group">
+                                                            <label for="templateName" class="asterisk_input">OPERAND 1 VALUES</label>
+                                                            <input class="form-control" autocomplete="off" id="operand1Values" name="operand1Values" type="text" value="" [disabled]="key.useCount"
+                                                            />
+                                                            <div class="error-message-block"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-3">
+                                                        <div class="form-group">
+                                                            <label for="templateName" class="asterisk_input">OPERAND 2 COLUMN NAME</label>
+                                                            <input class="form-control" autocomplete="off" id="operand2ColumnNames" name="operand2ColumnNames" type="text" value="" [disabled]="key.useCount"
+                                                            />
+                                                            <div class="error-message-block"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <div class="form-group">
+                                                            <label for="templateName" class="asterisk_input">OPERATOR</label>
+                                                            <select class="form-control" name="operator" id="operator" [disabled]="key.useCount">
+                                                                <option value="">--Select--</option>
+                                                                <option *ngFor="let key of cmdOperator" value="{{key}}">{{key}}</option>
+                                                            </select>
+                                                            <div class="error-message-block"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <div class="form-group">
+                                                            <label for="templateName" class="asterisk_input">OPERAND 2 VALUES</label>
+                                                            <input class="form-control" autocomplete="off" id="operand2Values" name="operand2Values" type="text" value="" [disabled]="key.useCount"
+                                                            />
+                                                            <div class="error-message-block"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <div class="form-group">
+                                                            <label for="templateName" class="asterisk_input">PROMPT</label>
+                                                            <select class="form-control" name="prompt" id="prompt">
+                                                                <option value="">--Select--</option>
+                                                                <option *ngFor="let prompt of prompts">{{prompt}}</option>
+                                                            </select>
+                                                            <div class="error-message-block"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <div class="form-group">
+                                                            <label for="templateName" class="asterisk_input">LOOP TYPE</label>
+                                                            <select class="form-control" name="loopType" id="loopType">
+                                                                <option value="All">All</option>
+                                                                <option value="AtleastOne">AtleastOne</option>
+                                                            </select>
+                                                            <div class="error-message-block"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <div class="form-group">
+                                                            <label for="templateName" class="asterisk_input">STATUS</label>
+                                                            <select class="form-control" name="status" id="status">
+                                                                <option value="">--Select--</option>
+                                                                <option value="Pass">Pass</option>
+                                                                <option value="Fail">Fail</option>
+                                                                <option value="Warn">Warn</option>
+                                                            </select>
+                                                            <div class="error-message-block"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <div class="form-group">
+                                                            <label for="templateName" class="">CREATED BY</label>
+                                                            <input class="form-control" autocomplete="off" id="createdBy" name="createdBy" type="text" value="" disabled/>
+                                                            <div class="error-message-block"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <label for="templateName">REMAKS</label>
+                                                        <textarea rows="4" cols="50" class="customTextArea" name="remarks" id="remarks"></textarea>
+                                                    </div>
+                                                </div>
+
+                                                <div class="textAlignCenter" id="saveRow">
+                                                    <button name="update" class="formBtn myriadproBold validateForm" id="updateButton" (click)="updateCmdRuleDetails($event)"
+                                                        accesskey="u">UPDATE</button>
+                                                    <button type="button" name="CANCEL" class="formBtnCncl formBtn myriadproBold formBtn" id="editCancelButton" (click)="cancelEditRow(index,key.id)"
+                                                        accesskey="c">CANCEL</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="paginationWrapper">
+                <div *ngIf="pageRenge.length" class="floatLeft page" style="padding-top: 0px;margin-left:20px;">
+                    <div class="floatLeft" style="width: 75px;padding-top: 6px">Show</div>
+                    <select [disabled]="paginationDisabbled" [(ngModel)]="pageSize" (change)="onChangeTableRowLength($event)" style="margin-top: 4px; margin-right: 6px;margin-left: -39px;"
+                        class="form-control-pagination floatLeft" aria-controls="TableRowLength" size="1" name="TableRowLength"
+                        id="TableRowLength">
+                        <option selected="selected" value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                    <div class="floatLeft" style="width: 75px;padding-top: 6px">Entries</div>
+                </div>
+                <div class="floatRight page" style="padding-top: 3px;margin-right:20px;">
+                    <ul *ngIf="pageRenge.length" class="pagination floatRight">
+                        <li id="firstPage" [ngClass]="{disabled:(currentPage === 1 || paginationDisabbled)}" class="page-item">
+                            <a class="page-link" (click)="setPage(1)">FIRST</a>
+                        </li>
+                        <li id="previousPage" [ngClass]="{disabled:(currentPage === 1 || paginationDisabbled)}" class="page-item">
+                            <a class="page-link" (click)="setPage(pager.currentPage - 1)">PREV</a>
+                        </li>
+                        <li *ngFor="let n of pager.pages" [ngClass]="{active:currentPage === n, disabled:paginationDisabbled}" class="page-item">
+                            <a class="page-link" (click)="setPage(n)" id='{{n+1}}'>{{n}}</a>
+                        </li>
+                        <li id="nextPage" [ngClass]="{disabled:(currentPage === totalPages || paginationDisabbled)}" class="page-item">
+                            <a class="page-link" (click)="setPage(pager.currentPage + 1)">NEXT</a>
+                        </li>
+                        <li id="lastPage" [ngClass]="{disabled:(currentPage === totalPages || paginationDisabbled)}" class="page-item">
+                            <a class="page-link" (click)="setPage(pager.totalPages)">LAST</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="tabContentWrapper" *ngIf="shellSearchBlock">
+            <form class="form-horizontal" #searchForm>
+                <div class="row">
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName">RULE NAME</label>
+                            <input class="form-control" autocomplete="off" placeholder="" id="searchRuleName" name="searchRuleName" type="text" value=""
+                                maxlength="30" />
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName">COMMAND NAME</label>
+                            <input class="form-control" autocomplete="off" placeholder="" id="searchCmdName" name="searchCmdName" type="text" value=""
+                            />
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName">OPERAND 1</label>
+                            <input class="form-control" autocomplete="off" placeholder="" id="searchOperand1" name="searchOperand1" type="text" value=""
+                            />
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName">OPERAND 2</label>
+                            <input class="form-control" autocomplete="off" placeholder="" id="searchOperand2" name="searchOperand2" type="text" value=""
+                            />
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName">PROMPT</label>
+                            <select class="form-control" name="searchPrompt" id="searchPrompt">
+                                <option value="">--Select--</option>
+                                <option *ngFor="let prompt of prompts">{{prompt}}</option>
+                            </select>
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName">RULE STATUS</label>
+                            <select class="form-control" name="ruleStatus" id="ruleStatus">
+                                <option value="">--Select--</option>
+                                <option value="Pass">Pass</option>
+                                <option value="Fail">Fail</option>
+                                <option value="Warn">Warn</option>
+                            </select>
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+        
+                </div>
+                <div class="textAlignCenter">
+                    <button name="save" class="formBtn myriadproBold validateForm " id="searchButton" (click)="searchCmdRules($event,'shell')" accesskey="s">SEARCH</button>
+                    <button type="button" id="cancelButton" name="CANCEL" class="formBtnCncl formBtn myriadproBold formBtn" (click)="clearSearchFrom()" accesskey="c">CLEAR</button>             
+                </div>
+            </form>
+        </div>
+
+        <div *ngIf="shellCreateBlock">
+            <div id="formWrapper" class="formWrapperMargin bluePrintFormWrapper">
+                <form class="form-horizontal" id="bluePrintForm" #bluePrintForm>
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName" class="asterisk_input">RULE NAME</label>
+                                <input class="form-control" autocomplete="off" placeholder="" id="ruleName" name="ruleName" type="text" value="" maxlength="30"
+                                />
+                                <div class="error-message-block"></div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName" class="asterisk_input">COMMAND NAME</label>
+                                <input class="form-control" autocomplete="off" placeholder="" id="cmdName" name="cmdName" type="text" value="" />
+                                <div class="error-message-block"></div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName" class="asterisk_input">RESULT TYPE</label>
+                                <select class="form-control" name="resultType" id="resultType" #resultType>
+                                    <option value="Table">Table</option>
+                                    <option value="Line">Line</option>
+                                </select>
+                                <div class="error-message-block"></div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName" class="asterisk_input">OPERAND 1 COLUMN NAMES</label>
+                                <input class="form-control" autocomplete="off" placeholder="" id="operand1ColumnNames" name="operand1ColumnNames" type="text"
+                                    value="" />
+                                <div class="error-message-block"></div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName" class="asterisk_input">OPERAND 1 VALUES</label>
+                                <input class="form-control" autocomplete="off" placeholder="" id="operand1Values" name="operand1Values" type="text" value="" />
+                                <div class="error-message-block"></div>
+                            </div>
+                        </div>
+                        <div class="col-3" *ngIf="resultType.value == 'Table'">
+                            <div class="form-group">
+                                <label for="templateName" class="asterisk_input">OPERAND 2 COLUMN NAMES</label>
+                                <input class="form-control" autocomplete="off" placeholder="" id="operand2ColumnNames" name="operand2ColumnNames" type="text"
+                                    value="" />
+                                <div class="error-message-block"></div>
+                            </div>
+                        </div>
+                        <div class="col-3" *ngIf="resultType.value == 'Table'">
+                            <div class="form-group">
+                                <label for="templateName" class="asterisk_input">OPERATOR</label>
+                                <select class="form-control" name="operator" id="operator">
+                                    <option value="">--Select--</option>
+                                    <option *ngFor="let key of cmdOperator" value="{{key}}">{{key}}</option>
+                                </select>
+                                <div class="error-message-block"></div>
+                            </div>
+                        </div>
+                        <div class="col-3" *ngIf="resultType.value == 'Table'">
+                            <div class="form-group">
+                                <label for="templateName" class="asterisk_input">OPERAND 2 VALUES</label>
+                                <input class="form-control" autocomplete="off" placeholder="" id="operand2Values" name="operand2Values" type="text" value="" />
+                                <div class="error-message-block"></div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName" class="asterisk_input">PROMPT</label>
+                                <select class="form-control" name="prompt" id="prompt" [(ngModel)]="selectedPrompt">
+                                    <option value="">--Select--</option>
+                                    <option *ngFor="let prompt of prompts">{{prompt}}</option>
+                                </select>
+                                <div class="error-message-block"></div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName" class="asterisk_input">LOOP TYPE</label>
+                                <select class="form-control" name="loopType" id="loopType">
+                                    <option value="All">All</option>
+                                    <option value="AtleastOne">AtleastOne</option>
+                                </select>
+                                <div class="error-message-block"></div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName" class="asterisk_input">STATUS</label>
+                                <select class="form-control" name="status" id="status">
+                                    <option value="">--Select--</option>
+                                    <option value="Pass">Pass</option>
+                                    <option value="Fail">Fail</option>
+                                    <option value="Warn">Warn</option>
+                                </select>
+                                <div class="error-message-block"></div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName">REMARKS</label>
+                                <textarea rows="4" cols="50" class="customTextArea" name="remarks" id="remarks"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="textAlignCenter">
+                        <!-- <label for="templateName"></label> -->
+                        <button name="save" class="formBtn myriadproBold validateForm" id="AddButton" (click)="createShellRule($event)" accesskey="s">CREATE</button>
+                    </div>
+        
+                    <!-- <div class="textAlignCenter" id="saveRow">
+                        <button name="save" class="formBtn myriadproBold validateForm" id="AddButton" (click)="addMelConfigDetails($event)" accesskey="s">SAVE</button>
+                    </div> -->
+                </form>
+            </div>
+        </div>
+
+        <!--Shell Data Table-->
+        <div id="dataWrapper" *ngIf="shellTableData" style="margin-top: -18px;">
+                <br>
+                <div id="tableWrapper">
+                    <div class="scrollHead">
+                        <table class="table" id="melConfigDetails">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <div (click)="changeSorting('ruleName', $event, 0, 'shell')" class="sorting form-control-small-1">RULE NAME</div>
+                                    </th>
+                                    <th>
+                                        <div (click)="changeSorting('cmdName', $event, 1, 'shell')" class="sorting form-control-small-1">COMMAND</div>
+                                    </th>
+                                    <th>
+                                        <div (click)="changeSorting('resultType', $event, 2, 'shell')" class="sorting form-control-small-1">RESULT TYPE</div>
+                                    </th>
+                                    <th>
+                                        <div (click)="changeSorting('operand1ColumnNames', $event, 3, 'shell')" class="sorting form-control-middle">OPERAND 1 COLUMN NAMES</div>
+                                    </th>
+                                    <th>
+                                        <div (click)="changeSorting('operand1Values', $event, 4, 'shell')" class="sorting form-control-small-1">OPERAND 1 VALUES</div>
+                                    </th>
+                                    <th>
+                                        <div (click)="changeSorting('operand2ColumnNames', $event, 5, 'shell')" class="sorting form-control-middle">OPERAND 2 COLUMN NAMES</div>
+                                    </th>
+                                    <th>
+                                        <div (click)="changeSorting('operator', $event, 6, 'shell')" class="sorting form-control-small-1">OPERATOR</div>
+                                    </th>
+                                    <th>
+                                        <div (click)="changeSorting('operand2Values', $event, 7, 'shell')" class="sorting form-control-small-1">OPERAND 2 VALUES</div>
+                                    </th>
+                                    <th>
+                                        <div (click)="changeSorting('prompt', $event, 8, 'shell')" class="sorting form-control-small-1">PROMPT</div>
+                                    </th>
+                                    <th>
+                                        <div (click)="changeSorting('loopType', $event, 9, 'shell')" class="sorting form-control-small-1">LOOP TYPE</div>
+                                    </th>
+                                    <th>
+                                        <div (click)="changeSorting('status', $event, 10, 'shell')" class="sorting form-control-small-1">RULE STATUS</div>
+                                    </th>
+                                    <th>
+                                        <div (click)="changeSorting('createdBy', $event, 11, 'shell')" class="sorting form-control-small-1">CREATED BY</div>
+                                    </th>
+                                    <th>
+                                        <div (click)="changeSorting('timeStamp', $event, 12, 'shell')" class="sorting form-control-small-1">TIME STAMP</div>
+                                    </th>
+                                    <th>
+                                        <div (click)="changeSorting('remarks', $event, 13, 'shell')" class="sorting form-control-small-1">REMARKS</div>
+                                    </th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div class="scrollBody">
+                        <table class="table" id="removalDetailsData">
+                            <tbody id="rowCount">
+                                <ng-container *ngFor="let key of tableData['cmdRuleBuilderData']; let index = index">
+                                    <tr id="row_{{index}}" class="row_id_{{key.id}} shellRow">
+                                        <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                            <div class="form-control-small-1">{{key.ruleName}}</div>
+                                        </td>
+                                        <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                            <div class="form-control-small-1">{{key.cmdName}}</div>
+                                        </td>
+                                        <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                            <div class="form-control-small-1">{{key.resultType}}</div>
+                                        </td>
+                                        <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                            <div class="form-control-middle">{{key.operand1ColumnNames}}</div>
+                                        </td>
+                                        <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                            <div class="form-control-small-1">{{key.operand1Values}}</div>
+                                        </td>
+                                        <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                            <div class="form-control-middle">{{key.operand2ColumnNames}}</div>
+                                        </td>
+                                        <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                            <div class="form-control-small-1">{{key.operator}}</div>
+                                        </td>
+                                        <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                            <div class="form-control-small-1">{{key.operand2Values}}</div>
+                                        </td>
+                                        <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                            <div class="form-control-small-1">{{key.prompt}}</div>
+                                        </td>
+                                        <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                            <div class="form-control-small-1">{{key.loopType}}</div>
+                                        </td>
+                                        <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                            <div class="form-control-small-1">{{key.status}}</div>
+                                        </td>
+                                        <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                            <div class="form-control-small-1">{{key.createdBy}}</div>
+                                        </td>
+                                        <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                            <div class="form-control-small-1">{{key.timeStamp}}</div>
+                                        </td>
+                                        <td class="form-control-small-1" data-toggle="tooltip" data-placement="right" data-container="body">
+                                            <span class="displayNone" class="eventColText">{{key.remarks}}</span>
+                                            <div #fixedCol class="form-control-fixed iconsWrapper tableRowAction" id="fixedCol" ng-style="iconsWrapperPosition">
+                                                <div (click)="editRow($event, key, index)" class="editRow" placement="bottom" container="body" ngbTooltip="Edit"></div>
+                                                <div (click)="deleteShellRow($event,confirmModal, key.id)" class="deleteRow" placement="bottom" container="body" ngbTooltip="Delete"></div>
+                                            </div>
+                                        </td>
+                                    </tr>
+    
+                                    <tr *ngIf="checkFormEnable(index)" id="editedRow{{index}}">
+                                        <td colspan="28" class="formEditRow ">
+                                            <div id="formWrapper" class="userManagementFormWrapper" [ngStyle]="{'width': formWidth, 'margin-left': scrollLeft}">
+                                                <form class="form-horizontal" id="bluePrintForm">
+                                                    <div class="row">
+                                                        <div class="col-3">
+                                                            <div class="form-group">
+                                                                <label for="templateName" class="asterisk_input">RULE NAME</label>
+                                                                <input class="form-control" autocomplete="off" id="ruleName" name="ruleName" type="text" value="" maxlength="30" disabled/>
+                                                                <div class="error-message-block"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <div class="form-group">
+                                                                <label for="templateName" class="asterisk_input">COMMAND NAME</label>
+                                                                <input class="form-control" autocomplete="off" id="cmdName" name="cmdName" type="text" value="" [disabled]="key.useCount"
+                                                                />
+                                                                <div class="error-message-block"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <div class="form-group">
+                                                                <label for="templateName" class="asterisk_input">RESULT TYPE</label>
+                                                                <select class="form-control" name="resultType" id="resultType" [disabled]="key.useCount" #resultTypeEdit>
+                                                                    <option value="Table">Table</option>
+                                                                    <option value="Line">Line</option>
+                                                                </select>
+                                                                <div class="error-message-block"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <div class="form-group">
+                                                                <label for="templateName" class="asterisk_input">OPERAND 1 COLUMN NAMES</label>
+                                                                <input class="form-control" autocomplete="off" id="operand1ColumnNames" name="operand1ColumnNames" type="text" value="" [disabled]="key.useCount"
+                                                                />
+                                                                <div class="error-message-block"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-3">
+                                                            <div class="form-group">
+                                                                <label for="templateName" class="asterisk_input">OPERAND 1 VALUES</label>
+                                                                <input class="form-control" autocomplete="off" id="operand1Values" name="operand1Values" type="text" value="" [disabled]="key.useCount"
+                                                                />
+                                                                <div class="error-message-block"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-3" *ngIf="resultTypeEdit.value == 'Table'">
+                                                            <div class="form-group">
+                                                                <label for="templateName" class="asterisk_input">OPERAND 2 COLUMN NAMES</label>
+                                                                <input class="form-control" autocomplete="off" id="operand2ColumnNames" name="operand2ColumnNames" type="text" value="" [disabled]="key.useCount"
+                                                                />
+                                                                <div class="error-message-block"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-3" *ngIf="resultTypeEdit.value == 'Table'">
+                                                            <div class="form-group">
+                                                                <label for="templateName" class="asterisk_input">OPERATOR</label>
+                                                                <select class="form-control" name="operator" id="operator" [disabled]="key.useCount">
+                                                                    <option value="">--Select--</option>
+                                                                    <option *ngFor="let key of cmdOperator" value="{{key}}">{{key}}</option>
+                                                                </select>
+                                                                <div class="error-message-block"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-3" *ngIf="resultTypeEdit.value == 'Table'">
+                                                            <div class="form-group">
+                                                                <label for="templateName" class="asterisk_input">OPERAND 2 VALUES</label>
+                                                                <input class="form-control" autocomplete="off" id="operand2Values" name="operand2Values" type="text" value="" [disabled]="key.useCount"
+                                                                />
+                                                                <div class="error-message-block"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <div class="form-group">
+                                                                <label for="templateName" class="asterisk_input">PROMPT</label>
+                                                                <select class="form-control" name="prompt" id="prompt">
+                                                                    <option value="">--Select--</option>
+                                                                    <option *ngFor="let prompt of prompts">{{prompt}}</option>
+                                                                </select>
+                                                                <div class="error-message-block"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <div class="form-group">
+                                                                <label for="templateName" class="asterisk_input">LOOP TYPE</label>
+                                                                <select class="form-control" name="loopType" id="loopType">
+                                                                    <option value="All">All</option>
+                                                                    <option value="AtleastOne">AtleastOne</option>
+                                                                </select>
+                                                                <div class="error-message-block"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <div class="form-group">
+                                                                <label for="templateName" class="asterisk_input">STATUS</label>
+                                                                <select class="form-control" name="status" id="status">
+                                                                    <option value="">--Select--</option>
+                                                                    <option value="Pass">Pass</option>
+                                                                    <option value="Fail">Fail</option>
+                                                                    <option value="Warn">Warn</option>
+                                                                </select>
+                                                                <div class="error-message-block"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <div class="form-group">
+                                                                <label for="templateName" class="">CREATED BY</label>
+                                                                <input class="form-control" autocomplete="off" id="createdBy" name="createdBy" type="text" value="" disabled/>
+                                                                <div class="error-message-block"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <label for="templateName">REMAKS</label>
+                                                            <textarea rows="4" cols="50" class="customTextArea" name="remarks" id="remarks"></textarea>
+                                                        </div>
+                                                    </div>
+    
+                                                    <div class="textAlignCenter" id="saveRow">
+                                                        <button name="update" class="formBtn myriadproBold validateForm" id="updateButton" (click)="updateShellCmdRuleDetails($event)"
+                                                            accesskey="u">UPDATE</button>
+                                                        <button type="button" name="CANCEL" class="formBtnCncl formBtn myriadproBold formBtn" id="editCancelButton" (click)="cancelEditRow(index,key.id)"
+                                                            accesskey="c">CANCEL</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="paginationWrapper">
+                    <div *ngIf="pageRenge.length" class="floatLeft page" style="padding-top: 0px;margin-left:20px;">
+                        <div class="floatLeft" style="width: 75px;padding-top: 6px">Show</div>
+                        <select [disabled]="paginationDisabbled" [(ngModel)]="pageSize" (change)="onChangeTableRowLength($event)" style="margin-top: 4px; margin-right: 6px;margin-left: -39px;"
+                            class="form-control-pagination floatLeft" aria-controls="TableRowLength" size="1" name="TableRowLength"
+                            id="TableRowLength">
+                            <option selected="selected" value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                        <div class="floatLeft" style="width: 75px;padding-top: 6px">Entries</div>
+                    </div>
+                    <div class="floatRight page" style="padding-top: 3px;margin-right:20px;">
+                        <ul *ngIf="pageRenge.length" class="pagination floatRight">
+                            <li id="firstPage" [ngClass]="{disabled:(currentPage === 1 || paginationDisabbled)}" class="page-item">
+                                <a class="page-link" (click)="setPage(1)">FIRST</a>
+                            </li>
+                            <li id="previousPage" [ngClass]="{disabled:(currentPage === 1 || paginationDisabbled)}" class="page-item">
+                                <a class="page-link" (click)="setPage(pager.currentPage - 1)">PREV</a>
+                            </li>
+                            <li *ngFor="let n of pager.pages" [ngClass]="{active:currentPage === n, disabled:paginationDisabbled}" class="page-item">
+                                <a class="page-link" (click)="setPage(n)" id='{{n+1}}'>{{n}}</a>
+                            </li>
+                            <li id="nextPage" [ngClass]="{disabled:(currentPage === totalPages || paginationDisabbled)}" class="page-item">
+                                <a class="page-link" (click)="setPage(pager.currentPage + 1)">NEXT</a>
+                            </li>
+                            <li id="lastPage" [ngClass]="{disabled:(currentPage === totalPages || paginationDisabbled)}" class="page-item">
+                                <a class="page-link" (click)="setPage(pager.totalPages)">LAST</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        <div *ngIf="xmlSearchBlock">
+            <div id="formWrapper" class="formWrapperMargin bluePrintFormWrapper">
+                <form class="form-horizontal" id="xmlBluePrintForm" #xmlBluePrintForm>
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName">RULE NAME</label>
+                                <input class="form-control" autocomplete="off" placeholder="" id="xmlSearchRuleName" name="xmlSearchRuleName" type="text"
+                                    value="" maxlength="30" />
+                                <div class="error-message-block"></div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName">COMMAND NAME</label>
+                                <input class="form-control" autocomplete="off" placeholder="" id="searchCmdName" name="searchCmdName" type="text" value=""
+                                />
+                                <div class="error-message-block"></div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName">ROOT NAME</label>
+                                <input class="form-control" autocomplete="off" placeholder="" id="xmlSearchRootName" name="xmlSearchRootName" type="text"
+                                    value="" />
+                                <div class="error-message-block"></div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName">SUB ROOT NAME</label>
+                                <input class="form-control" autocomplete="off" placeholder="" id="xmlSearchSubRootName" name="xmlSearchSubRootName" type="text"
+                                    value="" />
+                                <div class="error-message-block"></div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName">PROMPT</label>
+                                <select class="form-control" name="searchPrompt" id="searchPrompt">
+                                    <option value="">--Select--</option>
+                                    <option *ngFor="let prompt of prompts">{{prompt}}</option>
+                                </select>
+                                <div class="error-message-block"></div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName">RULE STATUS</label>
+                                <select class="form-control" name="ruleStatus" id="ruleStatus">
+                                    <option value="">--Select--</option>
+                                    <option value="Pass">Pass</option>
+                                    <option value="Fail">Fail</option>
+                                    <option value="Warn">Warn</option>
+                                </select>
+                                <div class="error-message-block"></div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName">CREATED BY</label>
+                                <input class="form-control" autocomplete="off" placeholder="" id="xmlSearchCreatedBy" name="xmlSearchCreatedBy" type="text"
+                                    value="" />
+                                <div class="error-message-block"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="textAlignCenter">
+                        <button name="save" class="formBtn myriadproBold validateForm " id="xmlSearchButton" (click)="searchXmlCmdRules($event)"
+                            accesskey="s">SEARCH</button>
+                            <button type="button" id="cancelButton" name="CANCEL" class="formBtnCncl formBtn myriadproBold formBtn" (click)="clearSearchFrom()" accesskey="c">CLEAR</button>             
+
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div *ngIf="xmlCreateBlock">
+            <div id="formWrapper" class="formWrapperMargin bluePrintFormWrapper">
+                <form class="form-horizontal" id="xmlCreateBluePrintForm" #xmlBluePrintForm>
+                    <div class="row" style="margin-bottom: 15px;">
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName" class="asterisk_input">RULE NAME</label>
+                                <input class="form-control" autocomplete="off" placeholder="" id="xmlRuleName" name="xmlRuleName" type="text" value="" maxlength="30"
+                                />
+                                <div class="error-message-block"></div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName" class="asterisk_input">COMMAND NAME</label>
+                                <input class="form-control" autocomplete="off" placeholder="" id="cmdName" name="cmdName" type="text" value="" />
+                                <div class="error-message-block"></div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName" class="asterisk_input">ROOT NAME</label>
+                                <input class="form-control" autocomplete="off" placeholder="" id="xmlRootName" name="xmlRootName" type="text" value="" />
+                                <div class="error-message-block"></div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName">SUB ROOT NAME</label>
+                                <input class="form-control" autocomplete="off" placeholder="" id="xmlSubRootName" name="xmlSubRootName" type="text" value=""
+                                />
+                                <div class="error-message-block"></div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName" class="asterisk_input">LOOP TYPE</label>
+                                <select class="form-control" name="loopType" id="loopType">
+                                    <option value="All">All</option>
+                                    <option value="AtleastOne">AtleastOne</option>
+                                </select>
+                                <div class="error-message-block"></div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName" class="asterisk_input">PROMPT</label>
+                                <select class="form-control" name="prompt" id="prompt" [(ngModel)]="selectedPrompt">
+                                    <option value="">--Select--</option>
+                                    <option *ngFor="let prompt of prompts">{{prompt}}</option>
+                                </select>
+                                <div class="error-message-block"></div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName" class="asterisk_input">STATUS</label>
+                                <select class="form-control" name="status" id="status">
+                                    <option value="">--Select--</option>
+                                    <option value="Pass">Pass</option>
+                                    <option value="Fail">Fail</option>
+                                    <option value="Warn">Warn</option>
+                                </select>
+                                <div class="error-message-block"></div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <label for="templateName">REMARKS</label>
+                            <textarea rows="4" cols="50" class="customTextArea" name="xmlRemarks" id="xmlRemarks"></textarea>
+                        </div>
+                    </div>
+                    <ng-container *ngTemplateOutlet="rootElementTemplate"></ng-container>
+                    <div class="textAlignCenter">
+                        <button name="save" class="formBtn myriadproBold validateForm " id="saveButton" (click)="saveRootAndElementData($event,index)"
+                            accesskey="s">CREATE</button>
+                        <button name="save" class="formBtnCncl formBtn myriadproBold validateForm " id="cancelButton" (click)="cancelCmdRule($event)" [ngClass]="{'buttonDisabled' : rootAndElementData.rootDetailsData.length == 0}"
+                            accesskey="s">CANCEL</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="dataWrapper" *ngIf="ciqShellOrXmlBlock" style="margin-top: -18px;">
+            <br>
+            <div id="tableWrapper" class="usecaseTable" id="tableWrapper" class="useCaseScriptTable">
+                <div class="scrollHead">
+                    <table class="table" id="melConfigDetails">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <div (click)="changeSorting('ruleName', $event, 0,'xml')" class="sorting form-control-small-2">RULE NAME</div>
+                                </th>
+                                <th>
+                                    <div (click)="changeSorting('cmdName', $event, 1,'xml')" class="sorting form-control-small-1">COMMAND</div>
+                                </th>
+                                <th>
+                                    <div (click)="changeSorting('rootName', $event, 2,'xml')" class="sorting form-control-small-2">ROOT NAME</div>
+                                </th>
+                                <th>
+                                    <div (click)="changeSorting('subRootName', $event, 3,'xml')" class="sorting form-control-max">SUB ROOT NAME</div>
+                                </th>
+                                <th>
+                                    <div (click)="changeSorting('loopType', $event, 4,'xml')" class="sorting form-control-max">LOOP TYPE</div>
+                                </th>
+                                <th>
+                                    <div (click)="changeSorting('prompt', $event, 5,'xml')" class="sorting form-control-small-1">PROMPT</div>
+                                </th>
+                                <th>
+                                    <div (click)="changeSorting('status', $event, 6,'xml')" class="sorting form-control-small-1">RULE STATUS</div>
+                                </th>
+                                <th>
+                                    <div (click)="changeSorting('createdBy', $event, 7,'xml')" class="sorting form-control-small-2">CREATED BY</div>
+                                </th>
+                                <th>
+                                    <div (click)="changeSorting('timeStamp', $event, 8,'xml')" class="sorting form-control-max">TIME STAMP</div>
+                                </th>
+                                <th>
+                                    <div (click)="changeSorting('remarks', $event, 9,'xml')" class="sorting form-control-max">REMARKS</div>
+                                </th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="scrollBody">
+                    <table class="table" id="removalDetailsData">
+                        <tbody id="rowCount">
+                            <ng-container *ngFor="let key of tableData['xmlRuleDetail']; let index = index">
+                                <tr id="row_{{index}}" class="row_id_{{key.id}} xmlRow">
+                                    <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <div class="form-control-small-2">{{key.ruleName}}</div>
+                                    </td>
+                                    <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <div class="form-control-small-1">{{key.cmdName}}</div>
+                                    </td>
+                                    <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <div class="form-control-small-2">{{key.rootName}}</div>
+                                    </td>
+                                    <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <div class="form-control-max">{{key.subRootName}}</div>
+                                    </td>
+                                    <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <div class="form-control-max">{{key.loopType}}</div>
+                                    </td>
+                                    <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <div class="form-control-small-1">{{key.prompt}}</div>
+                                    </td>
+                                    <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <div class="form-control-small-1">{{key.status}}</div>
+                                    </td>
+                                    <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <div class="form-control-small-2">{{key.createdBy}}</div>
+                                    </td>
+                                    <td data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <div class="form-control-max">{{key.timeStamp}}</div>
+                                    </td>
+                                    <td class="form-control-max" data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <span class="displayNone" class="eventColText">{{key.remarks}}</span>
+                                        <div #fixedCol class="form-control-fixed iconsWrapper tableRowAction" id="fixedCol" ng-style="iconsWrapperPosition">
+                                            <div (click)="editRootRow($event, key, index)" class="editRow" placement="bottom" container="body" ngbTooltip="Edit"></div>
+                                            <div (click)="deleteXmlCmdRow($event,confirmModal, key.id)" class="deleteRow" placement="bottom" container="body" ngbTooltip="Delete"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr *ngIf="checkRootElemFormEnable(index)" id="editedRow{{index}}" class="editXmlRow">
+                                    <td colspan="10" class="formEditRow ">
+                                        <div id="formWrapper" [ngStyle]="{'width': formWidth, 'margin-left': scrollLeft}">
+                                            <form class="form-horizontal" id="bluePrintForm">
+                                                <div class="row" style="margin-bottom: 15px;">
+                                                    <div class="col-3">
+                                                        <div class="form-group">
+                                                            <label for="templateName" class="asterisk_input">RULE NAME</label>
+                                                            <input class="form-control" autocomplete="off" placeholder="" id="xmlRuleName" name="xmlRuleName" type="text" value="" maxlength="30" disabled                                                      />
+                                                            <div class="error-message-block"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <div class="form-group">
+                                                            <label for="templateName" class="asterisk_input">COMMAND NAME</label>
+                                                            <input class="form-control" autocomplete="off" id="cmdName" name="cmdName" type="text" value="" [disabled]="key.useCount"
+                                                            />
+                                                            <div class="error-message-block"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <div class="form-group">
+                                                            <label for="templateName" class="asterisk_input">ROOT NAME</label>
+                                                            <input class="form-control" autocomplete="off" placeholder="" id="xmlRootName" name="xmlRootName" type="text" value="" />
+                                                            <div class="error-message-block"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <div class="form-group">
+                                                            <label for="templateName">SUB ROOT NAME</label>
+                                                            <input class="form-control" autocomplete="off" placeholder="" id="xmlSubRootName" name="xmlSubRootName" type="text" value=""
+                                                            />
+                                                            <div class="error-message-block"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <div class="form-group">
+                                                            <label for="templateName" class="asterisk_input">LOOP TYPE</label>
+                                                            <select class="form-control" name="loopType" id="loopType">
+                                                                <option value="All">All</option>
+                                                                <option value="AtleastOne">AtleastOne</option>
+                                                            </select>
+                                                            <div class="error-message-block"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <div class="form-group">
+                                                            <label for="templateName" class="asterisk_input">PROMPT</label>
+                                                            <select class="form-control" name="prompt" id="prompt">
+                                                                <option value="">--Select--</option>
+                                                                <option *ngFor="let prompt of prompts">{{prompt}}</option>
+                                                            </select>
+                                                            <div class="error-message-block"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <div class="form-group">
+                                                            <label for="templateName" class="asterisk_input">STATUS</label>
+                                                            <select class="form-control" name="status" id="status">
+                                                                <option value="">--Select--</option>
+                                                                <option value="Pass">Pass</option>
+                                                                <option value="Fail">Fail</option>
+                                                                <option value="Warn">Warn</option>
+                                                            </select>
+                                                            <div class="error-message-block"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <div class="form-group">
+                                                            <label for="templateName" class="asterisk_input">CREATED BY</label>
+                                                            <input class="form-control" autocomplete="off" placeholder="" id="xmlCreatedBy" name="xmlCreatedBy" type="text" value="" disabled
+                                                            />
+                                                            <div class="error-message-block"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-3">
+                                                        <label for="templateName">REMARKS</label>
+                                                        <textarea rows="4" cols="50" class="customTextArea" name="xmlRemarks" id="xmlRemarks"></textarea>
+                                                    </div>
+
+                                                </div>
+
+                                                <ng-container *ngTemplateOutlet="rootElementTemplate"></ng-container>
+
+                                                <div class="textAlignCenter" id="saveRow">
+                                                    <button name="update" class="formBtn myriadproBold validateForm" id="updateButton" (click)="updateXmlCmdRuleDetails($event)"
+                                                    [ngClass]="{'buttonDisabled':currEditRoot != null || currEditElement != null}" [disabled]="currEditRoot != null || currEditElement != null" accesskey="u">UPDATE</button>
+                                                    <button type="button" name="CANCEL" class="formBtnCncl formBtn myriadproBold formBtn" id="editCancelButton" (click)="cancelXmlEditRow(index,key.id)"
+                                                        accesskey="c">CANCEL</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="paginationWrapper">
+                <div *ngIf="pageRenge.length" class="floatLeft page" style="padding-top: 0px;margin-left:20px;">
+                    <div class="floatLeft" style="width: 75px;padding-top: 6px">Show</div>
+                    <select [disabled]="paginationDisabbled" [(ngModel)]="pageSize" (change)="onChangeTableRowLength($event)" style="margin-top: 4px; margin-right: 6px;margin-left: -39px;"
+                        class="form-control-pagination floatLeft" aria-controls="TableRowLength" size="1" name="TableRowLength"
+                        id="TableRowLength">
+                        <option selected="selected" value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                    <div class="floatLeft" style="width: 75px;padding-top: 6px">Entries</div>
+                </div>
+                <div class="floatRight page" style="padding-top: 3px;margin-right:20px;">
+                    <ul *ngIf="pageRenge.length" class="pagination floatRight">
+                        <li id="firstPage" [ngClass]="{disabled:(currentPage === 1 || paginationDisabbled)}" class="page-item">
+                            <a class="page-link" (click)="setPage(1)">FIRST</a>
+                        </li>
+                        <li id="previousPage" [ngClass]="{disabled:(currentPage === 1 || paginationDisabbled)}" class="page-item">
+                            <a class="page-link" (click)="setPage(pager.currentPage - 1)">PREV</a>
+                        </li>
+                        <li *ngFor="let n of pager.pages" [ngClass]="{active:currentPage === n, disabled:paginationDisabbled}" class="page-item">
+                            <a class="page-link" (click)="setPage(n)" id='{{n+1}}'>{{n}}</a>
+                        </li>
+                        <li id="nextPage" [ngClass]="{disabled:(currentPage === totalPages || paginationDisabbled)}" class="page-item">
+                            <a class="page-link" (click)="setPage(pager.currentPage + 1)">NEXT</a>
+                        </li>
+                        <li id="lastPage" [ngClass]="{disabled:(currentPage === totalPages || paginationDisabbled)}" class="page-item">
+                            <a class="page-link" (click)="setPage(pager.totalPages)">LAST</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <ng-template #rootElementTemplate>
+            <div class="form-group floatRight" *ngIf="rootAndElementTabs">
+                <div class="addRootBtn">
+                    <button type="button" name="add" class="formBtnSmall myriadproBold validateForm" [ngClass]="isDisabledClass()" [disabled]="isDisabledClass() == 'buttonDisabled'"
+                        id="addButton" accesskey="a" (click)="addRootOrElementDetails($event,rootDetails)">ADD</button>
+                </div>
+            </div>
+            <ngb-tabset #tabs type="pills" *ngIf="rootAndElementTabs" (tabChange)="onTabChange($event)">
+                <ngb-tab id="tab-root">
+                    <ng-template ngbTabTitle>
+                        <div class="rootTab">ROOT DETAILS</div>
+                    </ng-template>
+                    <ng-template ngbTabContent>
+                        <form class="form-horizontal" id="rootDetailsTab" #rootDetailsContainer>
+                            <div id="tableWrapper" style="margin:10px">
+                                <div class="scrollHead">
+                                    <table class="table" id="scriptInfo">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    <div class="form-control-small">ROOT KEY</div>
+                                                </th>
+                                                <th>
+                                                    <div class="form-control-small">ROOT VALUE</div>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="">
+                                    <table class="table" id="scriptTableData">
+                                        <tbody id="rowCount">
+                                            <ng-container *ngFor="let key of rootAndElementData['rootDetailsData']; let index = index">
+                                                <tr id="row_{{index}}" class="row_id_{{key.id}}">
+
+                                                    <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">
+                                                        <span class="eventColText form-control-small" *ngIf="!key.inRootEditMode">{{key.rootKey}}</span>
+                                                        <input type="text" class="form-control-max" value="{{key.rootKey}}" id="tableRootKey_{{index}}" *ngIf="key.inRootEditMode"
+                                                            name="rootKey" [(ngModel)]="key.rootKey" />
+                                                        <div class="error-message-block"></div>
+                                                    </td>
+                                                    <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">
+                                                        <span class="eventColText" *ngIf="!key.inRootEditMode">{{key.rootValue}}</span>
+                                                        <span class="eventColText">
+                                                            <input type="text" value="{{key.rootValue}}" class="form-control-max"
+                                                                id="tableRootValue_{{index}}" *ngIf="key.inRootEditMode" name="rootValue"
+                                                                [(ngModel)]="key.rootValue" />
+                                                        </span>
+                                                        <div class="error-message-block"></div>
+                                                        <div class="form-control-fixed iconsWrapper tableRowAction" id="fixedCol" ng-style="iconsWrapperPosition">
+                                                            <!-- *ngIf="key.role != 'Super Administrator'" -->
+                                                            <div *ngIf="!key.inRootEditMode" (click)="editRootOrElem($event, key, index,'root')" class="editRow" placement="bottom" container="body"
+                                                                ngbTooltip="Edit"></div>
+                                                            <div *ngIf="!key.inRootEditMode" (click)="deleteRootOrElem(confirmModal, key.userName, index,'root')" class="deleteRow" placement="bottom"
+                                                                container="body" ngbTooltip="Delete"></div>
+                                                            <div *ngIf="key.inRootEditMode" (click)="saveRootRow($event, key, index)" class="saveRow validateForm" placement="bottom"
+                                                                container="body" ngbTooltip="Save"></div>
+                                                            <div *ngIf="key.inRootEditMode" (click)="cancelRootRow($event, key, index,'root')" class="cancelRow" placement="bottom" container="body"
+                                                                ngbTooltip="Cancel"></div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </ng-container>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </form>
+                    </ng-template>
+                </ngb-tab>
+                <ngb-tab id="tab-element">
+                    <ng-template ngbTabTitle>
+                        <div class="elementTab">ELEMENT DETAILS</div>
+                    </ng-template>
+                    <ng-template ngbTabContent>
+                        <form class="form-horizontal" id="elementDetails" #elementsDetailsContainer>
+                            <div id="tableWrapper" style="margin:10px">
+                                <div class="scrollHead">
+                                    <table class="table" id="scriptInfo">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    <div class="form-control-small">ELEMENT NAME</div>
+                                                </th>
+                                                <th>
+                                                    <div class="form-control-small">OPERATOR</div>
+                                                </th>
+                                                <th>
+                                                    <div class="form-control-small">ELEMENT DETAILS</div>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div>
+                                    <table class="table" id="scriptTableData">
+                                        <tbody id="rowCount">
+                                            <ng-container *ngFor="let key of rootAndElementData['elementsDetailsData']; let index = index">
+                                                <tr id="row_{{index}}" class="row_id_{{key.id}}">
+                                                    <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">
+                                                        <span class="eventColText form-control-small" *ngIf="!key.inElementEditMode">{{key.elementName}}</span>
+                                                        <input type="text" class="form-control-max" value="{{key.elementName}}" id="tableElementName_{{index}}" *ngIf="key.inElementEditMode"
+                                                            name="elementName" [(ngModel)]="key.elementName" />
+                                                        <div class="error-message-block"></div>
+                                                    </td>
+                                                    <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">
+                                                        <span class="eventColText form-control-small" *ngIf="!key.inElementEditMode">{{key.operator}}</span>
+                                                        <select class="form-control form-control-max" id="tableOperator_{{index}}" *ngIf="key.inElementEditMode" name="operator"
+                                                            [(ngModel)]="key.operator">
+                                                            <option value="">--Select--</option>
+                                                            <option *ngFor="let key of cmdOperator" value="{{key}}">{{key}}</option>
+                                                            <option value="ANY">ANY</option>
+							    <option value="TEMPLATE">TEMPLATE</option>
+                                                        </select>
+                                                        <div class="error-message-block"></div>
+                                                    </td>
+                                                    <td class="form-control-small" data-toggle="tooltip" data-placement="right" data-container="body">
+                                                        <span class="eventColText eventColVal" *ngIf="!key.inElementEditMode">{{key.elementValue}}</span>
+                                                        <span class="eventColText">
+                                                            <input value="{{key.elementValue}}" class="form-control-max"
+                                                                id="tableElementValue_{{index}}" *ngIf="key.inElementEditMode"
+                                                                name="elementValue" [(ngModel)]="key.elementValue" />
+                                                            <div class="error-message-block"></div>
+                                                        </span>
+                                                        
+                                                        <div class="form-control-fixed iconsWrapper tableRowAction" id="fixedCol" ng-style="iconsWrapperPosition">
+                                                            <div *ngIf="!key.inElementEditMode" (click)="editRootOrElem($event, key, index,'element')" class="editRow" placement="bottom"
+                                                                container="body" ngbTooltip="Edit"></div>
+                                                            <div *ngIf="!key.inElementEditMode" (click)="deleteRootOrElem(confirmModal, key.userName, index,'element')" class="deleteRow"
+                                                                placement="bottom" container="body" ngbTooltip="Delete"></div>
+                                                            <div *ngIf="key.inElementEditMode" (click)="saveElementRow($event, key, index)" class="saveRow validateForm" placement="bottom"
+                                                                container="body" ngbTooltip="Save"></div>
+                                                            <div *ngIf="key.inElementEditMode" (click)="cancelElemRow($event, key, index,'element')" class="cancelRow" placement="bottom"
+                                                                container="body" ngbTooltip="Cancel"></div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </ng-container>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </form>
+                    </ng-template>
+                </ngb-tab>
+            </ngb-tabset>
+        </ng-template>
+    </div>
+
+
+    <rct-nodata *ngIf="showNoDataFound" [subTitle]=""></rct-nodata>
+    <!--Live Data Details Model-->
+
+    <ng-template #sessionExpiredModal let-c="close" let-d="dismiss">
+        <div class="failureIcon"></div>
+        <p id="sessionPopup">Session Expired</p>
+        <div class="modelDismiss" (click)="closeAndLogout()"></div>
+    </ng-template>
+    <ng-template #successModal let-c="close" let-d="dismiss">
+        <div class="successIcon"></div>
+        <p id="sessionPopup">{{message}}</p>
+        <div class="modelDismiss" (click)="closeModel()"></div>
+    </ng-template>
+    <ng-template #xmlDelModal let-c="close" let-d="dismiss">
+        <div class="successIcon"></div>
+        <p id="sessionPopup">{{message}}</p>
+        <div class="modelDismiss" (click)="closeModelXmlDel()"></div>
+    </ng-template>
+    <ng-template #successModalCiq let-c="close" let-d="dismiss">
+        <div class="successIcon"></div>
+        <p id="sessionPopup">{{message}}</p>
+        <div class="modelDismiss" (click)="closeCiqModel()"></div>
+    </ng-template>
+    <ng-template #xmlSuccessModal let-c="close" let-d="dismiss">
+        <div class="successIcon"></div>
+        <p id="sessionPopup">{{message}}</p>
+        <div class="modelDismiss" (click)="closeXmlModel()"></div>
+    </ng-template>
+    <ng-template #shellSuccessModal let-c="close" let-d="dismiss">
+        <div class="successIcon"></div>
+        <p id="sessionPopup">{{message}}</p>
+        <div class="modelDismiss" (click)="closeShellModel()"></div>
+    </ng-template>
+    <ng-template #shellDelModal let-c="close" let-d="dismiss">
+        <div class="successIcon"></div>
+        <p id="sessionPopup">{{message}}</p>
+        <div class="modelDismiss" (click)="closeModelShellDel()"></div>
+    </ng-template>
+</div>

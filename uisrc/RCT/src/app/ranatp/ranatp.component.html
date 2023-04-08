@@ -1,0 +1,1248 @@
+<div class="page-wrapper">
+        <rct-model *ngIf="showModelMessage" [message]="modelData"></rct-model>
+        <rct-loader *ngIf="showLoader"></rct-loader>
+        <h1 class="mainHead">RAN ATP</h1>
+    <ng-template #sessionExpiredModal let-c="close" let-d="dismiss">
+            <div class="failureIcon"></div>
+                <p id="sessionPopup">Session Expired</p>
+            <div class="modelDismiss" (click)="closeAndLogout()"></div>
+        </ng-template>
+    
+        <ng-template #successModal let-c="close" let-d="dismiss">
+              <div class="successIcon"></div>
+              <p id="sessionPopup">{{message}}</p>
+              
+              <div class="modelDismiss" (click)="closeModel()"></div>
+        </ng-template>
+        <ng-template #passwordModal let-c="close" let-d="dismiss">
+            <div class="pswdHeader">
+                <h2>ENTER PASSWORD</h2>
+                <span><b>Sane: </b>{{serverInfo.serverName}}</span> <span><b>IP: </b>{{serverInfo.serverIp}}</span>
+            </div>
+            <div id="formWrapper" class="bluePrintFormWrapper connectionPromptContent">
+                <form id="changePasswordForm" class="form-horizontal">
+                    <div class="row">
+                        <div class="col-2"></div>
+                        <div class="col-5 form-group">
+                            <label for="mailId" class="asterisk_input">ENTER PASSWORD</label>
+                            <input type="password" class="form-control" id="password" name="password" value="">
+                            <div class="error-message-block"></div>
+                        </div>
+                        <div class="col-3 btnContent">
+                            <label></label>
+                            <button name="save" class="formBtn myriadproBold validateForm" id="connect" (click)="connect($event)"
+                                accesskey="s">CONNECT</button>
+                        </div>
+                        <div class="col-2"></div>
+                    </div> 
+                </form>
+            </div>
+            <div class="modelDismiss" (click)="closeModelPassword()"></div>
+        </ng-template>
+        <!-- <div class="migrationBlock">
+            <form class="form-horizontal">
+                <div class="row">
+                    <div class="col-5">
+                        <div class="form-group radio-inline">
+                            <input class="radio" type="radio" [(ngModel)]='commissionType' value="precheck" name="migrationBtn" (click)="onChangeLoad('pre-check')">
+                            <label for="templateName">PRE CHECK</label>
+                        </div>
+                        <div class="form-group radio-inline">
+                            <input class="radio" type="radio" [(ngModel)]='commissionType' value="commission" name="migrationBtn" (click)="onChangeLoad('commission')">
+                            <label for="templateName">COMMISSION</label>
+                        </div>
+                        <div class="form-group radio-inline">
+                            <input class="radio" type="radio" [(ngModel)]='commissionType' value="postcheck" name="migrationBtn" (click)="onChangeLoad('post-check')">
+                            <label for="templateName">POST CHECK</label>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div> -->
+        <ul class="nav nav-pills" role="tablist">     
+            <li class="nav-item">
+                <div (click)="createNewTabBind()" accesskey="n" name="createnew" class="divalign float-sm-right float-md-right float-lg-right float-xl-right"
+                    #createNewTab>RAN ATP</div>
+            </li>
+            <li class="nav-item">
+                <div (click)="searchTabBind()" accesskey="h" name="seatch" class=" divalign float-sm-right float-md-right float-lg-right float-xl-right"
+                    #searchTab>SEARCH</div>
+            </li>
+            </ul>
+        <ng-template #confirmModal let-c="close" let-d="dismiss">
+            <div class="sucessContentWrapper">
+                <div class="confirmIcon"></div>
+                <div class="confirmContent deletePopup">
+                    <p>
+                        <b>Are You Sure, </b>
+                    <!-- </p>
+                    <br>
+                    <p> -->You want to
+                        <b>Delete</b>
+                    </p>
+                </div>
+            </div>
+            <div class="deletePopupBtn modal-footer textAlignCenter">
+                <button type="button" class="formBtn btn btn-secondary modal_button_yes" (click)="d('dismiss click')" id="deleteConfirmation">YES</button>
+                <button type="button" class="formBtn btn btn-secondary modal_button_no" (click)="c('Close click')" id="modal_button_no">NO</button>
+            </div>
+        </ng-template>
+        <ng-template #deleteModal let-c="close" let-d="dismiss">
+            <div class="sucessContentWrapper">
+                <div class="confirmIcon"></div>
+                <div class="confirmContent deletePopup">
+                    <p>
+                        <b>Are You Sure, </b>
+                    <!-- </p>
+                    <br>
+                    <p> -->You want to
+                        <b>Delete</b>
+                    </p>
+                </div>
+            </div>
+            <div class="deletePopupBtn modal-footer textAlignCenter">
+                <button type="button" class="formBtn btn btn-secondary modal_button_yes" (click)="d('dismiss click')" id="deleteConfirmation">YES</button>
+                <button type="button" class="formBtn btn btn-secondary modal_button_no" (click)="c('Close click')" id="modal_button_no">NO</button>
+            </div>
+        </ng-template>
+        <div id="tabContentWrapper" class="flightSearchFormWrapper" *ngIf="searchBlock">
+                <form class="form-horizontal" #searchForm>
+                    <div class="row">
+                        <div class="col-3">
+                          <label for="templateName">SELECT DATE RANGE</label>
+                          <div class="form-group" style="display: inline-block;">
+                            <input class="form-control"
+                              style="width: 75px !important;word-break: break-word;margin-right: 8px;" id="fromDate"
+                              name="fromDt" [(ngModel)]="fromDt" [owlDateTimeTrigger]="dt" [owlDateTime]="dt"
+                              [max]="max" placeholder="FROM">
+                            <owl-date-time [pickerType]="'calendar'" #dt></owl-date-time>
+                          </div>
+                          <div class="form-group" style="display: inline-block;">
+                            <input class="form-control" style="width: 75px !important;word-break: break-word;"
+                              id="toDate" [min]="fromDt" [max]="max" [owlDateTimeTrigger]="dt1" [owlDateTime]="dt1"
+                              placeholder="TO">
+                            <div class="error-message-block"></div>
+                            <owl-date-time [pickerType]="'calendar'" #dt1></owl-date-time>
+                          </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName">NAME</label>
+                                <input class="form-control" autocomplete="off" id="searchName" name="searchName" type="text" value=""
+                                    maxlength="30" />                            
+                            </div>
+                        </div>
+                        <!-- <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName">SM VERSION</label>
+                                <select class="form-control" name="searchVersion" id="searchVersion" [(ngModel)]="selSearchVer" [compareWith]= "compareFn" (change)="getLsmName(selSearchVer)">
+                                    <option value="">--Select--</option>
+                                    <option *ngFor="let version of smVersion" [ngValue]="version">{{version.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="templateName">SM NAME</label>                       
+                                <select class="form-control" name="searchSMName" id="searchSMName" [(ngModel)]="selSearchSMName" [compareWith]= "compareFn">
+                                    <option value="">--Select--</option>
+                                    <option *ngFor="let name of lsmNameDetails" [ngValue]="name">{{name.name}}</option>
+                                </select>
+                            </div>
+                        </div> -->
+                        <!-- <div class="col-3">
+                                <div class="form-group">
+                                    <label for="templateName">CIQ</label>
+                                    <select class="form-control" name="searchCiqName" id="searchCiqName" [(ngModel)]="selSearchCiqName" [compareWith]= "compareFn">
+                                        <option value="">--Select--</option>
+                                        <option *ngFor="let list of ciqList" [ngValue]="list">{{list.ciqFileName}}</option>
+                                    </select>
+                                    <input class="form-control" autocomplete="off" id="ciqFileName" name="ciqFileName" [(ngModel)]="selSearchCiqName" type="text" value="" />                            
+                                </div>
+                            </div> -->
+                            <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="templateName">SM VERSION</label>
+                                        <input class="form-control" autocomplete="off" id="searchVersion" name="searchVersion"
+                                            type="text" value="" />
+                                        <div class="error-message-block"></div>
+                                    </div>
+                            </div>
+                            <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="templateName">SM NAME</label>
+                                        <input class="form-control" autocomplete="off" id="searchSMName" name="searchSMName"
+                                            type="text" value="" />
+                                        <div class="error-message-block"></div>
+                                    </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3">
+                                    <div class="form-group">
+                                        <label for="templateName">CIQ</label>
+                                        <input class="form-control" autocomplete="off" id="searchCiqName" name="searchCiqName"
+                                         type="text" value=""/>
+                                        <div class="error-message-block"></div>
+                                    </div>
+                            </div>  
+                        
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label for="templateName">NE NAME</label>
+                                    <input class="form-control" autocomplete="off" id="searchNeName" name="searchNeName" type="text" value="" maxlength="30" />
+                                </div>
+                            </div>
+                            <!-- <div class="col-3">
+                                <div class="form-group">
+                                    <label for="templateName">USECASE NAME</label>
+                                    <select class="form-control" name="searchUseCase" id="searchUseCase">
+                                        <option value="">--Select--</option>
+                                        <option *ngFor="let name of lsmNameDetails">{{name}}</option>
+                                    </select>                                
+                                </div>
+                            </div> -->
+                
+                        </div>
+                    <div class="textAlignCenter">
+                            <button name="save" class="formBtn myriadproBold validateForm airlinecnfgSearch" id="searchButton" (click)="searchFileRules($event)"
+                                accesskey="s">SEARCH</button>
+                            <button type="button" id="cancelButton" name="CANCEL" class="formBtnCncl formBtn myriadproBold formBtn" (click)="clearSearchFrom()" accesskey="c">CLEAR</button>
+                    </div>
+                         
+                </form>
+            </div>
+            
+        <div *ngIf="createNewForm">
+        <form id="formWrapper" class="formWrapperMargin bluePrintFormWrapper">
+            <form class="form-horizontal" #runTestForm>
+                <div class="row">
+                    <div class="col-3">
+    
+                        <div class="form-group">
+                            <label for="templateName" class="asterisk_input">NAME</label>
+                            <input class="form-control" autocomplete="off" id="testName" name="testName" type="text" value=""
+                                maxlength="30" />
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>               
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName" class="">SM VERSION</label>
+                            <select class="form-control" name="lsmVersion" id="lsmVersion" [(ngModel)]="versionDetails"
+                                (change)="getLsmName(versionDetails)">
+                                <option value="">--Select--</option>
+                                <option *ngFor="let version of smVersion" [ngValue]="version">{{version.name}}</option>
+                            </select>
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName" class="">SM NAME</label>
+                            <select class="form-control" name="lsmName" id="lsmName" [(ngModel)]="nameDetails"><!-- (change)="getUseCase(nameDetails)" -->
+                                <option value="">--Select--</option>
+                                <option *ngFor="let name of lsmNameDetails" [ngValue]="name">{{name.name}}</option>
+                            </select>
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName" class="asterisk_input">CIQ</label>
+                             <!-- <select class="form-control" name="ciqName" id="ciqName" [(ngModel)]="ciqDetails" (change)="getNEList(ciqDetails)">
+                                <option value="">--Select--</option>
+                                <option *ngFor="let list of ciqList" [ngValue]="list">{{list.ciqFileName}}</option>
+                            </select> -->
+
+                            <div class="">
+                                <ngx-select-dropdown [config]="ciqConfig" id="ciqName" [options]="ciqList" [(ngModel)]="ciqDetails" name="ciqName"
+                                    (change)="getNEList(ciqDetails, true)"></ngx-select-dropdown>
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <div class="row">
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName" class="asterisk_input">NE NAME</label>                
+                            <!-- <ng-multiselect-dropdown class="form-control" id="neName" [placeholder]="'--Select--'" [data]="dropdownNEList"
+                                [(ngModel)]="selectedNEItems" [settings]="dropdownSettingsNE" name="neName" (onSelect)="getBandList($event)" (onSelectAll)="getBandList($event)" 
+                                (onDeSelect)="getBandList($event)" (onDeSelectAll)="getBandList($event)">
+                            </ng-multiselect-dropdown> -->
+                            <ng-select [multiple]="false" [virtualScroll]="true" [(ngModel)]="selectedNEItems" name="neName" id="neName" class="" placeholder="--Select--" (change)="onChangeNEs($event)">
+                                <ng-option *ngFor="let key of neNameList" [value]="key" [disabled]="false">{{key.eNBName}}</ng-option>
+                            </ng-select>
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName" class="asterisk_input">BAND NAME</label>
+                            <ng-multiselect-dropdown class="form-control" id="bandName" [placeholder]="'--Select--'" [data]="dropdownBandList" [(ngModel)]="selectedBandItems"
+                                [settings]="dropdownSettingsBand" name="bandName">
+                            </ng-multiselect-dropdown>
+                            <div class="error-message-block"></div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName" class="">INPUT FILE</label>
+                            <div>
+                                <input type="file" class="filePost" #filePost name="filePost" id="filePost" (change)="chooseFile($event)"/>
+                                <div class="error-message-block"></div>
+                                <div class="iconsWrapper1">
+                                    <!-- <div class="hint"></div> -->
+                                    <!-- <div class="hintMessage">supports .sh and py files</div> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="templateName" class="asterisk_input">USE CASE</label>                
+                            <div class="row" name="useCase" id="useCase" style="margin-left: 0;float: left;width:90%;">                
+                                <ng-multiselect-dropdown id="location" class="form-control" name="location" [placeholder]="'--Select--'"
+                                    [data]="dropdownList" [(ngModel)]="selectedItems" (onSelect)="onChangeUseCase($event)" (onSelectAll)="onChangeUseCase($event)"
+                                    (onDeSelect)="onChangeUseCase($event)" (onDeSelectAll)="onChangeUseCase($event)" [settings]="dropdownSettings">
+                                </ng-multiselect-dropdown>
+                                <div class="error-message-block"></div>             
+                                
+                            </div>   
+                            <button (click)="viewUseCase(viewModal, key)" class="viewContent useCaseViewBtn" [ngClass]="{'buttonDisabled':selectedItems?.length <= 0,'buttonBg':selectedItems?.length <= 0}"
+                                    placement="bottom" container="body" ngbTooltip="View" [disabled]="selectedItems?.length <= 0"></button> 
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <label for="templateName">REMARKS</label>
+                        <textarea rows="4" cols="50" class="customTextArea" name="testDescription" id="testDescription" value=""></textarea>
+                    </div>
+                    <div class="col-3">
+                        <label></label>              
+                        <input type="checkbox" class="thcheckbox" style="margin-right: 3px;vertical-align: middle;" [(ngModel)]="ckeckedOrNot" name="check">Use current password
+                        <span class="afterchecktext" container="body" ngbTooltip= " Upon selection current vpn username and password will be considered for Sane server" id="tooltip" placement="bottom">
+                            
+                        </span>
+                    </div>
+                </div>
+    
+                <div class="textAlignCenter">                    
+                    <button name="save" class="formBtn myriadproBold validateForm" id="connectionBtn" (click)="submitRunTestForm($event,'CHECK_CONNECTION')"
+                    accesskey="s">CHECK CONNECTION</button>
+                    <button (click)="viewCheckConLog(checkConnLogModal)" class="viewContent chkConnLogBtn" placement="bottom" container="body" ngbTooltip="Check Connection Log"></button>
+                    <button name="save" class="formBtn myriadproBold validateForm" id="AddButton" (click)="submitRunTestForm($event,'RUN_TEST')"
+                        accesskey="s">RUN</button>
+                    <!-- <button name="save" class="formBtn myriadproBold validateForm" id="generateButton" (click)="submitRunTestForm($event,'GENERATE')"
+                    accesskey="s">GENERATE</button> -->
+                </div>
+    
+    
+            </form>
+        </form>
+        </div>
+    
+        <div class="filterTable">
+            <label [ngClass]="{disabled:searchBlock}" class="switch filterSitesToggle">Show my sites
+                <input type="checkbox" name="showMySites" (change)="toggleSitesTable()"
+                    [checked]="showMySites" [(ngModel)]="showMySites" [disabled]="searchBlock"/>
+                    <!-- <span class="switch-label" data-on="ALL" data-off="NONE"></span>
+                    <span class="switch-handle updateExeToggleHandle"></span> -->
+            </label>
+        </div>
+        <!--Data Table-->
+        <div id="dataWrapper" *ngIf="tableShowHide" style="margin-top: -18px;">
+            <!-- <br> -->
+            <div id="tableWrapper" class="runTestWrapper">
+                <div class="scrollHead">
+                    <table class="table" id="runTestScrollHead">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <div (click)="changeSorting('testName', $event, 0)" class="sorting form-control-middle-1">NAME</div>
+                                </th>
+                                <th>
+                                    <div (click)="changeSorting('progressStatus', $event, 1)" class="sorting form-control-middle-1">PROGRESS STATUS</div>
+                                </th>
+                                <th>
+                                    <div (click)="changeSorting('status', $event, 2)" class="sorting form-control-middle-1">STATUS</div>
+                                </th>
+                                <th>
+                                    <div (click)="changeSorting('result', $event, 3)" class="sorting form-control-middle-1">RESULT</div>
+                                </th>
+                                <th>
+                                    <div (click)="changeSorting('lsmVersion', $event, 4)" class="sorting form-control-middle-1">SM VERSION</div>
+                                </th>
+                                <th>
+                                    <div (click)="changeSorting('lsmName', $event, 5)" class="sorting form-control-middle-1">SM NAME</div>
+                                </th>
+                                <th>
+                                    <div (click)="changeSorting('ciqName', $event, 6)" class="sorting form-control-middle-1">CIQ</div>
+                                </th> 
+                                <th>
+                                    <div (click)="changeSorting('neName', $event, 7)" class="sorting form-control-middle-1">NE NAME</div>
+                                </th> 
+                                <th>
+                                    <div (click)="changeSorting('useCase', $event, 8)" class="sorting form-control-middle-1">USE CASE NAME</div>
+                                </th>
+                                <th>
+                                    <div (click)="changeSorting('userName', $event, 9)" class="sorting form-control-small-1">USER</div>
+                                </th>
+                                <th>
+                                    <div (click)="changeSorting('creationDate', $event, 10)" class="sorting form-control-middle-1">TIMESTAMP</div>
+                                </th>
+                                <th>
+                                    <div (click)="changeSorting('testDescription', $event, 11)" class="sorting form-control-max1">REMARKS</div>
+                                </th>  
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="scrollBody">
+                    <table class="table" id="runTestScrollBody">
+                        <tbody id="rowCount">
+                            <ng-container *ngFor="let key of tableData['runTestTableDetails']; let index = index">
+                                <tr id="row_{{index}}" class="row_id_{{key.id}} runTestRow" [ngClass]="isInProgress(key.progressStatus)">
+                                    <td class="form-control-middle-1" data-toggle="tooltip" data-placement="right" data-container="body">
+                                        {{key.testName}}
+                                    </td>
+                                    <td class="form-control-middle-1" data-toggle="tooltip" data-placement="right" data-container="body">
+                                        {{key.progressStatus}}
+                                    </td>
+                                    <td class="form-control-middle-1" data-toggle="tooltip" data-placement="right" data-container="body">
+                                        {{key.status}}
+                                    </td>
+                                    <td class="form-control-middle-1" data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <a style="cursor: pointer;text-decoration: underline;" (click)="downloadResult(key.result,key.resultFilePath)">{{key.result}}</a>
+                                    </td>
+                                    <td class="form-control-middle-1" data-toggle="tooltip" data-placement="right" data-container="body">
+                                        {{key.lsmVersion}}
+                                    </td>
+                                    <td class="form-control-middle-1" data-toggle="tooltip" data-placement="right" data-container="body">
+                                        {{key.lsmName}}
+                                    </td>
+                                    <td class="form-control-middle-1" data-toggle="tooltip" data-placement="right" data-container="body">
+                                        {{key.ciqName}}
+                                    </td>
+                                    <td class="form-control-middle-1" data-toggle="tooltip" data-placement="right" data-container="body">
+                                        {{key.neName}}
+                                    </td>
+                                    <td class="form-control-middle-1" data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <div class="row">
+                                            <div class="col-10 useCaseField">{{key.useCase}}</div>
+                                            <div class="infoRow col-2" placement="bottom" style="color:#3c3c3c;cursor: pointer;" container="body" [ngbPopover]="popContent"
+                                                triggers="mannual:onclick" #p1="ngbPopover" popoverTitle="" placement="bottom" (click)="showListOfUseCases(p1)"></div>
+                                        
+                                            <ng-template #popContent>
+                                                <div class="cPointer">
+                                                    <div class="useCase" *ngFor="let useCase of key.useCase.split(','); let index = index">
+                                                        <span style="padding: 5px;font-size: 12px;display: inline-block;">{{useCase}}</span>
+                                                        <hr class="useCase_hr" />
+                                                    </div>
+                                                </div>
+                                            </ng-template>
+                                        </div>
+                                    </td>
+                                    <td class="form-control-small-1" data-toggle="tooltip" data-placement="right" data-container="body">
+                                        {{key.userName}}
+                                    </td>
+                                    <td class="form-control-middle-1" data-toggle="tooltip" data-placement="right" data-container="body">
+                                        {{key.creationDate}}
+                                    </td>
+    
+                                    <td class="form-control-max1" data-toggle="tooltip" data-placement="right"
+                                        data-container="body">
+                                        <span class="displayNone" class="eventColText">{{key.testDescription}}</span>
+                                        <div #fixedCol class="form-control-fixed iconsWrapper tableRowAction" id="fixedCol"
+                                            ng-style="iconsWrapperPosition">
+                                            <!-- <div (click)="reRun(key)" class="reRunRow" placement="bottom"
+                                                container="body" ngbTooltip="Re-Run"></div> -->
+                                            <div (click)="showRunningLog(runningLogModal, key)" class="runningLog" placement="bottom"
+                                                container="body" ngbTooltip="Running Log"></div>
+                                            <div (click)="(key.progressStatus != 'InProgress') ? showCheckList(checkListModal, key) : ''" class="viewRowCheckList" placement="bottom"
+                                                container="body" ngbTooltip="Check List" [ngClass]="{disabled:(key.progressStatus == 'InProgress')}"></div>
+                                            <div (click)="(key.progressStatus != 'InProgress') ? viewResult(testViewModal, key) : ''" class="viewRow" placement="bottom"
+                                                container="body" ngbTooltip="Result" [ngClass]="{disabled:(key.progressStatus == 'InProgress')}"></div>
+                                            <div (click)="(key.progressStatus != 'InProgress') ? downloadLogs(key) : ''"
+                                                class="runTestDowload" placement="bottom" container="body" ngbTooltip="Download Logs"
+                                                [ngClass]="{disabled:(key.progressStatus == 'InProgress')}"></div>
+                                                <div (click)="downloadGeneratedScripts(key.testName,key.generateScriptPath)" class="downloadGenScripts"
+                                                placement="bottom" container="body" ngbTooltip="Download Generated Scripts"></div>
+                                            <div (click)="deleteRow($event,confirmModal, key.id)" class="deleteRow"
+                                                placement="bottom" container="body" ngbTooltip="Delete"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="paginationWrapper">
+                <div *ngIf="pageRenge.length" class="floatLeft page" style="padding-top: 0px;margin-left:20px;">
+                    <div class="floatLeft" style="width: 75px;padding-top: 6px">Show</div>
+                    <select [disabled]="paginationDisabbled" [(ngModel)]="pageSize" (change)="onChangeTableRowLength($event)"
+                        style="margin-right: 6px;margin-left: -39px; margin-top: 4px; " class="form-control-pagination floatLeft"
+                        aria-controls="TableRowLength" size="1" name="TableRowLength" id="TableRowLength">
+                        <option selected="selected" value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                    <div class="floatLeft" style="width: 75px;padding-top: 6px">Entries</div>
+                </div>
+                <div class="floatRight page" style="padding-top: 3px;margin-right:20px;">
+                    <ul *ngIf="pageRenge.length" class="pagination floatRight">
+                        <li id="firstPage" [ngClass]="{disabled:(currentPage === 1 || paginationDisabbled)}" class="page-item">
+                            <a class="page-link" (click)="setPage(1)">FIRST</a>
+                        </li>
+                        <li id="previousPage" [ngClass]="{disabled:(currentPage === 1 || paginationDisabbled)}" class="page-item">
+                            <a class="page-link" (click)="setPage(pager.currentPage - 1)">PREV</a>
+                        </li>
+                        <li *ngFor="let n of pager.pages" [ngClass]="{active:currentPage === n, disabled:paginationDisabbled}"
+                            class="page-item">
+                            <a class="page-link" (click)="setPage(n)" id='{{n+1}}'>{{n}}</a>
+                        </li>
+                        <li id="nextPage" [ngClass]="{disabled:(currentPage === totalPages || paginationDisabbled)}" class="page-item">
+                            <a class="page-link" (click)="setPage(pager.currentPage + 1)">NEXT</a>
+                        </li>
+                        <li id="lastPage" [ngClass]="{disabled:(currentPage === totalPages || paginationDisabbled)}" class="page-item">
+                            <a class="page-link" (click)="setPage(pager.totalPages)">LAST</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+    
+        </div>
+        <div class="runningLogLauncher" *ngIf="showRunningLogLauncher" (click)="showRunningLogContainer()">
+            <!-- <span>MIGRATION - {{rowData.runTestName | uppercase}} </span> -->
+            <div class="maxIcon"></div>
+        </div>
+        <div [ngClass]="{'col-10':showWideRunningLog, 'col-4':!showWideRunningLog}" class="runningLogContainer" *ngIf="showRunningLogContent">
+                <div class="runningLogAction">
+                    <div *ngIf="showWideRunningLog" (click)="wideRunningLog()" class="wideIcon"></div>
+                    <div *ngIf="!showWideRunningLog" (click)="wideRunningLog()" class="normalIcon"></div>
+                    <div (click)="closeRunningLogContainer()" class="closeIcon"></div>
+                    <div (click)="hideRunningLogContainer()" class="minIcon"></div>
+            </div>
+        
+            <div style="text-align: center;">
+                <h4 class="dispHeaderLog">{{rowData.runTestName | uppercase}} - {{rowData.neName | uppercase}}</h4>
+            </div>
+                <pre id="runningLogsPre" class="viewLog">{{runningLogs}}</pre>
+                <textarea id="logArea" class="runningLogArea">{{runningLogs}}</textarea>
+                <div>
+                    <button id="button" class="formBtnSmall" (click)="copyFunction()">Copy</button>
+                    <span id="snackbar">Copied to clipboard.</span>
+                </div>            <rct-loader class="innerLoader" *ngIf="showInnerLoader"></rct-loader>
+            <!-- <div style="text-align: center;margin: 5px;">
+                <button type="button" class="formBtn btn btn-light" (click)="updateRunningLog()">REFRESH</button>
+            </div> -->
+        </div>
+        <rct-nodata *ngIf="showNoDataFound" [subTitle]=""></rct-nodata>
+        <!--Live Data Details Model-->
+    
+    
+       
+    
+        <ng-template #sessionExpiredModal let-c="close" let-d="dismiss">
+            <div class="failureIcon"></div>
+            <p id="sessionPopup">Session Expired</p>
+            <div class="modelDismiss" (click)="closeAndLogout()"></div>
+        </ng-template>
+        <ng-template #successModal let-c="close" let-d="dismiss">
+            <div class="successIcon"></div>
+            <p id="sessionPopup">{{message}}</p>
+            <div class="modelDismiss" (click)="closeModel()"></div>
+        </ng-template>
+        <ng-template #viewModal let-c="close" let-modal>
+            <div class="modal-header">
+                <div class="dispHeader">
+                    <h4>RAN ATP - USECASE </h4>
+                </div>
+            </div>
+            <div class="modelBody">
+                <div class="infoMsg">
+                    <div class="infoIcon floatLeft"></div>
+                    <span>Execution Sequence <b>'0'</b> will not be executed</span>
+                </div>            
+                <ngb-tabset>
+                    <ngb-tab><!--  title="UseCase" (click)="cancelRow('scriptTab')">    -->              
+                        <ng-template ngbTabTitle>
+                                <div (click)="cancelRow('scriptTab')">UseCase</div>
+                            </ng-template>                                              
+                        <ng-template ngbTabContent>
+                            <form>
+                                <div id="tableWrapper" class="useCaseWrapper">
+                                    <div class="scrollHead">
+                                        <table class="table" id="useCaseScrollHead">
+                                            <thead>
+                                                <tr>
+                                                    <th>
+                                                        <div (click)="changeSortingUsecases('useCaseName', $event, 11)" class="sorting form-control-middle">USE
+                                                            CASE NAME</div>
+                                                    </th>
+                                                    <th>
+                                                        <div  (click)="changeSortingUsecases('useCaseName', $event, 12)" class="sorting form-control-middle">ACTUAL
+                                                            EXEC. SEQ.</div>
+                                                    </th>
+                                                    <th>
+                                                        <div  (click)="changeSortingUsecases('useCaseName', $event, 13)" class="sorting form-control-middle">UPDATED
+                                                            EXEC. SEQ.</div>
+                                                    </th>
+                                                    <th>
+                                                        <div (click)="changeSortingUsecases('useCaseName', $event, 14)" class="sorting form-control-middle">SLEEP INTERVAL (ms)</div>
+                                                    </th>
+                
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                    <div class="scrollBody">
+                                        <table class="table" id="useCaseTable" style="min-width: 968px;">
+                                            <tbody id="rowCount">
+                                                <ng-container *ngFor="let key of useCaseValue; let index = index">
+                                                    <tr id="row_{{index}}" class="row_id_{{key.id}} useCaseRow">
+                                                        <td class="form-control-middle" data-toggle="tooltip" data-placement="right" data-container="body">{{key.useCaseName}}</td>
+                                                        <td class="form-control-middle" data-toggle="tooltip" data-placement="right" data-container="body">{{key.actualExecution}}</td>
+                                                        <td class="form-control-middle" data-toggle="tooltip" data-placement="right" data-container="body">
+                                                            <span *ngIf="this.editMode != index">{{key.updatedExecution}}</span>
+                                                            <input *ngIf="this.editMode == index" value="{{key.updatedExecution}}" id="updatedExeSeq_{{index}}" name="updatedExeSeq_{{index}}"
+                                                                type="number" min="1" />
+                                                            <div class="error-message-block" *ngIf="this.editMode == index"></div>
+                                                        </td>
+                                                        <td class="form-control-middle" data-toggle="tooltip" data-placement="right" data-container="body">
+                                                            <span *ngIf="this.editMode != index" class="eventColText">{{key.ucSleepInterval}}</span>
+                                                            <!-- <div *ngIf="!key.inEditMode" class="form-control-middle"></div> -->
+                                                            <div class="form-control-fixed iconsWrapper tableRowAction" id="fixedCol" ng-style="iconsWrapperPosition">
+                                                                <div *ngIf="this.editMode != index" (click)="editRow($event,index,'usecaseTab')" class="editRow" placement="bottom"
+                                                                    container="body" ngbTooltip="Edit"></div>
+                                                                <div *ngIf="this.editMode == index" (click)="saveRow($event,index,key)" class="saveRow validateForm" placement="bottom"
+                                                                    container="body" ngbTooltip="Save"></div>
+                                                                <div *ngIf="this.editMode == index" (click)="cancelRow('usecaseTab')" class="cancelRow" placement="bottom"
+                                                                    container="body" ngbTooltip="Cancel"></div>
+                                                            </div>
+                                                            <input *ngIf="this.editMode == index" value="{{key.ucSleepInterval}}" id="time_{{index}}" name="time_{{index}}"
+                                                                type="text" min="1" />
+                                                            <div class="error-message-block" *ngIf="this.editMode == index"></div>                                                    
+                                                        </td>
+                                                    </tr>
+                                                </ng-container>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </form>
+                        </ng-template>
+                    </ngb-tab>
+                    <ngb-tab> <!-- title="Scripts" (click)="cancelRow('usecaseTab')"> -->
+                        <ng-template ngbTabTitle>
+                                <div (click)="cancelRow('usecaseTab')">Scripts</div>
+                        </ng-template> 
+                        <ng-template ngbTabContent>
+                            <form>
+                                <div id="tableWrapper" class="scriptWrapper">
+                                    <div class="scrollHead">
+                                        <table class="table" id="scriptScrollHead">
+                                            <thead>
+                                                <tr>
+                                                    <th>
+                                                        <div class="form-control-small-mid">USE CASE NAME</div>
+                                                    </th>
+                                                    <th>
+                                                        <div class="form-control-small-mid">SCRIPT NAME</div>
+                                                    </th>
+                                                    <th>
+                                                        <div class="form-control-small-mid">ACTUAL EXEC. SEQ.</div>
+                                                    </th>
+                                                    <th>
+                                                        <div class="form-control-small-mid">UPDATED EXEC. SEQ.</div>
+                                                    </th>
+                                                    <th>
+                                                        <div class="form-control-small-mid">SLEEP INTERVAL (ms)</div>
+                                                    </th>
+                                                    <th>
+                                                        <div class="form-control-small-mid">USE GENERATED SCRIPT</div>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                    <div class="scrollBody">
+                                        <table class="table" id="scriptTable" style="min-width: 967px;">
+                                            <tbody id="rowCount">
+                                                <ng-container *ngFor="let key of scriptValue; let index = index">
+                                                    <tr id="row_{{index}}" class="row_id_{{key.id}} scriptRow">
+                                                        <td class="form-control-small-mid" data-toggle="tooltip" data-placement="right" data-container="body">{{key.useCaseName}}</td>
+                                                        <td class="form-control-small-mid" data-toggle="tooltip" data-placement="right" data-container="body">{{key.scriptName}}</td>
+                                                        <td class="form-control-small-mid" data-toggle="tooltip" data-placement="right" data-container="body">{{key.actualExecution}}</td>
+                                                        <td class="form-control-small-mid" data-toggle="tooltip" data-placement="right" data-container="body">
+                                                            <span *ngIf="this.editScriptMode != index">{{key.updatedExecution}}</span>
+                                                            <label class="switch updateExeToggle" *ngIf="this.editScriptMode != index">
+                                                                <input class="switch-input" type="checkbox" (change)="toggleUpExecSeq($event, index)"
+                                                                    [checked]="key.updatedExecution != 0 ? true : false" />
+                                                                <span class="switch-label" data-on="EXEC" data-off="N-EXEC"></span>
+                                                                <span class="switch-handle updateExeToggleHandle"></span>
+                                                            </label>
+                                                            <input *ngIf="this.editScriptMode == index" value="{{key.updatedExecution}}" id="updatedExeSeq_{{index}}" name="updatedExeSeq_{{index}}"
+                                                                type="number" min="1" class="inputUseCaseSeq"/>
+                                                            <div class="error-message-block" *ngIf="this.editScriptMode == index"></div>
+                                                        </td>
+                                                        <td class="form-control-small-mid" data-toggle="tooltip" data-placement="right" data-container="body">
+                                                            <span *ngIf="this.editScriptMode != index" class="eventColText">{{key.scriptSleepInterval}}</span>
+                                                            <input *ngIf="this.editScriptMode == index" value="{{key.scriptSleepInterval}}" id="time_{{index}}"
+                                                                name="time_{{index}}" type="number" min="1" class="inputUseCaseSeq"/>
+                                                            <div class="error-message-block" *ngIf="this.editScriptMode == index"></div>
+                                                        </td>
+                                                        <td class="form-control-small-mid" data-toggle="tooltip" data-placement="right" data-container="body">
+                                                            <div class="form-control-fixed iconsWrapper tableRowAction" id="fixedCol" ng-style="iconsWrapperPosition">
+                                                                <div *ngIf="this.editScriptMode != index" (click)="editRow($event,index,'scriptTab')" class="editRow"
+                                                                    placement="bottom" container="body" ngbTooltip="Edit"></div>
+                                                                <div *ngIf="this.editScriptMode == index" (click)="saveScriptRow($event,index,key)" class="saveRow validateForm"
+                                                                    placement="bottom" container="body" ngbTooltip="Save"></div>
+                                                                <div *ngIf="this.editScriptMode == index" (click)="cancelRow('scriptTab')" class="cancelRow"
+                                                                    placement="bottom" container="body" ngbTooltip="Cancel"></div>
+                                                            </div>
+                                                            <span *ngIf="this.editScriptMode != index" class="eventColText">{{key.useGeneratedScript}}</span>
+                                                            <!-- <input *ngIf="this.editScriptMode == index" id="useGenScript_{{index}}" type="checkbox" [checked]="key.useGeneratedScript"> -->
+                                                            <label class="switch" *ngIf="this.editScriptMode == index">
+                                                                <input class="switch-input" type="checkbox" id="useGenScript_{{index}}" [checked]="key.useGeneratedScript == 'YES' ? true : false"/>
+                                                                <span class="switch-label" data-on="YES" data-off="NO"></span>
+                                                                <span class="switch-handle"></span>
+                                                            </label>
+                                                        </td>
+                                                    </tr>
+                                                </ng-container>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </form>
+                        </ng-template>
+                    </ngb-tab>
+                </ngb-tabset>
+            </div>
+            <div class="modal-footer">
+                <div class="modalAction">
+                    <button type="button"
+                      [ngClass]="{'buttonDisabled':this.editScriptMode !='-1' || this.editMode !='-1', 'formBtn':this.editScriptMode == '-1'|| this.editMode =='-1'}"
+                      class="btn btn-light" (click)="(this.editScriptMode == '-1' && this.editMode =='-1') ? saveScript(c) : ''">SAVE</button>
+                    <button type="button" class="formBtnCncl btn btn-light" (click)="cancelScript()">CANCEL</button>
+                </div>
+            </div>
+        </ng-template>
+    
+        <ng-template #testViewModal let-c="close" let-modal>
+    <!--         <div class="modal-header">                
+                <button type="button" class="close" aria-label="Close" (click)="closeModelViewResult()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div> -->
+            <div class="dispHeader" style="margin-top: 15px">
+                    <h4>RAN ATP - {{testName | uppercase}} </h4> 
+                </div>
+            <div class="modalBody resultView" >
+                <ngb-tabset>
+                    <ngb-tab title="Result [Text]">
+                        <ng-template ngbTabContent>
+                           <div class="textViewDisp">
+                                <div class="reportHeader row">                                
+                                    <div class="col-3">
+                                        <span><b>Program Name : </b>{{pgmName}}</span>
+                                    </div>
+                                    <div class="col-3">
+                                    <span><b>SM Name : </b>{{smName}}</span>
+                                    </div> 
+                                    <div class="col-6">
+                                        <span><b>NE Name : </b><span class="breakWord">{{neName}}</span></span>
+                                    </div>                            
+                                </div>
+                                <div class="reportBody" id="reportBody">
+                                    <ul>
+                                        <li *ngFor="let usecase of testResultsData">
+                                            <label>
+                                                <div class="useCaseListDiv"><span><b>Use Case Name : </b>{{usecase.useCaseName}}</span></div>
+                                                <ul class="scriptList">
+                                                    <li *ngFor="let script of usecase.script_status">
+                                                        <!-- <span style="margin-left: 10px; white-space: nowrap;"><b>Script Name : </b></span><span style="font-weight: normal !important;">{{script.scriptName}}</span>
+                                                        <span style="margin-left: 50px;"><b>Execution Sequence : </b></span><span style="font-weight: normal !important;">{{script.scriptExeSeq}}</span> -->
+                                                        <div style="display: flex;">
+                                                            <span style="white-space: nowrap;"><b>Script Name :&nbsp;</b></span>
+                                                            <span style="font-weight: normal !important;">{{script.scriptName}}</span>
+                                                        </div>
+                                                        <div>
+                                                            <span><b>Execution Sequence :&nbsp;</b></span>
+                                                            <span style="font-weight: normal !important;">{{script.scriptExeSeq}}</span>
+                                                        </div>
+                                                        <ul class="scriptList">
+                                                            <li *ngFor="let rules of script | keyvalue">                                                                                                                        
+                                                                <span *ngIf="rules.key == 'Command_Rules'">Command Rules</span>  
+                                                                <span *ngIf="rules.key == 'File_Rules'">File Rules</span>                              
+                                                                <span *ngIf="rules.key == 'XML_Rules'">XML Rules</span>    
+                                                                <span *ngIf="rules.key == 'Shell_Rules'"><b>Shell Rules</b></span>                                                                                  
+                                                                <ul style="padding-left: 40px; font-size: 13px" *ngIf="rules.key == 'Command_Rules' || rules.key == 'File_Rules' || rules.key == 'XML_Rules'  || rules.key == 'Shell_Rules'"  >
+                                                                    <li *ngFor="let cmdStat of script[rules.key]" style="list-style-type: square;font-weight: normal;height: 30px;">
+                                                                        <span class="floatLeft">{{cmdStat.ruleName}}</span>                                                                    
+                                                                        <!-- <div class="floatLeft infoIcon" placement="bottom" container="body" ngbTooltip="{{cmdStat.ruleDefinition}}"></div> -->
+                                                                        
+                                                                        <div class="floatLeft" placement="bottom"id="htooltip" [ngClass]="{'successImg':cmdStat.status =='PASS', 'failureImg':cmdStat.status=='FAIL','noData':cmdStat.status=='NO DATA','warning':cmdStat.status=='WARN'}">
+                                                                            <span class="htooltiptext" style ="width: 70px; margin: 9px 0px 0px -22px;">{{cmdStat.status=='PASS' ? 'PASS' : (cmdStat.status=='WARN' ? 'WARN' : (cmdStat.status=='NO DATA' ? 'NO DATA' : 'FAIL'))}}</span>
+                                                                        </div>
+                                                                        <div class="floatLeft infoIcon" placement="bottom"id="htooltip">
+                                                                            <span class="htooltiptext" style ="width: 200px; margin: 9px 0px 0px -22px;">{{cmdStat.ruleDefinition}}</span>
+                                                                        </div>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </label>
+                                        </li>
+                                        <p *ngIf="testResultsData.length == 0">NO DATA FOUND</p>
+                                    </ul>
+                                </div>
+                                
+                           </div>
+                        </ng-template>
+                    </ngb-tab>
+
+
+                    <ngb-tab title="Result [Tabular]">
+                        <ng-template ngbTabContent>
+                            <div id="tabularReport" class="textViewDisp">
+                                <div class="reportHeader row">
+                                    <div class="col-3">
+                                        <span><b>Program Name : </b>{{pgmName}}</span>
+                                    </div>
+                                    <div class="col-3">
+                                        <span><b>SM Name : </b>{{smName}}</span>
+                                    </div>
+                                    <div class="col-6">
+                                        <span><b>NE Name : </b><span class="breakWord">{{neName}}</span></span>
+                                    </div>
+                                </div>
+                                <div class="col-12" style="margin: 10px 0px;">
+                                    <div id="dataWrapper">
+                                        <div id="tableWrapper" class="general">
+                                            <div class="scrollHead">
+                                                <table class="table" id="newCustomerTable">
+                                                    <thead>
+                                                        <tr>
+                                                            <th (click)="changeSortingUsecase('useCaseName', $event, 11)">
+                                                                <div class="sorting form-control-middle" style="width:174px !important">USECASE
+                                                                    NAME</div>
+                                                            </th>
+                                                            <th (click)="changeSortingScript('scriptName', $event, 12)">
+                                                                <div class="sorting form-control-middle" style="width:174px !important">SCRIPT
+                                                                    NAME</div>
+                                                            </th>
+                                                            <th (click)="changeSortingExeSeq('scriptExeSeq', $event, 13)">
+                                                                <div class="sorting form-control-middle" style="width:174px !important">SCRIPT
+                                                                    SEQUENCE</div>
+                                                            </th>
+                                                            <th (click)="changeSortingRules('ruleName', $event, 14)">
+                                                                <div class="sorting form-control-small-3" style="width:174px !important">RULES</div>
+                                                            </th>
+                                                            <th (click)="changeSortingStatus('status', $event, 15)">
+                                                                <div class="sorting form-control-small" style="width:114px !important">STATUS</div>
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+                                            </div>
+                                            <div class="scrollBody" style="overflow-x: hidden;" (scroll)="scrollHandler($event, p2)">
+                                                <table class="table" id="resultTabular">
+                                                    <tbody id="rowCount">
+                                                        <ng-container *ngFor="let usecase of tabularResultsData">
+                                                            <tr class="noBorder">
+                                                                <td id="useCase" style="border-right:none" class="form-control-middle" data-toggle="tooltip"
+                                                                    data-placement="right" data-container="body">{{usecase.useCaseName}}</td>
+    
+                                                                <td class="inlineTableData table ">
+                                                            <tr class="noBorder" *ngFor="let script of usecase.script_status">
+    
+                                                                <td class="form-control-middle" data-toggle="tooltip"
+                                                                    data-placement="right" data-container="body">{{script.scriptName}}</td>
+    
+                                                                <td class="form-control-middle" data-toggle="tooltip"
+                                                                    data-placement="right" data-container="body">{{script.scriptExeSeq}}</td>
+    
+                                                                <td class="inlineTableData table ">
+                                                            <tr class="noBorder" *ngFor="let cmdStat of script['Command_Rules']">
+                                                                <td style="border-left:none" class="form-control-small-3 tooltipVisible" data-toggle="tooltip"
+                                                                    data-placement="right" data-container="body">
+                                                                    <div id="htooltip">
+                                                                        <span class="floatLeft ruleNamePointer" [ngbPopover]="scriptFiles1"
+                                                                            popoverTitle="" container="body" popoverClass="checkListTablePopOver"
+                                                                            [autoClose]="true" placement="bottom-left"
+                                                                            triggers="mannual:onclick mouseOver" #p2="ngbPopover"
+                                                                            (click)="showListOfRule(p2)">{{cmdStat.ruleName}}</span>
+                                                                        <ng-template #scriptFiles1>
+                                                                            <div class="maxDim" *ngIf="cmdStat.ruleDefinition.length != 0">
+                                                                                <span class="popupKey">{{cmdStat.ruleDefinition}}</span>
+                                                                            </div>
+                                                                            <div *ngIf="cmdStat.ruleDefinition.length == 0"
+                                                                                class="noDataPopover">
+                                                                                <span>NO DATA</span>
+                                                                            </div>
+                                                                        </ng-template>
+                                                                        <!--<span class="htooltiptext" style ="width: 200px; margin: 9px 0px 0px -22px;">{{cmdStat.ruleDefinition}}</span>
+     -->
+                                                                    </div>
+                                                                </td>
+                                                                <td class="form-control-100 tooltipVisible" data-toggle="tooltip"
+                                                                    data-placement="right" data-container="body">
+                                                                    <div class="floatLeft" placement="top" id="htooltip"
+                                                                        [ngClass]="{'successImg':cmdStat.status =='PASS', 'failureImg':cmdStat.status=='FAIL','noData':cmdStat.status=='NO DATA','warning':cmdStat.status=='WARN'}">
+                                                                        <span class="htooltiptext" style="width: 70px; margin: 9px 0px 0px -22px;">{{cmdStat.status=='PASS'
+                                                                            ? 'PASS' : (cmdStat.status=='WARN' ?
+                                                                            'WARN' : (cmdStat.status=='NO DATA' ? 'NO
+                                                                            DATA' : 'FAIL'))}}</span>
+                                                                        <!--computing script status in UI <span class="htooltiptext" style ="width: 70px; margin: 9px 0px 0px -22px;">{{checkStatus(cmdStat.status)? checkStatus(cmdStat.status) : ""}}{{cmdStat.status=='PASS' ? 'PASS' : (cmdStat.status=='WARN' ? 'WARN' : (cmdStat.status=='NO DATA' ? 'NO DATA' : 'FAIL'))}}</span>
+     -->
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+    
+                                                            <tr class="noBorder" *ngFor="let cmdStat of script['File_Rules']">
+                                                                <td style="border-left:none" class="form-control-small-3 tooltipVisible" data-toggle="tooltip"
+                                                                    data-placement="right" data-container="body">
+                                                                    <div id="htooltip">
+                                                                        <span class="floatLeft ruleNamePointer" [ngbPopover]="scriptFiles1"
+                                                                            popoverTitle="" container="body" popoverClass="checkListTablePopOver "
+                                                                            [autoClose]="true" placement="bottom-left"
+                                                                            triggers="mannual:onclick mouseOver" #p2="ngbPopover"
+                                                                            (click)="showListOfRule(p2)">{{cmdStat.ruleName}}</span>
+                                                                        <ng-template #scriptFiles1>
+                                                                            <div class="maxDim" *ngIf="cmdStat.ruleDefinition.length != 0">
+                                                                                <span class="popupKey">{{cmdStat.ruleDefinition}}</span>
+                                                                            </div>
+                                                                            <div *ngIf="cmdStat.ruleDefinition.length == 0"
+                                                                                class="noDataPopover">
+                                                                                <span>NO DATA</span>
+                                                                            </div>
+                                                                        </ng-template>
+                                                                        <!--<span class="htooltiptext" style ="width: 200px; margin: 9px 0px 0px -22px;">{{cmdStat.ruleDefinition}}</span>
+     -->
+                                                                    </div>
+                                                                </td>
+                                                                <td class="form-control-100 tooltipVisible" data-toggle="tooltip"
+                                                                    data-placement="right" data-container="body">
+                                                                    <div class="floatLeft" placement="top" id="htooltip"
+                                                                        [ngClass]="{'successImg':cmdStat.status =='PASS', 'failureImg':cmdStat.status=='FAIL','noData':cmdStat.status=='NO DATA','warning':cmdStat.status=='WARN'}">
+                                                                        <span class="htooltiptext" style="width: 70px; margin: 9px 0px 0px -22px;">{{cmdStat.status=='PASS'
+                                                                            ? 'PASS' : (cmdStat.status=='WARN' ?
+                                                                            'WARN' : (cmdStat.status=='NO DATA' ? 'NO
+                                                                            DATA' : 'FAIL'))}}</span>
+                                                                        <!--computing script status in UI <span class="htooltiptext" style ="width: 70px; margin: 9px 0px 0px -22px;">{{checkStatus(cmdStat.status)? checkStatus(cmdStat.status) : ""}}{{cmdStat.status=='PASS' ? 'PASS' : (cmdStat.status=='WARN' ? 'WARN' : (cmdStat.status=='NO DATA' ? 'NO DATA' : 'FAIL'))}}</span>
+     -->
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+    
+                                                            <tr class="noBorder" *ngFor="let cmdStat of script['XML_Rules']">
+                                                                <td style="border-left:none" class="form-control-small-3 tooltipVisible" data-toggle="tooltip"
+                                                                    data-placement="right" data-container="body">
+                                                                    <div id="htooltip">
+                                                                        <span class="floatLeft ruleNamePointer" [ngbPopover]="scriptFiles1"
+                                                                            popoverTitle="" container="body" popoverClass="checkListTablePopOver"
+                                                                            [autoClose]="true" placement="bottom-left"
+                                                                            triggers="mannual:onclick mouseOver" #p2="ngbPopover"
+                                                                            (click)="showListOfRule(p2)">{{cmdStat.ruleName}}</span>
+    
+    
+                                                                        <ng-template #scriptFiles1>
+                                                                            <div class="maxDim" *ngIf="cmdStat.ruleDefinition.length != 0">
+                                                                                <span class="popupKey">{{cmdStat.ruleDefinition}}</span>
+                                                                            </div>
+                                                                            <div *ngIf="cmdStat.ruleDefinition.length == 0"
+                                                                                class="noDataPopover">
+                                                                                <span>NO DATA</span>
+                                                                            </div>
+                                                                        </ng-template>
+                                                                        <!--<span class="htooltiptext" style ="width: 200px; margin: 9px 0px 0px -22px;">{{cmdStat.ruleDefinition}}</span>
+     -->
+                                                                    </div>
+                                                                </td>
+                                                                <td class="form-control-100 tooltipVisible" data-toggle="tooltip"
+                                                                    data-placement="right" data-container="body">
+                                                                    <div class="floatLeft" placement="top" id="htooltip"
+                                                                        [ngClass]="{'successImg':cmdStat.status =='PASS', 'failureImg':cmdStat.status=='FAIL','noData':cmdStat.status=='NO DATA','warning':cmdStat.status=='WARN'}">
+                                                                        <span class="htooltiptext" style="width: 70px; margin: 9px 0px 0px -22px;">{{cmdStat.status=='PASS'
+                                                                            ? 'PASS' : (cmdStat.status=='WARN' ?
+                                                                            'WARN' : (cmdStat.status=='NO DATA' ? 'NO
+                                                                            DATA' : 'FAIL'))}}</span>
+                                                                        <!--computing script status in UI <span class="htooltiptext" style ="width: 70px; margin: 9px 0px 0px -22px;">{{checkStatus(cmdStat.status)? checkStatus(cmdStat.status) : ""}}{{cmdStat.status=='PASS' ? 'PASS' : (cmdStat.status=='WARN' ? 'WARN' : (cmdStat.status=='NO DATA' ? 'NO DATA' : 'FAIL'))}}</span>
+     -->
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+    
+                                                            <tr class="noBorder" *ngFor="let cmdStat of script['Shell_Rules']">
+                                                                <td style="border-left:none" class="form-control-small-3 tooltipVisible" data-toggle="tooltip"
+                                                                    data-placement="right" data-container="body">
+                                                                    <div id="htooltip">
+                                                                        <span class="floatLeft ruleNamePointer" [ngbPopover]="scriptFiles1"
+                                                                            popoverTitle="" container="body" popoverClass="checkListTablePopOver"
+                                                                            [autoClose]="true" placement="bottom-left"
+                                                                            triggers="mannual:onclick mouseOver" #p2="ngbPopover"
+                                                                            (click)="showListOfRule(p2)">{{cmdStat.ruleName}}</span>
+    
+    
+                                                                        <ng-template #scriptFiles1>
+                                                                            <div class="maxDim" *ngIf="cmdStat.ruleDefinition.length != 0">
+                                                                                <span class="popupKey">{{cmdStat.ruleDefinition}}</span>
+                                                                            </div>
+                                                                            <div *ngIf="cmdStat.ruleDefinition.length == 0"
+                                                                                class="noDataPopover">
+                                                                                <span>NO DATA</span>
+                                                                            </div>
+                                                                        </ng-template>
+                                                                        <!--<span class="htooltiptext" style ="width: 200px; margin: 9px 0px 0px -22px;">{{cmdStat.ruleDefinition}}</span>
+     -->
+                                                                    </div>
+                                                                </td>
+                                                                <td class="form-control-100 tooltipVisible" data-toggle="tooltip"
+                                                                    data-placement="right" data-container="body">
+                                                                    <div class="floatLeft" placement="top" id="htooltip"
+                                                                        [ngClass]="{'successImg':cmdStat.status =='PASS', 'failureImg':cmdStat.status=='FAIL','noData':cmdStat.status=='NO DATA','warning':cmdStat.status=='WARN'}">
+                                                                        <span class="htooltiptext" style="width: 70px; margin: 9px 0px 0px -22px;">{{cmdStat.status=='PASS'
+                                                                            ? 'PASS' : (cmdStat.status=='WARN' ?
+                                                                            'WARN' : (cmdStat.status=='NO DATA' ? 'NO
+                                                                            DATA' : 'FAIL'))}}</span>
+                                                                        <!--computing script status in UI <span class="htooltiptext" style ="width: 70px; margin: 9px 0px 0px -22px;">{{checkStatus(cmdStat.status)? checkStatus(cmdStat.status) : ""}}{{cmdStat.status=='PASS' ? 'PASS' : (cmdStat.status=='WARN' ? 'WARN' : (cmdStat.status=='NO DATA' ? 'NO DATA' : 'FAIL'))}}</span>
+     -->
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            </td>
+    
+                                                            <!--<td class="form-control-small-1" data-toggle="tooltip" data-placement="right" data-container="body">{{statusCheck}}</td>
+     -->
+                                                            </tr>
+    
+    
+                                                            </td>
+    
+                                                            </tr>
+                                                        </ng-container>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+    
+                                    </div>
+    
+                                </div>
+                            </div>
+                        </ng-template>
+                    </ngb-tab>
+    
+
+
+                    <ngb-tab title="Script output" id="tab-script">
+                        <ng-template ngbTabContent>
+                                <form id="formWrapper" class="formWrapperMargin resultScriptOutput">                                                       
+                                    <div class="row">
+                                        <div class="col-1"></div>
+                                        <div class="col-3">
+                                            <div class="form-group">
+                                                <label for="templateName">SELECT USE CASE</label>
+                                                <select class="form-control" id="usecaseSO" name="usecaseSO" [(ngModel)]="useCaseSO" (change)="getScriptList(useCaseSO)">
+                                                    <option value="">--Select--</option>
+                                                    <option *ngFor="let key of testResultsData" value="{{key.useCaseName}}" id="{{key.useCaseId}}">{{key.useCaseName}}</option>
+                                                </select>
+                                                
+                                            </div>
+                                        </div>
+                                        <div class="col-3">
+                                            <div class="form-group">
+                                                <label for="templateName">SELECT SCRIPT</label>
+                                                <select class="form-control" id="script">
+                                                    <option value="">--Select--</option>
+                                                    <option *ngFor="let key of scriptList" value="{{key.scriptName}}" id="{{key.scriptId}}">{{key.scriptName}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-2" style="margin-top: 17px;">
+                                            <button type="submit" class="formBtn myriadproBold" (click) ="getScriptOutput($event)">VIEW</button>                                    
+                                        </div>
+                                        
+                                    </div>
+    
+                                            <pre id="viewFile" *ngIf="showOutput">{{scriptOutput}}</pre>
+                                </form>
+                               
+                        </ng-template>
+                    </ngb-tab>
+                </ngb-tabset>
+            </div>
+            <div class="modal-footer">
+                <div class="modalAction">                
+                    <button type="button" class="formBtnCncl btn btn-light" (click)="closeModelViewResult()">CLOSE</button>
+                </div>
+            </div>
+        </ng-template>
+    
+        <!-- Check List -->
+        <ng-template #checkListModal let-c="close" let-modal>            
+            <div class="modal-header" style="text-align: center">
+                <span class="chkListHeader">CHECKLIST</span>
+                <button type="button" class="close" aria-label="Close" (click)="closeModelCheckList()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="chkListSubHeader">
+                    <span>PROGRAM - </span><span class="dataValue">{{selectedProgram.programName}}</span>
+                    <span style="margin-left: 20px;">CIQ - </span><span class="dataValue">{{rowData.ciqName}}</span>
+                </div>
+                <span>{{rowData.checklistFileName}}</span>
+            </div>
+            <div class="modelBody">        
+                <div class="ciqTabList" style="margin-top: 15px;">
+                    <ul class="nav nav-pills" role="tablist">
+                        <li class="nav-item" *ngFor="let list of checklistSheetList; let index= index">
+                            <div (click)="getAllChecklistDetails(list, index, checkListModal)" id="sheet{{index}}" accesskey="h"
+                                name="seatch" class=" divalign float-sm-right float-md-right float-lg-right float-xl-right"
+                                [ngClass]="{'activeTab':sheetHighlight == index,'inactiveTab':sheetHighlight!= index }">{{list}}</div>
+                        </li>
+                    </ul>
+                </div>
+                <rct-nodata *ngIf="noCheckListDataVisibility" [subTitle]=""></rct-nodata>
+            
+                <div id="tableWrapper" class="checkListWrapper" *ngIf="!noCheckListDataVisibility">
+                    <div class="scrollHead">
+                        <table class="table" id="uploadDetails">
+                            <thead>
+                                <tr>
+                                    <ng-container *ngFor="let checklist of checklistTableData[0].checkListMap | objectKeys; let index = index">
+                                        <th *ngIf="index == 1">
+                                            <div class="form-control-help">SCRIPT</div>
+                                        </th>
+                                        <th>
+                                            <div *ngIf="checklist == 'check'" class="form-control-help">{{checklist | uppercase}}</div>
+                                            <div *ngIf="checklist != 'check' && checklist != 'script'" class="form-control-checklist">{{checklist | uppercase}}</div>
+                                            <!-- <input *ngIf="checklist == check" type="checkbox"> -->
+                                        </th>
+                                        <!-- <div class="form-control-checklist">{{checklist | uppercase}}</div> -->
+                                        <!-- <input *ngIf="checklist == check" type="checkbox"> -->
+                                    </ng-container>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div class="scrollBody" (scroll)="scrollHandler($event, p1)">
+                        <table class="table" id="checkListTable">
+                            <tbody id="rowCount">
+                                <tr id="row_id_{{key.id}}" class="checkListRow" *ngFor="let key of checklistTableData; let enodeIndex = index">
+                                    <ng-container *ngFor="let checklistData of key.checkListMap | objectKeyValues; let index = index">
+                                        <td *ngIf="index == 1">
+                                            <div class="form-control-help" *ngIf="index == 1">
+                                                <div class="viewRowScriptDetails_dark" placement="bottom-left" [ngbPopover]="scriptFiles" triggers="mannual:onclick mouseOver"
+                                                    #p1="ngbPopover" popoverTitle="" container="body" popoverClass="checkListTablePopOver" [autoClose]="true" (click)="showListOfSCriptFiles(p1,key)" style="cursor: pointer;"></div>
+                                                <ng-template #scriptFiles>
+                                                    <ul *ngIf="scriptFilesData.length > 0">
+                                                        <li *ngFor="let item of scriptFilesData">
+                                                            <span>{{item.scriptName}}</span>
+                                                            <span>{{item.scriptExeSeq}}</span>
+                                                        </li>
+                                                    </ul>
+                                                    <div *ngIf="scriptFilesData.length == 0" class="noDataPopover">
+                                                        <span>NO DATA</span>
+                                                    </div>
+                                                </ng-template>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div id="{{checklistData.key}}" class="form-control-checklist" *ngIf="checklistData.key != 'check' && checklistData.key != 'Remarks'">{{checklistData.value}}</div>
+                                            <div class="form-control-help" *ngIf="checklistData.key == 'check'">
+                                                <input type="checkbox" [(ngModel)]="checklistData.value" (change)="checkValue(index, enodeIndex, checklistData.value)">
+                                            </div>
+                                            
+                                            <div class="form-control-checklist" *ngIf="checklistData.key == 'Remarks'" data-toggle="tooltip" data-placement="right" data-container="body">                                       
+                                                <span class="eventColText"></span>
+                                                <div class="form-control-fixed iconsWrapper tableRowAction" id="fixedCol" ng-style="iconsWrapperPosition">
+                                                    <div *ngIf="this.editCLMode != enodeIndex"  (click)="editCheckListRow($event,enodeIndex)" class="editRow" placement="bottom" container="body" ngbTooltip="Edit"></div>
+                                                    <div *ngIf="this.editCLMode == enodeIndex"  (click)="saveCheckListRow($event,enodeIndex,checklistData)" class="saveRow" placement="bottom" container="body" ngbTooltip="Save"></div>
+                                                    <div *ngIf="this.editCLMode == enodeIndex"  (click)="cancelCheckListRow($event)" class="cancelRow" placement="bottom" container="body" ngbTooltip="Cancel"></div>
+                                                </div>
+                                                <div id="{{checklistData.key}}" class="form-control-checklist" *ngIf="this.editCLMode != enodeIndex">{{checklistData.value}}</div>
+                                                <input  *ngIf="this.editCLMode == enodeIndex" value="{{checklistData.value}}" id="edited_{{checklistData.key}}">
+                                            </div>
+                                        </td>
+                                    </ng-container>
+                                   <!--  <td class="form-control-dateTime" data-toggle="tooltip" data-placement="right" data-container="body">
+                                        <span class="eventColText"></span>
+                                        <div class="form-control-fixed iconsWrapper tableRowAction" id="fixedCol" ng-style="iconsWrapperPosition">
+                                            <div *ngIf="this.editCLMode != enodeIndex"  (click)="editCheckListRow($event,enodeIndex)" class="editRow" placement="bottom" container="body" ngbTooltip="Edit"></div>
+                                            <div *ngIf="this.editCLMode == enodeIndex"  (click)="saveCheckListRow($event,enodeIndex,key)" class="saveRow" placement="bottom" container="body" ngbTooltip="Save"></div>
+                                            <div *ngIf="this.editCLMode == enodeIndex"  (click)="cancelCheckListRow($event)" class="cancelRow" placement="bottom" container="body" ngbTooltip="Cancel"></div>
+                                        </div>
+                                    </td> -->
+                                
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <rct-loader class="innerLoader" *ngIf="showInnerLoader"></rct-loader>
+            </div>
+            <div class="modal-footer" *ngIf="!noCheckListDataVisibility">
+                <div class="modalAction">
+                    <button type="button" class="formBtn btn btn-light" (click)="saveCheckList(c)">SAVE</button>
+                    <button type="button" class="formBtnCncl btn btn-light" (click)="closeModelCheckList()">CANCEL</button>
+                </div>
+            </div>
+        </ng-template>
+    
+        <!-- Running log -->
+        <ng-template #runningLogModal let-c="close" let-modal>
+            <div class="modal-header">
+                <!-- <span style="font-weight: bold; font-size: 16px;">{{rowData.runTestName | uppercase}}</span>
+                <button type="button" class="close" aria-label="Close" (click)="closeModelRunningLog()">
+                    <span aria-hidden="true">&times;</span>
+                </button> -->
+                <div class="dispHeader">
+                    <h4>RAN ATP - {{rowData.runTestName | uppercase}} </h4>
+                </div>
+            </div>
+            <div class="modelBody">
+                <div id="viewFile">
+                    <pre>{{runningLogs}}</pre>
+                </div>
+                <rct-loader class="innerLoader" *ngIf="showInnerLoader"></rct-loader>
+            </div>
+            <div class="modal-footer">
+                <div class="modalAction">
+                    <button type="button" class="formBtn btn btn-light" (click)="updateRunningLog()">REFRESH</button>
+                    <button type="button" class="formBtnCncl btn btn-light" (click)="closeModelRunningLog()">CLOSE</button>
+                </div>
+            </div>
+        </ng-template>
+    
+        <!-- Check Connection log -->
+        <ng-template #checkConnLogModal let-c="close" let-modal>
+            <div class="modal-header">
+                <!-- <span style="font-weight: bold; font-size: 16px;">{{rowData.runTestName | uppercase}}</span> -->
+                <div class="dispHeader">
+                    <h4>RAN ATP - CONNECTIVITY LOG</h4>
+                </div>
+               <!--  <button type="button" class="close" aria-label="Close" (click)="closeModelcheckConn()">
+                    <span aria-hidden="true">&times;</span>
+                </button> -->
+            </div>
+            <div class="modelBody">
+                <div id="viewFile">
+                    <pre>{{checkConnLogs}}</pre>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="modalAction">
+                    <button type="button" class="formBtnCncl btn btn-light" (click)="closeModelcheckConn()">CLOSE</button>
+                </div>
+            </div>
+        </ng-template>
+    
+    
+    </div>
+    

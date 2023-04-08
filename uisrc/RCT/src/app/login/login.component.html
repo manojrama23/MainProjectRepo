@@ -1,0 +1,114 @@
+<div class="container" id="loginContainer">
+    <div class="loginwrapper">
+        <div class="row">
+            <rct-model *ngIf="showModelMessage" [message]="modelData"></rct-model>
+            <div class="col-xs-12 col-sm-12 col-md-9" id="loginContentBlock">
+                <div id="loginContent">
+                    <!-- <div id="loginLogo"></div> -->
+                    <p class="loginCmsLogo">
+                        <span class="ran">S-RCT</span>
+                        <!-- <span class="ranSub">C&I</span> -->
+                        <br>
+                        <span class="commision">SAMSUNG RAN COMMISSIONING</span>    
+                        <br>
+                        <span class="tool">TOOL</span>
+                    </p>
+                    <p class="loginContentPara">S-RCT is a Centralized, Site Commissioning and Integration tool for the Samsung Radio Access Network Elements for various Customers and Network Platforms. This automates all the stages in Commissioning and integration such as Pre-Migration, Migration, Post-Migration. 
+
+                    </p>
+                    <p class="loginContentPara">
+                        S-RCT improves the usability and efficiency of the network operation engineers in the overall commissioning process and provide Real time progress and Automated reporting of the commissioning process.
+                    </p>
+                </div>
+            </div>
+            <!-- <div class="col-xs-12 col-sm-12 col-md-1" id="loginmiddleBlock">
+                <div class="dividerLine"></div>
+            </div> -->
+            <div class="col-xs-12 col-sm-12 col-md-3" id="loginComponentBlock">
+                <div class="loginComponent">
+                    <!-- <h1 class="myriadproRegular">LOGIN</h1> -->
+                    <!-- <div id="invalid_User" class="error-message-block">{{reason}}</div> -->
+                    <form role="form" (ngSubmit)="login.form.valid && authenticate()" #login="ngForm" name="loginForm" class='logFrm'>
+                        <div class="row">
+                            <div class="col-xs-6 col-sm-6 col-md-10">
+                                <div class="form-group">
+                                    <label for="userName" class="user">USER NAME</label>
+                                    <div class="loginInputBlock">
+                                        <div class="loginInputIcon userName"></div>
+                                        <input autofocus autocomplete="off" [(ngModel)]="auth.username" type="text" name="username" class="form-control myriadproRegular selector noshadow" id="username" placeholder="ENTER USER NAME" autocomplete="off" #username="ngModel" required>
+                                    </div>
+                                    <div *ngIf="login.submitted && !username.valid" class="help-block" style="color:red">User Name is required</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row lgn-pwd">
+                            <div class="col-xs-6 col-sm-6 col-md-10">
+                                <div class="form-group">
+                                    <label for="password" class="user">PASSWORD</label>
+                                    <div class="row" id="changePassword"><a (click)="openForgotPasswordModal(changepswd)" >FORGOT PASSWORD</a><b>?</b></div>
+                                   
+                                     
+                                    <div class="loginInputBlock">
+                                        <div class="loginInputIcon password"></div>
+                                        <input autocomplete="off" type="password" [(ngModel)]="auth.password" value="" name="password" class="form-control myriadproRegular selector noshadow" id="password" placeholder="PASSWORD" required #password="ngModel">
+                                    </div>
+                                    <div *ngIf="login.submitted &&  !password.valid" class="help-block" style="color:red">Password is required</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                <div id="invalid_User" class="alert-danger">
+                                    <strong>{{reason}}</strong>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="row" id="changePassword"><a (click)="openForgotPasswordModal(changepswd)"><b>FORGOT PASSWORD ?</b></a></div>-->
+                        <br> 
+                        <div class="row">
+                            <div class="col-xs-6 col-sm-6 col-md-6">
+                                <div class="form-group">
+                                    <button type="submit" id="loginBtn" class="btn formBtn btn-block btn-lg">LOGIN</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="floatRight copyright" style="display: inline-flex;">
+                <span class="footerLogo footerThalesLogo"></span>
+                <span>Copyright &copy; 2030 Samsung Electronics America, Inc.</span>
+                <span style="padding-left: 4px;display: inline-block;">All Rights Reserved.</span>
+            </div>
+        </div>
+    </div>
+    <!-- <div id="bottomPatch"></div> -->
+</div>
+<!-- change password modal -->
+<ng-template #changepswd let-c="close" let-d="dismiss">
+    <div class="chngPswdHead modal-header">
+        <h4 class="chngPswd modal-title">FORGOT PASSWORD</h4>
+    </div>
+    <!-- <div class="modal-body"> -->
+    <div id="formWrapper" class="chngPswdBody bluePrintFormWrapper">
+        <form id="changePasswordForm" class="form-horizontal">
+            <div class="row">
+                <div class="form-group">
+                    <label for="mailId" class="asterisk_input">EMAIL ID</label>
+                    <input type="text" class="form-control" id="mailId" name="mailId" value="">
+                    <div class="error-message-block"></div>
+                </div>
+            </div>
+
+            <div class="textAlignCenter" id="saveRow">
+                <input type="button" name="save" class="formBtn myriadproBold validateForm" value="SUBMIT" (click)="changePassword($event)" />
+                <input type="button" name="CANCEL" class="formBtnCncl formBtn myriadproBold" (click)="c('Close click')" value="CANCEL" />
+            </div>
+            <div class="alert-danger" role="alert" *ngIf="showValidationMessage">
+                <strong>{{chngPwdValidationMessage}}</strong>
+            </div>
+        </form>
+        <!-- </div> -->
+    </div>
+</ng-template>

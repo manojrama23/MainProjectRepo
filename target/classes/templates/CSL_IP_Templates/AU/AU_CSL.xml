@@ -1,0 +1,25 @@
+<nc:rpc xmlns:nc="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <nc:edit-config>
+    <nc:target>
+      <nc:running></nc:running>
+    </nc:target>
+    <nc:default-operation>none</nc:default-operation>
+    <nc:config>
+      <gnbau:managed-element xmlns:gnbau="http://www.samsung.com/global/business/5GvRAN/ns/gnb-au">
+        <gnbau:common-management>
+          <gnbau:csl-configuration>
+            <gnbau:csl-tce-ems-server nc:operation="merge">
+              <gnbau:csl-tce-ems-server-port>50002</gnbau:csl-tce-ems-server-port>
+              <gnbau:csl-tce-ems-option>abnormal-call-only</gnbau:csl-tce-ems-option>
+            </gnbau:csl-tce-ems-server>
+            <gnbau:csl-tce-server nc:operation="merge">
+              <gnbau:csl-tce-server-ip-address>2001:4888:a12:3161:106:216:0:0210</gnbau:csl-tce-server-ip-address>
+              <gnbau:csl-tce-server-port>50021</gnbau:csl-tce-server-port>
+              <gnbau:csl-tce-option>normal-and-abnormal-and-intra-ho-call</gnbau:csl-tce-option>
+            </gnbau:csl-tce-server>
+          </gnbau:csl-configuration>
+        </gnbau:common-management>
+      </gnbau:managed-element>
+    </nc:config>
+  </nc:edit-config>
+</nc:rpc>

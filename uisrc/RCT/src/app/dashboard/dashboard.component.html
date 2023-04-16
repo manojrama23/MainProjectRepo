@@ -48,9 +48,12 @@
                 <img *ngFor="let icon of customerIcons;" src="{{icon.iconPath}}" style="max-width:100px;max-height:46px;margin-right: 5%;width:auto;height: auto;">
             </div>
             <!-- <div class="col-2"></div> -->
-            <div class="chartformWrapper1 bluePrintFormWrapper col-6" style="margin: auto;">
+           <div class="chartformWrapper1 bluePrintFormWrapper col-6" style="margin: auto;">
+				<!--<div class="floatRight activeSessions"> ACTIVE SESSIONS
+					<span class="myriadproBold" style="font-size: 18px">{{activeSessionsCount}}</span>
+				</div> -->
                 <div class="floatRight activeUsers" (click)="viewActiveUsers(activeUserModal)">
-                    ACTIVE USERS
+                    ACTIVE SESSIONS
                     <span class="myriadproBold" style="font-size: 18px">{{activeUsersCount}}</span>
                 </div>
                 
@@ -104,20 +107,63 @@
             </div>
         </div>
 
-
-
-
         <div id="chartformWrapper2" class="formWrapperMargin bluePrintFormWrapper" *ngIf="candiBlock">
             <div class="row">
+                <div class="col-3 col-3-33 graphGap">
+                    <div class="col-12 borderBG alignCenter">
+                        <div id="barChart" class="discLabels"><span>COMPLETION</span></div>
+                        <!-- <div class="labelsLegend">COMPLETED
+                            <span class="myriadproBold">{{completedSites}}</span> NOT COMPLETED
+                            <span class="myriadproBold">{{notCompletedSites}}</span> IN PROGRESS
+                            <span class="myriadproBold">{{inProgressSites}}</span>
+                        </div> -->
+                    </div>
+                </div>
+                <div class="col-3 col-3-33 graphGap">
+                    <div class="col-12 borderBG alignCenter">
+                        <div id="reasonsReport" class="discLabels"><span>MARKET</span></div>
+                        <!-- <div class="labelsLegend">EAST
+                            <span class="myriadproBold">{{eastMarket}}</span> WEST
+                            <span class="myriadproBold">{{westMarket}}</span> MID WEST
+                            <span class="myriadproBold">{{midwestMarket}}</span>
+                        </div> -->
+                    </div>
+                </div> 
+					<div class="col-3 col 3-33 graphGap">
+						<div class="col-12 borderBG alignCenter">
+							<div id="trendChart"class="discLabels"><span>USER TREND </span>
+						</div>
+						<div class="custSelect"><span>SELECT FREQUENCY : </span></div>
+						<div><select class="form-control" name="frequency" id="selectedFrequency" [(ngModel)]="frequency"                      
+							                (change)="getUserTrend()">
+								<option value={{frq}} *ngFor="let frq of frequencies">{{frq}}</option>
+							</select></div>
+						<!--<div id="trendChart" class="col-11">-->
+
+						</div>
+					</div>
+				</div>
+			</div>
+                <div class="col-3 col-3-33 graphGap">
+                    <div class="col-12 borderBG alignCenter">
+                        <div id="commissioningReport" class="discLabels"><span>TECHNOLOGY</span></div>
+                        <!-- <div class="labelsLegend">5G MM
+                            <span class="myriadproBold">{{tech1}}</span> 5G DSS
+                            <span class="myriadproBold">{{tech2}}</span> 4G USM LIVE
+                            <span class="myriadproBold">{{tech3}}</span>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- <div id="chartformWrapper2" class="formWrapperMargin bluePrintFormWrapper" *ngIf="candiBlock">
+            <div class="row">
                 <div class="col-6 graphGap">
-                    <!-- <div id="commissioningReport">
-                        <div class="discLabels"><span>OVERALL</span> COMMISSIONING REPORT</div>
-                    </div> -->
                     <div class="borderBG">
                         <div class="discLabels">
                             <span>OVERALL</span> COMMISSIONING REPORT</div>
                         <div class="custSelect" *ngIf="currentUser == 'Super Administrator'" style="visibility: hidden;">
-                            <!-- <label class="col-4" style="text-align: right;">SELECT CUSTOMER</label> -->
                             <span>SELECT CUSTOMER : </span>
                             <select class="form-control" name="selectedCust" id="selectedCust" [(ngModel)]="selectedCustIs" (change)="getCustGraph(selectedCustIs)">
                                 <option value={{customer.id}} *ngFor="let customer of dashBoardData.customerList">{{customer.customerName}}</option>
@@ -128,18 +174,12 @@
                         </div>
                     </div>
                 </div>
-                <!-- <div class="col-3 borderBG">
-                    <div id="chartBlockSchedule" class="discLabels">
-                        <span>COMMISSIONING</span> STATUS</div>
-                    <div class="row" style="margin-top: 15px;" *ngIf="currentUser == 'Super Administrator'"></div>
-                </div> -->
                 <div class="col-6">
                     <div class="borderBG">
                         <div class="discLabels">
                             <span>PER MARKET </span>COMMISSIONING REPORT
                         </div>
                         <div class="custSelect" *ngIf="currentUser == 'Super Administrator'">
-                            <!-- <label class="col-4" style="text-align: right;">SELECT CUSTOMER</label> -->
                             <span>SELECT CUSTOMER : </span>
                             <select class="form-control" name="selectedCust" id="selectedCust" [(ngModel)]="selectedCustIs"
                                 (change)="getCustGraph(selectedCustIs)">
@@ -152,7 +192,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
         <!-- 	<div id="chartformWrapper" class="formWrapperMargin bluePrintFormWrapper" *ngIf="chartShowHide">
 		<div class="row">
@@ -175,9 +215,6 @@
 			</div> 
 		</div>
 	</div> -->
-
-
-
 
         <rct-model *ngIf="showModelMessage" [message]="modelData"></rct-model>
 
@@ -263,7 +300,7 @@
         <ng-template #activeUserModal let-c="close" let-modal>
             <div class="modal-header">
                 <div class="dispHeader">
-                    <h4>ACTIVE USERS</h4>
+                    <h4>ACTIVE SESSIONS</h4>
                 </div>
             </div>
             <div class="modelBody">
@@ -312,5 +349,3 @@
                 </div>
             </div>
         </ng-template>
-
-    </div>

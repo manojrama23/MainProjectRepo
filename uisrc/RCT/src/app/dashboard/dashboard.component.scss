@@ -5,20 +5,22 @@
 #chartBlockDisk {background-color: #fff;display:inline-block; /*padding: 10px;  border: 1px solid #d4d4d4 */}
 #chartBlockMemory {background-color: #fff;display:inline-block;/* padding: 2px; border: 1px solid #d4d4d4 */}
 #chartBlockSchedule {background-color: #fff;display:inline-block;/* padding: 2px; border: 1px solid #d4d4d4 */}
-#barChart, #reasonsReport {background-color: #fff; margin: auto;padding-bottom: 10px;/* padding: 2px; border: 1px solid #d4d4d4 */}
+#barChart, #reasonsReport, #commissioningReport {background-color: #fff; margin: auto;padding-bottom: 10px;padding-top: 5px;/* padding: 2px; border: 1px solid #d4d4d4 */}
 .borderBG{background: #ffffff; border: 1px solid #eae8e8; margin:10px 0px;}
-#commissioningReport {background-color: #fff;}
 .discLabels{font-size: 16px;text-align: center;margin-top: 15px;}
 .memoryLabels{font-size: 16px;text-align: center;}
 .discLabels span{font-weight: bold;}
 .memoryLabels span{font-weight: bold;}
 .labelsLegend{text-align: center;background-color: #fff;}
 .labelsLegend span{padding: 0px 10px 10px 0px; color: #5156AC;}
+//.activeSessions {margin-right: 30px;}
+//.activeSessions::before {content: "\2022"; color: #59de00; font-size: x-large; margin-right:5px;vertical-align:middle;font-size: 20px;}
 .activeUsers::before {content: "\2022"; color: #59de00; font-size: x-large; margin-right:5px;vertical-align:middle;font-size: 20px;}
 .customerSupported {margin-right: 20px;}
 .customerSupported::before {content: "\2022"; color: #59de00; font-size: x-large; margin-right:5px;vertical-align:middle;font-size: 20px;}
 .alignCenter {text-align: center;}
 .graphGap{padding-right: 0;}
+.col-3-33{flex: 0 0 33%;max-width: 33%;}
 .col-3-30{flex: 0 0 30%;max-width: 30%;}
 .col-6-40{flex: 0 0 40%;max-width: 40%;}
 .custSelect{margin-top: 15px;text-align: center;}
@@ -65,5 +67,13 @@
   &:hover {
     color:#03637b;
   }
+ /*.activeSessions {
+  color:#3c3c3c;
+  cursor: pointer;
+
+  &:hover {
+    color:#03637b;
+  }
+}*/
 }
 // content: "•\2193"
